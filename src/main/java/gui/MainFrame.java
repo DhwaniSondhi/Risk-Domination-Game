@@ -6,11 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
-
+JPanel mainpanel;
 
     public MainFrame() {
         super("Risk Game - SOEN6441 - Team 19");
-        setLayout(new GridLayout(3, 2, 10, 20));
+        mainpanel=new JPanel();
+        mainpanel.setLayout(new GridLayout(3, 2, 10, 20));
+       //mainpanel.setBackground(Color.BLACK);
+        add(mainpanel);
         setUpMenuBar();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(900, 900);
