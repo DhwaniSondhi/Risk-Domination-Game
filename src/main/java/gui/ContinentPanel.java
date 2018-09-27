@@ -14,7 +14,6 @@ public class ContinentPanel extends JPanel {
 
     public ContinentPanel() {
         setBackground(Color.LIGHT_GRAY);
-        setSize(300, 450);
         setBorder(new LineBorder(Color.BLACK, 2));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(new JLabel("Continents"));
@@ -39,6 +38,9 @@ public class ContinentPanel extends JPanel {
         data.add(new Continent(2, "C2", 10));
         data.add(new Continent(3, "C3", 15));
         data.add(new Continent(4, "C4", 7));
+        data.add(new Continent(5, "C5", 7));
+        data.add(new Continent(6, "C6", 7));
+        data.add(new Continent(7, "C7", 7));
         return data;
     }
 
@@ -51,6 +53,4 @@ public class ContinentPanel extends JPanel {
             }
         }
     }
-
-
 }

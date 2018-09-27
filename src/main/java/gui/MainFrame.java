@@ -6,14 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
-    JPanel mainpanel;
+
+    private JPanel mainPanel;
 
     public MainFrame() {
         super("Risk Game - SOEN6441 - Team 19");
-        mainpanel = new JPanel();
-        mainpanel.setLayout(new GridBagLayout());
-        //mainpanel.setBackground(Color.BLACK);
-        add(mainpanel);
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridBagLayout());
+        add(mainPanel);
         setUpMenuBar();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(900, 900);
@@ -22,17 +22,12 @@ public class MainFrame extends JFrame {
         setUpGamePanels();
     }
 
-    private void setUpGamePanels() {
-        addContinentPanel();
-    }
-
     /**
-     * Adds Continent Panel to the main screen
-     */
-    private void addContinentPanel() {
-        ContinentPanel panel = new ContinentPanel();
-        mainpanel.add(panel, getConstraints(0, 0));
-        mainpanel.add(new ContinentPanel(), getConstraints(1, 0));
+     * Adds all necessary panel components to the main panel
+     * */
+    private void setUpGamePanels() {
+        // TODO: Add your panels here...
+        mainPanel.add(new ContinentPanel(), getConstraints(0, 0));
     }
 
 
@@ -73,6 +68,11 @@ public class MainFrame extends JFrame {
         setJMenuBar(menuBar);
     }
 
+
+    /**
+     * see {@link ActionListener}
+     * ActionListener for the menu bar items
+     * */
     private class MenuActionListener implements ActionListener {
 
         private MENU_ITEM item;
@@ -96,6 +96,9 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Enum class to differentiate menu item for the ActionListener
+     * */
     enum MENU_ITEM {
         EXIT, LOAD, CREATE
     }
