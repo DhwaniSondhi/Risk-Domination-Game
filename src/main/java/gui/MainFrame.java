@@ -1,5 +1,7 @@
 package gui;
 
+import entity.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,7 +29,9 @@ public class MainFrame extends JFrame {
      * */
     private void setUpGamePanels() {
         // TODO: Add your panels here...
-        mainPanel.add(new ContinentPanel(), getConstraints(0, 0));
+        ContinentPanel panel = new ContinentPanel();
+        mainPanel.add(panel, getConstraints(0, 0));
+        panel.updateContents(Config.getInstance().continents);
     }
 
 
@@ -36,6 +40,8 @@ public class MainFrame extends JFrame {
      *
      * @param x value for constraints gridx (row in the grid)
      * @param y value for constraints gridY (col in the grid)
+     *
+     * @return default constraints (see {@link GridBagConstraints}) with provided x,y values
      */
     private GridBagConstraints getConstraints(int x, int y) {
         GridBagConstraints constraints = new GridBagConstraints();
