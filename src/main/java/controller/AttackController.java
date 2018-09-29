@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Controller for {@link AttackPanel} extends {@link BaseController} and implements {@link ActionListener}
+ *
+ * */
 public class AttackController extends BaseController<AttackPanel> implements ActionListener {
 
 
@@ -16,6 +20,14 @@ public class AttackController extends BaseController<AttackPanel> implements Act
      */
     public AttackController(AttackPanel view) {
         super(view);
+
+    }
+
+    /**
+     * Update the list of countries in the view with current player's countries
+     * */
+    public void updateCountryList(){
+        view.showCountries(model.getCountriesOfCurrentPlayer());
     }
 
 

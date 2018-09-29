@@ -1,7 +1,6 @@
 package gui;
 
 import controller.AttackController;
-import entity.Config;
 import entity.Country;
 
 import javax.swing.*;
@@ -9,12 +8,21 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Collection;
 
+/**
+ * View for attackPanel extends {@link JPanel}
+ */
 public class AttackPanel extends JPanel {
     private JPanel countryPanel;
     private JPanel neighbouringPanel;
 
     AttackController attackController;
 
+    /**
+     * Constructor
+     * <p>
+     * Sets up country panel and neighbouring country panel using {@link JPanel}
+     * Updates the country list in the view using {@link AttackController} updateCountryList function
+     */
     public AttackPanel() {
         attackController = new AttackController(this);
         setBackground(Color.LIGHT_GRAY);
@@ -29,9 +37,14 @@ public class AttackPanel extends JPanel {
         neighbouringPanel.setLayout(new BoxLayout(neighbouringPanel, BoxLayout.Y_AXIS));
         add(countryPanel);
         add(neighbouringPanel);
-        showCountries(Config.getInstance().countries.values());
+        attackController.updateCountryList();
     }
 
+    /**
+     * Adds list of countries to the country panel
+     *
+     * @param countries collection of countries
+     * */
     public void showCountries(Collection<Country> countries) {
         countryPanel.removeAll();
         for (Country country : countries) {
@@ -49,6 +62,11 @@ public class AttackPanel extends JPanel {
         revalidate();
     }
 
+    /**
+     * Adds list of countries to the neighbouring panel
+     *
+     * @param countries collection of countries
+     * */
     public void showNeighbouringCountries(Collection<Country> countries) {
         neighbouringPanel.removeAll();
         for (Country country : countries) {
