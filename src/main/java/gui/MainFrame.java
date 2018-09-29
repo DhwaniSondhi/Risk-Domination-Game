@@ -1,18 +1,22 @@
 package gui;
 
+import controller.MainFrameController;
 import entity.Config;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class MainFrame extends JFrame {
 
     private JPanel mainPanel;
+    private MainFrameController controller;
 
     public MainFrame() {
         super("Risk Game - SOEN6441 - Team 19");
+
+        controller = new MainFrameController(this);
+
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
         add(mainPanel);
@@ -65,8 +69,9 @@ public class MainFrame extends JFrame {
         menuFile.add(load);
         JMenuItem create = new JMenuItem("Create Map");
         menuFile.add(create);
+        create.addActionListener(controller);
         JMenuItem exit = new JMenuItem("Exit");
-        exit.addActionListener(new MenuActionListener(MENU_ITEM.EXIT));
+        exit.addActionListener(controller);
         menuFile.add(exit);
 
         menuBar.add(menuFile);
@@ -75,37 +80,5 @@ public class MainFrame extends JFrame {
     }
 
 
-    /**
-     * see {@link ActionListener}
-     * ActionListener for the menu bar items
-     * */
-    private class MenuActionListener implements ActionListener {
 
-        private MENU_ITEM item;
-
-        public MenuActionListener(MENU_ITEM item) {
-            this.item = item;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            switch (item) {
-                case CREATE:
-                    break;
-                case LOAD:
-                    break;
-                case EXIT:
-                default:
-                    System.exit(0);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Enum class to differentiate menu item for the ActionListener
-     * */
-    enum MENU_ITEM {
-        EXIT, LOAD, CREATE
-    }
 }
