@@ -36,6 +36,10 @@ public class MainFrame extends JFrame {
         ContinentPanel panel = new ContinentPanel();
         mainPanel.add(panel, getConstraints(0, 0));
         panel.updateContents(Config.getInstance().continents);
+
+        AttackPanel attackPanel = new AttackPanel();
+        mainPanel.add(attackPanel, getConstraints(1, 1));
+        mainPanel.revalidate();
     }
 
 
