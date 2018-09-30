@@ -40,6 +40,10 @@ public class MainFrame extends JFrame {
         AttackPanel attackPanel = new AttackPanel();
         mainPanel.add(attackPanel, getConstraints(1, 1));
         mainPanel.revalidate();
+
+        FortifyPanel fortifyPanel=new FortifyPanel();
+        mainPanel.add(fortifyPanel,getConstraints(1,2));
+        mainPanel.revalidate();
     }
 
 
