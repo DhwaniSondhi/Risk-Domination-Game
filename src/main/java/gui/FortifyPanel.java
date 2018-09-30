@@ -1,14 +1,17 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 /**
  * Class containing Gui and functionality of Fortify part of Game
  * */
 public class FortifyPanel extends JPanel {
-    public FortifyPanel()
-    {   GridBagLayout gridBagLayout=new GridBagLayout();
+    public FortifyPanel() {
+        GridBagLayout gridBagLayout=new GridBagLayout();
         GridBagConstraints bagConstraints=new GridBagConstraints();
+        setBackground(Color.LIGHT_GRAY);
+        setBorder(new LineBorder(Color.BLACK, 2));
         JLabel jLabelCountries=new JLabel("Countries");
         JLabel jLabelNeigbour=new JLabel("Neighbours");
         String labels[] = { "India", "Pakistan", "China", "Afganistan","Nepal", "Bangladesh", "Sri Lanka", "Malasyia","Mangol", "Russia" };
