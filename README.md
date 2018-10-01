@@ -17,9 +17,10 @@
     2. should follow javadoc format
     3. No unwanted commented code should be present 
 5. Folder Structure
-    1. Only 2 folders 
+    1. Only 3 folders
     2. Entity : Core Component Classes only
-    3. GUI : GUI classes and Classes containing the Logic
+    3. GUI : GUI classes only
+    4. Controller : Controller Classes containing the flow of the application and the Logic
 ##Git Conventions
 1. Branch Name
     1. {name_initials}_{feature_title} eg: jm_feature1 / ns_feature2
