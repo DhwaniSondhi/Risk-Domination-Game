@@ -47,6 +47,10 @@ public class MainFrame extends JFrame {
 
         ReinforcementPanel reinforcementPanel=new ReinforcementPanel();
         mainPanel.add(reinforcementPanel,getConstraints(1,0));
+
+        CountryPanel panel1=new CountryPanel();
+        mainPanel.add(panel1, getConstraints(0, 1));
+
         mainPanel.revalidate();
     }
 
@@ -64,8 +68,8 @@ public class MainFrame extends JFrame {
         constraints.gridx = x;
         constraints.gridy = y;
         constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.weightx = 1;
         return constraints;
     }
 
