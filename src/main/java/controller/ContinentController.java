@@ -1,6 +1,6 @@
 package controller;
 
-import entity.Config;
+import entity.GameMap;
 import gui.ContinentPanel;
 
 /**
@@ -22,6 +22,6 @@ public class ContinentController extends BaseController<ContinentPanel> {
      * Update the list of countries in the view with current player's countries
      */
     public void updateContinentList() {
-        view.updateContinentList(Config.getInstance().continents.values());
+        view.updateContinentList(GameMap.getInstance().continents.values());
     }
 }

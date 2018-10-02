@@ -8,11 +8,19 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Collection;
 
+/**
+ * View for the continents extends {@link JPanel}
+ */
 public class ContinentPanel extends JPanel {
 
+    /**
+     * controller for the view
+     */
     ContinentController controller;
+    /**
+     * panel to display the list of continents
+     */
     JPanel contentPanel;
-
 
     /**
      * Constructor
