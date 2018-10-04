@@ -1,6 +1,7 @@
 package controller;
 
 import gui.MainFrame;
+import gui.MapCreatorFrame;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -37,7 +38,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
             }
 
         } else if (e.getActionCommand().equalsIgnoreCase("Create GameMap")) {
-
+            new MapCreatorFrame("Create Map", false);
         } else if (e.getActionCommand().equalsIgnoreCase("exit")) {
             System.exit(0);
         }
