@@ -82,6 +82,7 @@ public class MainFrame extends JFrame {
         JMenu menuFile = new JMenu("File");
 
         JMenuItem load = new JMenuItem("Load Map");
+        load.addActionListener(controller);
         menuFile.add(load);
         JMenuItem create = new JMenuItem("Create Map");
         menuFile.add(create);
