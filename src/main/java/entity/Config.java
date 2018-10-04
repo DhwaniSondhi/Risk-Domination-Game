@@ -134,11 +134,27 @@ public class Config {
         Country country4 = new Country(4, "Country 4");
         country4.owner = players.get(3);
         country4.numOfArmies = 40;
+        Country country5 = new Country(5,"Country 5");
+        country5.owner=players.get(1);
+        country5.numOfArmies=12;
+        Country country6 = new Country(6,"Country 6");
+        country6.owner=players.get(2);
+        country6.numOfArmies=24;
+        Country country7=new Country(7,"Country 7");
+        country7.owner=players.get(3);
+        country7.numOfArmies=10;
+        Country country8=new Country(8,"Country 8");
+        country8.owner=players.get(1);
+        country8.numOfArmies=20;
 
         countries.put(1, country1);
         countries.put(2, country2);
         countries.put(3, country3);
         countries.put(4, country4);
+        countries.put(5, country5);
+        countries.put(6, country6);
+        countries.put(7, country7);
+        countries.put(8, country8);
 
         HashSet<Country> n1 = new HashSet<>();
         n1.add(country3);
@@ -150,11 +166,29 @@ public class Config {
         HashSet<Country> n4 = new HashSet<>();
         n4.add(country1);
         n4.add(country2);
+        HashSet<Country> n5 = new HashSet<>();
+        n5.add(country1);
+        n5.add(country5);
+        HashSet<Country> n6 = new HashSet<>();
+        n6.add(country5);
+        n6.add(country6);
+        HashSet<Country> n7 = new HashSet<>();
+        n7.add(country6);
+        n7.add(country7);
+        HashSet<Country> n8 = new HashSet<>();
+        n8.add(country7);
+        n8.add(country8);
+
 
         map.put(1, n1);
         map.put(2, n2);
         map.put(3, n3);
         map.put(4, n4);
+        map.put(5, n5);
+        map.put(6, n6);
+        map.put(7, n7);
+        map.put(8, n8);
+
 
         currentPlayer = players.get(3);
 
