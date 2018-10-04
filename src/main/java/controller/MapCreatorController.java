@@ -57,7 +57,8 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
     private int getNumberValue(String value) {
         int num = -1;
         try {
-            num = Integer.valueOf(value.trim());
+            if(value.trim().isEmpty()) num = 0;
+            else num = Integer.valueOf(value.trim());
         } catch (Exception e) {
             num = -1;
         } finally {
