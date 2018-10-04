@@ -34,7 +34,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     /**
      * Perform action when invoked
      *
-     * @param e
+     * @param e triggered after pressing button
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -44,7 +44,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     /**
      * To get the number of armies at a country and it neighbor which is selected by user from lists
      *
-     * @param e
+     * @param e event triggered after list item selected
      */
 
     @Override

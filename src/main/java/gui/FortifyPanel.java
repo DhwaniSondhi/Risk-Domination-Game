@@ -75,7 +75,7 @@ public class FortifyPanel extends JPanel {
     /**
      * It shows countries that are owned by currently playing player
      *
-     * @param countries
+     * @param countries countries own by current player
      */
     public void showCountriesFortify(Collection<Country> countries) {
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();
@@ -100,7 +100,7 @@ public class FortifyPanel extends JPanel {
     /**
      * It set up the component for displaying neighboring countries
      *
-     * @param countries
+     * @param countries Neighboring countries
      */
     public void showNeighbouringCountriesFortify(Collection<Country> countries) {
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();
@@ -173,7 +173,7 @@ public class FortifyPanel extends JPanel {
 
     /**
      * Update the value of number of armies on currently selected country
-     * @param numberOfArmies
+     * @param numberOfArmies new value for TextField
      */
     public void updateCountriesArmyTextField(int numberOfArmies) {
         jTextFieldNoOfArmiesCountries.setText(Integer.toString(numberOfArmies));
