@@ -127,13 +127,13 @@ public class Config {
         country1.numOfArmies = 50;
         Country country2 = new Country(2, "Country 2");
         country2.owner = players.get(2);
-        country1.numOfArmies = 5;
+        country2.numOfArmies = 5;
         Country country3 = new Country(3, "Country 3");
         country3.owner = players.get(3);
-        country1.numOfArmies = 10;
+        country3.numOfArmies = 10;
         Country country4 = new Country(4, "Country 4");
         country4.owner = players.get(3);
-        country1.numOfArmies = 40;
+        country4.numOfArmies = 40;
 
         countries.put(1, country1);
         countries.put(2, country2);

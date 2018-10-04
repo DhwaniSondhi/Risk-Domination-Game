@@ -19,6 +19,8 @@ public class FortifyPanel extends JPanel {
     private GridBagLayout gridBagLayoutMain;
     private GridBagConstraints bagConstraintsMain;
     FortifyController fortifyController;
+    JTextField jTextFieldNoOfArmiesCountries;
+    JTextField jTextFieldNoOfArmiesNeighbour;
 
     /**
      * Constructor
@@ -85,11 +87,13 @@ public class FortifyPanel extends JPanel {
         gridBagConstraintsCountriesPanel.gridy = 0;
         JLabel jLabelCountries = new JLabel("Countries");
         jPanelCountries.add(jLabelCountries, gridBagConstraintsCountriesPanel);
-        JList list = new JList(countries.toArray());
-        JScrollPane scrollPaneCountries = new JScrollPane(list);
+        JList countriesList = new JList(countries.toArray());
+        JScrollPane scrollPaneCountries = new JScrollPane(countriesList);
         gridBagConstraintsCountriesPanel.gridx = 0;
         gridBagConstraintsCountriesPanel.gridy = 1;
         jPanelCountries.add(scrollPaneCountries, gridBagConstraintsCountriesPanel);
+        countriesList.addListSelectionListener(fortifyController);
+        jPanelCountries.revalidate();
         revalidate();
     }
 
@@ -99,7 +103,6 @@ public class FortifyPanel extends JPanel {
      * @param countries
      */
     public void showNeighbouringCountriesFortify(Collection<Country> countries) {
-
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();
         GridBagConstraints gridBagConstraintsCountriesPanel = new GridBagConstraints();
 
@@ -133,12 +136,12 @@ public class FortifyPanel extends JPanel {
         jPanelInnerPanelArmies.add(new JLabel("Army at Country"), gridBagConstraintsInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 1;
-        JTextField jTextFieldNoOfArmiesCountries = new JTextField(10);
+        jTextFieldNoOfArmiesCountries = new JTextField(10);
         jPanelInnerPanelArmies.add(jTextFieldNoOfArmiesCountries, gridBagConstraintsInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 2;
         jPanelInnerPanelArmies.add(new JLabel("Army at neighbor"), gridBagConstraintsInnerPanelArmies);
-        JTextField jTextFieldNoOfArmiesNeighbour = new JTextField(10);
+        jTextFieldNoOfArmiesNeighbour = new JTextField(10);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 3;
         jPanelInnerPanelArmies.add(jTextFieldNoOfArmiesNeighbour, gridBagConstraintsInnerPanelArmies);
@@ -166,5 +169,14 @@ public class FortifyPanel extends JPanel {
         jPanelTransferArmy.add(jButtonTransfer, transferPanelConstraints);
         jPanelTransferArmy.revalidate();
         revalidate();
+    }
+
+    /**
+     * Update the value of number of armies on currently selected country
+     * @param numberOfArmies
+     */
+    public void updateCountriesArmyTextField(int numberOfArmies) {
+        jTextFieldNoOfArmiesCountries.setText(Integer.toString(numberOfArmies));
+
     }
 }
