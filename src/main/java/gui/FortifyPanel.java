@@ -24,7 +24,8 @@ public class FortifyPanel extends JPanel {
 
     /**
      * Constructor
-     *
+     *It set up the Panels for Number of countries a player have and countries to which the can transfer army
+     *Also set up the panels for choosing number of armies to transfer
      */
 
     public FortifyPanel() {
@@ -71,18 +72,20 @@ public class FortifyPanel extends JPanel {
 
     }
 
+    /**
+     * It shows countries that are owned by currently playing player
+     * @param countries
+     */
     public void showCountriesFortify(Collection<Country> countries) {
         ArrayList<String> countriesList=new ArrayList<String>();
-        for (Country country : countries)
-        {
+        for (Country country : countries) {
 
             countriesList.add(country.name);
 
 
         }
         String[] countriesNames=new String[countriesList.size()];
-        for(int i=0;i<countriesList.size();i++)
-        {
+        for(int i=0;i<countriesList.size();i++) {
             countriesNames[i]=countriesList.get(i);
         }
         GridBagLayout gridBagLayoutCountriesPanel=new GridBagLayout();
@@ -102,18 +105,20 @@ public class FortifyPanel extends JPanel {
         revalidate();
     }
 
+    /**
+     * It set up the component for displaying neighboring countries
+     * @param countries
+     */
     public void showNeighbouringCountriesFortify(Collection<Country> countries) {
         ArrayList<String> countriesList=new ArrayList<String>();
-        for (Country country : countries)
-        {
+        for (Country country : countries) {
 
             countriesList.add(country.name);
 
 
         }
         String[] countriesNames=new String[countriesList.size()];
-        for(int i=0;i<countriesList.size();i++)
-        {
+        for(int i=0;i<countriesList.size();i++) {
             countriesNames[i]=countriesList.get(i);
         }
         GridBagLayout gridBagLayoutCountriesPanel=new GridBagLayout();
@@ -134,7 +139,11 @@ public class FortifyPanel extends JPanel {
         revalidate();
     }
 
-    public void TransferFortify() {
+    /**
+     * It setup the components to show number of armies in a county and its neighboring countries
+     * It also allow to choose number of armies one can transfer from a country to other country
+     */
+    public void transferFortify() {
         GridBagLayout gridBagLayoutInnerPanelArmies=new GridBagLayout();
         GridBagConstraints gridBagConstraintsInnerPanelArmies=new GridBagConstraints();
         jPanelInnerPanelArmies.setLayout(gridBagLayoutInnerPanelArmies);

@@ -18,12 +18,19 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         super(view);
     }
 
+    /**
+     * Updates the countries and its Neighbouring countries and also show number of armies in them
+     */
    public void updateCountryListFortify(){
         view.showCountriesFortify(model.getCountriesOfCurrentPlayer());
         view.showNeighbouringCountriesFortify(model.getCountriesOfCurrentPlayer());
-        view.TransferFortify();
+        view.transferFortify();
     }
 
+    /**
+     * Perform action when invoked
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
