@@ -7,6 +7,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * This is the Controller for the MapCreator. see {@link BaseController}
@@ -22,7 +28,8 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
 
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
+
     }
 
     @Override
@@ -57,7 +64,7 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
     private int getNumberValue(String value) {
         int num = -1;
         try {
-            if(value.trim().isEmpty()) num = 0;
+            if (value.trim().isEmpty()) num = 0;
             else num = Integer.valueOf(value.trim());
         } catch (Exception e) {
             num = -1;

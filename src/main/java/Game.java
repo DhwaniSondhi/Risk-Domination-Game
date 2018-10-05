@@ -1,5 +1,6 @@
 import entity.GameMap;
 import gui.MainFrame;
+import gui.MapCreatorFrame;
 
 public class Game {
 
@@ -9,5 +10,6 @@ public class Game {
         config.setDummyData();
 
         MainFrame frame = new MainFrame();
+        new MapCreatorFrame("Create Form", false);
     }
 }
