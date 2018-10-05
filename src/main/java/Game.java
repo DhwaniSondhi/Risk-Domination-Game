@@ -10,6 +10,5 @@ public class Game {
         config.setDummyData();
 
         MainFrame frame = new MainFrame();
-        new MapCreatorFrame("Create Form", false);
     }
 }

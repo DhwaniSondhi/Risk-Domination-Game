@@ -1,12 +1,17 @@
 package controller;
 
 import gui.MapCreatorFrame;
+import utility.FileHelper;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -18,11 +23,21 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
         ActionListener,
         DocumentListener {
 
+
+    /**
+     * This is the constructor for the Controller
+     *
+     * @param view View associated with the Controller
+     */
     public MapCreatorController(MapCreatorFrame view) {
         super(view);
     }
 
-
+    /**
+     * Invoked when an action occurs.
+     *
+     * @param event
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         try {
@@ -76,7 +91,8 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
             if (countryCheckList.size() != neighboursCheckList.size())
                 throw new IllegalStateException("Not all the country has a neighbour");
 
-            //saveMapToFile(mapName, continents, countries);
+            FileHelper.saveMapToFile(mapName, continents, countries);
+            view.dispose();
 
         } catch (NumberFormatException nfe) {
             view.showWarning("Not a valid number");
@@ -88,26 +104,52 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
         }
     }
 
+    /**
+     * Gives notification that there was an insert into the document.  The
+     * range given by the DocumentEvent bounds the freshly inserted region.
+     *
+     * @param e the document event
+     */
     @Override
     public void insertUpdate(DocumentEvent e) {
         JTextField owner = (JTextField) e.getDocument().getProperty("owner");
         handleTextChange(owner);
     }
 
+    /**
+     * Gives notification that a portion of the document has been
+     * removed.  The range is given in terms of what the view last
+     * saw (that is, before updating sticky positions).
+     *
+     * @param e the document event
+     */
     @Override
     public void removeUpdate(DocumentEvent e) {
         JTextField owner = (JTextField) e.getDocument().getProperty("owner");
         handleTextChange(owner);
     }
 
+    /**
+     * Gives notification that an attribute or set of attributes changed.
+     *
+     * @param e the document event
+     */
     @Override
     public void changedUpdate(DocumentEvent e) {
     }
 
+    /**
+     * helper function to listen to text-fields value changes
+     *
+     * @param field {@link JTextField} of which the text needs to be parsed
+    * */
     private void handleTextChange(JTextField field) {
         if (field.getName().equals("numOfContinents") || field.getName().equals("numOfCountries")) {
             int number = getNumberValue(field.getText());
-            if (number < 0) view.showWarning("Please enter a valid number");
+            if (number < 0) {
+                number = 0;
+                view.showWarning("Please enter a valid number");
+            }
 
             if (field.getName().equals("numOfContinents")) {
                 view.updateContinentFields(number);
@@ -117,6 +159,13 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
         }
     }
 
+    /**
+     * Get the number equivalent to the string input
+     * <p>return -1 if invalid string</p>
+     *
+     * @param value string input for parsing
+     * @return return number equivalent of value or -1 if invalid input
+     */
     private int getNumberValue(String value) {
         int num = -1;
         try {
@@ -130,17 +179,3 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
     }
 }
 
-/*
-Sample inputs for file creation
-
-Asia=3
-Europe=6
-
-Nepal, Asia, India,Germany,Portugal
-India, Asia, Nepal, Spain
-Spain,Europe,India,Portugal
-Portugal,Europe,Nepal,Spain,Italy
-Italy,Europe,Portugal,Spain
-Germany,Europe,Spain,Nepal
-
-*/
