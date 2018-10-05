@@ -8,6 +8,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Controller for FortifyPanel
@@ -54,6 +58,32 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             System.out.println(source.getSelectedValue());
             System.out.println(source.getSelectedValue().numOfArmies);
             view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
+            int countryId = source.getSelectedValue().id;
+            int ownerId = source.getSelectedValue().owner.id;
+
+            Queue<Integer> queueNeighbor = new LinkedList<>();
+            queueNeighbor.add(countryId);
+            LinkedHashMap<Integer, String> neighbor = new LinkedHashMap<Integer, String>();
+            LinkedHashMap<Integer, String> neighborCheck = new LinkedHashMap<Integer, String>();
+            neighborCheck.put(countryId, source.getSelectedValue().name);
+            while (!queueNeighbor.isEmpty()) {
+                int last = queueNeighbor.remove();
+                ArrayList<Country> listNeighbouring = new ArrayList<>();
+                listNeighbouring = (ArrayList<Country>) model.getNeighbourCountries(last);
+                System.out.println(listNeighbouring);
+                for (int i = 0; i < listNeighbouring.size(); i++) {
+                    if (listNeighbouring.get(i).owner.id == ownerId) {
+                        if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
+                            queueNeighbor.add(listNeighbouring.get(i).id);
+                            neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
+                            neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
+                        }
+
+                    }
+
+                }
+
+            }
 
         }
 
