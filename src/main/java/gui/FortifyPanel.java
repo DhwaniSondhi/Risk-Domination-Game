@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Class containing Gui and functionality of Fortify part of Game
@@ -21,6 +23,7 @@ public class FortifyPanel extends JPanel {
     FortifyController fortifyController;
     JTextField jTextFieldNoOfArmiesCountries;
     JTextField jTextFieldNoOfArmiesNeighbour;
+    JScrollPane scrollPaneNeighboringCountries;
 
     /**
      * Constructor
@@ -99,9 +102,11 @@ public class FortifyPanel extends JPanel {
 
     /**
      * It set up the component for displaying neighboring countries
+     * It takes current player's countries as a default
      *
      * @param countries Neighboring countries
      */
+
     public void showNeighbouringCountriesFortify(Collection<Country> countries) {
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();
         GridBagConstraints gridBagConstraintsCountriesPanel = new GridBagConstraints();
@@ -114,13 +119,14 @@ public class FortifyPanel extends JPanel {
         jPanelNeighbors.add(jLabelCountries, gridBagConstraintsCountriesPanel);
         JList list = new JList(countries.toArray());
         //((Country) list.getSelectedValue()).id;
-        JScrollPane scrollPaneCountries = new JScrollPane(list);
+        scrollPaneNeighboringCountries = new JScrollPane(list);
         gridBagConstraintsCountriesPanel.gridx = 0;
         gridBagConstraintsCountriesPanel.gridy = 1;
-        jPanelNeighbors.add(scrollPaneCountries, gridBagConstraintsCountriesPanel);
+        jPanelNeighbors.add(scrollPaneNeighboringCountries, gridBagConstraintsCountriesPanel);
         jPanelNeighbors.revalidate();
         revalidate();
     }
+
 
     /**
      * It setup the components to show number of armies in a county and its neighboring countries
@@ -173,10 +179,27 @@ public class FortifyPanel extends JPanel {
 
     /**
      * Update the value of number of armies on currently selected country
+     *
      * @param numberOfArmies new value for TextField
      */
     public void updateCountriesArmyTextField(int numberOfArmies) {
         jTextFieldNoOfArmiesCountries.setText(Integer.toString(numberOfArmies));
 
+    }
+
+    /**
+     * Updates the list of neighboring countries on the basis of selection
+     *
+     * @param neighbor contains the id's and names of neighboring countries
+     */
+    public void updateNeighboringCountries(LinkedHashMap<Integer, String> neighbor) {
+        String[] neighborCountriesList = new String[neighbor.keySet().size()];
+        int index = 0;
+        for (Map.Entry getCountries : neighbor.entrySet()) {
+            neighborCountriesList[index] = getCountries.getValue().toString();
+            index++;
+        }
+        JList list = new JList(neighborCountriesList);
+        scrollPaneNeighboringCountries.setViewportView(list);
     }
 }

@@ -46,7 +46,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     }
 
     /**
-     * To get the number of armies at a country and it neighbor which is selected by user from lists
+     * To get the number of armies at a country and its neighbor based on user selection
+     * It gives the list of countries to which a player can fortify from a selected country
      *
      * @param e event triggered after list item selected
      */
@@ -70,7 +71,6 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 int last = queueNeighbor.remove();
                 ArrayList<Country> listNeighbouring = new ArrayList<>();
                 listNeighbouring = (ArrayList<Country>) model.getNeighbourCountries(last);
-                System.out.println(listNeighbouring);
                 for (int i = 0; i < listNeighbouring.size(); i++) {
                     if (listNeighbouring.get(i).owner.id == ownerId) {
                         if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
@@ -85,7 +85,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
             }
 
-        }
+            view.updateNeighboringCountries(neighbor);
 
+        }
     }
 }
