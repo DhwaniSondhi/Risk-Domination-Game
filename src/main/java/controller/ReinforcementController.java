@@ -2,8 +2,10 @@ package controller;
 
 
 import entity.Card;
+import entity.Config;
+import entity.Continent;
+import entity.Country;
 import gui.ReinforcementPanel;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -115,6 +117,44 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * Setting the armies of the player available for the Reinforcement Phase in armiesForReinforcement attribute
      */
     public int getArmiesForReinforcement(){
+/*        Config instance=Config.getInstance();
+        HashMap<Integer, Country> countries=instance.countries;
+        HashMap<Integer, Continent> continents=instance.continents;
+
+        int playerCountries=0;
+        Iterator itForCountries=countries.entrySet().iterator();
+        while(itForCountries.hasNext()){
+            Map.Entry countryPair=(Map.Entry)itForCountries.next();
+            Country country=(Country)countryPair.getValue();
+            if(country.owner!=null){
+                if(country.owner.id==instance.currentPlayer.id){
+                    playerCountries++;
+                }
+            }
+        }
+
+        int playerContinents=0;
+        boolean hasContinent=false;
+        Iterator itForContinents=continents.entrySet().iterator();
+        while(itForContinents.hasNext()){
+            Map.Entry continentPair=(Map.Entry)itForContinents.next();
+            Continent continent=(Continent)continentPair.getValue();
+            ArrayList<Country> continentCountries=continent.countries;
+            for(Country country:continentCountries){
+                if(country.owner!=null){
+                    if(country.owner.id==instance.currentPlayer.id){
+                        hasContinent=true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+            if(hasContinent==true){
+                playerContinents++;
+            }
+        }
+
+        return (playerCountries/3)+playerContinents+armiesOnUpdate;*/
         return 0;
     }
 
