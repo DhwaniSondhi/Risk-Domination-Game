@@ -216,11 +216,11 @@ public class Config {
         }
         HashSet<Country> neighbours = new HashSet<>();
         for (String territory : territories.subList(1, territories.size())) {
-            int neighbourCountryId = this.checkCountryExists(country);
+            int neighbourCountryId = this.checkCountryExists(territory);
             if (neighbourCountryId == -1) {
                 //add country to config
                 neighbourCountryId = countryCounter++;
-                countries.put(countryCounter, new Country(neighbourCountryId, country));
+                countries.put(countryCounter, new Country(neighbourCountryId, territory));
 
             }
             neighbours.add(countries.get(neighbourCountryId));
