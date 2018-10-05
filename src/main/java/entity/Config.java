@@ -1,9 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -18,14 +15,17 @@ public class Config {
     public HashMap<Integer, Country> countries;
     public HashMap<Integer, Continent> continents;
     public HashMap<Integer, Player> players;
-
     public HashMap<Integer, HashSet<Country>> map;
+    private static int continentCounter;
+    private static int countryCounter;
 
     private Config() {
         countries = new HashMap<>();
         continents = new HashMap<>();
         players = new HashMap<>();
         map = new HashMap<>();
+        continentCounter = 0;
+        countryCounter = 0;
     }
 
     /**
@@ -36,6 +36,17 @@ public class Config {
             INSTANCE = new Config();
 
         return INSTANCE;
+    }
+
+    /**
+     * saves the continent and continent value from the file
+     *
+     * @param continent      gets continent from file
+     * @param continentValue gets confinent value from file
+     */
+    public void saveContinent(String continent, int continentValue) {
+        continentCounter++;
+        continents.put(continentCounter, new Continent(continentCounter, continent, continentValue));
     }
 
 
@@ -62,20 +73,6 @@ public class Config {
         this.map = map;
     }
 
-
-    /**
-     * Get the list of Neighbour countries
-     *
-     * @param countryId Id of the country whose neighbors are required
-     * @return list of countries
-     */
-    public List<Country> getNeighbourCountries(int countryId) {
-        List<Country> countries = new ArrayList<>();
-        for (Country country : map.get(countryId)) {
-            countries.add(country);
-        }
-        return countries;
-    }
 
     /**
      * Get the list of all countries owned by the current player
@@ -202,5 +199,46 @@ public class Config {
 
         currentPlayer = players.get(3);
 
+    }
+
+    /**
+     * Saves the country and their neighbouring countries
+     *
+     * @param territories List of all the countries along with its neighbouring countries
+     */
+    public void saveCountry(ArrayList<String> territories) {
+        String country = territories.get(0);
+        int countryId = this.checkCountryExists(country);
+        if (countryId == -1) {
+            //add country to config
+            countryId = countryCounter++;
+            countries.put(countryCounter, new Country(countryId, country));
+        }
+        HashSet<Country> neighbours = new HashSet<>();
+        for (String territory : territories.subList(1, territories.size())) {
+            int neighbourCountryId = this.checkCountryExists(country);
+            if (neighbourCountryId == -1) {
+                //add country to config
+                neighbourCountryId = countryCounter++;
+                countries.put(countryCounter, new Country(neighbourCountryId, country));
+
+            }
+            neighbours.add(countries.get(neighbourCountryId));
+        }
+    }
+
+    /**
+     * To check if the country is already added
+     *
+     * @param country Gets the country name
+     * @return false if country doesnot exist
+     */
+    private int checkCountryExists(String country) {
+        for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
+            if (entry.getValue().name.equalsIgnoreCase(country)) {
+                return entry.getKey();
+            }
+        }
+        return -1;
     }
 }
