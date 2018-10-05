@@ -115,9 +115,19 @@ public class Config {
     }
 
     public void setDummyData() {
-        players.put(1, new Player(1, "Player 1"));
-        players.put(2, new Player(2, "Player 2"));
-        players.put(3, new Player(3, "Player 3"));
+        ArrayList<Card> cards=new ArrayList<Card>();
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.INFANTRY));
+        cards.add(new Card(Card.TYPE.ARTILLERY));
+        Player player1=new Player(1, "Player 1");
+        player1.cards=cards;
+        players.put(1,player1);
+        Player player2=new Player(2, "Player 2");
+        player2.cards=cards;
+        players.put(2,player2);
+        Player player3=new Player(3, "Player 3");
+        player3.cards=cards;
+        players.put(3,player3);
 
         continents.put(1, new Continent(1, "Continent1", 5));
         continents.put(2, new Continent(2, "Continent2", 7));

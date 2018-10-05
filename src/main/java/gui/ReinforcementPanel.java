@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class ReinforcementPanel extends JPanel {
     JPanel cardSection;
+    JPanel armySection;
     ReinforcementController reinforcementController;
 
     /**
@@ -28,6 +29,11 @@ public class ReinforcementPanel extends JPanel {
         cardSection=new JPanel();
         cardSection.setLayout(new GridBagLayout());
         getCardSection();
+        //reinforcementController.getArmiesForReinforcement();
+        armySection=new JPanel();
+        armySection.setLayout(new GridBagLayout());
+        getArmySection();
+
     }
 
     /**
@@ -38,7 +44,7 @@ public class ReinforcementPanel extends JPanel {
         reinforcementController.getCards();
         addButtons();
         cardSection.revalidate();
-        add(cardSection);
+        add(cardSection,getGridContraints(0,0));
     }
 
     /**
@@ -118,6 +124,19 @@ public class ReinforcementPanel extends JPanel {
        /* gridBagConstraints.weightx=1;
         gridBagConstraints.weighty=1*/;
         return gridBagConstraints;
+    }
+    /**
+     * Add Panel for armies display and distribute among countries
+     */
+    public void getArmySection(){
+        armySection.removeAll();
+        int army=reinforcementController.getArmiesForReinforcement();
+        JPanel armyDisplay=new JPanel();
+        JLabel armies=new JLabel("Armies: "+army);
+        armyDisplay.add(armies);
+        armySection.add(armyDisplay,getGridContraints(0,0));
+        armySection.revalidate();
+        add(armySection,getGridContraints(0,1));
     }
 
 }

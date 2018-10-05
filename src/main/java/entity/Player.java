@@ -5,7 +5,6 @@ import java.util.ArrayList;
 /**
  * Class containing attributes and functions of a player object
  */
-
 public class Player {
     public int id;
     public String name;
@@ -23,4 +22,5 @@ public class Player {
         this.name = name;
 
     }
+
 }

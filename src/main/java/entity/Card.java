@@ -2,7 +2,7 @@ package entity;
 
 
 public class Card {
-    enum TYPE {
+    public enum TYPE {
         INFANTRY,
         CAVALRY,
         ARTILLERY

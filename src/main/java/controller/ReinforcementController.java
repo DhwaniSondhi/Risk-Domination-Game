@@ -2,8 +2,8 @@ package controller;
 
 
 import entity.Card;
-import entity.Config;
 import gui.ReinforcementPanel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +21,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
 
     public HashMap<String,Integer> selectedCards;
     public HashMap<String,Integer> unselectedCards;
+    public int armiesOnUpdate;
 
     /**
      * Constructor for Reinforcement Panel
@@ -30,7 +31,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         super(reinforcementPanel);
         selectedCards=new HashMap<>();
         getUnSelectedCards();
-
+        armiesOnUpdate=0;
     }
 
     /**
@@ -54,13 +55,13 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         int artillery=0;
         int cavalry=0;
         for(Card card:cards){
-            /*if(card.type==Card.TYPE.INFANTRY){
+            if(card.type==Card.TYPE.INFANTRY){
                 infantry++;
             }else if(card.type==Card.TYPE.ARTILLERY){
                 artillery++;
             }else if(card.type==Card.TYPE.CAVALRY){
                 cavalry++;
-            }*/
+            }
             unselectedCards.put("INFANTRY",infantry);
             unselectedCards.put("ARTILLERY",artillery);
             unselectedCards.put("CAVALRY",cavalry);
@@ -109,6 +110,12 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         //TODO: to add code for updated armies and update cards
 
 
+    }
+    /**
+     * Setting the armies of the player available for the Reinforcement Phase in armiesForReinforcement attribute
+     */
+    public int getArmiesForReinforcement(){
+        return 0;
     }
 
 
