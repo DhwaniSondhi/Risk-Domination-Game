@@ -78,7 +78,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         String buttonName=((JButton)e.getSource()).getName();
 
         if(buttonName.substring(0,3).equalsIgnoreCase("ADD")){
-            System.out.println("ADD");
             String cardName=buttonName.substring(3);
             if(unselectedCards.get(cardName)!=null){
                 unselectedCards.replace(cardName,unselectedCards.get(cardName)-1);

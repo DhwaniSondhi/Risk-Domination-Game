@@ -56,8 +56,6 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     public void valueChanged(ListSelectionEvent e) {
         JList<Country> source = (JList<Country>) e.getSource();
         if (e.getValueIsAdjusting()) {
-            System.out.println(source.getSelectedValue());
-            System.out.println(source.getSelectedValue().numOfArmies);
             view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
             int countryId = source.getSelectedValue().id;
             int ownerId = source.getSelectedValue().owner.id;
@@ -70,7 +68,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             while (!queueNeighbor.isEmpty()) {
                 int last = queueNeighbor.remove();
                 ArrayList<Country> listNeighbouring = new ArrayList<>();
-                listNeighbouring = (ArrayList<Country>) model.getNeighbourCountries(last);
+                listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.map);
                 for (int i = 0; i < listNeighbouring.size(); i++) {
                     if (listNeighbouring.get(i).owner.id == ownerId) {
                         if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
