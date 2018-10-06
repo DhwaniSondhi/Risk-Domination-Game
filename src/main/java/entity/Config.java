@@ -166,8 +166,10 @@ public class Config {
         HashSet<Country> n1 = new HashSet<>();
         n1.add(country3);
         n1.add(country4);
+        n1.add(country5);
         HashSet<Country> n2 = new HashSet<>();
         n2.add(country4);
+        n2.add(country6);
         HashSet<Country> n3 = new HashSet<>();
         n3.add(country1);
         n3.add(country7);
@@ -177,18 +179,19 @@ public class Config {
         n4.add(country7);
         HashSet<Country> n5 = new HashSet<>();
         n5.add(country1);
-        n5.add(country5);
+        n5.add(country6);
         HashSet<Country> n6 = new HashSet<>();
         n6.add(country5);
-        n6.add(country6);
+        n6.add(country7);
+        n6.add(country2);
         HashSet<Country> n7 = new HashSet<>();
         n7.add(country6);
-        n7.add(country7);
+        n7.add(country8);
         n7.add(country4);
         n7.add(country3);
         HashSet<Country> n8 = new HashSet<>();
         n8.add(country7);
-        n8.add(country8);
+
 
 
         map.put(1, n1);
