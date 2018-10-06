@@ -1,8 +1,11 @@
 package gui;
 
+import entity.Country;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.HashMap;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
@@ -16,9 +19,26 @@ public class CountryPanel extends JPanel {
         setBackground(Color.LIGHT_GRAY);
         setBorder(new LineBorder(Color.BLACK, 2));
         setLayout(new BoxLayout(this, Y_AXIS));
-        String labels[] = {"India", "Pakistan", "China", "Afganistan", "Nepal", "Bangladesh", "Sri Lanka", "Malasyia", "Mangol", "Russia"};
-        JList list = new JList(labels);
-        JScrollPane scrollPane12 = new JScrollPane(list);
-        add(scrollPane12);
+
+        JLabel jLabelCountriesName=new JLabel("Countries");
+        add(jLabelCountriesName);
+
+    }
+    
+
+    public void updateCountries(HashMap<Integer, Country> countries){
+        removeAll();
+        int index=0;
+        String[] countriesAll=new String[countries.size()];
+        if (countries != null) {
+            for (Country countryname : countries.values()) {
+               countriesAll[index]=countryname.id + ". " + countryname.name + " (" + countryname.owner.name + ")";
+               index++;
+            }
+        }
+        JList list=new JList(countriesAll);
+        JScrollPane jScrollPaneCountries=new JScrollPane(list);
+        add(jScrollPaneCountries);
+
     }
 }
