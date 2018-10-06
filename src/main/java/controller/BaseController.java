@@ -1,6 +1,7 @@
 package controller;
 
-import entity.Config;
+import entity.GameMap;
+
 /**
  * This is the abstract class for controller. All the controllers should extend this class.
  * @param <T> this is the type of View
@@ -8,7 +9,7 @@ import entity.Config;
 public abstract class BaseController<T> {
 
     public T view;
-    public Config model;
+    public GameMap model;
 
     /**
      * This is the constructor for the Controller
@@ -16,7 +17,7 @@ public abstract class BaseController<T> {
      * */
     public BaseController(T view) {
         this.view = view;
-        this.model = Config.getInstance();
+        this.model = GameMap.getInstance();
     }
 
     /**

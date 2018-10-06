@@ -6,24 +6,24 @@ import java.util.*;
 /**
  * Singleton class containing access to all the game components
  */
-public class Config {
+public class GameMap {
 
-    private static Config INSTANCE = null;
+    private static GameMap INSTANCE = null;
 
     public Player currentPlayer = null;
 
     public HashMap<Integer, Country> countries;
     public HashMap<Integer, Continent> continents;
     public HashMap<Integer, Player> players;
-    public HashMap<Integer, HashSet<Country>> map;
+    public HashMap<Integer, HashSet<Country>> countryGraph;
     private static int continentCounter;
     private static int countryCounter;
 
-    private Config() {
+    private GameMap() {
         countries = new HashMap<>();
         continents = new HashMap<>();
         players = new HashMap<>();
-        map = new HashMap<>();
+        countryGraph = new HashMap<>();
         continentCounter = 0;
         countryCounter = 0;
     }
@@ -31,9 +31,9 @@ public class Config {
     /**
      * @return returns the singleton instance of the class
      */
-    public static Config getInstance() {
+    public static GameMap getInstance() {
         if (INSTANCE == null)
-            INSTANCE = new Config();
+            INSTANCE = new GameMap();
 
         return INSTANCE;
     }
@@ -65,12 +65,12 @@ public class Config {
     }
 
     /**
-     * update the instance with the map
+     * update the instance with the countryGraph
      *
-     * @param map {@link HashMap} of game map
+     * @param map {@link HashMap} of game countryGraph
      */
     public void setMapData(HashMap<Integer, HashSet<Country>> map) {
-        this.map = map;
+        this.countryGraph = map;
     }
 
 
@@ -194,14 +194,14 @@ public class Config {
 
 
 
-        map.put(1, n1);
-        map.put(2, n2);
-        map.put(3, n3);
-        map.put(4, n4);
-        map.put(5, n5);
-        map.put(6, n6);
-        map.put(7, n7);
-        map.put(8, n8);
+        countryGraph.put(1, n1);
+        countryGraph.put(2, n2);
+        countryGraph.put(3, n3);
+        countryGraph.put(4, n4);
+        countryGraph.put(5, n5);
+        countryGraph.put(6, n6);
+        countryGraph.put(7, n7);
+        countryGraph.put(8, n8);
 
 
         currentPlayer = players.get(3);
@@ -241,7 +241,7 @@ public class Config {
      * @return false if country doesnot exist
      */
     private int checkCountryExists(String country) {
-        for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
+        for (java.util.Map.Entry<Integer, Country> entry : countries.entrySet()) {
             if (entry.getValue().name.equalsIgnoreCase(country)) {
                 return entry.getKey();
             }

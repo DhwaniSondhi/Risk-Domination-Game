@@ -21,13 +21,13 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
 
     /**
      * This function is checking if the action is
-     * Load map : loads the map using {@link JFileChooser}
-     * Create map : creates the map and does validation
+     * Load countryGraph : loads the countryGraph using {@link JFileChooser}
+     * Create countryGraph : creates the countryGraph and does validation
      * Exit : exits the game
      * */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equalsIgnoreCase("Load Map")) {
+        if (e.getActionCommand().equalsIgnoreCase("Load GameMap")) {
             JFileChooser file = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             int confirmValue = file.showOpenDialog(null);
 
@@ -36,7 +36,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
                 FileHelper.loadToConfig(selectedFile);
             }
 
-        } else if (e.getActionCommand().equalsIgnoreCase("Create Map")) {
+        } else if (e.getActionCommand().equalsIgnoreCase("Create GameMap")) {
 
         } else if (e.getActionCommand().equalsIgnoreCase("exit")) {
             System.exit(0);

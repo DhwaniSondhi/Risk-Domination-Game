@@ -40,7 +40,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
     public void actionPerformed(ActionEvent e) {
         int selectedCountryId = Integer.valueOf(((JButton) e.getSource()).getName());
         if(e.getActionCommand().equalsIgnoreCase("select")) {
-            view.showNeighbouringCountries(model.countries.get(selectedCountryId).getNeighbours(model.map));
+            view.showNeighbouringCountries(model.countries.get(selectedCountryId).getNeighbours(model.countryGraph));
         }
         else{
 

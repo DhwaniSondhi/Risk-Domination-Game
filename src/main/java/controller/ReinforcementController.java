@@ -2,9 +2,6 @@ package controller;
 
 
 import entity.Card;
-import entity.Config;
-import entity.Continent;
-import entity.Country;
 import gui.ReinforcementPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -116,14 +113,14 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * Setting the armies of the player available for the Reinforcement Phase in armiesForReinforcement attribute
      */
     public int getArmiesForReinforcement(){
-/*        Config instance=Config.getInstance();
+/*        GameMap instance=GameMap.getInstance();
         HashMap<Integer, Country> countries=instance.countries;
         HashMap<Integer, Continent> continents=instance.continents;
 
         int playerCountries=0;
         Iterator itForCountries=countries.entrySet().iterator();
         while(itForCountries.hasNext()){
-            Map.Entry countryPair=(Map.Entry)itForCountries.next();
+            GameMap.Entry countryPair=(GameMap.Entry)itForCountries.next();
             Country country=(Country)countryPair.getValue();
             if(country.owner!=null){
                 if(country.owner.id==instance.currentPlayer.id){
@@ -136,7 +133,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         boolean hasContinent=false;
         Iterator itForContinents=continents.entrySet().iterator();
         while(itForContinents.hasNext()){
-            Map.Entry continentPair=(Map.Entry)itForContinents.next();
+            GameMap.Entry continentPair=(GameMap.Entry)itForContinents.next();
             Continent continent=(Continent)continentPair.getValue();
             ArrayList<Country> continentCountries=continent.countries;
             for(Country country:continentCountries){

@@ -68,7 +68,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             while (!queueNeighbor.isEmpty()) {
                 int last = queueNeighbor.remove();
                 ArrayList<Country> listNeighbouring = new ArrayList<>();
-                listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.map);
+                listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.countryGraph);
                 for (int i = 0; i < listNeighbouring.size(); i++) {
                     if (listNeighbouring.get(i).owner.id == ownerId) {
                         if (neighborCheck.get(listNeighbouring.get(i).id) == null) {

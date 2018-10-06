@@ -1,7 +1,7 @@
 package gui;
 
 import controller.MainFrameController;
-import entity.Config;
+import entity.GameMap;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
         // TODO: Add your panels here...
         ContinentPanel panel = new ContinentPanel();
         mainPanel.add(panel, getConstraints(0, 0));
-        panel.updateContents(Config.getInstance().continents);
+        panel.updateContents(GameMap.getInstance().continents);
 
         AttackPanel attackPanel = new AttackPanel();
         mainPanel.add(attackPanel, getConstraints(1, 1));
@@ -75,16 +75,16 @@ public class MainFrame extends JFrame {
 
     /**
      * Adds menu bar to the frame with following options:\n
-     * create map | load map | exit
+     * create countryGraph | load countryGraph | exit
      */
     private void setUpMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuFile = new JMenu("File");
 
-        JMenuItem load = new JMenuItem("Load Map");
+        JMenuItem load = new JMenuItem("Load GameMap");
         load.addActionListener(controller);
         menuFile.add(load);
-        JMenuItem create = new JMenuItem("Create Map");
+        JMenuItem create = new JMenuItem("Create GameMap");
         menuFile.add(create);
         create.addActionListener(controller);
         JMenuItem exit = new JMenuItem("Exit");
