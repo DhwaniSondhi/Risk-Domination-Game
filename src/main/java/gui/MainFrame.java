@@ -35,7 +35,6 @@ public class MainFrame extends JFrame {
         // TODO: Add your panels here...
         ContinentPanel panel = new ContinentPanel();
         mainPanel.add(panel, getConstraints(0, 0));
-        panel.updateContents(GameMap.getInstance().continents);
 
 
         AttackPanel attackPanel = new AttackPanel();
