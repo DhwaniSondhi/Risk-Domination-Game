@@ -11,6 +11,7 @@ import java.io.File;
 import java.nio.file.Paths;
 
 import utility.FileHelper;
+import utility.MapHelper;
 
 /**
  * This is the Controller for the MainFrame. see {@link BaseController}
@@ -39,7 +40,14 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
             if(confirmValue == JFileChooser.APPROVE_OPTION){
                 File selectedFile = file.getSelectedFile();
                 FileHelper.loadToConfig(selectedFile);
-                //view.setUpGamePanels();
+                if(MapHelper.validateMap()){
+
+                } else {
+                    FileHelper.emptyConfig();
+                    System.out.println("File validation failed");
+                }
+//                view.setUpGamePanels();
+
             }
 
         } else if (e.getActionCommand().equalsIgnoreCase("Create GameMap")) {

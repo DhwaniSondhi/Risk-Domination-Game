@@ -5,6 +5,7 @@ import entity.GameMap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * This is the helper class which contains all the functionalities for File Handling
@@ -16,6 +17,7 @@ public class FileHelper {
      * @param selectedFile input file from {@link javafx.stage.FileChooser}
      */
     public static void loadToConfig(File selectedFile) {
+        GameMap.getInstance().clearInformation();
         try {
             FileReader fileReader = new FileReader(selectedFile);
             BufferedReader bufferReader = new BufferedReader(fileReader);
@@ -87,5 +89,14 @@ public class FileHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * empty continents and countries from config
+     * */
+    public static void emptyConfig() {
+        GameMap.getInstance().clearInformation();
+//        GameMap.getInstance().setDummyData();
+
     }
 }

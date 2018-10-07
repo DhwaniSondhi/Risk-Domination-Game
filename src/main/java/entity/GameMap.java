@@ -79,7 +79,7 @@ public class GameMap {
         int countryId = this.checkCountryExists(country);
         if (countryId == -1) {
             //add country to config
-            countryId = countryCounter++;
+            countryId = ++countryCounter;
             countries.put(countryCounter, new Country(countryId, country));
         }
         HashSet<Country> neighbours = new HashSet<>();
@@ -87,7 +87,7 @@ public class GameMap {
             int neighbourCountryId = this.checkCountryExists(territory);
             if (neighbourCountryId == -1) {
                 //add country to config
-                neighbourCountryId = countryCounter++;
+                neighbourCountryId = ++countryCounter;
                 countries.put(countryCounter, new Country(neighbourCountryId, territory));
 
             }
@@ -180,6 +180,16 @@ public class GameMap {
      */
     public int getNumberOfCountries() {
         return countries.size();
+    }
+
+    public void clearInformation(){
+        continents.clear();
+        countries.clear();
+        countryGraph.clear();
+        players.clear();
+        countryCounter = 0;
+        continentCounter = 0;
+        currentPlayer = null;
     }
 
     public void setDummyData() {
