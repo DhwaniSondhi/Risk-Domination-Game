@@ -1,5 +1,6 @@
 package gui;
 
+import controller.CountryController;
 import entity.Country;
 
 import javax.swing.*;
@@ -15,7 +16,23 @@ import static javax.swing.BoxLayout.Y_AXIS;
 
 public class CountryPanel extends JPanel {
 
+    /**
+     * controller for the view
+     */
+    CountryController controller1;
+
+    /**
+     * panel to display the list of countries
+     */
+    JPanel contentPanel1;
+
+    /**
+     * Contructor
+     * Sets up the panel for country list
+     */
     public CountryPanel() {
+        controller1 = new CountryController(this);
+
         setBackground(Color.LIGHT_GRAY);
         setBorder(new LineBorder(Color.BLACK, 2));
         setLayout(new BoxLayout(this, Y_AXIS));
@@ -23,16 +40,23 @@ public class CountryPanel extends JPanel {
         JLabel jLabelCountriesName = new JLabel("Countries");
         add(jLabelCountriesName);
 
+        contentPanel1 = new JPanel();
+        contentPanel1.setBackground(Color.LIGHT_GRAY);
+        contentPanel1.setLayout(new BoxLayout(contentPanel1, BoxLayout.Y_AXIS));
+        add(contentPanel1);
+
+        controller1.updateCountryList();
+
     }
 
     /**
-     * Shows all countries and owner name in panel
+     * update the countries list and owner name in panel
      *
      * @param countries contain data of all countries
      */
 
     public void updateCountries(HashMap<Integer, Country> countries) {
-        removeAll();
+        contentPanel1.removeAll();
         int index = 0;
         String[] countriesAll = new String[countries.size()];
         if (countries != null) {
@@ -45,5 +69,7 @@ public class CountryPanel extends JPanel {
         JScrollPane jScrollPaneCountries = new JScrollPane(list);
         add(jScrollPaneCountries);
 
+        contentPanel1.revalidate();
     }
+
 }

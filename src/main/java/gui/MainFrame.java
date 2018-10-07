@@ -48,7 +48,6 @@ public class MainFrame extends JFrame {
 
         CountryPanel panel1=new CountryPanel();
         mainPanel.add(panel1, getConstraints(0, 1));
-        panel1.updateCountries(GameMap.getInstance().countries);
 
         mainPanel.revalidate();
     }
