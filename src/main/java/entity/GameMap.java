@@ -74,7 +74,7 @@ public class GameMap {
      *
      * @param territories List of all the countries along with its neighbouring countries
      */
-    public void saveCountry(ArrayList<String> territories) {
+    public void saveCountry(List<String> territories) {
         String country = territories.get(0);
         int countryId = this.checkCountryExists(country);
         if (countryId == -1) {
@@ -83,7 +83,7 @@ public class GameMap {
             countries.put(countryCounter, new Country(countryId, country));
         }
         HashSet<Country> neighbours = new HashSet<>();
-        for (String territory : territories.subList(1, territories.size())) {
+        for (String territory : territories.subList(2, territories.size())) { //TODO change sublist function
             int neighbourCountryId = this.checkCountryExists(territory);
             if (neighbourCountryId == -1) {
                 //add country to config

@@ -24,15 +24,15 @@ public class MapHelper {
         while (!queue.isEmpty()){
             Node dequeuedNode = queue.remove(0);
             System.out.println(dequeuedNode.id);
-            System.out.println(GameMap.getInstance().countryGraph.keySet());
-            for (Country country : GameMap.getInstance().countryGraph.get(dequeuedNode.id)) {
-                System.out.println("test");
-                Node neigbour = nodeHashMap.get(country.id);
-                if(neigbour.color == 0){
-                    neigbour.color = 1;
-                    neigbour.distance = dequeuedNode.distance + 1;
-                    neigbour.parent = dequeuedNode;
-                    queue.add(neigbour);
+            if(!GameMap.getInstance().countryGraph.get(dequeuedNode.id).isEmpty()){
+                for (Country country : GameMap.getInstance().countryGraph.get(dequeuedNode.id)) {
+                    Node neigbour = nodeHashMap.get(country.id);
+                    if(neigbour.color == 0){
+                        neigbour.color = 1;
+                        neigbour.distance = dequeuedNode.distance + 1;
+                        neigbour.parent = dequeuedNode;
+                        queue.add(neigbour);
+                    }
                 }
             }
             dequeuedNode.color = 2;

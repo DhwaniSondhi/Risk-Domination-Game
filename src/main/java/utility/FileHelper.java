@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * This is the helper class which contains all the functionalities for File Handling
@@ -38,12 +39,12 @@ public class FileHelper {
                 }
                 if (statusContinent && !line.isEmpty() && !statusTerritories) {
                     String[] continent = line.split("=");
-                    GameMap.getInstance().saveContinent(continent[0], Integer.valueOf(continent[1]));
+                    GameMap.getInstance().saveContinent(continent[0], Integer.valueOf(continent[1].trim()));
 
                 }
                 if (statusTerritories && !line.isEmpty() && !statusContinent) {
-                    ArrayList<String> territories = new ArrayList<>();
-                    territories.add(Arrays.deepToString(line.replaceAll("\\d+ ,|\\d+,", "").split(",")));
+                    String[] data = line.replaceAll("\\d+ ,|\\d+,", "").split(",");
+                    List<String> territories = Arrays.asList(data);
                     GameMap.getInstance().saveCountry(territories);
                 }
             }

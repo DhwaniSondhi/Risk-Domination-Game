@@ -41,7 +41,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
                 File selectedFile = file.getSelectedFile();
                 FileHelper.loadToConfig(selectedFile);
                 if(MapHelper.validateMap()){
-
+//                    view.setUpGamePanels();
                 } else {
                     FileHelper.emptyConfig();
                     System.out.println("File validation failed");
