@@ -17,6 +17,9 @@ import java.util.Queue;
  * Controller for FortifyPanel
  */
 public class FortifyController extends BaseController<FortifyPanel> implements ActionListener, ListSelectionListener {
+    Country selectedCountry;
+    Country selectedNeighbour;
+
     /**
      * This is the constructor for the Controller
      *
@@ -48,6 +51,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     /**
      * To get the number of armies at a country and its neighbor based on user selection
      * It gives the list of countries to which a player can fortify from a selected country
+     * Also calculate value for comboBox
      *
      * @param e event triggered after list item selected
      */
@@ -56,8 +60,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     public void valueChanged(ListSelectionEvent e) {
         JList<Country> source = (JList<Country>) e.getSource();
         if (e.getValueIsAdjusting()) {
-            if(((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country"))
-            {
+            if (((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country")) {
+                selectedCountry = source.getSelectedValue();
                 view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
                 int countryId = source.getSelectedValue().id;
                 int ownerId = source.getSelectedValue().owner.id;
@@ -86,10 +90,12 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 }
 
                 view.updateNeighboringCountries(neighbor);
-            }
-            else
-            {    String selectedNeighborCountry=source.getSelectedValue().name;
-             view.updateNeighboringCountriesArmyTextField(source.getSelectedValue().numOfArmies);
+            } else {
+                selectedNeighbour = source.getSelectedValue();
+                String selectedNeighborCountry = source.getSelectedValue().name;
+                view.updateNeighboringCountriesArmyTextField(source.getSelectedValue().numOfArmies);
+                int armyOnCountry = selectedCountry.numOfArmies;
+                view.updateJComboboxArmies(armyOnCountry);
             }
 
 

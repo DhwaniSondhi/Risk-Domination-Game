@@ -24,6 +24,7 @@ public class FortifyPanel extends JPanel {
     JTextField jTextFieldNoOfArmiesCountries;
     JTextField jTextFieldNoOfArmiesNeighbour;
     JScrollPane scrollPaneNeighboringCountries;
+    JComboBox jComboBoxNoOfArmies;
 
     /**
      * Constructor
@@ -158,7 +159,7 @@ public class FortifyPanel extends JPanel {
         GridBagConstraints transferPanelConstraints = new GridBagConstraints();
         jPanelTransferArmy.setLayout(gridBagLayoutTransferArmy);
         transferPanelConstraints.fill = GridBagConstraints.VERTICAL;
-        JComboBox jComboBoxNoOfArmies = new JComboBox();
+        jComboBoxNoOfArmies = new JComboBox();
         jComboBoxNoOfArmies.addItem(1);
         jComboBoxNoOfArmies.addItem(2);
         jComboBoxNoOfArmies.addItem(3);
@@ -193,9 +194,20 @@ public class FortifyPanel extends JPanel {
      *
      * @param numberOfArmies new value for TextField
      */
-    public void updateNeighboringCountriesArmyTextField(int numberOfArmies)
-    {
+    public void updateNeighboringCountriesArmyTextField(int numberOfArmies) {
         jTextFieldNoOfArmiesNeighbour.setText(Integer.toString(numberOfArmies));
+    }
+
+    /**
+     * Update the values of ComboBox to select number of armies to transfer
+     *
+     * @param numberOfArmies maximum number of army one can transfer
+     */
+    public void updateJComboboxArmies(int numberOfArmies) {
+        jComboBoxNoOfArmies.removeAllItems();
+        for (int i = 1; i < numberOfArmies; i++) {
+            jComboBoxNoOfArmies.addItem(i);
+        }
     }
 
     /**
