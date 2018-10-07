@@ -188,6 +188,11 @@ public class FortifyPanel extends JPanel {
 
     }
 
+    /**
+     * Update the value of Armies for selected Neighboring country
+     *
+     * @param numberOfArmies new value for TextField
+     */
     public void updateNeighboringCountriesArmyTextField(int numberOfArmies)
     {
         jTextFieldNoOfArmiesNeighbour.setText(Integer.toString(numberOfArmies));
@@ -198,11 +203,11 @@ public class FortifyPanel extends JPanel {
      *
      * @param neighbor contains the id's and names of neighboring countries
      */
-    public void updateNeighboringCountries(LinkedHashMap<Integer, String> neighbor) {
-        String[] neighborCountriesList = new String[neighbor.keySet().size()];
+    public void updateNeighboringCountries(LinkedHashMap<Integer, Country> neighbor) {
+        Country[] neighborCountriesList = new Country[neighbor.keySet().size()];
         int index = 0;
         for (Map.Entry getCountries : neighbor.entrySet()) {
-            neighborCountriesList[index] = getCountries.getValue().toString()+":"+getCountries.getKey().toString();
+            neighborCountriesList[index] = (Country) getCountries.getValue();
             index++;
         }
         JList neighborUpdateList = new JList(neighborCountriesList);

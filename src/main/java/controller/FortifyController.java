@@ -55,7 +55,6 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     @Override
     public void valueChanged(ListSelectionEvent e) {
         JList<Country> source = (JList<Country>) e.getSource();
-        System.out.println(((JList<Country>) e.getSource()).getName());
         if (e.getValueIsAdjusting()) {
             if(((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country"))
             {
@@ -65,9 +64,9 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
                 Queue<Integer> queueNeighbor = new LinkedList<>();
                 queueNeighbor.add(countryId);
-                LinkedHashMap<Integer, String> neighbor = new LinkedHashMap<Integer, String>();
-                LinkedHashMap<Integer, String> neighborCheck = new LinkedHashMap<Integer, String>();
-                neighborCheck.put(countryId, source.getSelectedValue().name);
+                LinkedHashMap<Integer, Country> neighbor = new LinkedHashMap<Integer, Country>();
+                LinkedHashMap<Integer, Country> neighborCheck = new LinkedHashMap<Integer, Country>();
+                neighborCheck.put(countryId, source.getSelectedValue());
                 while (!queueNeighbor.isEmpty()) {
                     int last = queueNeighbor.remove();
                     ArrayList<Country> listNeighbouring = new ArrayList<>();
@@ -76,8 +75,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                         if (listNeighbouring.get(i).owner.id == ownerId) {
                             if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
                                 queueNeighbor.add(listNeighbouring.get(i).id);
-                                neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
-                                neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
+                                neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
+                                neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
                             }
 
                         }
@@ -89,9 +88,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 view.updateNeighboringCountries(neighbor);
             }
             else
-            {
-                System.out.println(source.getSelectedValue());
-                // view.updateNeighboringCountriesArmyTextField(source.getSelectedValue().numOfArmies);
+            {    String selectedNeighborCountry=source.getSelectedValue().name;
+             view.updateNeighboringCountriesArmyTextField(source.getSelectedValue().numOfArmies);
             }
 
 
