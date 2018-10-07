@@ -55,35 +55,45 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     @Override
     public void valueChanged(ListSelectionEvent e) {
         JList<Country> source = (JList<Country>) e.getSource();
+        System.out.println(((JList<Country>) e.getSource()).getName());
         if (e.getValueIsAdjusting()) {
-            view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
-            int countryId = source.getSelectedValue().id;
-            int ownerId = source.getSelectedValue().owner.id;
+            if(((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country"))
+            {
+                view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
+                int countryId = source.getSelectedValue().id;
+                int ownerId = source.getSelectedValue().owner.id;
 
-            Queue<Integer> queueNeighbor = new LinkedList<>();
-            queueNeighbor.add(countryId);
-            LinkedHashMap<Integer, String> neighbor = new LinkedHashMap<Integer, String>();
-            LinkedHashMap<Integer, String> neighborCheck = new LinkedHashMap<Integer, String>();
-            neighborCheck.put(countryId, source.getSelectedValue().name);
-            while (!queueNeighbor.isEmpty()) {
-                int last = queueNeighbor.remove();
-                ArrayList<Country> listNeighbouring = new ArrayList<>();
-                listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.countryGraph);
-                for (int i = 0; i < listNeighbouring.size(); i++) {
-                    if (listNeighbouring.get(i).owner.id == ownerId) {
-                        if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
-                            queueNeighbor.add(listNeighbouring.get(i).id);
-                            neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
-                            neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
+                Queue<Integer> queueNeighbor = new LinkedList<>();
+                queueNeighbor.add(countryId);
+                LinkedHashMap<Integer, String> neighbor = new LinkedHashMap<Integer, String>();
+                LinkedHashMap<Integer, String> neighborCheck = new LinkedHashMap<Integer, String>();
+                neighborCheck.put(countryId, source.getSelectedValue().name);
+                while (!queueNeighbor.isEmpty()) {
+                    int last = queueNeighbor.remove();
+                    ArrayList<Country> listNeighbouring = new ArrayList<>();
+                    listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.countryGraph);
+                    for (int i = 0; i < listNeighbouring.size(); i++) {
+                        if (listNeighbouring.get(i).owner.id == ownerId) {
+                            if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
+                                queueNeighbor.add(listNeighbouring.get(i).id);
+                                neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
+                                neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i).name);
+                            }
+
                         }
 
                     }
 
                 }
 
+                view.updateNeighboringCountries(neighbor);
+            }
+            else
+            {
+                System.out.println(source.getSelectedValue());
+                // view.updateNeighboringCountriesArmyTextField(source.getSelectedValue().numOfArmies);
             }
 
-            view.updateNeighboringCountries(neighbor);
 
         }
     }

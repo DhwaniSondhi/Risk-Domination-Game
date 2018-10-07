@@ -91,6 +91,7 @@ public class FortifyPanel extends JPanel {
         JLabel jLabelCountries = new JLabel("Countries");
         jPanelCountries.add(jLabelCountries, gridBagConstraintsCountriesPanel);
         JList countriesList = new JList(countries.toArray());
+        countriesList.setName("Country");
         JScrollPane scrollPaneCountries = new JScrollPane(countriesList);
         gridBagConstraintsCountriesPanel.gridx = 0;
         gridBagConstraintsCountriesPanel.gridy = 1;
@@ -187,6 +188,11 @@ public class FortifyPanel extends JPanel {
 
     }
 
+    public void updateNeighboringCountriesArmyTextField(int numberOfArmies)
+    {
+        jTextFieldNoOfArmiesNeighbour.setText(Integer.toString(numberOfArmies));
+    }
+
     /**
      * Updates the list of neighboring countries on the basis of selection
      *
@@ -196,10 +202,13 @@ public class FortifyPanel extends JPanel {
         String[] neighborCountriesList = new String[neighbor.keySet().size()];
         int index = 0;
         for (Map.Entry getCountries : neighbor.entrySet()) {
-            neighborCountriesList[index] = getCountries.getValue().toString();
+            neighborCountriesList[index] = getCountries.getValue().toString()+":"+getCountries.getKey().toString();
             index++;
         }
-        JList list = new JList(neighborCountriesList);
-        scrollPaneNeighboringCountries.setViewportView(list);
+        JList neighborUpdateList = new JList(neighborCountriesList);
+        neighborUpdateList.setName("Neigbhor");
+        scrollPaneNeighboringCountries.setViewportView(neighborUpdateList);
+        neighborUpdateList.addListSelectionListener(fortifyController);
+
     }
 }
