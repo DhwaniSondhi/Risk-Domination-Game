@@ -1,6 +1,5 @@
 import entity.GameMap;
 import gui.MainFrame;
-import gui.MapCreatorFrame;
 
 public class Game {
 

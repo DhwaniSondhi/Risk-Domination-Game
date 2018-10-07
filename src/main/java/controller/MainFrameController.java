@@ -8,6 +8,8 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.file.Paths;
+
 import utility.FileHelper;
 
 /**
@@ -29,12 +31,15 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equalsIgnoreCase("Load GameMap")) {
-            JFileChooser file = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            File dir = new File("maps");
+            dir.mkdir();
+            JFileChooser file = new JFileChooser(dir);
             int confirmValue = file.showOpenDialog(null);
 
             if(confirmValue == JFileChooser.APPROVE_OPTION){
                 File selectedFile = file.getSelectedFile();
                 FileHelper.loadToConfig(selectedFile);
+                view.setUpGamePanels();
             }
 
         } else if (e.getActionCommand().equalsIgnoreCase("Create GameMap")) {
