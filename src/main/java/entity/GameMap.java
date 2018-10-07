@@ -1,9 +1,6 @@
 package entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -47,11 +44,82 @@ public class GameMap {
      * @param continent      gets continent from file
      * @param continentValue gets confinent value from file
      */
-    public void saveContinent(String continent, int continentValue) {
-        continentCounter++;
-        continents.put(continentCounter, new Continent(continentCounter, continent, continentValue));
+    public boolean saveContinent(String continent, int continentValue) {
+        if(checkContinentExists(continent) == -1) {
+            continentCounter++;
+            continents.put(continentCounter, new Continent(continentCounter, continent, continentValue));
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * To check if the continent is already added
+     *
+     * @param continentName Gets the continent name
+     * @return false if continent doesnot exist
+     */
+    private int checkContinentExists(String continentName) {
+        for (Map.Entry<Integer, Continent> continent : continents.entrySet()) {
+            if(continent.getValue().name.equalsIgnoreCase(continentName)){
+                return continent.getKey();
+            }
+        }
+        return -1;
+    }
+
+
+    /**
+     * Saves the country and their neighbouring countries
+     *
+     * @param territories List of all the countries along with its neighbouring countries
+     */
+    public void saveCountry(ArrayList<String> territories) {
+        String country = territories.get(0);
+        int countryId = this.checkCountryExists(country);
+        if (countryId == -1) {
+            //add country to config
+            countryId = countryCounter++;
+            countries.put(countryCounter, new Country(countryId, country));
+        }
+        HashSet<Country> neighbours = new HashSet<>();
+        for (String territory : territories.subList(1, territories.size())) {
+            int neighbourCountryId = this.checkCountryExists(territory);
+            if (neighbourCountryId == -1) {
+                //add country to config
+                neighbourCountryId = countryCounter++;
+                countries.put(countryCounter, new Country(neighbourCountryId, territory));
+
+            }
+            neighbours.add(countries.get(neighbourCountryId));
+        }
+        this.saveToGraph(countryId, neighbours);
+    }
+
+    /**
+     * Saves the neighbour related to country in a countryGraph
+     *
+     * @param countryId  id of a country
+     * @param neighbours set of neighbouring countries
+     */
+    private void saveToGraph(int countryId, HashSet<Country> neighbours) {
+        countryGraph.put(countryId, neighbours);
+    }
+
+    /**
+     * To check if the country is already added
+     *
+     * @param country Gets the country name
+     * @return false if country doesnot exist
+     */
+    private int checkCountryExists(String country) {
+        for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
+            if (entry.getValue().name.equalsIgnoreCase(country)) {
+                return entry.getKey();
+            }
+        }
+        return -1;
+    }
 
     /**
      * update the instance with the game data
@@ -210,44 +278,5 @@ public class GameMap {
 
     }
 
-    /**
-     * Saves the country and their neighbouring countries
-     *
-     * @param territories List of all the countries along with its neighbouring countries
-     */
-    public void saveCountry(ArrayList<String> territories) {
-        String country = territories.get(0);
-        int countryId = this.checkCountryExists(country);
-        if (countryId == -1) {
-            //add country to config
-            countryId = countryCounter++;
-            countries.put(countryCounter, new Country(countryId, country));
-        }
-        HashSet<Country> neighbours = new HashSet<>();
-        for (String territory : territories.subList(1, territories.size())) {
-            int neighbourCountryId = this.checkCountryExists(territory);
-            if (neighbourCountryId == -1) {
-                //add country to config
-                neighbourCountryId = countryCounter++;
-                countries.put(countryCounter, new Country(neighbourCountryId, territory));
 
-            }
-            neighbours.add(countries.get(neighbourCountryId));
-        }
-    }
-
-    /**
-     * To check if the country is already added
-     *
-     * @param country Gets the country name
-     * @return false if country doesnot exist
-     */
-    private int checkCountryExists(String country) {
-        for (java.util.Map.Entry<Integer, Country> entry : countries.entrySet()) {
-            if (entry.getValue().name.equalsIgnoreCase(country)) {
-                return entry.getKey();
-            }
-        }
-        return -1;
-    }
 }

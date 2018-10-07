@@ -39,7 +39,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
             if(confirmValue == JFileChooser.APPROVE_OPTION){
                 File selectedFile = file.getSelectedFile();
                 FileHelper.loadToConfig(selectedFile);
-                view.setUpGamePanels();
+                //view.setUpGamePanels();
             }
 
         } else if (e.getActionCommand().equalsIgnoreCase("Create GameMap")) {
