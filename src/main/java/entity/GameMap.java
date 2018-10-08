@@ -73,12 +73,12 @@ public class GameMap {
 
     public void updateArmiesOfCountries(int numberOfArmiesTransfer,Country countrySelected,Country neighborSelected) {
         int idOfCountry=countrySelected.id;
-        Player ownerOfCountry=countrySelected.owner;
-        String nameOfCountry=countrySelected.name;
-        int numberOfArmies=countrySelected.numOfArmies-numberOfArmiesTransfer;
-
         countrySelected.numOfArmies=countrySelected.numOfArmies-numberOfArmiesTransfer;
-        Country updateCountry=countrySelected;
+        int idOfNeighbor=neighborSelected.id;
+        neighborSelected.numOfArmies=neighborSelected.numOfArmies+numberOfArmiesTransfer;
+        countries.put(idOfCountry,countrySelected);
+        countries.put(idOfNeighbor,neighborSelected);
+
 
 
 
