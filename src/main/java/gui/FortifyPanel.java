@@ -173,7 +173,9 @@ public class FortifyPanel extends JPanel {
         jPanelTransferArmy.add(jComboBoxNoOfArmies, transferPanelConstraints);
         transferPanelConstraints.gridx = 0;
         transferPanelConstraints.gridy = 2;
+        jComboBoxNoOfArmies.setName("ComboBox");
         JButton jButtonTransfer = new JButton("Transfer");
+        jButtonTransfer.addActionListener(fortifyController);
         jPanelTransferArmy.add(jButtonTransfer, transferPanelConstraints);
         jPanelTransferArmy.revalidate();
         revalidate();
@@ -199,6 +201,13 @@ public class FortifyPanel extends JPanel {
     }
 
     /**
+     * Function to get the value of ComboBox of armies to transfer
+     */
+    public void getTheValueOfComboBox()
+    {
+        fortifyController.updateComboBoxValue((Integer) jComboBoxNoOfArmies.getSelectedItem());
+    }
+    /**
      * Update the values of ComboBox to select number of armies to transfer
      *
      * @param numberOfArmies maximum number of army one can transfer
@@ -208,6 +217,9 @@ public class FortifyPanel extends JPanel {
         for (int i = 1; i < numberOfArmies; i++) {
             jComboBoxNoOfArmies.addItem(i);
         }
+        jComboBoxNoOfArmies.revalidate();
+
+
     }
 
     /**

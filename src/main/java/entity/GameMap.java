@@ -1,6 +1,9 @@
 package entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 
 /**
@@ -66,6 +69,21 @@ public class GameMap {
             }
         }
         return -1;
+    }
+
+    public void updateArmiesOfCountries(int numberOfArmiesTransfer,Country countrySelected,Country neighborSelected) {
+        int idOfCountry=countrySelected.id;
+        Player ownerOfCountry=countrySelected.owner;
+        String nameOfCountry=countrySelected.name;
+        int numberOfArmies=countrySelected.numOfArmies-numberOfArmiesTransfer;
+
+        countrySelected.numOfArmies=countrySelected.numOfArmies-numberOfArmiesTransfer;
+        Country updateCountry=countrySelected;
+
+
+
+
+
     }
 
 

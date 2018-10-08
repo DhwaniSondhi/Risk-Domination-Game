@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Country;
+import entity.GameMap;
 import gui.FortifyPanel;
 
 import javax.swing.*;
@@ -19,6 +20,7 @@ import java.util.Queue;
 public class FortifyController extends BaseController<FortifyPanel> implements ActionListener, ListSelectionListener {
     Country selectedCountry;
     Country selectedNeighbour;
+    int armiesToTransfer;
 
     /**
      * This is the constructor for the Controller
@@ -39,13 +41,23 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     }
 
     /**
+     * Sets the selected value from ComboBox
+     *
+     * @param number number selected by user
+     */
+    public void updateComboBoxValue(int number) {
+        armiesToTransfer = number;
+    }
+
+    /**
      * Perform action when invoked
      *
      * @param e triggered after pressing button
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-
+          view.getTheValueOfComboBox();
+          model.updateArmiesOfCountries(armiesToTransfer,selectedCountry,selectedNeighbour);
     }
 
     /**
