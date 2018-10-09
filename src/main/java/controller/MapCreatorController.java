@@ -4,24 +4,25 @@ import gui.MapCreatorFrame;
 import utility.FileHelper;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * This is the Controller for the MapCreator. see {@link BaseController}
  * implements {@link ActionListener} for MenuItems
  */
-public class MapCreatorController extends BaseController<MapCreatorFrame> implements
-        ActionListener,
-        DocumentListener {
+public class MapCreatorController extends BaseController<MapCreatorFrame> implements ActionListener {
+
+    /**
+     * File to save the content into
+     */
+    File saveFile;
 
 
     /**
@@ -34,12 +35,43 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
     }
 
     /**
+     * load contents from file to edit
+     *
+     * @param file to load contents from
+     */
+    public void loadDataFromFile(File file) {
+        this.saveFile = file;
+        HashMap<String, List<String>> data = FileHelper.loadToForm(file);
+
+        List<String> countryData = data.get("country");
+        List<String> continentData = data.get("continent");
+
+        view.fillFormWithData(file.getName().split("\\.")[0], continentData, countryData);
+    }
+
+    /**
      * Invoked when an action occurs.
      *
      * @param event
      */
     @Override
     public void actionPerformed(ActionEvent event) {
+        if (((Component) event.getSource()).getName().equals("numOfContinents")
+                || ((Component) event.getSource()).getName().equals("numOfCountries")) {
+
+            handleValueChange(((JComboBox<Integer>) event.getSource()));
+
+        } else if (((Component) event.getSource()).getName().equals("Save")) {
+
+            saveToFile();
+        }
+
+    }
+
+    /**
+     * save the form data to file
+     */
+    private void saveToFile() {
         try {
             String mapName = view.mapName.getText();
             HashSet<String> continentCheckList = new HashSet<>();
@@ -91,7 +123,13 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
             if (countryCheckList.size() != neighboursCheckList.size())
                 throw new IllegalStateException("Not all the country has a neighbour");
 
-            FileHelper.saveMapToFile(mapName, continents, countries);
+            if (saveFile == null) {
+                File dir = new File("maps");
+                dir.mkdirs();
+                saveFile = new File("maps/" + mapName + ".map");
+            }
+            FileHelper.saveMapToFile(saveFile, continents, countries);
+
             view.dispose();
 
         } catch (NumberFormatException nfe) {
@@ -105,76 +143,19 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
     }
 
     /**
-     * Gives notification that there was an insert into the document.  The
-     * range given by the DocumentEvent bounds the freshly inserted region.
-     *
-     * @param e the document event
-     */
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-        JTextField owner = (JTextField) e.getDocument().getProperty("owner");
-        handleTextChange(owner);
-    }
-
-    /**
-     * Gives notification that a portion of the document has been
-     * removed.  The range is given in terms of what the view last
-     * saw (that is, before updating sticky positions).
-     *
-     * @param e the document event
-     */
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-        JTextField owner = (JTextField) e.getDocument().getProperty("owner");
-        handleTextChange(owner);
-    }
-
-    /**
-     * Gives notification that an attribute or set of attributes changed.
-     *
-     * @param e the document event
-     */
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-    }
-
-    /**
      * helper function to listen to text-fields value changes
      *
      * @param field {@link JTextField} of which the text needs to be parsed
-    * */
-    private void handleTextChange(JTextField field) {
+     */
+    private void handleValueChange(JComboBox<Integer> field) {
         if (field.getName().equals("numOfContinents") || field.getName().equals("numOfCountries")) {
-            int number = getNumberValue(field.getText());
-            if (number < 0) {
-                number = 0;
-                view.showWarning("Please enter a valid number");
-            }
+            int number = ((Integer) field.getSelectedItem());
 
             if (field.getName().equals("numOfContinents")) {
                 view.updateContinentFields(number);
             } else {
                 view.updateCountryFields(number);
             }
-        }
-    }
-
-    /**
-     * Get the number equivalent to the string input
-     * <p>return -1 if invalid string</p>
-     *
-     * @param value string input for parsing
-     * @return return number equivalent of value or -1 if invalid input
-     */
-    private int getNumberValue(String value) {
-        int num = -1;
-        try {
-            if (value.trim().isEmpty()) num = 0;
-            else num = Integer.valueOf(value.trim());
-        } catch (Exception e) {
-            num = -1;
-        } finally {
-            return num;
         }
     }
 }

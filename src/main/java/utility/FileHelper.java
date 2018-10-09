@@ -102,21 +102,18 @@ public class FileHelper {
     /**
      * Saves the form inputs to .map file
      *
-     * @param mapName         String name of the file
+     * @param file            File to save map to
      * @param continentValues list of texts from continent fields
      * @param countryValues   list oftexts from country fields
      */
-    public static void saveMapToFile(String mapName, ArrayList<String> continentValues, ArrayList<String> countryValues) {
+    public static void saveMapToFile(File file, ArrayList<String> continentValues, ArrayList<String> countryValues) {
         BufferedWriter bufferedWriter;
         FileWriter fileWriter;
 
         String EOL = System.getProperty("line.separator");
 
         try {
-            File dir = new File("maps");
-            dir.mkdirs();
-            File file = new File("maps/" + mapName + ".map");
-            fileWriter = new FileWriter(file);
+            fileWriter = new FileWriter(file, false);
 
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("[CONTINENTS]" + EOL);

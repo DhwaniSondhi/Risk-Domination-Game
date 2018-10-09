@@ -5,7 +5,9 @@ import controller.MapCreatorController;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GUI class for the Map Create Form
@@ -21,7 +23,8 @@ public class MapCreatorFrame extends JFrame {
      */
     private MapCreatorController controller;
 
-    public JTextField numOfContinents, numOfCountries, mapName;
+    public JTextField mapName;
+    public JComboBox<Integer> numOfContinents, numOfCountries;
 
     private JPanel formPanel;
     private JPanel continentsPanel;
@@ -31,14 +34,36 @@ public class MapCreatorFrame extends JFrame {
     /**
      * Constructor
      *
-     * @param title  title for the frame
-     * @param isEdit set the form mode
+     * @param title title for the frame
      */
-    public MapCreatorFrame(String title, boolean isEdit) {
+    public MapCreatorFrame(String title) {
         super(title);
-        this.isEdit = isEdit;
+        this.isEdit = false;
         controller = new MapCreatorController(this);
 
+        initializeForm();
+    }
+
+    /**
+     * Constructor
+     *
+     * @param title        title for the frame
+     * @param selectedFile selected File From which the content was loaded
+     */
+    public MapCreatorFrame(String title, File selectedFile) {
+        super(title);
+        this.isEdit = true;
+        controller = new MapCreatorController(this);
+
+        initializeForm();
+
+        controller.loadDataFromFile(selectedFile);
+    }
+
+    /**
+     * Initialize the form panel with default text-fields and labels
+     */
+    private void initializeForm() {
         formPanel = new JPanel();
         formPanel.setLayout(new GridBagLayout());
         add(formPanel);
@@ -46,43 +71,62 @@ public class MapCreatorFrame extends JFrame {
         setSize(600, 600);
         setVisible(true);
 
-        initializeForm();
-    }
+        formPanel.add(new JLabel("Map name:"), getConstraints(0, 0));
+        mapName = new JTextField();
+        formPanel.add(mapName, getConstraints(1, 0, 1, 0));
 
+        formPanel.add(new JLabel("======================================="), getConstraints(0, 1));
 
-    /**
-     * Initialize the form panel with default text-fields and labels
-     */
-    private void initializeForm() {
-        formPanel.add(new JLabel("Number of continents:"), getConstraints(0, 0));
-        formPanel.add(new JLabel("Number of countries:"), getConstraints(0, 1));
-        formPanel.add(new JLabel("Continent Details:"), getConstraints(0, 3));
-        formPanel.add(new JLabel("(ContinentName = CV)"), getConstraints(0, 2));
-        formPanel.add(new JLabel("Countries Details:"), getConstraints(0, 5));
-        formPanel.add(new JLabel("(CountryName,ContinentName,NeighbouringCountries)"), getConstraints(0, 4));
-        formPanel.add(new JLabel("Map name:"), getConstraints(0, 6));
+        formPanel.add(new JLabel("======================================="), getConstraints(0, 4));
 
+        formPanel.add(new JLabel("<html>Continent Details:<br/><i>(ContinentName = CV)</i><html>"), getConstraints(0, 5));
         continentsPanel = new JPanel();
         continentsPanel.setLayout(new BoxLayout(continentsPanel, BoxLayout.Y_AXIS));
         continentsPanel.setBorder(new LineBorder(Color.black, 2));
+        formPanel.add(continentsPanel, getConstraints(1, 5, 1, 0));
+
+        formPanel.add(new JLabel("======================================="), getConstraints(0, 6));
+
+
+        formPanel.add(new JLabel("<html>Countries Details: <br/><i>(CountryName,ContinentName,NeighbouringCountries)</i></html>"), getConstraints(0, 7));
         countriesPanel = new JPanel();
         countriesPanel.setLayout(new BoxLayout(countriesPanel, BoxLayout.Y_AXIS));
         countriesPanel.setBorder(new LineBorder(Color.black, 2));
+        formPanel.add(countriesPanel, getConstraints(1, 7, 1, 0));
 
-        formPanel.add(continentsPanel, getConstraints(1, 3, 1, 0));
-        formPanel.add(countriesPanel, getConstraints(1, 5, 1, 0));
+        formPanel.add(new JLabel("Number of continents:"), getConstraints(0, 2));
+        numOfContinents = createComboBox("numOfContinents", 7);
+        formPanel.add(numOfContinents, getConstraints(1, 2, 1, 0));
 
-        numOfContinents = createTextField("numOfContinents");
-        formPanel.add(numOfContinents, getConstraints(1, 0, 1, 0));
-        numOfCountries = createTextField("numOfCountries");
-        formPanel.add(numOfCountries, getConstraints(1, 1, 1, 0));
-
-        mapName = new JTextField();
-        formPanel.add(mapName, getConstraints(1, 6, 1, 0));
+        formPanel.add(new JLabel("Number of countries:"), getConstraints(0, 3));
+        numOfCountries = createComboBox("numOfCountries", 20);
+        formPanel.add(numOfCountries, getConstraints(1, 3, 1, 0));
 
         submitButton = new JButton("Save");
-        formPanel.add(submitButton, getConstraints(1, 7, 1, 0));
+        submitButton.setName("Save");
+        formPanel.add(submitButton, getConstraints(1, 9, 1, 0));
         submitButton.addActionListener(controller);
+    }
+
+    /**
+     * Pre-fills the form with provided data
+     *
+     * @param mapName       name of the mapFile
+     * @param continentData list of continents with its CV
+     * @param countryData   list of countries with its neighbours
+     */
+    public void fillFormWithData(String mapName, List<String> continentData, List<String> countryData) {
+        this.mapName.setText(mapName);
+        numOfContinents.setSelectedIndex(continentData.size() - 1);
+        numOfCountries.setSelectedIndex(countryData.size() - 1);
+
+        for (int i = 0; i < continentData.size(); i++) {
+            ((JTextField) continentsPanel.getComponents()[i]).setText(continentData.get(i));
+        }
+
+        for (int i = 0; i < countryData.size(); i++) {
+            ((JTextField) countriesPanel.getComponents()[i]).setText(countryData.get(i));
+        }
     }
 
     /**
@@ -116,16 +160,21 @@ public class MapCreatorFrame extends JFrame {
 
 
     /**
-     * Creates {@link JTextField} with given name.
+     * Creates {@link JComboBox} with given name and range og numbers.
      * Also adds the controller as {@link javax.swing.event.DocumentListener}
      *
-     * @param name name for the text field
+     * @param name  name for the field
+     * @param range range of data to show in combo-box
      */
-    private JTextField createTextField(String name) {
-        JTextField field = new JTextField();
+    private JComboBox<Integer> createComboBox(String name, int range) {
+        Integer[] data = new Integer[range];
+        for (int i = 0; i < range; i++) {
+            data[i] = i + 1;
+        }
+        JComboBox<Integer> field = new JComboBox<>(data);
         field.setName(name);
-        field.getDocument().putProperty("owner", field);
-        field.getDocument().addDocumentListener(controller);
+        field.addActionListener(controller);
+        field.setSelectedIndex(0);
         return field;
     }
 
