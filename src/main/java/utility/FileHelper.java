@@ -5,7 +5,7 @@ import entity.GameMap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,6 +56,50 @@ public class FileHelper {
     }
 
     /**
+     * Loads the txt file that user chooses to edit
+     *
+     * @param selectedFile input file from {@link javafx.stage.FileChooser}
+     */
+    public static HashMap<String, List<String>> loadToForm(File selectedFile) {
+        HashMap<String, List<String>> data = new HashMap<>();
+        data.put("continent", new ArrayList<>());
+        data.put("country", new ArrayList<>());
+        try {
+            FileReader fileReader = new FileReader(selectedFile);
+            BufferedReader bufferReader = new BufferedReader(fileReader);
+
+            String line;
+            boolean statusContinent = false;
+            boolean statusTerritories = false;
+            while ((line = bufferReader.readLine()) != null) {
+                if (line.equalsIgnoreCase("[Continents]")) {
+                    statusContinent = true;
+                    statusTerritories = false;
+                    continue;
+                }
+                if (line.equalsIgnoreCase("[Territories]")) {
+                    statusContinent = false;
+                    statusTerritories = true;
+                    continue;
+                }
+                if (statusContinent && !line.trim().isEmpty()) {
+                    data.get("continent").add(line.trim());
+
+                }
+                if (statusTerritories && !line.trim().isEmpty() && !statusContinent) {
+                    data.get("country").add(line.replaceAll("\\d+ ,|\\d+,", "").trim());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
+    /**
      * Saves the form inputs to .map file
      *
      * @param mapName         String name of the file
@@ -94,7 +138,7 @@ public class FileHelper {
 
     /**
      * empty continents and countries from config
-     * */
+     */
     public static void emptyConfig() {
         GameMap.getInstance().clearInformation();
 //        GameMap.getInstance().setDummyData();

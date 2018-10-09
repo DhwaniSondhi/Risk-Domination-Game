@@ -1,7 +1,6 @@
 package gui;
 
 import controller.MainFrameController;
-import entity.GameMap;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +59,6 @@ public class MainFrame extends JFrame {
      *
      * @param x value for constraints gridx (row in the grid)
      * @param y value for constraints gridY (col in the grid)
-     *
      * @return default constraints (see {@link GridBagConstraints}) with provided x,y values
      */
     private GridBagConstraints getConstraints(int x, int y) {
@@ -87,6 +85,9 @@ public class MainFrame extends JFrame {
         JMenuItem create = new JMenuItem("Create GameMap");
         menuFile.add(create);
         create.addActionListener(controller);
+        JMenuItem edit = new JMenuItem("Edit GameMap");
+        menuFile.add(edit);
+        edit.addActionListener(controller);
         JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(controller);
         menuFile.add(exit);
@@ -95,7 +96,6 @@ public class MainFrame extends JFrame {
 
         setJMenuBar(menuBar);
     }
-
 
 
 }

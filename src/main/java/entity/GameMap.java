@@ -82,7 +82,6 @@ public class GameMap {
         neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
         countries.put(idOfCountry, countrySelected);
         countries.put(idOfNeighbor, neighborSelected);
-
     }
 
 
