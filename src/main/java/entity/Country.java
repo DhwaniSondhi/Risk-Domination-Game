@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Class for Country containing access to all the components of country
- * */
+ */
 public class Country {
     public int id;
     public String name;

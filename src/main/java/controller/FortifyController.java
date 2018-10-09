@@ -1,7 +1,6 @@
 package controller;
 
 import entity.Country;
-import entity.GameMap;
 import gui.FortifyPanel;
 
 import javax.swing.*;
@@ -51,13 +50,17 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
     /**
      * Perform action when invoked
+     * Get the value from ComboBox of number of armies user want to transfer
+     * Update the hashmap of countries(Transfer the armies)
+     * Update the value of number of armies in TextField after transfer
      *
      * @param e triggered after pressing button
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-          view.getTheValueOfComboBox();
-          model.updateArmiesOfCountries(armiesToTransfer,selectedCountry,selectedNeighbour);
+        view.getTheValueOfComboBox();
+        model.updateArmiesOfCountries(armiesToTransfer, selectedCountry, selectedNeighbour);
+        view.updateTextFieldsArmiesAfterTransfer(model.getNumberofArmiesAtCountry(selectedCountry.id), model.getNumberofArmiesAtCountry(selectedNeighbour.id));
     }
 
     /**

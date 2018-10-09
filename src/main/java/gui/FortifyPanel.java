@@ -26,6 +26,7 @@ public class FortifyPanel extends JPanel {
     JScrollPane scrollPaneNeighboringCountries;
     JComboBox jComboBoxNoOfArmies;
 
+
     /**
      * Constructor
      * It set up the Panels for Number of countries a player have and countries to which the can transfer army
@@ -203,10 +204,10 @@ public class FortifyPanel extends JPanel {
     /**
      * Function to get the value of ComboBox of armies to transfer
      */
-    public void getTheValueOfComboBox()
-    {
+    public void getTheValueOfComboBox() {
         fortifyController.updateComboBoxValue((Integer) jComboBoxNoOfArmies.getSelectedItem());
     }
+
     /**
      * Update the values of ComboBox to select number of armies to transfer
      *
@@ -239,5 +240,15 @@ public class FortifyPanel extends JPanel {
         scrollPaneNeighboringCountries.setViewportView(neighborUpdateList);
         neighborUpdateList.addListSelectionListener(fortifyController);
 
+    }
+
+    /**
+     * Sets the new value of armies for selected countries after transfer
+     * @param selectedCountryArmies updated number of armies at country from where army is transferred
+     * @param selectedNeighborArmies updated number of armies at country to which army is transferred
+     */
+    public void updateTextFieldsArmiesAfterTransfer(int selectedCountryArmies, int selectedNeighborArmies) {
+        jTextFieldNoOfArmiesCountries.setText(Integer.toString(selectedCountryArmies));
+        jTextFieldNoOfArmiesNeighbour.setText(Integer.toString(selectedNeighborArmies));
     }
 }

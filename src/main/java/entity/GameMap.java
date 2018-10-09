@@ -45,7 +45,7 @@ public class GameMap {
      * @param continentValue gets confinent value from file
      */
     public boolean saveContinent(String continent, int continentValue) {
-        if(checkContinentExists(continent) == -1) {
+        if (checkContinentExists(continent) == -1) {
             continentCounter++;
             continents.put(continentCounter, new Continent(continentCounter, continent, continentValue));
             return true;
@@ -61,25 +61,27 @@ public class GameMap {
      */
     private int checkContinentExists(String continentName) {
         for (Map.Entry<Integer, Continent> continent : continents.entrySet()) {
-            if(continent.getValue().name.equalsIgnoreCase(continentName)){
+            if (continent.getValue().name.equalsIgnoreCase(continentName)) {
                 return continent.getKey();
             }
         }
         return -1;
     }
 
-    public void updateArmiesOfCountries(int numberOfArmiesTransfer,Country countrySelected,Country neighborSelected) {
-        int idOfCountry=countrySelected.id;
-        countrySelected.numOfArmies=countrySelected.numOfArmies-numberOfArmiesTransfer;
-        int idOfNeighbor=neighborSelected.id;
-        neighborSelected.numOfArmies=neighborSelected.numOfArmies+numberOfArmiesTransfer;
-        countries.put(idOfCountry,countrySelected);
-        countries.put(idOfNeighbor,neighborSelected);
-
-
-
-
-
+    /**
+     * Updates the armies of countries in which armies are transferred
+     *
+     * @param numberOfArmiesTransfer armies user select to transfer
+     * @param countrySelected        country which user select transfer from
+     * @param neighborSelected       country which user select transfer to
+     */
+    public void updateArmiesOfCountries(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+        int idOfCountry = countrySelected.id;
+        countrySelected.numOfArmies = countrySelected.numOfArmies - numberOfArmiesTransfer;
+        int idOfNeighbor = neighborSelected.id;
+        neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
+        countries.put(idOfCountry, countrySelected);
+        countries.put(idOfNeighbor, neighborSelected);
 
     }
 
@@ -197,7 +199,10 @@ public class GameMap {
         return countries.size();
     }
 
-    public void clearInformation(){
+    /**
+     * It clears the data of HashMap
+     */
+    public void clearInformation() {
         continents.clear();
         countries.clear();
         countryGraph.clear();
@@ -205,6 +210,18 @@ public class GameMap {
         countryCounter = 0;
         continentCounter = 0;
         currentPlayer = null;
+    }
+
+    /**
+     * Gives the number of armies at a country
+     *
+     * @param idOfCountry id of country whose army value is needed to know
+     * @return number of army at that country
+     */
+    public int getNumberofArmiesAtCountry(int idOfCountry) {
+        int numberOfArmies = countries.get(idOfCountry).numOfArmies;
+        return numberOfArmies;
+
     }
 
     public void setDummyData() {
