@@ -45,9 +45,9 @@ public class GameMap {
      * @param continentValue gets confinent value from file
      */
     public boolean saveContinent(String continent, int continentValue) {
-        if (checkContinentExists(continent) == -1) {
+        if (checkContinentExists(continent.trim()) == -1) {
             continentCounter++;
-            continents.put(continentCounter, new Continent(continentCounter, continent, continentValue));
+            continents.put(continentCounter, new Continent(continentCounter, continent.trim(), continentValue));
             return true;
         }
         return false;
@@ -90,26 +90,38 @@ public class GameMap {
      *
      * @param territories List of all the countries along with its neighbouring countries
      */
-    public void saveCountry(List<String> territories) {
+    public boolean saveCountry(List<String> territories) {
         String country = territories.get(0);
-        int countryId = this.checkCountryExists(country);
-        if (countryId == -1) {
-            //add country to config
-            countryId = ++countryCounter;
-            countries.put(countryCounter, new Country(countryId, country));
-        }
-        HashSet<Country> neighbours = new HashSet<>();
-        for (String territory : territories.subList(2, territories.size())) { //TODO change sublist function
-            int neighbourCountryId = this.checkCountryExists(territory);
-            if (neighbourCountryId == -1) {
-                //add country to config
-                neighbourCountryId = ++countryCounter;
-                countries.put(countryCounter, new Country(neighbourCountryId, territory));
 
+        HashSet<Country> neighbours = new HashSet<>();
+        String continent = territories.get(1).trim();
+        int continentId = checkContinentExists(continent.trim());
+        if (continentId == -1) {
+            System.out.println("Invalid map");
+            return false;
+        } else {
+            int countryId = this.checkCountryExists(country);
+            if (countryId == -1) {
+                countryId = ++countryCounter;
+                countries.put(countryCounter, new Country(countryId, country.trim()));
+                continents.get(continentId).countries.add(countries.get(countryId));
             }
-            neighbours.add(countries.get(neighbourCountryId));
+
+            for (String territory : territories.subList(2, territories.size())) {
+                int neighbourCountryId = this.checkCountryExists(territory.trim());
+                if (neighbourCountryId == -1) {
+                    neighbourCountryId = ++countryCounter;
+                    countries.put(countryCounter, new Country(neighbourCountryId, territory.trim()));
+
+                }
+                neighbours.add(countries.get(neighbourCountryId));
+
+                this.saveToGraph(countryId, neighbours);
+            }
+
         }
-        this.saveToGraph(countryId, neighbours);
+
+        return true;
     }
 
     /**

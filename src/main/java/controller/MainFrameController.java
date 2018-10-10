@@ -40,14 +40,19 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
             if (confirmValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = file.getSelectedFile();
                 if (isLoadMap) {
-                    FileHelper.loadToConfig(selectedFile);
-                    if (MapHelper.validateMap()) {
-//                    view.setUpGamePanels();
-                    } else {
+                    try {
+                        FileHelper.loadToConfig(selectedFile);
+                        if (MapHelper.validateMap()) {
+//                      view.setUpGamePanels();
+                        } else {
+                            FileHelper.emptyConfig();
+                            System.out.println("File validation failed");
+                        }
+//                      view.setUpGamePanels();
+                    } catch (IllegalStateException exception) {
                         FileHelper.emptyConfig();
-                        System.out.println("File validation failed");
+                        System.out.println("File validation failed : " + exception.getMessage());
                     }
-//                view.setUpGamePanels();
                 } else {
                     new MapCreatorFrame("Edit Map", selectedFile);
                 }

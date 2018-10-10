@@ -5,6 +5,7 @@ import entity.GameMap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,8 +17,9 @@ public class FileHelper {
      * Loads the txt file that user chooses by loading countryGraph to config
      *
      * @param selectedFile input file from {@link javafx.stage.FileChooser}
+     * @throws IllegalStateException if continent doesnot exist in territory
      */
-    public static void loadToConfig(File selectedFile) {
+    public static void loadToConfig(File selectedFile) throws IllegalStateException {
         GameMap.getInstance().clearInformation();
         try {
             FileReader fileReader = new FileReader(selectedFile);
@@ -45,7 +47,9 @@ public class FileHelper {
                 if (statusTerritories && !line.isEmpty() && !statusContinent) {
                     String[] data = line.replaceAll("\\d+ ,|\\d+,", "").split(",");
                     List<String> territories = Arrays.asList(data);
-                    GameMap.getInstance().saveCountry(territories);
+                    if (!GameMap.getInstance().saveCountry(territories)) {
+                        throw new IllegalStateException("Continent does not exists");
+                    }
                 }
             }
         } catch (FileNotFoundException e) {

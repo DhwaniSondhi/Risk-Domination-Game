@@ -23,7 +23,6 @@ public class MapHelper {
         queue.add(node);
         while (!queue.isEmpty()){
             Node dequeuedNode = queue.remove(0);
-            System.out.println(dequeuedNode.id);
             if(!GameMap.getInstance().countryGraph.get(dequeuedNode.id).isEmpty()){
                 for (Country country : GameMap.getInstance().countryGraph.get(dequeuedNode.id)) {
                     Node neigbour = nodeHashMap.get(country.id);
