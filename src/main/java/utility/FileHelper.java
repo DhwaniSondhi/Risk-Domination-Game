@@ -110,7 +110,7 @@ public class FileHelper {
      * @param continentValues list of texts from continent fields
      * @param countryValues   list oftexts from country fields
      */
-    public static void saveMapToFile(File file, ArrayList<String> continentValues, ArrayList<String> countryValues) {
+    public static void saveMapToFile(File file, List<String> continentValues, List<String> countryValues) {
         BufferedWriter bufferedWriter;
         FileWriter fileWriter;
 
