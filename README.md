@@ -34,4 +34,5 @@
     1. All merge requests should be made for develop branch
     2. should pass the build and test phases in CI
 4. Merge Request needs to be approved by someone other than the creator
+5. One Branch per feature
    
