@@ -13,7 +13,7 @@ public class Player {
     public String name;
     public String colour = "#000";
     public ArrayList<Card> cards;
-
+    public int updateArmiesForCards;
     /**
      * Constructor
      * <p>
@@ -23,7 +23,7 @@ public class Player {
     public Player(int id, String name) {
         this.id = id;
         this.name = name;
-
+        updateArmiesForCards=5;
     }
 
 }

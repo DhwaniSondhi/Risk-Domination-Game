@@ -1,15 +1,13 @@
 package controller;
 
 
-import entity.Card;
+import entity.*;
 import gui.ReinforcementPanel;
+
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Controller class for reinforcement phase
@@ -18,32 +16,32 @@ import java.util.Map;
  */
 public class ReinforcementController extends BaseController<ReinforcementPanel> implements ActionListener {
 
-    public HashMap<String,Integer> selectedCards;
+    GameMap instance;
     public HashMap<String,Integer> unselectedCards;
-    public int armiesOnUpdate;
+    public ArrayList<Card> selectedCards;
+    public HashMap<Integer,Integer> addedCountryArmy;
+    Integer[] countryIdsOfCurrentPlayer;
+    int totalArmies;
 
     /**
      * Constructor for Reinforcement Panel
+     * <p>
+     *     To get initial values of the attributes
+     *     To get list of Unselected Cards for Reinforcement Panel
+     * </p>
      */
     public ReinforcementController(ReinforcementPanel reinforcementPanel){
 
         super(reinforcementPanel);
-        selectedCards=new HashMap<>();
+        instance=GameMap.getInstance();
+        selectedCards=new ArrayList<>();
         getUnSelectedCards();
-        armiesOnUpdate=0;
-    }
-
-    /**
-     * To get the card section of Reinforcement Panel
-     */
-    public void getCards(){
-        view.getUnselectedCardGrid(unselectedCards);
-        view.getSelectedCardGrid(selectedCards);
+        addedCountryArmy=new HashMap<>();
 
     }
 
     /**
-     * Set the list of cards available of a player in the unselectedCards attribute
+     * To set the list of cards available of a player in the unselectedCards attribute
      */
     public void getUnSelectedCards(){
         ArrayList<Card> cards=model.currentPlayer.cards;
@@ -68,7 +66,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     }
 
     /**
-     * Called on any action performed(Add, Reset and Update) in Reinforcement Panel
+     * Invoked on any action performed(Add, Reset and Update button for Card Section in Reinforcement Panel
+     * Invoked on any action performed(Change Armies button for Army Section in Reinforcement Panel
+     * @param e {@link ActionEvent}
      */
     @Override
     public void actionPerformed(ActionEvent e){
@@ -76,24 +76,31 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
 
         if(buttonName.substring(0,3).equalsIgnoreCase("ADD")){
             String cardName=buttonName.substring(3);
-            if(unselectedCards.get(cardName)!=null){
-                unselectedCards.replace(cardName,unselectedCards.get(cardName)-1);
-                if(selectedCards.get(cardName)==null){
-                    selectedCards.put(cardName,1);
-                }else{
-                    selectedCards.replace(cardName,selectedCards.get(cardName)+1);
+            if(selectedCards.size()<3){
+                if(unselectedCards.get(cardName)!=null) {
+                    unselectedCards.replace(cardName, unselectedCards.get(cardName) - 1);
+                }
+                Card card=null;
+                if(cardName.equalsIgnoreCase("ARTILLERY")){
+                    card=new Card(Card.TYPE.ARTILLERY);
+                }else if(cardName.equalsIgnoreCase("INFANTRY")){
+                    card=new Card(Card.TYPE.INFANTRY);
+                }else if(cardName.equalsIgnoreCase("CAVALRY")){
+                    card=new Card(Card.TYPE.CAVALRY);
+                }
+                if(card!=null){
+                    selectedCards.add(card);
                 }
             }
+
         }else if(buttonName.equalsIgnoreCase("Update")){
             setCardsOnUpdate();
+        }else if(buttonName.equalsIgnoreCase("changeArmies")){
+            changeArmiesOfCountries();
         }else if(buttonName.equalsIgnoreCase("Reset")){
-            Iterator itForReset=selectedCards.entrySet().iterator();
-            while(itForReset.hasNext()){
-                Map.Entry cardPair=(Map.Entry)itForReset.next();
-                int cardNumber=(int)Integer.valueOf(cardPair.getValue().toString());
-                String cardName=cardPair.getKey().toString();
-                if(unselectedCards.get(cardName)!=null){
-                    unselectedCards.replace(cardName,unselectedCards.get(cardName)+cardNumber);
+            for(Card card:selectedCards){
+                if(unselectedCards.get(card.type.toString())!=null){
+                    unselectedCards.replace(card.type.toString(),unselectedCards.get(card.type.toString())+1);
                 }
             }
             selectedCards.clear();
@@ -101,26 +108,29 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         view.getCardSection();
     }
 
-    /**
-     * Updates the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
-     */
-    public void setCardsOnUpdate(){
-        //TODO: to add code for updated armies and update cards
 
+
+    /**
+     * To get the card section of Reinforcement Panel
+     */
+    public void getCards(){
+        view.getUnselectedCardGrid(unselectedCards);
+        view.getSelectedCardGrid(selectedCards);
 
     }
+
     /**
-     * Setting the armies of the player available for the Reinforcement Phase in armiesForReinforcement attribute
+     * To calculate the total armies from the countries and continents owns by the player in totalArmies attribute
      */
-    public int getArmiesForReinforcement(){
-/*        GameMap instance=GameMap.getInstance();
+    public void setArmiesForReinforcement(){
         HashMap<Integer, Country> countries=instance.countries;
         HashMap<Integer, Continent> continents=instance.continents;
 
         int playerCountries=0;
+        int armiesOnTextFields=0;
         Iterator itForCountries=countries.entrySet().iterator();
         while(itForCountries.hasNext()){
-            GameMap.Entry countryPair=(GameMap.Entry)itForCountries.next();
+            Map.Entry countryPair=(Map.Entry)itForCountries.next();
             Country country=(Country)countryPair.getValue();
             if(country.owner!=null){
                 if(country.owner.id==instance.currentPlayer.id){
@@ -129,30 +139,82 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             }
         }
 
-        int playerContinents=0;
-        boolean hasContinent=false;
+        int playerContinenstControlVal=0;
+        boolean hasContinent;
         Iterator itForContinents=continents.entrySet().iterator();
         while(itForContinents.hasNext()){
-            GameMap.Entry continentPair=(GameMap.Entry)itForContinents.next();
+            hasContinent=true;
+            Map.Entry continentPair=(Map.Entry)itForContinents.next();
             Continent continent=(Continent)continentPair.getValue();
             ArrayList<Country> continentCountries=continent.countries;
             for(Country country:continentCountries){
                 if(country.owner!=null){
-                    if(country.owner.id==instance.currentPlayer.id){
-                        hasContinent=true;
-                    }else{
+                    if(country.owner.id!=instance.currentPlayer.id){
+                        hasContinent=false;
                         break;
                     }
+                }else{
+                    hasContinent=false;
+                    break;
                 }
             }
             if(hasContinent==true){
-                playerContinents++;
+                playerContinenstControlVal+=continent.controlValue;
             }
         }
 
-        return (playerCountries/3)+playerContinents+armiesOnUpdate;*/
-        return 0;
+        Iterator itForArmies=addedCountryArmy.entrySet().iterator();
+        while(itForArmies.hasNext()){
+            Map.Entry pair=(Map.Entry)itForArmies.next();
+            armiesOnTextFields+=Integer.parseInt(pair.getValue().toString());
+        }
+        totalArmies=(playerCountries/3)+playerContinenstControlVal;
     }
 
+    /**
+     * To get the total armies available from totalArmies attribute
+     */
+    public int getArmiesForReinforcement(){
+        return totalArmies;
+    }
 
+    /**
+     * To get the countries of currentPlayer
+     */
+    public List<Country> getCountriesOfPlayer(){
+
+        List<Country> countries=model.getCountriesOfCurrentPlayer();
+        countryIdsOfCurrentPlayer=new Integer[countries.size()];
+        int loopForIds=0;
+        for(Country country:countries){
+            countryIdsOfCurrentPlayer[loopForIds]=country.id;
+            loopForIds++;
+        }
+        return model.getCountriesOfCurrentPlayer();
+
+    }
+
+    /**
+     * To add the armies to the respective countries on click of Add button
+     */
+    public void changeArmiesOfCountries(){
+        int countryId=countryIdsOfCurrentPlayer[view.getValueOfCountryIndexComboBox()];
+        int addedArmy=Integer.parseInt(view.getValueOfArmyComboBox());
+        Country countryChanged=model.countries.get(countryId);
+        countryChanged.numOfArmies+=addedArmy;
+        model.countries.replace(countryId,countryChanged);
+        totalArmies-=addedArmy;
+        view.getArmySection();
+    }
+
+    /**
+     * Updates the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
+     */
+    public void setCardsOnUpdate(){
+        totalArmies+=instance.currentPlayer.updateArmiesForCards;
+        instance.currentPlayer.updateArmiesForCards+=5;
+        selectedCards.clear();
+        view.getArmySection();
+
+    }
 }
