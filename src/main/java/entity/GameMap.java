@@ -87,6 +87,7 @@ public class GameMap {
 
     /**
      * Saves the country and their neighbouring countries
+     * While saving checks the validity of the map (Case : Continent for a country doesnot exist)
      *
      * @param territories List of all the countries along with its neighbouring countries
      */
@@ -104,8 +105,8 @@ public class GameMap {
             if (countryId == -1) {
                 countryId = ++countryCounter;
                 countries.put(countryCounter, new Country(countryId, country.trim()));
-                continents.get(continentId).countries.add(countries.get(countryId));
             }
+            continents.get(continentId).countries.add(countries.get(countryId));
 
             for (String territory : territories.subList(2, territories.size())) {
                 int neighbourCountryId = this.checkCountryExists(territory.trim());

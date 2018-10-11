@@ -14,4 +14,9 @@ public class Continent {
         this.controlValue = controlValue;
         countries = new ArrayList<>();
     }
+
+    @Override
+    public String toString() {
+        return name + "|" + countries.size();
+    }
 }

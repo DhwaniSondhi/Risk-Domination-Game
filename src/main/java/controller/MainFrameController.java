@@ -41,8 +41,9 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
                 File selectedFile = file.getSelectedFile();
                 if (isLoadMap) {
                     try {
+
                         FileHelper.loadToConfig(selectedFile);
-                        if (MapHelper.validateMap()) {
+                        if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {
 //                      view.setUpGamePanels();
                         } else {
                             FileHelper.emptyConfig();
@@ -50,6 +51,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
                         }
 //                      view.setUpGamePanels();
                     } catch (IllegalStateException exception) {
+
                         FileHelper.emptyConfig();
                         System.out.println("File validation failed : " + exception.getMessage());
                     }

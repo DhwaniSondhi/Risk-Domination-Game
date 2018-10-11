@@ -1,6 +1,7 @@
 package utility;
 
 import com.sun.jmx.remote.internal.ArrayQueue;
+import entity.Continent;
 import entity.Country;
 import entity.GameMap;
 import entity.Node;
@@ -18,7 +19,6 @@ public class MapHelper {
         node.color = 1;
         node.distance= 0;
         node.parent = null;
-
         ArrayQueue<Node> queue = new ArrayQueue<>(nodeHashMap.size());
         queue.add(node);
         while (!queue.isEmpty()){
@@ -26,12 +26,15 @@ public class MapHelper {
             if(!GameMap.getInstance().countryGraph.get(dequeuedNode.id).isEmpty()){
                 for (Country country : GameMap.getInstance().countryGraph.get(dequeuedNode.id)) {
                     Node neigbour = nodeHashMap.get(country.id);
-                    if(neigbour.color == 0){
-                        neigbour.color = 1;
-                        neigbour.distance = dequeuedNode.distance + 1;
-                        neigbour.parent = dequeuedNode;
-                        queue.add(neigbour);
+                    if(neigbour != null){
+                        if(neigbour.color == 0){
+                            neigbour.color = 1;
+                            neigbour.distance = dequeuedNode.distance + 1;
+                            neigbour.parent = dequeuedNode;
+                            queue.add(neigbour);
+                        }
                     }
+
                 }
             }
             dequeuedNode.color = 2;
@@ -51,6 +54,7 @@ public class MapHelper {
 
     /**
      * checks if map is valid
+     * Case : All the countries are connected
      * */
     public static boolean validateMap() {
         HashMap<Integer, Node> nodeHashMap = new HashMap<>();
@@ -61,5 +65,29 @@ public class MapHelper {
         }
         return bfs(nodeHashMap,nodeHashMap.get(1));
     }
+
+    /**
+     * checks if map is valid
+     * Case : All the countries in Continent are connected
+     * */
+    public static boolean validateContinentGraph() {
+        boolean result = false;
+        HashMap<Integer, Node> nodeHashMap = new HashMap<>();
+        for (Map.Entry<Integer, Continent> entry : GameMap.getInstance().continents.entrySet()) {
+            int continentId = entry.getKey();
+            for (Country country : entry.getValue().countries) {
+                int countryId = country.id;
+                Node countryNode = new Node(countryId);
+                nodeHashMap.put(countryId,countryNode);
+            }
+            result = bfs(nodeHashMap,nodeHashMap.get(1));
+            if(!result){
+                return false;
+            }
+        }
+        return result;
+    }
+
+
 
 }
