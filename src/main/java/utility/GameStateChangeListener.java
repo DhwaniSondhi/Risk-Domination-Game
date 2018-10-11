@@ -1,6 +1,12 @@
 package utility;
 
+/**
+ * The listener interface for receiving phase change events.
+ * The class that is interested in processing an phase change event
+ * implements this interface.
+ */
 public interface GameStateChangeListener {
+
     /**
      * Invoked when an game map is loaded
      */

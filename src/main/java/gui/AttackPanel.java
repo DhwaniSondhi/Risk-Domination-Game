@@ -13,11 +13,10 @@ import java.util.Collection;
  * View for attackPanel extends {@link JPanel}
  */
 public class AttackPanel extends JPanel {
+    AttackController attackController;
     private JPanel countryPanel;
     private JPanel neighbouringPanel;
     private JButton proceedButton;
-
-    AttackController attackController;
 
     /**
      * Constructor

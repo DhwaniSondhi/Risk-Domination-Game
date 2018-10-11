@@ -9,15 +9,13 @@ import java.util.*;
 public class GameMap {
 
     private static GameMap INSTANCE = null;
-
+    private static int continentCounter;
+    private static int countryCounter;
     public Player currentPlayer = null;
-
     public HashMap<Integer, Country> countries;
     public HashMap<Integer, Continent> continents;
     public HashMap<Integer, Player> players;
     public HashMap<Integer, HashSet<Country>> countryGraph;
-    private static int continentCounter;
-    private static int countryCounter;
 
     private GameMap() {
         countries = new HashMap<>();
@@ -254,8 +252,9 @@ public class GameMap {
 
     /**
      * Assign a random card to player
+     *
      * @param playerId id of the player to assign card to
-     * */
+     */
     public void assignCardToPlayer(Integer playerId) {
         players.get(playerId).addRandomCard();
     }
@@ -293,24 +292,13 @@ public class GameMap {
     public void assignArmyToCountry(int countryId, int numArmies) {
         countries.get(countryId).numOfArmies = numArmies;
     }
+
     public void setDummyData() {
-        ArrayList<Card> cards = new ArrayList<Card>();
-        cards.add(new Card(Card.TYPE.CAVALRY));
-        cards.add(new Card(Card.TYPE.INFANTRY));
-        cards.add(new Card(Card.TYPE.ARTILLERY));
-        cards.add(new Card(Card.TYPE.CAVALRY));
-        cards.add(new Card(Card.TYPE.INFANTRY));
-        cards.add(new Card(Card.TYPE.ARTILLERY));
-        cards.add(new Card(Card.TYPE.CAVALRY));
-        cards.add(new Card(Card.TYPE.INFANTRY));
         Player player1 = new Player(1, "Player 1");
-        player1.cards = cards;
         players.put(1, player1);
         Player player2 = new Player(2, "Player 2");
-        player2.cards = cards;
         players.put(2, player2);
         Player player3 = new Player(3, "Player 3");
-        player3.cards = cards;
         players.put(3, player3);
 
         continents.put(1, new Continent(1, "Continent1", 5));
@@ -318,28 +306,28 @@ public class GameMap {
 
         Country country1 = new Country(1, "Country 1");
         country1.owner = players.get(1);
-        country1.numOfArmies = 0;
+        country1.numOfArmies = 10;
         Country country2 = new Country(2, "Country 2");
         country2.owner = players.get(2);
-        country2.numOfArmies = 0;
+        country2.numOfArmies = 20;
         Country country3 = new Country(3, "Country 3");
         country3.owner = players.get(3);
-        country3.numOfArmies = 0;
+        country3.numOfArmies = 40;
         Country country4 = new Country(4, "Country 4");
         country4.owner = players.get(3);
-        country4.numOfArmies = 0;
+        country4.numOfArmies = 30;
         Country country5 = new Country(5, "Country 5");
         country5.owner = players.get(1);
-        country5.numOfArmies = 0;
+        country5.numOfArmies = 10;
         Country country6 = new Country(6, "Country 6");
         country6.owner = players.get(2);
-        country6.numOfArmies = 0;
+        country6.numOfArmies = 2;
         Country country7 = new Country(7, "Country 7");
         country7.owner = players.get(3);
-        country7.numOfArmies = 0;
+        country7.numOfArmies = 7;
         Country country8 = new Country(8, "Country 8");
         country8.owner = players.get(1);
-        country8.numOfArmies = 0;
+        country8.numOfArmies = 14;
 
         countries.put(1, country1);
         countries.put(2, country2);
@@ -392,6 +380,4 @@ public class GameMap {
 
         currentPlayer = players.get(1);
     }
-
-
 }

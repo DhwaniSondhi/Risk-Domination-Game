@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Test class to test the functionality of {@link FileHelper} class
- * */
+ */
 public class FileHelperTest {
 
     File testFile1, testFile2;

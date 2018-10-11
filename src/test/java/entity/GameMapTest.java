@@ -40,14 +40,13 @@ public class GameMapTest {
     }
 
     /**
-     *
      * Test case that checks whether operation of transfer of army is carried out accurately or not.
      */
     @Test
     public void updateArmiesOfCountries() {
         gameMap.updateArmiesOfCountries(3, gameMap.countries.get(1), gameMap.countries.get(5));
-        Assert.assertEquals(47, gameMap.countries.get(1).numOfArmies);
-        Assert.assertEquals(15, gameMap.countries.get(5).numOfArmies);
+        Assert.assertEquals(7, gameMap.countries.get(1).numOfArmies);
+        Assert.assertEquals(13, gameMap.countries.get(5).numOfArmies);
     }
 
     @Test

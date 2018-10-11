@@ -2,7 +2,7 @@ package controller;
 
 import gui.MainFrame;
 import gui.MapCreatorFrame;
-import gui.StartUpFrame1;
+import gui.StartUpFrame;
 import utility.FileHelper;
 import utility.GameStateChangeListener;
 import utility.MapHelper;
@@ -17,7 +17,11 @@ import java.io.File;
  * implements {@link ActionListener} for MenuItems
  * implements {@link GameStateChangeListener} to observe state change
  */
-public class MainFrameController extends BaseController<MainFrame> implements ActionListener, GameStateChangeListener {
+public class MainFrameController extends BaseController<MainFrame> implements
+        ActionListener,
+        GameStateChangeListener {
+
+    private boolean startUpCompleted = false;
 
     public MainFrameController(MainFrame view) {
         super(view);
@@ -28,7 +32,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
      */
     @Override
     public void onMapLoaded() {
-        new StartUpFrame1(this);
+        new StartUpFrame(this);
     }
 
     /**
@@ -36,8 +40,12 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
      */
     @Override
     public void onStartUpCompleted() {
-        view.setUpGamePanels();
-        model.resetCurrentPlayer();
+        if (!startUpCompleted) {
+            startUpCompleted = true;
+            model.resetCurrentPlayer();
+            view.setUpGamePanels();
+            view.currentPlayer.setText(model.currentPlayer.name);
+        }
     }
 
     /**
@@ -69,6 +77,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
         view.fortifyPanel.setVisible(false);
         view.reinforcementPanel.setVisible(true);
         view.reinforcementPanel.update();
+        view.currentPlayer.setText(model.currentPlayer.name);
     }
 
     /**
@@ -92,6 +101,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
                 File selectedFile = file.getSelectedFile();
                 if (isLoadMap) {
                     try {
+
                         FileHelper.loadToConfig(selectedFile);
                         if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {
                             onMapLoaded();
@@ -100,6 +110,7 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
                             System.out.println("File validation failed");
                         }
                     } catch (IllegalStateException exception) {
+
                         FileHelper.emptyConfig();
                         System.out.println("File validation failed : " + exception.getMessage());
                     }

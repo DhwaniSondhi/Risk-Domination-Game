@@ -25,18 +25,18 @@ public abstract class BaseController<T> {
     }
 
     /**
+     * setter method for the stateChangeListener
+     */
+    public void setStateChangeListener(GameStateChangeListener stateChangeListener) {
+        this.stateChangeListener = stateChangeListener;
+    }
+
+    /**
      * Getter method for the view
      *
      * @return Returns the associated View
      */
     public T getView() {
         return view;
-    }
-
-    /**
-     * setter method for state change listener
-     */
-    public void setStateChangeListener(GameStateChangeListener stateChangeListener) {
-        this.stateChangeListener = stateChangeListener;
     }
 }

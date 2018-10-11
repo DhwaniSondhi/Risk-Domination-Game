@@ -24,10 +24,11 @@ public class FortifyControllerTest {
     @Before
     public void setUp() throws Exception {
         gameMap = GameMap.getInstance();
-        fortifyController = new FortifyController(new FortifyPanel());
+        fortifyController = new FortifyController(new FortifyPanel(null));
         gameMap.setDummyData();
 
     }
+
     /**
      * It test the function for getting neighboring countries from selected country.
      */

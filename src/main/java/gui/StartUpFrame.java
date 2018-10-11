@@ -3,43 +3,43 @@ package gui;
 import controller.StartUpController;
 import entity.Country;
 import entity.GameMap;
-import entity.Player;
+import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.List;
 
 
 public class StartUpFrame extends JFrame {
 
-    private JPanel mainStartPanel, countriesPanel;
-    private JLabel jlabel = new JLabel("Welcome to the RISK Game\n");
-    private JLabel jlabel2 = new JLabel("Choose number of players:");
     JComboBox numOfPlayers;
-    private JButton buttonSubmit = new JButton("Submit");
-    private JTextField addArmies;
     StartUpController startUpController;
     JLabel jLabelplayers;
     JComboBox jComboBoxCountries;
     JComboBox numberOfArmies;
     JButton jButtonAssignArmy;
+    private JPanel mainStartPanel, countriesPanel;
+    private JLabel jlabel = new JLabel("Welcome to the RISK Game\n");
+    private JLabel jlabel2 = new JLabel("Choose number of players:");
+    private JButton buttonSubmit = new JButton("Submit");
+    private JTextField addArmies;
 
 
-    public StartUpFrame() {
+    public StartUpFrame(GameStateChangeListener stateChangeListener) {
         super("Welcome to the Game");
-        startUpController=new StartUpController(this);
+
+        startUpController = new StartUpController(this);
+        startUpController.setStateChangeListener(stateChangeListener);
+
         mainStartPanel = new JPanel();
-        jLabelplayers=new JLabel();
+        jLabelplayers = new JLabel();
         mainStartPanel.setLayout(new BoxLayout(mainStartPanel, BoxLayout.Y_AXIS));
         add(mainStartPanel);
 
         mainStartPanel.setBorder(new LineBorder(Color.BLACK));
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(900, 900);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setSize(400, 400);
         setVisible(true);
 
         buttonSubmit.setName("submit");
@@ -60,35 +60,36 @@ public class StartUpFrame extends JFrame {
         mainStartPanel.add(countriesPanel);
 
         mainStartPanel.revalidate();
-        jButtonAssignArmy=new JButton("Assign");
+        jButtonAssignArmy = new JButton("Assign");
         jButtonAssignArmy.setName("Assign");
         jButtonAssignArmy.addActionListener(startUpController);
     }
-    public int getNumOfPlayers(){
-        return (Integer)numOfPlayers.getSelectedItem();
+
+    public int getNumOfPlayers() {
+        return (Integer) numOfPlayers.getSelectedItem();
     }
-    public String getjLabelPlayerValue(){
+
+    public String getjLabelPlayerValue() {
         return jLabelplayers.getText();
     }
-    public void setjLabelPlayerValue(String newPlayerId){
+
+    public void setjLabelPlayerValue(String newPlayerId) {
         jLabelplayers.setText(newPlayerId);
     }
-    public int getjComboBoxCountry(){
+
+    public int getjComboBoxCountry() {
 
         return jComboBoxCountries.getSelectedIndex();
     }
-    public int getNumberOfArmies(){
-        return (Integer)numberOfArmies.getSelectedItem();
+
+    public int getNumberOfArmies() {
+        return (Integer) numberOfArmies.getSelectedItem();
     }
-    public void clickAssignButton(){
+
+    public void clickAssignButton() {
         jButtonAssignArmy.doClick();
     }
-    public void addProceedButton(){
-        mainStartPanel.removeAll();
-        mainStartPanel.add(new JButton("Proceed"));
-        mainStartPanel.revalidate();
-        mainStartPanel.repaint();
-    }
+
     /**
      * Creates {@link GridBagConstraints} with provided gridX and gridY values
      *
@@ -108,34 +109,26 @@ public class StartUpFrame extends JFrame {
 
     public void updateCountries(List<Country> countries) {
         countriesPanel.removeAll();
-        int index = 0;
         addArmies = new JTextField(10);
-        jComboBoxCountries=new JComboBox();
+        jComboBoxCountries = new JComboBox();
 
-
-        String[] countriesAll = new String[countries.size()];
         if (countries != null) {
-            for (Country countryname : countries) {
-                jComboBoxCountries.addItem(countryname);
-                index++;
+            for (Country countryName : countries) {
+                jComboBoxCountries.addItem(countryName);
             }
         }
 
-        countriesPanel.add(new JLabel("Player"),getConstraints(0,0));
+        countriesPanel.add(new JLabel("Player"), getConstraints(0, 0));
         jLabelplayers.setText(String.valueOf(GameMap.getInstance().currentPlayer.id));
-        countriesPanel.add(jLabelplayers,getConstraints(0,1));
-        countriesPanel.add(jComboBoxCountries,getConstraints(0,2));
-        countriesPanel.add(new JLabel("Select Number of armies"),getConstraints(0,3));
-        numberOfArmies=new JComboBox(startUpController.getArmies());
-        countriesPanel.add(numberOfArmies,getConstraints(0,4));
+        countriesPanel.add(jLabelplayers, getConstraints(0, 1));
+        countriesPanel.add(jComboBoxCountries, getConstraints(0, 2));
+        countriesPanel.add(new JLabel("Select Number of armies"), getConstraints(0, 3));
+        numberOfArmies = new JComboBox(startUpController.getArmies());
+        countriesPanel.add(numberOfArmies, getConstraints(0, 4));
 
 
-        countriesPanel.add(jButtonAssignArmy,getConstraints(0,5));
+        countriesPanel.add(jButtonAssignArmy, getConstraints(0, 5));
         countriesPanel.revalidate();
         countriesPanel.repaint();
-        /*JList list = new JList(countriesAll);
-        JScrollPane jScrollPaneCountries = new JScrollPane(list);
-        mainStartPanel.add(jScrollPaneCountries);
-        mainStartPanel.revalidate();*/
     }
 }

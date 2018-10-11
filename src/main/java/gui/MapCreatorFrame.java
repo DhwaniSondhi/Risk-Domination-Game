@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class MapCreatorFrame extends JFrame {
 
+    public JTextField mapName;
+    public JComboBox<Integer> numOfContinents, numOfCountries;
     /**
      * From state if it is in edit mode
      */
@@ -22,10 +24,6 @@ public class MapCreatorFrame extends JFrame {
      * Controller for the form
      */
     private MapCreatorController controller;
-
-    public JTextField mapName;
-    public JComboBox<Integer> numOfContinents, numOfCountries;
-
     private JPanel formPanel;
     private JPanel continentsPanel;
     private JPanel countriesPanel;
@@ -84,7 +82,6 @@ public class MapCreatorFrame extends JFrame {
         continentsPanel.setLayout(new BoxLayout(continentsPanel, BoxLayout.Y_AXIS));
         continentsPanel.setBorder(new LineBorder(Color.black, 2));
         formPanel.add(continentsPanel, getConstraints(1, 3, 1, 0));
-
 
 
         formPanel.add(new JLabel("<html>Countries Details: <br/><i>(CountryName,ContinentName,NeighbouringCountries)</i></html>"), getConstraints(0, 7));

@@ -31,7 +31,7 @@ public class SampleTest {
     }
 
     @Test
-    public void constructorTest(){
+    public void constructorTest() {
         Sample sample1 = new Sample();
         Sample sample2 = new Sample(sampleSet);
 

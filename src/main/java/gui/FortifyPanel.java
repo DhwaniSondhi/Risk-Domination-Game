@@ -15,6 +15,12 @@ import java.util.Map;
  * Class containing Gui and functionality of Fortify part of Game
  */
 public class FortifyPanel extends JPanel {
+    FortifyController fortifyController;
+    JTextField jTextFieldNoOfArmiesCountries;
+    JTextField jTextFieldNoOfArmiesNeighbour;
+    JScrollPane scrollPaneNeighboringCountries;
+    JComboBox jComboBoxNoOfArmies;
+    JButton jButtonTransfer;
     private JPanel jPanelCountries;
     private JPanel jPanelNeighbors;
     private JPanel jPanelInnerPanelArmies;
@@ -22,12 +28,6 @@ public class FortifyPanel extends JPanel {
     private GridBagLayout gridBagLayoutMain;
     private GridBagConstraints bagConstraintsMain;
     private JButton proceedButton;
-    FortifyController fortifyController;
-    JTextField jTextFieldNoOfArmiesCountries;
-    JTextField jTextFieldNoOfArmiesNeighbour;
-    JScrollPane scrollPaneNeighboringCountries;
-    JComboBox jComboBoxNoOfArmies;
-    JButton jButtonTransfer;
 
 
     /**
