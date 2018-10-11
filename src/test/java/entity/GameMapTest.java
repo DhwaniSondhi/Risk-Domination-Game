@@ -5,29 +5,29 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class GameMapTest {
 
     GameMap gameMap;
+
     @Before
-    public void setUp(){
+    public void setUp() {
         gameMap = GameMap.getInstance();
+        gameMap.setDummyData();
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
 
     }
 
     @Test
     public void saveContinent() {
-        gameMap.saveContinent("Asia",12);
-        gameMap.saveContinent("North America",100);
+        gameMap.saveContinent("Asia", 12);
+        gameMap.saveContinent("North America", 100);
         Assert.assertEquals(2, gameMap.continents.size());
         Assert.assertTrue(gameMap.continents.containsKey(1));
         Assert.assertTrue(gameMap.continents.containsKey(2));
-        Assert.assertFalse(gameMap.saveContinent("Asia",12));
+        Assert.assertFalse(gameMap.saveContinent("Asia", 12));
     }
 
     @Test
@@ -36,6 +36,22 @@ public class GameMapTest {
 
     @Test
     public void saveCountry() {
+
+    }
+
+    /**
+     *
+     * Test case that checks whether operation of transfer of army is carried out accurately or not.
+     */
+    @Test
+    public void updateArmiesOfCountries() {
+        gameMap.updateArmiesOfCountries(3, gameMap.countries.get(1), gameMap.countries.get(5));
+        Assert.assertEquals(47, gameMap.countries.get(1).numOfArmies);
+        Assert.assertEquals(15, gameMap.countries.get(5).numOfArmies);
+    }
+
+    @Test
+    public void getCountriesOfCurrentPlayer1() {
 
     }
 }
