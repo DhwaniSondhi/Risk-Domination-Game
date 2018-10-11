@@ -353,7 +353,7 @@ public class GameMap {
         countryGraph.put(8, n8);
 
 
-        currentPlayer = players.get(3);
+        currentPlayer = players.get(1);
 
     }
 

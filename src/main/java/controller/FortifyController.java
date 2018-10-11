@@ -16,6 +16,7 @@ import java.util.Queue;
 /**
  * Controller for FortifyPanel
  */
+
 public class FortifyController extends BaseController<FortifyPanel> implements ActionListener, ListSelectionListener {
     Country selectedCountry;
     Country selectedNeighbour;
@@ -78,42 +79,55 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             if (((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country")) {
                 selectedCountry = source.getSelectedValue();
                 view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
-                int countryId = source.getSelectedValue().id;
-                int ownerId = source.getSelectedValue().owner.id;
-
-                Queue<Integer> queueNeighbor = new LinkedList<>();
-                queueNeighbor.add(countryId);
-                LinkedHashMap<Integer, Country> neighbor = new LinkedHashMap<Integer, Country>();
-                LinkedHashMap<Integer, Country> neighborCheck = new LinkedHashMap<Integer, Country>();
-                neighborCheck.put(countryId, source.getSelectedValue());
-                while (!queueNeighbor.isEmpty()) {
-                    int last = queueNeighbor.remove();
-                    ArrayList<Country> listNeighbouring = new ArrayList<>();
-                    listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.countryGraph);
-                    for (int i = 0; i < listNeighbouring.size(); i++) {
-                        if (listNeighbouring.get(i).owner.id == ownerId) {
-                            if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
-                                queueNeighbor.add(listNeighbouring.get(i).id);
-                                neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
-                                neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
-                            }
-
-                        }
-
-                    }
-
-                }
-
+                LinkedHashMap<Integer, Country> neighbor = getNeighborsOfCountry(selectedCountry);
                 view.updateNeighboringCountries(neighbor);
+
             } else {
                 selectedNeighbour = source.getSelectedValue();
-                String selectedNeighborCountry = source.getSelectedValue().name;
-                view.updateNeighboringCountriesArmyTextField(source.getSelectedValue().numOfArmies);
-                int armyOnCountry = selectedCountry.numOfArmies;
-                view.updateJComboboxArmies(armyOnCountry);
+                getArmiesOfSelectedNeighbor(selectedNeighbour);
             }
 
 
         }
     }
+
+
+    public void getArmiesOfSelectedNeighbor(Country selectedNeighbour) {
+        String selectedNeighborCountry = selectedNeighbour.name;
+        view.updateNeighboringCountriesArmyTextField(selectedNeighbour.numOfArmies);
+        int armyOnCountry = selectedCountry.numOfArmies;
+        view.updateJComboboxArmies(armyOnCountry);
+
+    }
+
+    public LinkedHashMap getNeighborsOfCountry(Country selectedCountry) {
+        LinkedHashMap<Integer, Country> neighbor = new LinkedHashMap<>();
+        int countryId = selectedCountry.id;
+        int ownerId = selectedCountry.owner.id;
+        Queue<Integer> queueNeighbor = new LinkedList<>();
+        queueNeighbor.add(countryId);
+        LinkedHashMap<Integer, Country> neighborCheck = new LinkedHashMap<Integer, Country>();
+        neighborCheck.put(countryId, selectedCountry);
+        while (!queueNeighbor.isEmpty()) {
+            int last = queueNeighbor.remove();
+            ArrayList<Country> listNeighbouring = new ArrayList<>();
+            listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.countryGraph);
+            for (int i = 0; i < listNeighbouring.size(); i++) {
+                if (listNeighbouring.get(i).owner.id == ownerId) {
+                    if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
+                        queueNeighbor.add(listNeighbouring.get(i).id);
+                        neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
+                        neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        return neighbor;
+    }
+
 }
