@@ -236,6 +236,22 @@ public class GameMap {
 
     }
 
+
+    /**
+     * Assign countries randomly to players
+     * */
+    public void assignCountriesToPlayers(){
+        int playerId = 1;
+        for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
+            entry.getValue().owner = players.get(playerId);
+            if(playerId != players.size()){
+                playerId++;
+            } else {
+                playerId = 1;
+            }
+        }
+    }
+
     public void setDummyData() {
         ArrayList<Card> cards = new ArrayList<Card>();
         cards.add(new Card(Card.TYPE.CAVALRY));
