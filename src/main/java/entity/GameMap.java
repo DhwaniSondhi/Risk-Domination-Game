@@ -239,17 +239,26 @@ public class GameMap {
 
     /**
      * Assign countries randomly to players
-     * */
-    public void assignCountriesToPlayers(){
+     */
+    public void assignCountriesToPlayers() {
         int playerId = 1;
         for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
             entry.getValue().owner = players.get(playerId);
-            if(playerId != players.size()){
+            if (playerId != players.size()) {
                 playerId++;
             } else {
                 playerId = 1;
             }
         }
+    }
+
+    /**
+     * Assign army to country in startup phase
+     * @param countryId id of the country
+     * @param numArmies no. of armies
+     * */
+    public void assignArmyToCountry(int countryId, int numArmies) {
+        countries.get(countryId).numOfArmies = numArmies;
     }
 
     public void setDummyData() {
