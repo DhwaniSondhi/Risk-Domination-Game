@@ -38,12 +38,11 @@ public class GameMap {
 
     /**
      * saves the continent and continent value from the file
-     *
      * @param continent      gets continent from file
      * @param continentValue gets confinent value from file
      */
     public boolean saveContinent(String continent, int continentValue) {
-        if (checkContinentExists(continent.trim()) == -1) {
+        if (checkContinentExists(continent.trim()) == -1 && !continent.trim().isEmpty()) {
             continentCounter++;
             continents.put(continentCounter, new Continent(continentCounter, continent.trim(), continentValue));
             return true;

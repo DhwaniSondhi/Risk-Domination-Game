@@ -19,7 +19,6 @@ public class AttackController extends BaseController<AttackPanel> implements Act
      */
     public AttackController(AttackPanel view) {
         super(view);
-
     }
 
     /**
