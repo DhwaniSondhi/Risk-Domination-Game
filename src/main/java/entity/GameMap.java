@@ -266,6 +266,11 @@ public class GameMap {
         cards.add(new Card(Card.TYPE.CAVALRY));
         cards.add(new Card(Card.TYPE.INFANTRY));
         cards.add(new Card(Card.TYPE.ARTILLERY));
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.INFANTRY));
+        cards.add(new Card(Card.TYPE.ARTILLERY));
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.INFANTRY));
         Player player1 = new Player(1, "Player 1");
         player1.cards = cards;
         players.put(1, player1);

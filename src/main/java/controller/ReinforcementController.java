@@ -91,7 +91,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
                 if(card!=null){
                     selectedCards.add(card);
                 }
-            }
+            }/*else{
+                view.disableAdd();
+            }*/
 
         }else if(buttonName.equalsIgnoreCase("Update")){
             setCardsOnUpdate();

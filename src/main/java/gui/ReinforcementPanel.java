@@ -33,10 +33,12 @@ public class ReinforcementPanel extends JPanel {
         cardSection=new JPanel();
         cardSection.setLayout(new GridBagLayout());
         getCardSection();
+        add(cardSection,getGridContraints(0,0));
         reinforcementController.setArmiesForReinforcement();
         armySection=new JPanel();
         armySection.setLayout(new GridBagLayout());
         getArmySection();
+        add(armySection,getGridContraints(0,1));
 
     }
 
@@ -48,8 +50,8 @@ public class ReinforcementPanel extends JPanel {
         reinforcementController.getCards();
         addButtons();
         cardSection.revalidate();
-        add(cardSection,getGridContraints(0,0));
-        revalidate();
+
+        //revalidate();
     }
 
     /**
@@ -176,17 +178,17 @@ public class ReinforcementPanel extends JPanel {
         armiesChange.add(changeArmies,getGridContraints(2,0));
         armySection.add(armiesChange,getGridContraints(0,2));
         armySection.revalidate();
-        add(armySection,getGridContraints(0,1));
 
 
-        JButton proceed=new JButton("Proceed");
+
+        /*JButton proceed=new JButton("Proceed");
         if(armiesLeft>0){
             proceed.setVisible(false);
         }else{
             proceed.setVisible(true);
         }
         add(proceed,getGridContraints(0,2));
-        revalidate();
+        revalidate();*/
     }
 
     /**
