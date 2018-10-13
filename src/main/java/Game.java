@@ -1,5 +1,6 @@
 import entity.GameMap;
 import gui.MainFrame;
+import gui.StartUpFrame;
 
 public class Game {
 
@@ -8,6 +9,6 @@ public class Game {
         GameMap config = GameMap.getInstance();
         config.setDummyData();
 
-        MainFrame frame = new MainFrame();
+        StartUpFrame frame = new StartUpFrame();
     }
 }
