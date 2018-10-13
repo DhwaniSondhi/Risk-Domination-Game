@@ -66,8 +66,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
     /**
      * To get the number of armies at a country and its neighbor based on user selection
-     * It gives the list of countries to which a player can fortify from a selected country
-     * Also calculate value for comboBox
+     * It calls function to get the list of countries to which a player can fortify from a selected country
+     * Also calls function to calculate value for comboBox
      *
      * @param e event triggered after list item selected
      */
@@ -91,7 +91,11 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         }
     }
 
-
+    /**
+     * Update TextField for armies on neighboring countries before transfer
+     *
+     * @param selectedNeighbour Country to which player want to transfer army
+     */
     public void getArmiesOfSelectedNeighbor(Country selectedNeighbour) {
         String selectedNeighborCountry = selectedNeighbour.name;
         view.updateNeighboringCountriesArmyTextField(selectedNeighbour.numOfArmies);
@@ -100,6 +104,12 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
     }
 
+    /**
+     * Function that get the LinkedHashMap of neighbouring countries of selected country
+     *
+     * @param selectedCountry country whose neighbours need to find
+     * @return LinkedHashMap of countries where fortify can be done
+     */
     public LinkedHashMap getNeighborsOfCountry(Country selectedCountry) {
         LinkedHashMap<Integer, Country> neighbor = new LinkedHashMap<>();
         int countryId = selectedCountry.id;

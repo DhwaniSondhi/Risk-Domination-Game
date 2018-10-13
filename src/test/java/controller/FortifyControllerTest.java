@@ -27,16 +27,7 @@ public class FortifyControllerTest {
         fortifyController = new FortifyController(new FortifyPanel());
         gameMap.setDummyData();
 
-
     }
-
-
-    @Test
-    public void getArmiesOfSelectedNeighbor() {
-
-
-    }
-
     /**
      * It test the function for getting neighboring countries from selected country.
      */
