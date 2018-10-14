@@ -36,7 +36,6 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      */
     public void updateCountryListFortify() {
         view.showCountriesFortify(model.getCountriesOfCurrentPlayer());
-        view.showNeighbouringCountriesFortify(model.getCountriesOfCurrentPlayer());
         view.transferFortify();
     }
 
@@ -80,6 +79,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 selectedCountry = source.getSelectedValue();
                 view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
                 LinkedHashMap<Integer, Country> neighbor = getNeighborsOfCountry(selectedCountry);
+                view.showNeighbouringCountriesFortify(model.getCountriesOfCurrentPlayer());
                 view.updateNeighboringCountries(neighbor);
 
             } else {
@@ -138,8 +138,10 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
         if (neighbor.isEmpty()) {
             view.disableButton();
+            view.setVisibleFalseNeighbourPanel();
         } else {
             view.enableButton();
+            view.setVisibleTrueNeighbourPanel();
         }
         return neighbor;
     }

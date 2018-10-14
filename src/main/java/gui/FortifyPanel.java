@@ -119,10 +119,12 @@ public class FortifyPanel extends JPanel {
         gridBagConstraintsCountriesPanel.fill = GridBagConstraints.VERTICAL;
         gridBagConstraintsCountriesPanel.gridx = 0;
         gridBagConstraintsCountriesPanel.gridy = 0;
+        jPanelNeighbors.removeAll();
+        jPanelNeighbors.revalidate();
+        jPanelNeighbors.repaint();
         JLabel jLabelCountries = new JLabel("Neighbours");
         jPanelNeighbors.add(jLabelCountries, gridBagConstraintsCountriesPanel);
         JList list = new JList(countries.toArray());
-        //((Country) list.getSelectedValue()).id;
         scrollPaneNeighboringCountries = new JScrollPane(list);
         gridBagConstraintsCountriesPanel.gridx = 0;
         gridBagConstraintsCountriesPanel.gridy = 1;
@@ -266,6 +268,20 @@ public class FortifyPanel extends JPanel {
      */
     public void disableButton() {
         jButtonTransfer.setEnabled(false);
+    }
+
+    /**
+     * Function to Start displaying Neighboring countries panel
+     */
+    public void setVisibleTrueNeighbourPanel() {
+        jPanelNeighbors.setVisible(true);
+    }
+
+    /**
+     * Function to stop displaying Neighboring countries panel
+     */
+    public void setVisibleFalseNeighbourPanel() {
+        jPanelNeighbors.setVisible(false);
     }
 
 }
