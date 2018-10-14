@@ -2,6 +2,7 @@ package gui;
 
 import controller.FortifyController;
 import entity.Country;
+import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -20,6 +21,7 @@ public class FortifyPanel extends JPanel {
     private JPanel jPanelTransferArmy;
     private GridBagLayout gridBagLayoutMain;
     private GridBagConstraints bagConstraintsMain;
+    private JButton proceedButton;
     FortifyController fortifyController;
     JTextField jTextFieldNoOfArmiesCountries;
     JTextField jTextFieldNoOfArmiesNeighbour;
@@ -34,8 +36,10 @@ public class FortifyPanel extends JPanel {
      * Also set up the panels for choosing number of armies to transfer
      */
 
-    public FortifyPanel() {
+    public FortifyPanel(GameStateChangeListener stateChangeListener) {
         fortifyController = new FortifyController(this);
+        fortifyController.setStateChangeListener(stateChangeListener);
+
         gridBagLayoutMain = new GridBagLayout();
         bagConstraintsMain = new GridBagConstraints();
         setLayout(gridBagLayoutMain);
@@ -75,7 +79,6 @@ public class FortifyPanel extends JPanel {
         bagConstraintsMain.gridy = 1;
         add(jPanelTransferArmy, bagConstraintsMain);
         fortifyController.updateCountryListFortify();
-
     }
 
     /**
@@ -84,6 +87,7 @@ public class FortifyPanel extends JPanel {
      * @param countries countries own by current player
      */
     public void showCountriesFortify(Collection<Country> countries) {
+        jPanelCountries.removeAll();
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();
         GridBagConstraints gridBagConstraintsCountriesPanel = new GridBagConstraints();
 
@@ -102,6 +106,7 @@ public class FortifyPanel extends JPanel {
         countriesList.addListSelectionListener(fortifyController);
         jPanelCountries.revalidate();
         revalidate();
+        repaint();
     }
 
     /**
@@ -112,6 +117,7 @@ public class FortifyPanel extends JPanel {
      */
 
     public void showNeighbouringCountriesFortify(Collection<Country> countries) {
+        jPanelNeighbors.removeAll();
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();
         GridBagConstraints gridBagConstraintsCountriesPanel = new GridBagConstraints();
 
@@ -139,6 +145,9 @@ public class FortifyPanel extends JPanel {
      * It also allow to choose number of armies one can transfer from a country to other country
      */
     public void transferFortify() {
+        jPanelInnerPanelArmies.removeAll();
+        jPanelTransferArmy.removeAll();
+
         GridBagLayout gridBagLayoutInnerPanelArmies = new GridBagLayout();
         GridBagConstraints gridBagConstraintsInnerPanelArmies = new GridBagConstraints();
         jPanelInnerPanelArmies.setLayout(gridBagLayoutInnerPanelArmies);
@@ -182,7 +191,21 @@ public class FortifyPanel extends JPanel {
         jButtonTransfer.addActionListener(fortifyController);
         jPanelTransferArmy.add(jButtonTransfer, transferPanelConstraints);
         jPanelTransferArmy.revalidate();
+
+        proceedButton = new JButton("Proceed");
+        proceedButton.setName("proceed");
+        proceedButton.addActionListener(fortifyController);
+        transferPanelConstraints.gridx = 0;
+        transferPanelConstraints.gridy = 3;
+        jPanelTransferArmy.add(proceedButton, transferPanelConstraints);
+
         revalidate();
+    }
+
+    public void update() {
+        fortifyController.updateCountryListFortify();
+        revalidate();
+        repaint();
     }
 
     /**

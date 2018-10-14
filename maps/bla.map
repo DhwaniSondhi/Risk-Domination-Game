@@ -3,8 +3,8 @@ Asia = 5
 Europe = 4
 
 [TERRITORIES]
-Nepal, Asia, India, China
+Nepal, Asia, India, China, UK
 India, Asia, Nepal, China
 China, Asia, Nepal, India
-UK, Europe, France
-France, Europes, UK
+UK, Europe, France, Nepal
+France, Europe, UK

@@ -1,6 +1,8 @@
 package gui;
 
 import controller.MainFrameController;
+import entity.Continent;
+import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,10 +11,15 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     private JPanel mainPanel;
+    public ContinentPanel continentPanel;
+    public CountryPanel countryPanel;
+    public ReinforcementPanel reinforcementPanel;
+    public AttackPanel attackPanel;
+    public FortifyPanel fortifyPanel;
     private MainFrameController controller;
 
     public MainFrame() {
-        super("Risk Game - SOEN6441 - Team 19");
+        super("Risk Game - SOEN 6441 - Team 19");
 
         controller = new MainFrameController(this);
 
@@ -21,34 +28,30 @@ public class MainFrame extends JFrame {
         add(mainPanel);
         setUpMenuBar();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(900, 900);
+        setSize(900, 700);
         setVisible(true);
-
-        setUpGamePanels();
     }
 
     /**
      * Adds all necessary panel components to the main panel
      */
     public void setUpGamePanels() {
-        // TODO: Add your panels here...
-        ContinentPanel panel = new ContinentPanel();
-        mainPanel.add(panel, getConstraints(0, 0));
+        continentPanel = new ContinentPanel();
+        mainPanel.add(continentPanel, getConstraints(0, 0));
 
+        countryPanel = new CountryPanel();
+        mainPanel.add(countryPanel, getConstraints(0, 1));
 
-        AttackPanel attackPanel = new AttackPanel();
-        mainPanel.add(attackPanel, getConstraints(1, 1));
-        mainPanel.revalidate();
-
-        FortifyPanel fortifyPanel = new FortifyPanel();
-        mainPanel.add(fortifyPanel, getConstraints(1, 2));
-        mainPanel.revalidate();
-
-        ReinforcementPanel reinforcementPanel = new ReinforcementPanel();
+        reinforcementPanel = new ReinforcementPanel(controller);
         mainPanel.add(reinforcementPanel, getConstraints(1, 0));
 
-        CountryPanel panel1 = new CountryPanel();
-        mainPanel.add(panel1, getConstraints(0, 1));
+        attackPanel = new AttackPanel(controller);
+        attackPanel.setVisible(false);
+        mainPanel.add(attackPanel, getConstraints(1, 0));
+
+        fortifyPanel = new FortifyPanel(controller);
+        fortifyPanel.setVisible(false);
+        mainPanel.add(fortifyPanel, getConstraints(1, 0));
 
         mainPanel.revalidate();
     }

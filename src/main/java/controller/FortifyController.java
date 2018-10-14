@@ -58,9 +58,14 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        view.getTheValueOfComboBox();
-        model.updateArmiesOfCountries(armiesToTransfer, selectedCountry, selectedNeighbour);
-        view.updateTextFieldsArmiesAfterTransfer(model.getNumberofArmiesAtCountry(selectedCountry.id), model.getNumberofArmiesAtCountry(selectedNeighbour.id));
+        if (e.getActionCommand().equalsIgnoreCase("proceed")) {
+            if (stateChangeListener != null)
+                stateChangeListener.onFortificationCompleted();
+        } else {
+            view.getTheValueOfComboBox();
+            model.updateArmiesOfCountries(armiesToTransfer, selectedCountry, selectedNeighbour);
+            view.updateTextFieldsArmiesAfterTransfer(model.getNumberofArmiesAtCountry(selectedCountry.id), model.getNumberofArmiesAtCountry(selectedNeighbour.id));
+        }
     }
 
     /**

@@ -2,7 +2,9 @@ package controller;
 
 import gui.MainFrame;
 import gui.MapCreatorFrame;
+import gui.StartUpFrame1;
 import utility.FileHelper;
+import utility.GameStateChangeListener;
 import utility.MapHelper;
 
 import javax.swing.*;
@@ -13,11 +15,60 @@ import java.io.File;
 /**
  * This is the Controller for the MainFrame. see {@link BaseController}
  * implements {@link ActionListener} for MenuItems
+ * implements {@link GameStateChangeListener} to observe state change
  */
-public class MainFrameController extends BaseController<MainFrame> implements ActionListener {
+public class MainFrameController extends BaseController<MainFrame> implements ActionListener, GameStateChangeListener {
 
     public MainFrameController(MainFrame view) {
         super(view);
+    }
+
+    /**
+     * Invoked when an game map is loaded
+     */
+    @Override
+    public void onMapLoaded() {
+        new StartUpFrame1(this);
+    }
+
+    /**
+     * Invoked when an startup is completed is loaded
+     */
+    @Override
+    public void onStartUpCompleted() {
+        view.setUpGamePanels();
+        model.resetCurrentPlayer();
+    }
+
+    /**
+     * Invoked when reinforcement is done
+     */
+    @Override
+    public void onReinforcementCompleted() {
+        view.reinforcementPanel.setVisible(false);
+        view.attackPanel.setVisible(true);
+        view.attackPanel.revalidate();
+    }
+
+    /**
+     * Invoked when attack is done
+     */
+    @Override
+    public void onAttackCompleted() {
+        view.attackPanel.setVisible(false);
+        view.fortifyPanel.setVisible(true);
+        view.fortifyPanel.update();
+    }
+
+    /**
+     * Invoked when fortification is done
+     */
+    @Override
+    public void onFortificationCompleted() {
+        model.changeToNextPlayer();
+        view.fortifyPanel.setVisible(false);
+        view.reinforcementPanel.setVisible(true);
+        view.reinforcementPanel.update();
     }
 
     /**
@@ -41,17 +92,14 @@ public class MainFrameController extends BaseController<MainFrame> implements Ac
                 File selectedFile = file.getSelectedFile();
                 if (isLoadMap) {
                     try {
-
                         FileHelper.loadToConfig(selectedFile);
                         if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {
-//                      view.setUpGamePanels();
+                            onMapLoaded();
                         } else {
                             FileHelper.emptyConfig();
                             System.out.println("File validation failed");
                         }
-//                      view.setUpGamePanels();
                     } catch (IllegalStateException exception) {
-
                         FileHelper.emptyConfig();
                         System.out.println("File validation failed : " + exception.getMessage());
                     }

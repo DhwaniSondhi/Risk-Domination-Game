@@ -8,8 +8,7 @@ import java.awt.event.ActionListener;
 
 /**
  * Controller for {@link AttackPanel} extends {@link BaseController} and implements {@link ActionListener}
- *
- * */
+ */
 public class AttackController extends BaseController<AttackPanel> implements ActionListener {
 
 
@@ -25,8 +24,8 @@ public class AttackController extends BaseController<AttackPanel> implements Act
 
     /**
      * Update the list of countries in the view with current player's countries
-     * */
-    public void updateCountryList(){
+     */
+    public void updateCountryList() {
         view.showCountries(model.getCountriesOfCurrentPlayer());
     }
 
@@ -38,12 +37,12 @@ public class AttackController extends BaseController<AttackPanel> implements Act
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        int selectedCountryId = Integer.valueOf(((JButton) e.getSource()).getName());
-        if(e.getActionCommand().equalsIgnoreCase("select")) {
+        if (e.getActionCommand().equalsIgnoreCase("select")) {
+            int selectedCountryId = Integer.valueOf(((JButton) e.getSource()).getName());
             view.showNeighbouringCountries(model.countries.get(selectedCountryId).getNeighbours(model.countryGraph));
-        }
-        else{
-
+        } else if (e.getActionCommand().equalsIgnoreCase("proceed")) {
+            model.assignCardToPlayer(model.currentPlayer.id);
+            stateChangeListener.onAttackCompleted();
         }
 
     }

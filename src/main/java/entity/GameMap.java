@@ -253,14 +253,46 @@ public class GameMap {
     }
 
     /**
+     * Assign a random card to player
+     * @param playerId id of the player to assign card to
+     * */
+    public void assignCardToPlayer(Integer playerId) {
+        players.get(playerId).addRandomCard();
+    }
+
+    /**
+     * Change the current player to next player in round robin fashion
+     */
+    public void changeToNextPlayer() {
+        if (currentPlayer == null)
+            currentPlayer = players.get(1);
+        else {
+            int next = currentPlayer.id + 1;
+            if (next > players.size())
+                next = 1;
+
+            currentPlayer = players.get(next);
+        }
+    }
+
+    /**
+     * resets the current player to first player
+     */
+    public void resetCurrentPlayer() {
+        if (!players.isEmpty()) {
+            currentPlayer = players.get(1);
+        }
+    }
+
+    /**
      * Assign army to country in startup phase
+     *
      * @param countryId id of the country
      * @param numArmies no. of armies
-     * */
+     */
     public void assignArmyToCountry(int countryId, int numArmies) {
         countries.get(countryId).numOfArmies = numArmies;
     }
-
     public void setDummyData() {
         ArrayList<Card> cards = new ArrayList<Card>();
         cards.add(new Card(Card.TYPE.CAVALRY));
@@ -286,28 +318,28 @@ public class GameMap {
 
         Country country1 = new Country(1, "Country 1");
         country1.owner = players.get(1);
-        //country1.numOfArmies = 50;
+        country1.numOfArmies = 0;
         Country country2 = new Country(2, "Country 2");
         country2.owner = players.get(2);
-        //country2.numOfArmies = 5;
+        country2.numOfArmies = 0;
         Country country3 = new Country(3, "Country 3");
         country3.owner = players.get(3);
-        // country3.numOfArmies = 10;
+        country3.numOfArmies = 0;
         Country country4 = new Country(4, "Country 4");
         country4.owner = players.get(3);
-        //country4.numOfArmies = 40;
+        country4.numOfArmies = 0;
         Country country5 = new Country(5, "Country 5");
         country5.owner = players.get(1);
-        //country5.numOfArmies = 12;
+        country5.numOfArmies = 0;
         Country country6 = new Country(6, "Country 6");
         country6.owner = players.get(2);
-        // country6.numOfArmies = 24;
+        country6.numOfArmies = 0;
         Country country7 = new Country(7, "Country 7");
         country7.owner = players.get(3);
-        //country7.numOfArmies = 10;
+        country7.numOfArmies = 0;
         Country country8 = new Country(8, "Country 8");
         country8.owner = players.get(1);
-        //country8.numOfArmies = 20;
+        country8.numOfArmies = 0;
 
         countries.put(1, country1);
         countries.put(2, country2);
@@ -358,8 +390,7 @@ public class GameMap {
         countryGraph.put(8, n8);
 
 
-        currentPlayer = players.get(3);
-
+        currentPlayer = players.get(1);
     }
 
 

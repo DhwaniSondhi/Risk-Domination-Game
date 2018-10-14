@@ -2,6 +2,7 @@ package gui;
 
 import controller.AttackController;
 import entity.Country;
+import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -14,6 +15,7 @@ import java.util.Collection;
 public class AttackPanel extends JPanel {
     private JPanel countryPanel;
     private JPanel neighbouringPanel;
+    private JButton proceedButton;
 
     AttackController attackController;
 
@@ -23,8 +25,10 @@ public class AttackPanel extends JPanel {
      * Sets up country panel and neighbouring country panel using {@link JPanel}
      * Updates the country list in the view using {@link AttackController} updateCountryList function
      */
-    public AttackPanel() {
+    public AttackPanel(GameStateChangeListener stateChangeListener) {
         attackController = new AttackController(this);
+        attackController.setStateChangeListener(stateChangeListener);
+
         setBackground(Color.LIGHT_GRAY);
         setBorder(new LineBorder(Color.BLACK, 2));
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
@@ -37,6 +41,12 @@ public class AttackPanel extends JPanel {
         neighbouringPanel.setLayout(new BoxLayout(neighbouringPanel, BoxLayout.Y_AXIS));
         add(countryPanel);
         add(neighbouringPanel);
+
+        proceedButton = new JButton("Proceed");
+        proceedButton.setName("proceed");
+        proceedButton.addActionListener(attackController);
+        add(proceedButton);
+
         attackController.updateCountryList();
     }
 
@@ -44,7 +54,7 @@ public class AttackPanel extends JPanel {
      * Adds list of countries to the country panel
      *
      * @param countries collection of countries
-     * */
+     */
     public void showCountries(Collection<Country> countries) {
         countryPanel.removeAll();
         for (Country country : countries) {
@@ -66,7 +76,7 @@ public class AttackPanel extends JPanel {
      * Adds list of countries to the neighbouring panel
      *
      * @param countries collection of countries
-     * */
+     */
     public void showNeighbouringCountries(Collection<Country> countries) {
         neighbouringPanel.removeAll();
         for (Country country : countries) {
