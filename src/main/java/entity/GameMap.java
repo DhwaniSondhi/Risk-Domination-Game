@@ -286,28 +286,28 @@ public class GameMap {
 
         Country country1 = new Country(1, "Country 1");
         country1.owner = players.get(1);
-        country1.numOfArmies = 50;
+        //country1.numOfArmies = 50;
         Country country2 = new Country(2, "Country 2");
         country2.owner = players.get(2);
-        country2.numOfArmies = 5;
+        //country2.numOfArmies = 5;
         Country country3 = new Country(3, "Country 3");
         country3.owner = players.get(3);
-        country3.numOfArmies = 10;
+       // country3.numOfArmies = 10;
         Country country4 = new Country(4, "Country 4");
         country4.owner = players.get(3);
-        country4.numOfArmies = 40;
+        //country4.numOfArmies = 40;
         Country country5 = new Country(5, "Country 5");
         country5.owner = players.get(1);
-        country5.numOfArmies = 12;
+        //country5.numOfArmies = 12;
         Country country6 = new Country(6, "Country 6");
         country6.owner = players.get(2);
-        country6.numOfArmies = 24;
+       // country6.numOfArmies = 24;
         Country country7 = new Country(7, "Country 7");
         country7.owner = players.get(3);
-        country7.numOfArmies = 10;
+        //country7.numOfArmies = 10;
         Country country8 = new Country(8, "Country 8");
         country8.owner = players.get(1);
-        country8.numOfArmies = 20;
+        //country8.numOfArmies = 20;
 
         countries.put(1, country1);
         countries.put(2, country2);

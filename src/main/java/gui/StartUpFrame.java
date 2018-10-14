@@ -24,6 +24,9 @@ public class StartUpFrame extends JFrame {
     private JTextField addArmies;
     StartUpController startUpController;
     JLabel jLabelplayers;
+    JComboBox jComboBoxCountries;
+    JComboBox numberOfArmies;
+
 
     public StartUpFrame() {
         super("Welcome to the Game");
@@ -41,7 +44,7 @@ public class StartUpFrame extends JFrame {
         buttonSubmit.setName("submit");
         buttonSubmit.addActionListener(startUpController);
         numOfPlayers = new JComboBox();
-        for (int i = 0; i < GameMap.getInstance().countries.size(); i++) {
+        for (int i = 1; i < GameMap.getInstance().countries.size(); i++) {
             numOfPlayers.addItem(i + 1);
         }
 
@@ -64,6 +67,13 @@ public class StartUpFrame extends JFrame {
     public String getjLabelPlayerValue(){
         return jLabelplayers.getText();
     }
+    public int getjComboBoxCountry(){
+
+        return jComboBoxCountries.getSelectedIndex();
+    }
+    public int getNumberOfArmies(){
+        return (Integer)numberOfArmies.getSelectedItem();
+    }
     /**
      * Creates {@link GridBagConstraints} with provided gridX and gridY values
      *
@@ -85,7 +95,7 @@ public class StartUpFrame extends JFrame {
         countriesPanel.removeAll();
         int index = 0;
         addArmies = new JTextField(10);
-        JComboBox jComboBoxCountries=new JComboBox();
+        jComboBoxCountries=new JComboBox();
 
 
         String[] countriesAll = new String[countries.size()];
@@ -97,17 +107,11 @@ public class StartUpFrame extends JFrame {
         }
 
         countriesPanel.add(new JLabel("Player"),getConstraints(0,0));
-        /*JTextField jTextFieldPlayer=new JTextField();*/
         jLabelplayers.setText(String.valueOf(GameMap.getInstance().currentPlayer.id));
-
-        //jComboBoxplayers.addActionListener(startUpController);
-
-
-
         countriesPanel.add(jLabelplayers,getConstraints(0,1));
         countriesPanel.add(jComboBoxCountries,getConstraints(0,2));
         countriesPanel.add(new JLabel("Select Number of armies"),getConstraints(0,3));
-        JComboBox numberOfArmies=new JComboBox();
+        numberOfArmies=new JComboBox(startUpController.getArmies());
         countriesPanel.add(numberOfArmies,getConstraints(0,4));
         JButton jButtonAssignArmy=new JButton("Assign");
         jButtonAssignArmy.setName("Assign");
