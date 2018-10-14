@@ -136,7 +136,11 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
         }
 
-
+        if (neighbor.isEmpty()) {
+            view.disableButton();
+        } else {
+            view.enableButton();
+        }
         return neighbor;
     }
 

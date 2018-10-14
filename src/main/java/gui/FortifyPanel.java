@@ -25,6 +25,7 @@ public class FortifyPanel extends JPanel {
     JTextField jTextFieldNoOfArmiesNeighbour;
     JScrollPane scrollPaneNeighboringCountries;
     JComboBox jComboBoxNoOfArmies;
+    JButton jButtonTransfer;
 
 
     /**
@@ -175,7 +176,7 @@ public class FortifyPanel extends JPanel {
         transferPanelConstraints.gridx = 0;
         transferPanelConstraints.gridy = 2;
         jComboBoxNoOfArmies.setName("ComboBox");
-        JButton jButtonTransfer = new JButton("Transfer");
+        jButtonTransfer = new JButton("Transfer");
         jButtonTransfer.addActionListener(fortifyController);
         jPanelTransferArmy.add(jButtonTransfer, transferPanelConstraints);
         jPanelTransferArmy.revalidate();
@@ -244,11 +245,27 @@ public class FortifyPanel extends JPanel {
 
     /**
      * Sets the new value of armies for selected countries after transfer
-     * @param selectedCountryArmies updated number of armies at country from where army is transferred
+     *
+     * @param selectedCountryArmies  updated number of armies at country from where army is transferred
      * @param selectedNeighborArmies updated number of armies at country to which army is transferred
      */
     public void updateTextFieldsArmiesAfterTransfer(int selectedCountryArmies, int selectedNeighborArmies) {
         jTextFieldNoOfArmiesCountries.setText(Integer.toString(selectedCountryArmies));
         jTextFieldNoOfArmiesNeighbour.setText(Integer.toString(selectedNeighborArmies));
     }
+
+    /**
+     * Function to enable Button of transfer
+     */
+    public void enableButton() {
+        jButtonTransfer.setEnabled(true);
+    }
+
+    /**
+     * Function to disable the button of transfer
+     */
+    public void disableButton() {
+        jButtonTransfer.setEnabled(false);
+    }
+
 }
