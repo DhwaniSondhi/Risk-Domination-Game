@@ -79,13 +79,12 @@ public class MapCreatorFrame extends JFrame {
 
         formPanel.add(new JLabel("======================================="), getConstraints(0, 4));
 
-        formPanel.add(new JLabel("<html>Continent Details:<br/><i>(ContinentName = CV)</i><html>"), getConstraints(0, 5));
+        formPanel.add(new JLabel("<html>Continent Details:<br/><i>(ContinentName = CV)</i><html>"), getConstraints(0, 3));
         continentsPanel = new JPanel();
         continentsPanel.setLayout(new BoxLayout(continentsPanel, BoxLayout.Y_AXIS));
         continentsPanel.setBorder(new LineBorder(Color.black, 2));
-        formPanel.add(continentsPanel, getConstraints(1, 5, 1, 0));
+        formPanel.add(continentsPanel, getConstraints(1, 3, 1, 0));
 
-        formPanel.add(new JLabel("======================================="), getConstraints(0, 6));
 
 
         formPanel.add(new JLabel("<html>Countries Details: <br/><i>(CountryName,ContinentName,NeighbouringCountries)</i></html>"), getConstraints(0, 7));
@@ -98,9 +97,9 @@ public class MapCreatorFrame extends JFrame {
         numOfContinents = createComboBox("numOfContinents", 7);
         formPanel.add(numOfContinents, getConstraints(1, 2, 1, 0));
 
-        formPanel.add(new JLabel("Number of countries:"), getConstraints(0, 3));
+        formPanel.add(new JLabel("Number of countries:"), getConstraints(0, 5));
         numOfCountries = createComboBox("numOfCountries", 20);
-        formPanel.add(numOfCountries, getConstraints(1, 3, 1, 0));
+        formPanel.add(numOfCountries, getConstraints(1, 5, 1, 0));
 
         submitButton = new JButton("Save");
         submitButton.setName("Save");
