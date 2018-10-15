@@ -45,6 +45,17 @@ public class FileHelperTest {
         Assert.assertEquals(2, GameMap.getInstance().countryGraph.get(1).size());
     }
 
+    /**
+     * Check if the map contains the necessary keywords Continent and Territories
+     */
+    @Test
+    public void loadToConfigKeyword() {
+        FileHelper.loadToConfig(errorFile);
+        Assert.assertEquals(0, GameMap.getInstance().continents.size());
+        Assert.assertEquals(0, GameMap.getInstance().countries.size());
+        Assert.assertNull(GameMap.getInstance().countryGraph.get(1));
+    }
+
 
     /**
      * Checks if the contents of the file are properly loaded to file or not
