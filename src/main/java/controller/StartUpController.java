@@ -11,7 +11,7 @@ import java.util.*;
 
 public class StartUpController extends BaseController<StartUpFrame> implements ActionListener {
     Set<Integer> playerIds;
-    Integer[] playerNumArmies=new Integer[]{40,35,30,25,30};
+    Integer[] playerNumArmies=new Integer[]{40,35,30,25,20,15,10};
     Integer[] countryIdPlayers;
     int checkAllPlayers;
 
@@ -91,7 +91,6 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 GameMap.getInstance().countries.replace(country.id,country);
             }
             GameMap.getInstance().currentPlayer=GameMap.getInstance().players.get(playerId);
-
         }
         if(getCountriesLeftCurrentPlayer().size()==0){
             checkAllPlayers++;
