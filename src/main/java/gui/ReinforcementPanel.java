@@ -62,6 +62,7 @@ public class ReinforcementPanel extends JPanel {
         reinforcementController.getCards();
         addButtons();
         cardSection.revalidate();
+        cardSection.repaint();
     }
 
     /**
@@ -203,6 +204,7 @@ public class ReinforcementPanel extends JPanel {
         armySection.add(proceed, getGridContraints(0, 4));
 
         armySection.revalidate();
+        armySection.repaint();
 
     }
 
