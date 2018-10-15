@@ -292,7 +292,7 @@ public class GameMap {
         //country2.numOfArmies = 5;
         Country country3 = new Country(3, "Country 3");
         country3.owner = players.get(3);
-       // country3.numOfArmies = 10;
+        // country3.numOfArmies = 10;
         Country country4 = new Country(4, "Country 4");
         country4.owner = players.get(3);
         //country4.numOfArmies = 40;
@@ -301,7 +301,7 @@ public class GameMap {
         //country5.numOfArmies = 12;
         Country country6 = new Country(6, "Country 6");
         country6.owner = players.get(2);
-       // country6.numOfArmies = 24;
+        // country6.numOfArmies = 24;
         Country country7 = new Country(7, "Country 7");
         country7.owner = players.get(3);
         //country7.numOfArmies = 10;

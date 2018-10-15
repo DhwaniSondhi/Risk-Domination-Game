@@ -26,6 +26,7 @@ public class StartUpFrame extends JFrame {
     JLabel jLabelplayers;
     JComboBox jComboBoxCountries;
     JComboBox numberOfArmies;
+    JButton jButtonAssignArmy;
 
 
     public StartUpFrame() {
@@ -59,7 +60,9 @@ public class StartUpFrame extends JFrame {
         mainStartPanel.add(countriesPanel);
 
         mainStartPanel.revalidate();
-
+        jButtonAssignArmy=new JButton("Assign");
+        jButtonAssignArmy.setName("Assign");
+        jButtonAssignArmy.addActionListener(startUpController);
     }
     public int getNumOfPlayers(){
         return (Integer)numOfPlayers.getSelectedItem();
@@ -67,12 +70,24 @@ public class StartUpFrame extends JFrame {
     public String getjLabelPlayerValue(){
         return jLabelplayers.getText();
     }
+    public void setjLabelPlayerValue(String newPlayerId){
+        jLabelplayers.setText(newPlayerId);
+    }
     public int getjComboBoxCountry(){
 
         return jComboBoxCountries.getSelectedIndex();
     }
     public int getNumberOfArmies(){
         return (Integer)numberOfArmies.getSelectedItem();
+    }
+    public void clickAssignButton(){
+        jButtonAssignArmy.doClick();
+    }
+    public void addProceedButton(){
+        mainStartPanel.removeAll();
+        mainStartPanel.add(new JButton("Proceed"));
+        mainStartPanel.revalidate();
+        mainStartPanel.repaint();
     }
     /**
      * Creates {@link GridBagConstraints} with provided gridX and gridY values
@@ -113,9 +128,8 @@ public class StartUpFrame extends JFrame {
         countriesPanel.add(new JLabel("Select Number of armies"),getConstraints(0,3));
         numberOfArmies=new JComboBox(startUpController.getArmies());
         countriesPanel.add(numberOfArmies,getConstraints(0,4));
-        JButton jButtonAssignArmy=new JButton("Assign");
-        jButtonAssignArmy.setName("Assign");
-        jButtonAssignArmy.addActionListener(startUpController);
+
+
         countriesPanel.add(jButtonAssignArmy,getConstraints(0,5));
         countriesPanel.revalidate();
         countriesPanel.repaint();
@@ -125,4 +139,3 @@ public class StartUpFrame extends JFrame {
         mainStartPanel.revalidate();*/
     }
 }
-
