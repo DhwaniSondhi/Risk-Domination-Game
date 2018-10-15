@@ -107,7 +107,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             }
             selectedCards.clear();
         }
-        view.getCardSection();
+        view.addCardSection();
     }
 
 
@@ -116,8 +116,8 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To get the card section of Reinforcement Panel
      */
     public void getCards(){
-        view.getUnselectedCardGrid(unselectedCards);
-        view.getSelectedCardGrid(selectedCards);
+        view.addUnselectedCardGrid(unselectedCards);
+        view.addSelectedCardGrid(selectedCards);
 
     }
 
@@ -206,7 +206,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         countryChanged.numOfArmies+=addedArmy;
         model.countries.replace(countryId,countryChanged);
         totalArmies-=addedArmy;
-        view.getArmySection();
+        view.addArmySection();
     }
 
     /**
@@ -216,7 +216,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         totalArmies+=instance.currentPlayer.updateArmiesForCards;
         instance.currentPlayer.updateArmiesForCards+=5;
         selectedCards.clear();
-        view.getArmySection();
+        view.addArmySection();
 
     }
 }

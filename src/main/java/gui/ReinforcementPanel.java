@@ -20,7 +20,8 @@ public class ReinforcementPanel extends JPanel {
     ReinforcementController reinforcementController;
     JComboBox countryList;
     JComboBox armyList;
-    Card[] selectedCardsPanel;
+    int unselectedCardsNum;
+    Card[] selectedCardsArray;
     /**
      * Constructor
      * <p>
@@ -32,34 +33,34 @@ public class ReinforcementPanel extends JPanel {
         reinforcementController=new ReinforcementController(this);
         cardSection=new JPanel();
         cardSection.setLayout(new GridBagLayout());
-        getCardSection();
+        addCardSection();
         add(cardSection,getGridContraints(0,0));
         reinforcementController.setArmiesForReinforcement();
         armySection=new JPanel();
         armySection.setLayout(new GridBagLayout());
-        getArmySection();
-        add(armySection,getGridContraints(0,1));
+        addArmySection();
 
+        //armySection.revalidate();
+        add(armySection,getGridContraints(0,1));
     }
 
     /**
      * To add CardSection Panel for cards' selection, updation and resetting
      */
-    public void getCardSection(){
+    public void addCardSection(){
         cardSection.removeAll();
         reinforcementController.getCards();
         addButtons();
         cardSection.revalidate();
-
-        //revalidate();
+        cardSection.repaint();
     }
 
     /**
      * To add Selected Cards Grid in CardSection Panel
      */
-    public void getSelectedCardGrid(ArrayList<Card> selectedCards){
-        selectedCardsPanel=new Card[selectedCards.size()];
-        selectedCards.toArray(selectedCardsPanel);
+    public void addSelectedCardGrid(ArrayList<Card> selectedCards){
+        selectedCardsArray =new Card[selectedCards.size()];
+        selectedCards.toArray(selectedCardsArray);
         JPanel cardsSelected=new JPanel();
         cardsSelected.setLayout(new GridLayout(3,1));
         for(Card card:selectedCards){
@@ -76,7 +77,8 @@ public class ReinforcementPanel extends JPanel {
     /**
      * To add Unselected Cards Grid with add buttons in CardSection Panel
      */
-    public void getUnselectedCardGrid(HashMap<String,Integer> cardsOfCurrentPlayer){
+    public void addUnselectedCardGrid(HashMap<String,Integer> cardsOfCurrentPlayer){
+        unselectedCardsNum=0;
         JPanel cardsUnselected=new JPanel();
         cardsUnselected.setLayout(new GridLayout(3,1));
         Iterator itForCards=cardsOfCurrentPlayer.entrySet().iterator();
@@ -85,6 +87,7 @@ public class ReinforcementPanel extends JPanel {
             JPanel cardButtonPanel=new JPanel();
             cardButtonPanel.setLayout(new GridLayout(1,2));
             String label=cardPair.getValue()+" "+cardPair.getKey();
+            unselectedCardsNum+=(Integer.parseInt(cardPair.getValue().toString()));
             JLabel cardLabel=new JLabel(label);
             cardButtonPanel.add(cardLabel);
             JButton add=new JButton("Add");
@@ -92,7 +95,7 @@ public class ReinforcementPanel extends JPanel {
             add.setName("Add"+cardPair.getKey());
             if(Integer.valueOf(label.substring(0,1))<1){
                 add.setEnabled(false);
-            }/*else if(selectedCards.length>=3){
+            }/*else if(selectedCardsArray.length>=3){
                 add.setEnabled(false);
             }*/else{
                 add.setEnabled(true);
@@ -114,9 +117,9 @@ public class ReinforcementPanel extends JPanel {
         JButton update=new JButton("Update");
         update.setName("Update");
         update.addActionListener(reinforcementController);
-        if(selectedCardsPanel!=null && selectedCardsPanel.length>2
-                && ( (selectedCardsPanel[0].type==selectedCardsPanel[1].type && selectedCardsPanel[0].type==selectedCardsPanel[2].type && selectedCardsPanel[1].type==selectedCardsPanel[2].type)
-                || (!(selectedCardsPanel[0].type==selectedCardsPanel[1].type) && !(selectedCardsPanel[0].type==selectedCardsPanel[2].type) && !(selectedCardsPanel[1].type==selectedCardsPanel[2].type)))){
+        if(selectedCardsArray !=null && selectedCardsArray.length>2
+                && ( (selectedCardsArray[0].type== selectedCardsArray[1].type && selectedCardsArray[0].type== selectedCardsArray[2].type && selectedCardsArray[1].type== selectedCardsArray[2].type)
+                || (!(selectedCardsArray[0].type== selectedCardsArray[1].type) && !(selectedCardsArray[0].type== selectedCardsArray[2].type) && !(selectedCardsArray[1].type== selectedCardsArray[2].type)))){
             update.setEnabled(true);
         }else{
             update.setEnabled(false);
@@ -133,7 +136,7 @@ public class ReinforcementPanel extends JPanel {
     /**
      * To add Army Section Panel for armies display and distribution among countries
      */
-    public void getArmySection(){
+    public void addArmySection(){
         armySection.removeAll();
         int armiesLeft=reinforcementController.getArmiesForReinforcement();
         JPanel armyDisplay=new JPanel();
@@ -170,26 +173,31 @@ public class ReinforcementPanel extends JPanel {
         JButton changeArmies=new JButton("Add Armies");
         changeArmies.setName("changeArmies");
         changeArmies.addActionListener(reinforcementController);
-        if(armiesLeft>0){
+        if(armiesLeft>0 && unselectedCardsNum<5){
             changeArmies.setEnabled(true);
         }else{
             changeArmies.setEnabled(false);
         }
         armiesChange.add(changeArmies,getGridContraints(2,0));
         armySection.add(armiesChange,getGridContraints(0,2));
-        armySection.revalidate();
+        if(unselectedCardsNum>=5){
+            JLabel msgForCards=new JLabel("Cards cannot be greater than 5. Please exchange them.");
+            armySection.add(msgForCards,getGridContraints(0,3));
+        }
 
-
-
-        /*JButton proceed=new JButton("Proceed");
+        JButton proceed=new JButton("Proceed");
         if(armiesLeft>0){
             proceed.setVisible(false);
         }else{
             proceed.setVisible(true);
         }
-        add(proceed,getGridContraints(0,2));
-        revalidate();*/
+        armySection.add(proceed,getGridContraints(0,4));
+
+        armySection.revalidate();
+        armySection.repaint();
+
     }
+
 
     /**
      * To get the Selected Index for the Country List Combo Box in ArmySection Panel
