@@ -178,6 +178,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             armiesOnTextFields += Integer.parseInt(pair.getValue().toString());
         }
         totalArmies = (playerCountries / 3) + playerContinenstControlVal;
+        if(totalArmies<3){
+            totalArmies=3;
+        }
     }
 
     /**
