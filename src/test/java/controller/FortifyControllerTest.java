@@ -24,8 +24,8 @@ public class FortifyControllerTest {
     @Before
     public void setUp() throws Exception {
         gameMap = GameMap.getInstance();
-        fortifyController = new FortifyController(new FortifyPanel(null));
         gameMap.setDummyData();
+        fortifyController = new FortifyController(new FortifyPanel(null));
 
     }
 
