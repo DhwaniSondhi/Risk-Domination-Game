@@ -74,12 +74,13 @@ public class MapHelper {
         HashMap<Integer, Node> nodeHashMap = new HashMap<>();
         for (Map.Entry<Integer, Continent> entry : GameMap.getInstance().continents.entrySet()) {
             int continentId = entry.getKey();
+            int countryId = 1;
             for (Country country : entry.getValue().countries) {
-                int countryId = country.id;
+                countryId = country.id;
                 Node countryNode = new Node(countryId);
                 nodeHashMap.put(countryId,countryNode);
             }
-            result = bfs(nodeHashMap,nodeHashMap.get(1));
+            result = bfs(nodeHashMap,nodeHashMap.get(countryId));
             if(!result){
                 return false;
             }

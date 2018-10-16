@@ -45,7 +45,7 @@ public class GameMapTest {
         gameMap.saveContinent("North America", 100);
         Assert.assertTrue(gameMap.continents.containsKey(1));
         Assert.assertTrue(gameMap.continents.containsKey(2));
-        Assert.assertEquals("Europe", gameMap.continents.get(1).name);
+        Assert.assertEquals("Asia", gameMap.continents.get(1).name);
         Assert.assertEquals("North America", gameMap.continents.get(2).name);
     }
 
