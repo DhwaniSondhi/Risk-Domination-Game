@@ -37,16 +37,24 @@ public class ReinforcementPanel extends JPanel {
         reinforcementController.setStateChangeListener(stateChangeListener);
 
         setLayout(new GridBagLayout());
+
         cardSection = new JPanel();
         cardSection.setLayout(new GridBagLayout());
         addCardSection();
         add(cardSection, getGridContraints(0, 0));
+
         reinforcementController.setArmiesForReinforcement();
+
         armySection = new JPanel();
         armySection.setLayout(new GridBagLayout());
         addArmySection();
         add(armySection, getGridContraints(0, 1));
     }
+
+
+    /**
+     * To update the Card Section and Army Section of the Reinforcement Panel
+     */
 
     public void update() {
         addCardSection();
@@ -59,7 +67,7 @@ public class ReinforcementPanel extends JPanel {
      */
     public void addCardSection() {
         cardSection.removeAll();
-        reinforcementController.getCards();
+        reinforcementController.getCardsInGui();
         addButtons();
         cardSection.revalidate();
         cardSection.repaint();
@@ -67,6 +75,8 @@ public class ReinforcementPanel extends JPanel {
 
     /**
      * To add Selected Cards Grid in CardSection Panel
+     *
+     * @param selectedCards list of the selected cards
      */
     public void addSelectedCardGrid(ArrayList<Card> selectedCards) {
         selectedCardsArray = new Card[selectedCards.size()];
@@ -86,6 +96,8 @@ public class ReinforcementPanel extends JPanel {
 
     /**
      * To add Unselected Cards Grid with add buttons in CardSection Panel
+     *
+     * @param cardsOfCurrentPlayer the list of cards of current player
      */
     public void addUnselectedCardGrid(HashMap<String, Integer> cardsOfCurrentPlayer) {
         unselectedCardsNum = 0;
@@ -105,9 +117,7 @@ public class ReinforcementPanel extends JPanel {
             add.setName("Add" + cardPair.getKey());
             if (Integer.valueOf(label.substring(0, 1)) < 1) {
                 add.setEnabled(false);
-            }/*else if(selectedCardsArray.length>=3){
-                add.setEnabled(false);
-            }*/ else {
+            } else {
                 add.setEnabled(true);
             }
             cardButtonPanel.add(add);
@@ -117,7 +127,7 @@ public class ReinforcementPanel extends JPanel {
     }
 
     /**
-     * To Add panel for Update and Reset buttons in CardSection Panel
+     * To add panel for Update and Reset buttons in CardSection Panel
      */
     public void addButtons() {
         JPanel buttons = new JPanel();
@@ -154,9 +164,7 @@ public class ReinforcementPanel extends JPanel {
 
 
         JPanel armiesChange = new JPanel(new GridBagLayout());
-        List<Country> countriesOfPlayer = reinforcementController.getCountriesOfPlayer();
-        JPanel countriesForArmies = new JPanel();
-        countriesForArmies.setLayout(new GridLayout(countriesOfPlayer.size(), 1));
+        List<Country> countriesOfPlayer = reinforcementController.getCountriesAndIdsOfCurrentPlayer();
         int loopForCountryNames = 0;
         String[] countriesNames = new String[countriesOfPlayer.size()];
         for (Country country : countriesOfPlayer) {
@@ -210,6 +218,8 @@ public class ReinforcementPanel extends JPanel {
 
     /**
      * To get the Selected Index for the Country List Combo Box in ArmySection Panel
+     *
+     * @return the index of selected country in the Country ComboBox
      */
     public int getValueOfCountryIndexComboBox() {
         return countryList.getSelectedIndex();
@@ -217,14 +227,18 @@ public class ReinforcementPanel extends JPanel {
 
     /**
      * To get the Selected Index for the Army List Combo Box in ArmySection Panel
+     *
+     * @return the item selected in the Army ComboBox
      */
-    public String getValueOfArmyComboBox() {
-        return armyList.getSelectedItem().toString();
-
-    }
+    public String getValueOfArmyComboBox() { return armyList.getSelectedItem().toString(); }
 
     /**
      * Set the constraints for GridBagLayout used
+     *
+     * @param x value for constraints gridx (row in the grid)
+     * @param y value for constraints gridY (col in the grid)
+     *
+     * @return default constraints (see {@link GridBagConstraints}) with provided x,y values
      */
     public GridBagConstraints getGridContraints(int x, int y) {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
