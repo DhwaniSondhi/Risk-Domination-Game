@@ -42,31 +42,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     }
 
     /**
-     * To set the list of cards available of a player in the unselectedCards attribute
-     */
-    public void setUnSelectedCards() {
-        ArrayList<Card> cards = model.currentPlayer.cards;
-        if (unselectedCards == null) {
-            unselectedCards = new HashMap<>();
-        }
-        int infantry = 0;
-        int artillery = 0;
-        int cavalry = 0;
-        for (Card card : cards) {
-            if (card.type == Card.TYPE.INFANTRY) {
-                infantry++;
-            } else if (card.type == Card.TYPE.ARTILLERY) {
-                artillery++;
-            } else if (card.type == Card.TYPE.CAVALRY) {
-                cavalry++;
-            }
-            unselectedCards.put("INFANTRY", infantry);
-            unselectedCards.put("ARTILLERY", artillery);
-            unselectedCards.put("CAVALRY", cavalry);
-        }
-    }
-
-    /**
      * Invoked on any action performed on Add, Reset and Update buttons for Card Section in Reinforcement Panel
      * Invoked on any action performed on Change Armies button for Army Section in Reinforcement Panel
      * Invoked on any action performed on Proceed button to proceed to next phase for the player
@@ -114,13 +89,48 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         view.addCardSection();
     }
 
-
     /**
      * To get the card section of Reinforcement Panel
      */
     public void getCardsInGui() {
         view.addUnselectedCardGrid(unselectedCards);
         view.addSelectedCardGrid(selectedCards);
+    }
+
+    /**
+     * To set the list of cards available of a player in the unselectedCards attribute
+     */
+    public void setUnSelectedCards() {
+        ArrayList<Card> cards = model.currentPlayer.cards;
+        if (unselectedCards == null) {
+            unselectedCards = new HashMap<>();
+        }
+        int infantry = 0;
+        int artillery = 0;
+        int cavalry = 0;
+        for (Card card : cards) {
+            if (card.type == Card.TYPE.INFANTRY) {
+                infantry++;
+            } else if (card.type == Card.TYPE.ARTILLERY) {
+                artillery++;
+            } else if (card.type == Card.TYPE.CAVALRY) {
+                cavalry++;
+            }
+            unselectedCards.put("INFANTRY", infantry);
+            unselectedCards.put("ARTILLERY", artillery);
+            unselectedCards.put("CAVALRY", cavalry);
+        }
+    }
+
+    /**
+     * To update the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
+     */
+    public void setCardsOnUpdate() {
+        totalArmies += instance.currentPlayer.updateArmiesForCards;
+        instance.currentPlayer.updateArmiesForCards += 5;
+        selectedCards.clear();
+        view.addArmySection();
+
     }
 
     /**
@@ -142,7 +152,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             }
         }
 
-        int playerContinenstControlVal = 0;
+        int playerContinentsControlVal = 0;
         boolean hasContinent;
         Iterator itForContinents = continents.entrySet().iterator();
         while (itForContinents.hasNext()) {
@@ -162,11 +172,11 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
                 }
             }
             if (hasContinent == true) {
-                playerContinenstControlVal += continent.controlValue;
+                playerContinentsControlVal += continent.controlValue;
             }
         }
 
-        totalArmies = (playerCountries / 3) + playerContinenstControlVal;
+        totalArmies = (playerCountries / 3) + playerContinentsControlVal;
         if(totalArmies<3){
             totalArmies=3;
         }
@@ -211,14 +221,5 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         view.addArmySection();
     }
 
-    /**
-     * To update the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
-     */
-    public void setCardsOnUpdate() {
-        totalArmies += instance.currentPlayer.updateArmiesForCards;
-        instance.currentPlayer.updateArmiesForCards += 5;
-        selectedCards.clear();
-        view.addArmySection();
 
-    }
 }
