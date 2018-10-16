@@ -29,16 +29,13 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * Constructor for Reinforcement Panel
      * <p>
      * To initialize attributes
-     * To call method setUnselectedCards()
-     *
-     * @param reinforcementPanel the reinforcement panel attached to it
      * </p>
+     * @param reinforcementPanel the reinforcement panel attached to it
      */
     public ReinforcementController(ReinforcementPanel reinforcementPanel) {
         super(reinforcementPanel);
         instance = GameMap.getInstance();
         selectedCards = new ArrayList<>();
-        setUnSelectedCards();
     }
 
     /**
@@ -134,11 +131,23 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     }
 
     /**
-     * To calculate the total armies from the countries and continents owns by the player in totalArmies attribute
+     * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      */
     public void setArmiesForReinforcement() {
-        HashMap<Integer, Country> countries = instance.countries;
-        HashMap<Integer, Continent> continents = instance.continents;
+        totalArmies=getTotalArmies(instance.countries,instance.continents,instance.currentPlayer.id);
+    }
+
+
+    /**
+    * To calculate the total armies from the countries and continents owns by the player
+    *
+    * @param countries list of countries in the instance
+    * @param continents list of continents in the instance
+    * @param playerId the Id of the current player
+    *
+    * @return the calculated total armies
+    */
+    public int getTotalArmies(HashMap<Integer, Country> countries,HashMap<Integer, Continent> continents,int playerId) {
 
         int playerCountries = 0;
         Iterator itForCountries = countries.entrySet().iterator();
@@ -146,7 +155,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             Map.Entry countryPair = (Map.Entry) itForCountries.next();
             Country country = (Country) countryPair.getValue();
             if (country.owner != null) {
-                if (country.owner.id == instance.currentPlayer.id) {
+                if (country.owner.id ==playerId)  {
                     playerCountries++;
                 }
             }
@@ -162,7 +171,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             ArrayList<Country> continentCountries = continent.countries;
             for (Country country : continentCountries) {
                 if (country.owner != null) {
-                    if (country.owner.id != instance.currentPlayer.id) {
+                    if (country.owner.id != playerId) {
                         hasContinent = false;
                         break;
                     }
@@ -176,10 +185,11 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             }
         }
 
-        totalArmies = (playerCountries / 3) + playerContinentsControlVal;
-        if(totalArmies<3){
-            totalArmies=3;
+        int totalArmLocal=(playerCountries / 3) + playerContinentsControlVal;
+        if(totalArmLocal<3){
+            totalArmLocal=3;
         }
+        return totalArmLocal;
     }
 
     /**

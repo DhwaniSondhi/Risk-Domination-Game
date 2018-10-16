@@ -35,6 +35,8 @@ public class ReinforcementPanel extends JPanel {
     public ReinforcementPanel(GameStateChangeListener stateChangeListener) {
         reinforcementController = new ReinforcementController(this);
         reinforcementController.setStateChangeListener(stateChangeListener);
+        reinforcementController.setUnSelectedCards();
+        reinforcementController.setArmiesForReinforcement();
 
         setLayout(new GridBagLayout());
 
@@ -42,8 +44,6 @@ public class ReinforcementPanel extends JPanel {
         cardSection.setLayout(new GridBagLayout());
         addCardSection();
         add(cardSection, getGridContraints(0, 0));
-
-        reinforcementController.setArmiesForReinforcement();
 
         armySection = new JPanel();
         armySection.setLayout(new GridBagLayout());
