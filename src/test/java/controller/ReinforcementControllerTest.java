@@ -66,6 +66,12 @@ public class ReinforcementControllerTest {
 
     @Test
     public void toTestTotalArmiesReinforcement(){
+        int totalArmies;
+        // to check armies for player having countries less than 9
+        //---will be given 3 armies
+        totalArmies=reinforcementController.getTotalArmies(countries,continents,players.get(2).id);
+        assertEquals(3,totalArmies);
+
         
     }
 }
