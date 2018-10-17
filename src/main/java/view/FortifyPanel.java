@@ -39,7 +39,6 @@ public class FortifyPanel extends JPanel {
      *
      * @param stateChangeListener observer for game state
      */
-
     public FortifyPanel(GameStateChangeListener stateChangeListener) {
         fortifyController = new FortifyController(this);
         fortifyController.setStateChangeListener(stateChangeListener);
@@ -119,7 +118,6 @@ public class FortifyPanel extends JPanel {
      *
      * @param countries Neighboring countries
      */
-
     public void showNeighbouringCountriesFortify(Collection<Country> countries) {
         jPanelNeighbors.removeAll();
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();

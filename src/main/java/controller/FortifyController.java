@@ -33,6 +33,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
     /**
      * Updates the countries and its Neighbouring countries and also show number of armies in them
+     * Hide unnecessary components at first run
      */
     public void updateCountryListFortify() {
         view.showCountriesFortify(model.getCountriesOfCurrentPlayer());
@@ -79,7 +80,6 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      *
      * @param e event triggered after list item selected
      */
-
     @Override
     public void valueChanged(ListSelectionEvent e) {
         JList<Country> source = (JList<Country>) e.getSource();
