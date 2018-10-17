@@ -21,6 +21,8 @@ public class FortifyPanel extends JPanel {
     JScrollPane scrollPaneNeighboringCountries;
     JComboBox jComboBoxNoOfArmies;
     JButton jButtonTransfer;
+    JLabel jLabelArmiesAtNeighbor;
+    JLabel jLabelArmiesAtCountries;
     private JPanel jPanelCountries;
     private JPanel jPanelNeighbors;
     private JPanel jPanelInnerPanelArmies;
@@ -46,13 +48,13 @@ public class FortifyPanel extends JPanel {
         setBackground(Color.LIGHT_GRAY);
         setBorder(new LineBorder(Color.BLACK, 2));
 
-        JLabel jLabelfortify = new JLabel("fortify");
-        jLabelfortify.setFont(new Font("Fortify", Font.BOLD, 20));
+        JLabel jLabelFortify = new JLabel("Fortify");
+        jLabelFortify.setFont(new Font("Fortify", Font.BOLD, 20));
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridwidth = 2;
         bagConstraintsMain.gridx = 1;
         bagConstraintsMain.gridy = 0;
-        add(jLabelfortify, bagConstraintsMain);
+        add(jLabelFortify, bagConstraintsMain);
 
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         jPanelCountries = new JPanel();
@@ -154,14 +156,16 @@ public class FortifyPanel extends JPanel {
         gridBagConstraintsInnerPanelArmies.fill = GridBagConstraints.VERTICAL;
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 0;
-        jPanelInnerPanelArmies.add(new JLabel("Army at Country"), gridBagConstraintsInnerPanelArmies);
+        jLabelArmiesAtCountries = new JLabel("Army at Country");
+        jPanelInnerPanelArmies.add(jLabelArmiesAtCountries, gridBagConstraintsInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 1;
         jTextFieldNoOfArmiesCountries = new JTextField(10);
         jPanelInnerPanelArmies.add(jTextFieldNoOfArmiesCountries, gridBagConstraintsInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 2;
-        jPanelInnerPanelArmies.add(new JLabel("Army at neighbor"), gridBagConstraintsInnerPanelArmies);
+        jLabelArmiesAtNeighbor = new JLabel("Army at neighbor");
+        jPanelInnerPanelArmies.add(jLabelArmiesAtNeighbor, gridBagConstraintsInnerPanelArmies);
         jTextFieldNoOfArmiesNeighbour = new JTextField(10);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 3;
@@ -173,11 +177,6 @@ public class FortifyPanel extends JPanel {
         jPanelTransferArmy.setLayout(gridBagLayoutTransferArmy);
         transferPanelConstraints.fill = GridBagConstraints.VERTICAL;
         jComboBoxNoOfArmies = new JComboBox();
-        jComboBoxNoOfArmies.addItem(1);
-        jComboBoxNoOfArmies.addItem(2);
-        jComboBoxNoOfArmies.addItem(3);
-        jComboBoxNoOfArmies.addItem(4);
-        jComboBoxNoOfArmies.addItem(5);
         transferPanelConstraints.gridx = 0;
         transferPanelConstraints.gridy = 0;
         jPanelTransferArmy.add(new JLabel("Select No. of armies to transfer"), transferPanelConstraints);
@@ -291,6 +290,7 @@ public class FortifyPanel extends JPanel {
      */
     public void disableButton() {
         jButtonTransfer.setEnabled(false);
+        jButtonTransfer.doClick();
     }
 
     /**
@@ -305,6 +305,44 @@ public class FortifyPanel extends JPanel {
      */
     public void setVisibleFalseNeighbourPanel() {
         jPanelNeighbors.setVisible(false);
+    }
+
+    /**
+     * Function to disable ComboBox
+     * Hide Neighbor army TextField
+     */
+    public void setComboBoxAndNeighborTextFieldFalse() {
+        jComboBoxNoOfArmies.setEnabled(false);
+        jLabelArmiesAtNeighbor.setVisible(false);
+        jTextFieldNoOfArmiesNeighbour.setVisible(false);
+
+    }
+
+    /**
+     * Function to enable ComboBox
+     * Show Neighbor army TextField
+     */
+    public void setComboBoxAndNeighborTextFieldTrue() {
+        jComboBoxNoOfArmies.setEnabled(true);
+        jLabelArmiesAtNeighbor.setVisible(true);
+        jTextFieldNoOfArmiesNeighbour.setVisible(true);
+
+    }
+
+    /**
+     * Hide label and TextField for CountriesArmy
+     */
+    public void disableCountriesArmyLabelAndTextField() {
+        jTextFieldNoOfArmiesCountries.setVisible(false);
+        jLabelArmiesAtCountries.setVisible(false);
+    }
+
+    /**
+     * Show label and TextField for CountriesArmy
+     */
+    public void enableCountriesArmyLabelAndTextField() {
+        jTextFieldNoOfArmiesCountries.setVisible(true);
+        jLabelArmiesAtCountries.setVisible(true);
     }
 
 }

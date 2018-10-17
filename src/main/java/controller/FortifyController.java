@@ -37,6 +37,10 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     public void updateCountryListFortify() {
         view.showCountriesFortify(model.getCountriesOfCurrentPlayer());
         view.transferFortify();
+        view.disableButton();
+        view.setVisibleFalseNeighbourPanel();
+        view.setComboBoxAndNeighborTextFieldFalse();
+        view.disableCountriesArmyLabelAndTextField();
     }
 
     /**
@@ -82,6 +86,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         if (e.getValueIsAdjusting()) {
             if (((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country")) {
                 selectedCountry = source.getSelectedValue();
+                view.enableCountriesArmyLabelAndTextField();
                 view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
                 LinkedHashMap<Integer, Country> neighbor = getNeighborsOfCountry(selectedCountry);
                 view.showNeighbouringCountriesFortify(model.getCountriesOfCurrentPlayer());
@@ -90,6 +95,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             } else {
                 selectedNeighbour = source.getSelectedValue();
                 getArmiesOfSelectedNeighbor(selectedNeighbour);
+                view.enableButton();
+                view.setComboBoxAndNeighborTextFieldTrue();
             }
 
 
@@ -105,6 +112,9 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         String selectedNeighborCountry = selectedNeighbour.name;
         view.updateNeighboringCountriesArmyTextField(selectedNeighbour.numOfArmies);
         int armyOnCountry = selectedCountry.numOfArmies;
+        if (armyOnCountry == 1) {
+            view.disableButton();
+        }
         view.updateJComboboxArmies(armyOnCountry);
 
     }
@@ -144,9 +154,11 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         if (neighbor.isEmpty()) {
             view.disableButton();
             view.setVisibleFalseNeighbourPanel();
+            view.setComboBoxAndNeighborTextFieldFalse();
         } else {
-            view.enableButton();
             view.setVisibleTrueNeighbourPanel();
+            view.disableButton();
+            view.setComboBoxAndNeighborTextFieldFalse();
         }
         return neighbor;
     }
