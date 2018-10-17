@@ -70,8 +70,18 @@ public class ReinforcementControllerTest {
         int totalArmies;
         // to check armies for player having countries less than 9
         //---will be given 3 armies
-        totalArmies = reinforcementController.getTotalArmies(countries, continents, players.get(2).id);
-        assertEquals(3, totalArmies);
+        totalArmies=reinforcementController.getTotalArmies(countries,continents,players.get(2).id);
+        assertEquals(3,totalArmies);
+
+        //to check armies for player having countries equal to 13 but not complete continent
+        //---will be given 13/3=4 armies
+        totalArmies=reinforcementController.getTotalArmies(countries,continents,players.get(3).id);
+        assertEquals(4,totalArmies);
+
+        //to check armies for player having countries equal to 12 but have a complete continent with control value 7
+        //---will be given 12/3+7=11 armies
+        totalArmies=reinforcementController.getTotalArmies(countries,continents,players.get(1).id);
+        assertEquals(11,totalArmies);
 
 
     }
