@@ -1,5 +1,6 @@
 package controller;
 
+import model.Card;
 import model.Continent;
 import model.Country;
 import model.Player;
@@ -18,6 +19,7 @@ public class ReinforcementControllerTest {
     HashMap<Integer, Country> countries;
     ArrayList<Country> countriesInContinent;
     HashMap<Integer, Player> players;
+    ArrayList<Card> cards;
 
     ReinforcementController reinforcementController;
 
@@ -58,6 +60,25 @@ public class ReinforcementControllerTest {
                 loopForContinent++;
             }
         }
+
+        cards=new ArrayList<Card>();
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.INFANTRY));
+        cards.add(new Card(Card.TYPE.ARTILLERY));
+        cards.add(new Card(Card.TYPE.ARTILLERY));
+        cards.add(new Card(Card.TYPE.ARTILLERY));
+        cards.add(new Card(Card.TYPE.ARTILLERY));
+        players.get(1).cards=cards;
+
+        cards=new ArrayList<Card>();
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.CAVALRY));
+        cards.add(new Card(Card.TYPE.ARTILLERY));
+        players.get(2).cards=cards;
+
+
     }
 
     @After
@@ -85,4 +106,34 @@ public class ReinforcementControllerTest {
 
 
     }
+
+    @Test
+    public void toTestArmiesFromCards(){
+        int totalArmies;
+
+        //to check armies for player having countries equal to 13 but not complete continent
+        //---will be given 13/3=4 armies
+        totalArmies=reinforcementController.getTotalArmies(countries,continents,players.get(3).id);
+        assertEquals(4,totalArmies);
+
+        //initially the armies were 4
+        //on every set of 3 cards are exchanged---5 armies will be allotted on first exchange
+        //---will be given 4+5=9 armies
+        totalArmies=reinforcementController.getUpdatedArmiesOnCardsExchange(totalArmies,players.get(3));
+        assertEquals(9,totalArmies);
+
+        //now the armies were 9
+        //on every set of 3 cards are exchanged---10 armies will be allotted on second exchange
+        //---will be given 9+10=19 armies
+        totalArmies=reinforcementController.getUpdatedArmiesOnCardsExchange(totalArmies,players.get(3));
+        assertEquals(19,totalArmies);
+
+        //now the armies were 19
+        //on every set of 3 cards are exchanged---15 armies will be allotted on third exchange
+        //---will be given 19+15=34 armies
+        totalArmies=reinforcementController.getUpdatedArmiesOnCardsExchange(totalArmies,players.get(3));
+        assertEquals(34,totalArmies);
+    }
+
+
 }

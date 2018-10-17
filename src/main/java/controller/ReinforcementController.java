@@ -100,9 +100,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     }
 
     /**
-     * To get the number of INFANTRY, ARTILLERY and CAVALRY cards the player playing has
+     * To get the number of INFANTRY, ARTILLERY and CAVALRY cards the current player has
      *
-     * @param player the player playing the game
+     * @param player current player
      * @return hashmap with values as the number of each INFANTRY, ARTILLERY and CAVALRY cards
      */
     public HashMap<String,Integer> getCardSetsOfPlayer(Player player) {
@@ -131,7 +131,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      */
     public void setCardsOnUpdate() {
         totalArmies = getUpdatedArmiesOnCardsExchange(totalArmies,instance.currentPlayer);
-        //instance.currentPlayer.updateArmiesForCards += 5;
         selectedCards.clear();
         view.addArmySection();
 
@@ -147,7 +146,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal,Player player) {
         totalArmiesLocal+=player.updateArmiesForCards;
         player.updateArmiesForCards += 5;
-
         return totalArmiesLocal;
 
     }
