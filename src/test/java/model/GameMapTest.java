@@ -14,6 +14,7 @@ public class GameMapTest {
     @Before
     public void setUp() {
         gameMap = GameMap.getInstance();
+        gameMap.clearInformation();
     }
 
     @After

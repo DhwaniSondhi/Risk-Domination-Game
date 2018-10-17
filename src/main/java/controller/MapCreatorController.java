@@ -1,6 +1,7 @@
 package controller;
 
 import utility.FileHelper;
+import utility.MapHelper;
 import view.MapCreatorFrame;
 
 import javax.swing.*;
@@ -8,9 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -71,7 +70,7 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
     /**
      * save the form data to file
      */
-    private void saveToFile() {
+    public void saveToFile() {
         try {
             String mapName = view.mapName.getText();
             HashSet<String> continentCheckList = new HashSet<>();
@@ -117,11 +116,10 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
                 }
             }
 
-            if (continents.isEmpty() || countries.isEmpty())
-                throw new IllegalStateException("No data provided");
-
             if (countryCheckList.size() != neighboursCheckList.size())
                 throw new IllegalStateException("Not all the country has a neighbour");
+
+            validateFormData(continents, countries);
 
             if (saveFile == null) {
                 File dir = new File("maps");
@@ -129,9 +127,7 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
                 saveFile = new File("maps/" + mapName + ".map");
             }
             FileHelper.saveMapToFile(saveFile, continents, countries);
-
             view.dispose();
-
         } catch (NumberFormatException nfe) {
             view.showWarning("Not a valid number");
         } catch (IllegalStateException ise) {
@@ -139,6 +135,31 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
         } catch (Exception e) {
             e.printStackTrace();
             view.showWarning(e.getMessage());
+        }
+    }
+
+    /**
+     * Validates the form data to check if its a valid game map
+     *
+     * @param continents list of continent items
+     * @param countries  list of country items
+     * @throws IllegalAccessException for invalid map
+     */
+    public void validateFormData(List<String> continents, List<String> countries) throws IllegalStateException {
+        if (continents.isEmpty() || countries.isEmpty())
+            throw new IllegalStateException("No data provided");
+
+        model.clearInformation();
+        for (String continent : continents) {
+            String[] data = continent.replace(" ", "").split("=");
+            model.saveContinent(data[0], Integer.valueOf(data[1]));
+        }
+        for (String countryItem : countries) {
+            model.saveCountry(Arrays.asList(countryItem.replace(" ", "").split(",")));
+        }
+
+        if (!MapHelper.validateMap() || !MapHelper.validateContinentGraph()) {
+            throw new IllegalStateException("Map could not be verified as connected graph / sub-graph");
         }
     }
 

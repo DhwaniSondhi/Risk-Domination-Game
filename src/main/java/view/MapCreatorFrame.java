@@ -24,6 +24,7 @@ public class MapCreatorFrame extends JFrame {
      * Controller for the form
      */
     private MapCreatorController controller;
+    private JScrollPane container;
     private JPanel formPanel;
     private JPanel continentsPanel;
     private JPanel countriesPanel;
@@ -64,7 +65,6 @@ public class MapCreatorFrame extends JFrame {
     private void initializeForm() {
         formPanel = new JPanel();
         formPanel.setLayout(new GridBagLayout());
-        add(formPanel);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(600, 600);
         setVisible(true);
@@ -91,17 +91,20 @@ public class MapCreatorFrame extends JFrame {
         formPanel.add(countriesPanel, getConstraints(1, 7, 1, 0));
 
         formPanel.add(new JLabel("Number of continents:"), getConstraints(0, 2));
-        numOfContinents = createComboBox("numOfContinents", 7);
+        numOfContinents = createComboBox("numOfContinents", 10);
         formPanel.add(numOfContinents, getConstraints(1, 2, 1, 0));
 
         formPanel.add(new JLabel("Number of countries:"), getConstraints(0, 5));
-        numOfCountries = createComboBox("numOfCountries", 20);
+        numOfCountries = createComboBox("numOfCountries", 80);
         formPanel.add(numOfCountries, getConstraints(1, 5, 1, 0));
 
         submitButton = new JButton("Save");
         submitButton.setName("Save");
         formPanel.add(submitButton, getConstraints(1, 9, 1, 0));
         submitButton.addActionListener(controller);
+
+        container = new JScrollPane(formPanel);
+        add(container);
     }
 
     /**
@@ -113,6 +116,7 @@ public class MapCreatorFrame extends JFrame {
      */
     public void fillFormWithData(String mapName, List<String> continentData, List<String> countryData) {
         this.mapName.setText(mapName);
+
         numOfContinents.setSelectedIndex(continentData.size() - 1);
         numOfCountries.setSelectedIndex(countryData.size() - 1);
 
