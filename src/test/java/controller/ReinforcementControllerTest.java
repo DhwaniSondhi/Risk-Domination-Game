@@ -34,7 +34,7 @@ public class ReinforcementControllerTest {
 
         Player player;
         for (int loopForPlayers = 1; loopForPlayers < 4; loopForPlayers++) {
-            player = player = new Player(loopForPlayers, "player" + loopForPlayers);
+            player = new Player(loopForPlayers, "player" + loopForPlayers);
             players.put(loopForPlayers, player);
         }
 
