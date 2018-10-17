@@ -135,5 +135,26 @@ public class ReinforcementControllerTest {
         assertEquals(34,totalArmies);
     }
 
+    @Test
+    public void toTestSetUnselectedCards(){
+        HashMap<String,Integer> cardsToBeTested;
+
+        //to test cards for player 1
+        cardsToBeTested=reinforcementController.getCardSetsOfPlayer(players.get(1));
+        assertEquals(3,cardsToBeTested.size());//size will always be 3
+        assertEquals(3,cardsToBeTested.get("CAVALRY").intValue());
+        assertEquals(1,cardsToBeTested.get("INFANTRY").intValue());
+        assertEquals(4,cardsToBeTested.get("ARTILLERY").intValue());
+
+
+        //to test cards for player 2
+        cardsToBeTested=reinforcementController.getCardSetsOfPlayer(players.get(2));
+        assertEquals(3,cardsToBeTested.size());//size will always be 3
+        assertEquals(2,cardsToBeTested.get("CAVALRY").intValue());
+        assertEquals(0,cardsToBeTested.get("INFANTRY").intValue());
+        assertEquals(1,cardsToBeTested.get("ARTILLERY").intValue());
+
+
+    }
 
 }
