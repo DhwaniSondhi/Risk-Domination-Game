@@ -1,11 +1,11 @@
 package controller;
 
-import gui.MainFrame;
-import gui.MapCreatorFrame;
-import gui.StartUpFrame;
 import utility.FileHelper;
 import utility.GameStateChangeListener;
 import utility.MapHelper;
+import view.MainFrame;
+import view.MapCreatorFrame;
+import view.StartUpFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

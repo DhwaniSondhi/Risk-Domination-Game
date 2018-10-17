@@ -1,7 +1,7 @@
-package gui;
+package view;
 
 import controller.AttackController;
-import entity.Country;
+import model.Country;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;

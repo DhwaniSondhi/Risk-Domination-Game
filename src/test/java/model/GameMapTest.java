@@ -1,4 +1,4 @@
-package entity;
+package model;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -84,7 +84,7 @@ public class GameMapTest {
 
     /**
      * Check if the country is being added to gameMap by checking the size
-     * */
+     */
     @Test
     public void saveCountry() {
         gameMap.saveContinent("", 0);
@@ -98,7 +98,7 @@ public class GameMapTest {
 
     /**
      * Check if the country is being added to gameMap by checking the size
-     * */
+     */
     @Test
     public void saveCountryWithoutContinent() {
         gameMap.saveContinent("", 0);
@@ -107,7 +107,7 @@ public class GameMapTest {
         String[] territories = new String[]{"Nepal", "Europe", "India", "China"};
         gameMap.saveCountry(Arrays.asList(territories));
         Assert.assertFalse(gameMap.continents.entrySet().contains("Europe"));
-        Assert.assertEquals(0,gameMap.countries.size());
+        Assert.assertEquals(0, gameMap.countries.size());
 
     }
 

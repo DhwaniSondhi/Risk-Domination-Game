@@ -1,7 +1,7 @@
-package gui;
+package view;
 
 import controller.FortifyController;
-import entity.Country;
+import model.Country;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;

@@ -1,11 +1,11 @@
 package controller;
 
-import entity.Country;
-import entity.GameMap;
-import gui.FortifyPanel;
+import model.Country;
+import model.GameMap;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import view.FortifyPanel;
 
 import java.util.LinkedHashMap;
 

@@ -1,9 +1,9 @@
 package controller;
 
-import entity.Country;
-import entity.GameMap;
-import entity.Player;
-import gui.StartUpFrame;
+import model.Country;
+import model.GameMap;
+import model.Player;
+import view.StartUpFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

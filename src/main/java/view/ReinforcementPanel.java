@@ -1,9 +1,9 @@
-package gui;
+package view;
 
 
 import controller.ReinforcementController;
-import entity.Card;
-import entity.Country;
+import model.Card;
+import model.Country;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;
@@ -230,14 +230,15 @@ public class ReinforcementPanel extends JPanel {
      *
      * @return the item selected in the Army ComboBox
      */
-    public String getValueOfArmyComboBox() { return armyList.getSelectedItem().toString(); }
+    public String getValueOfArmyComboBox() {
+        return armyList.getSelectedItem().toString();
+    }
 
     /**
      * Set the constraints for GridBagLayout used
      *
      * @param x value for constraints gridx (row in the grid)
      * @param y value for constraints gridY (col in the grid)
-     *
      * @return default constraints (see {@link GridBagConstraints}) with provided x,y values
      */
     public GridBagConstraints getGridContraints(int x, int y) {

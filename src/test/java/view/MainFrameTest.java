@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import org.junit.After;
 import org.junit.Before;

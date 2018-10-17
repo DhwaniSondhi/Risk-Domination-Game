@@ -1,7 +1,7 @@
 package controller;
 
-import entity.Country;
-import gui.FortifyPanel;
+import model.Country;
+import view.FortifyPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

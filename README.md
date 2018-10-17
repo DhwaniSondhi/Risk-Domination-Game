@@ -1,7 +1,7 @@
-#README
+# README
 
 
-##Coding Conventions
+## Coding Conventions
 1. Indentation
     1. Should be properly indented with 4 Spaces / 1 tab
     2. The opening curly brace should be in the same line as function or class name.
@@ -25,7 +25,7 @@
     4. Controller : Controller Classes containing the flow of the application and the Logic
     
     
-##Git Conventions
+## Git Conventions
 1. Branch Name
     1. {name_initials}_{feature_title} eg: jm_feature1 / ns_feature2
 2. Commits

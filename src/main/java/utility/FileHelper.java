@@ -1,9 +1,12 @@
 package utility;
 
-import entity.GameMap;
+import model.GameMap;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This is the helper class which contains all the functionalities for File Handling

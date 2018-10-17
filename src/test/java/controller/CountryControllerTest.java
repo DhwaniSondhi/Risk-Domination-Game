@@ -1,13 +1,13 @@
 package controller;
 
-import entity.GameMap;
-import gui.CountryPanel;
+import model.GameMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import view.CountryPanel;
 
 public class CountryControllerTest {
     @Mock

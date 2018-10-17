@@ -1,7 +1,7 @@
-package gui;
+package view;
 
 import controller.ContinentController;
-import entity.Continent;
+import model.Continent;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

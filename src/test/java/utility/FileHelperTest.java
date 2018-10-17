@@ -1,6 +1,6 @@
 package utility;
 
-import entity.GameMap;
+import model.GameMap;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

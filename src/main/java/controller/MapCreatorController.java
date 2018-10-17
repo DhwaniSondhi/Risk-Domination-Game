@@ -1,7 +1,7 @@
 package controller;
 
-import gui.MapCreatorFrame;
 import utility.FileHelper;
+import view.MapCreatorFrame;
 
 import javax.swing.*;
 import java.awt.*;

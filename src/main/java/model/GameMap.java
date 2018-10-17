@@ -1,4 +1,4 @@
-package entity;
+package model;
 
 import java.util.*;
 
@@ -38,6 +38,7 @@ public class GameMap {
 
     /**
      * saves the continent and continent value from the file
+     *
      * @param continent      gets continent from file
      * @param continentValue gets confinent value from file
      */

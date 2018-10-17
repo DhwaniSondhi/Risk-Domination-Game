@@ -1,8 +1,8 @@
-package gui;
+package view;
 
 import controller.StartUpController;
-import entity.Country;
-import entity.GameMap;
+import model.Country;
+import model.GameMap;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;
@@ -45,7 +45,7 @@ public class StartUpFrame extends JFrame {
         buttonSubmit.setName("submit");
         buttonSubmit.addActionListener(startUpController);
         numOfPlayers = new JComboBox();
-        for (int i = 1; i < Math.min(6,GameMap.getInstance().countries.size()); i++) {
+        for (int i = 1; i < Math.min(6, GameMap.getInstance().countries.size()); i++) {
             numOfPlayers.addItem(i + 1);
         }
 

@@ -1,9 +1,9 @@
 package controller;
 
-import gui.ContinentPanel;
+import view.ContinentPanel;
 
 /**
- * Controller for {@link gui.ContinentPanel} extends {@link BaseController}
+ * Controller for {@link view.ContinentPanel} extends {@link BaseController}
  */
 public class ContinentController extends BaseController<ContinentPanel> {
 

@@ -1,6 +1,6 @@
 package controller;
 
-import entity.GameMap;
+import model.GameMap;
 import utility.GameStateChangeListener;
 
 /**

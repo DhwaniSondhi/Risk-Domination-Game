@@ -1,5 +1,5 @@
-import entity.GameMap;
-import gui.MainFrame;
+import model.GameMap;
+import view.MainFrame;
 
 public class Game {
 

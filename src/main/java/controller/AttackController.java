@@ -1,6 +1,6 @@
 package controller;
 
-import gui.AttackPanel;
+import view.AttackPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

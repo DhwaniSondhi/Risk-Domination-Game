@@ -1,9 +1,9 @@
 package controller;
 
-import gui.CountryPanel;
+import view.CountryPanel;
 
 /**
- * Controller for (@link gui.CountryPanel) extends (@link BaseController)
+ * Controller for (@link view.CountryPanel) extends (@link BaseController)
  */
 
 public class CountryController extends BaseController<CountryPanel> {
@@ -13,14 +13,14 @@ public class CountryController extends BaseController<CountryPanel> {
      *
      * @param view View associated wth the Controller
      */
-    public CountryController(CountryPanel view){
+    public CountryController(CountryPanel view) {
         super(view);
     }
 
     /**
      * Update the list of countries in the view with current player's countries
      */
-    public void updateCountryList(){
+    public void updateCountryList() {
         view.updateCountries(model.countries);
     }
 
