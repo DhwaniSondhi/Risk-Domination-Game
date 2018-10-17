@@ -19,10 +19,11 @@
     2. should follow javadoc format
     3. No unwanted commented code should be present 
 5. Folder Structure
-    1. Only 3 folders
-    2. Entity : Core Component Classes only
-    3. GUI : GUI classes only
-    4. Controller : Controller Classes containing the flow of the application and the Logic
+    1. Only 4 folders
+    2. Model : Core Component Classes and Business logic only.
+    3. View : GUI classes only
+    4. Controller : Controller Classes containing the flow of the application and user interactions.
+    5. Utility : Helper files for handling maps
     
     
 ## Git Conventions
