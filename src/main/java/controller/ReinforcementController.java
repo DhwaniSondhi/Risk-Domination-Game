@@ -1,10 +1,7 @@
 package controller;
 
 
-import model.Card;
-import model.Continent;
-import model.Country;
-import model.GameMap;
+import model.*;
 import view.ReinforcementPanel;
 
 import javax.swing.*;
@@ -99,10 +96,18 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To set the list of cards available of a player in the unselectedCards attribute
      */
     public void setUnSelectedCards() {
-        ArrayList<Card> cards = model.currentPlayer.cards;
-        if (unselectedCards == null) {
-            unselectedCards = new HashMap<>();
-        }
+        unselectedCards=getCardSetsOfPlayer(model.currentPlayer);
+    }
+
+    /**
+     * To get the number of INFANTRY, ARTILLERY and CAVALRY cards the player playing has
+     *
+     * @param player the player playing the game
+     * @return hashmap with values as the number of each INFANTRY, ARTILLERY and CAVALRY cards
+     */
+    public HashMap<String,Integer> getCardSetsOfPlayer(Player player) {
+        ArrayList<Card> cards = player.cards;
+        HashMap<String,Integer> cardSets=new HashMap<>();
         int infantry = 0;
         int artillery = 0;
         int cavalry = 0;
@@ -114,20 +119,36 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             } else if (card.type == Card.TYPE.CAVALRY) {
                 cavalry++;
             }
-            unselectedCards.put("INFANTRY", infantry);
-            unselectedCards.put("ARTILLERY", artillery);
-            unselectedCards.put("CAVALRY", cavalry);
+            cardSets.put("INFANTRY", infantry);
+            cardSets.put("ARTILLERY", artillery);
+            cardSets.put("CAVALRY", cavalry);
         }
+        return cardSets;
     }
 
     /**
      * To update the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
      */
     public void setCardsOnUpdate() {
-        totalArmies += instance.currentPlayer.updateArmiesForCards;
-        instance.currentPlayer.updateArmiesForCards += 5;
+        totalArmies = getUpdatedArmiesOnCardsExchange(totalArmies,instance.currentPlayer);
+        //instance.currentPlayer.updateArmiesForCards += 5;
         selectedCards.clear();
         view.addArmySection();
+
+    }
+
+    /**
+     * To get the updated total armies when a set of three cards are changed
+     *
+     * @param totalArmiesLocal the armies allotted from countries and continents player has
+     * @param player the player exchanging the cards
+     * @return the updated armies
+     */
+    public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal,Player player) {
+        totalArmiesLocal+=player.updateArmiesForCards;
+        player.updateArmiesForCards += 5;
+
+        return totalArmiesLocal;
 
     }
 
