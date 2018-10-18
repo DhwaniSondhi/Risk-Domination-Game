@@ -6,6 +6,8 @@ import model.Country;
 import model.GameMap;
 import model.Node;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,13 +57,8 @@ public class MapHelper {
      * Case : All the countries are connected
      */
     public static boolean validateMap() {
-        HashMap<Integer, Node> nodeHashMap = new HashMap<>();
-        for (Map.Entry<Integer, Country> entry : GameMap.getInstance().countries.entrySet()) {
-            int countryId = entry.getKey();
-            Node countryNode = new Node(countryId);
-            nodeHashMap.put(countryId, countryNode);
-        }
-        return bfs(nodeHashMap, nodeHashMap.get(1));
+        HashMap<Integer, Node> nodeHashMap = createNodeGraphFromCountries(GameMap.getInstance().countries.values());
+        return bfs(nodeHashMap, nodeHashMap.get(nodeHashMap.keySet().toArray()[0]));
     }
 
     /**
@@ -70,21 +67,30 @@ public class MapHelper {
      */
     public static boolean validateContinentGraph() {
         boolean result = false;
-        HashMap<Integer, Node> nodeHashMap = new HashMap<>();
+
         for (Map.Entry<Integer, Continent> entry : GameMap.getInstance().continents.entrySet()) {
-            int continentId = entry.getKey();
-            int countryId = 1;
-            for (Country country : entry.getValue().countries) {
-                countryId = country.id;
-                Node countryNode = new Node(countryId);
-                nodeHashMap.put(countryId, countryNode);
-            }
-            result = bfs(nodeHashMap, nodeHashMap.get(countryId));
+            HashMap<Integer, Node> nodeHashMap = createNodeGraphFromCountries(entry.getValue().countries);
+            result = bfs(nodeHashMap, nodeHashMap.get(nodeHashMap.keySet().toArray()[0]));
             if (!result) {
                 return false;
             }
         }
         return result;
+    }
+
+
+    /**
+     * Create a nodeHashMap from collection of countries
+     * @param countries Collection of countries
+     * @return nodeHashMap hashmap of nodes
+     * */
+    public static HashMap<Integer, Node> createNodeGraphFromCountries(Collection<Country> countries){
+        HashMap<Integer, Node> nodeHashMap = new HashMap<>();
+        for (Country country : countries) {
+            Node countryNode = new Node(country.id);
+            nodeHashMap.put(country.id, countryNode);
+        }
+        return nodeHashMap;
     }
 
 

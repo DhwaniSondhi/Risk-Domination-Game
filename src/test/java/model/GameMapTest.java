@@ -99,6 +99,7 @@ public class GameMapTest {
 
     /**
      * Check if the country is being added to gameMap by checking the size
+     * Validate before inserting inside map
      */
     @Test
     public void saveCountryWithoutContinent() {
