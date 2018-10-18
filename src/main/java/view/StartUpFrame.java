@@ -10,7 +10,10 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.List;
 
-
+/**
+ * GUI part of StartUp Panel
+ * extends (@link JPanel)
+ */
 public class StartUpFrame extends JFrame {
 
     JComboBox numOfPlayers;
@@ -26,6 +29,13 @@ public class StartUpFrame extends JFrame {
     private JTextField addArmies;
 
 
+    /**
+     * Constructor
+     * <p>
+     *     To create the Panel for StartUp Phase of the Game
+     * </p>
+     * @param stateChangeListener observer for game state
+     */
     public StartUpFrame(GameStateChangeListener stateChangeListener) {
         super("Welcome to the Game");
 
@@ -65,27 +75,55 @@ public class StartUpFrame extends JFrame {
         jButtonAssignArmy.addActionListener(startUpController);
     }
 
+    /**
+     * To get the number of players needed in the game
+     *
+     * @return
+     */
     public int getNumOfPlayers() {
         return (Integer) numOfPlayers.getSelectedItem();
     }
 
+    /**
+     * To get the unique player IDs
+     *
+     * @return
+     */
     public String getjLabelPlayerValue() {
         return jLabelplayers.getText();
     }
 
+    /**
+     * TO assign the unique player IDs to players
+     *
+     * @param newPlayerId
+     */
     public void setjLabelPlayerValue(String newPlayerId) {
         jLabelplayers.setText(newPlayerId);
     }
 
+    /**
+     * to create a list of countries
+     *
+     * @return Combo Box for the countries
+     */
     public int getjComboBoxCountry() {
 
         return jComboBoxCountries.getSelectedIndex();
     }
 
+    /**
+     * To get the number of armies
+     *
+     * @return number of armies which player has
+     */
     public int getNumberOfArmies() {
         return (Integer) numberOfArmies.getSelectedItem();
     }
 
+    /**
+     * observer for the assign button
+     */
     public void clickAssignButton() {
         jButtonAssignArmy.doClick();
     }
@@ -107,6 +145,11 @@ public class StartUpFrame extends JFrame {
         return constraints;
     }
 
+    /**
+     * To update the list of countries which the player still has
+     *
+     * @param countries list of the countries of current player
+     */
     public void updateCountries(List<Country> countries) {
         countriesPanel.removeAll();
         addArmies = new JTextField(10);

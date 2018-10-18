@@ -13,18 +13,36 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This is the COntroller class for StartUp Phase
+ * extends the abstract class for controller, {@link BaseController}
+ * implements {@link ActionListener} for actions performed on GUI part of StartUp Panel
+ */
 public class StartUpController extends BaseController<StartUpFrame> implements ActionListener {
     Set<Integer> playerIds;
     Integer[] playerNumArmies = new Integer[]{40, 35, 30, 25, 20, 15, 10};
     Integer[] countryIdPlayers;
     int checkAllPlayers;
 
+    /**
+     * Constructor for StartUp Panel
+     * <p>
+     *     To initialize attributes
+     * </p>
+     *
+     * @param view
+     */
     public StartUpController(StartUpFrame view) {
         super(view);
         playerIds = GameMap.getInstance().players.keySet();
         checkAllPlayers = 0;
     }
 
+    /**
+     * To get the player unique IDs
+     *
+     * @return ID for the player
+     */
     public int getPlayerId() {
         String playerId = view.getjLabelPlayerValue();
         if (playerId != null && !playerId.trim().equalsIgnoreCase("")) {
@@ -39,6 +57,11 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
 
     }
 
+    /**
+     * To get the list of the countries
+     *
+     * @return Countries of the current player
+     */
     public List<Country> getCountriesLeftCurrentPlayer() {
         List<Country> countries = new ArrayList<>();
         HashSet<Integer> countryIdPlayersLocal = new HashSet<Integer>();
@@ -53,6 +76,11 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
         return countries;
     }
 
+    /**
+     * To get the number of armies in a particular country
+     *
+     * @return number of armies
+     */
     public Integer[] getArmies() {
         int armiesInCountries = 0;
         Integer[] armyArray;
@@ -75,6 +103,12 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
 
     }
 
+    /**
+     * Invoked by any action performed on Submit button for choosing number of players
+     * Invoked by any action performed on Assign button for assigning number of countries to the countries
+     *
+     * @param e {@link ActionEvent}
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String btnName = ((JButton) e.getSource()).getName();
