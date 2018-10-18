@@ -47,7 +47,7 @@ public class FileHelper {
                     String[] data = line.replaceAll("\\d+ ,|\\d+,", "").split(",");
                     List<String> territories = Arrays.asList(data);
                     if (!GameMap.getInstance().saveCountry(territories)) {
-                        throw new IllegalStateException("Continent does not exists");
+                        throw new IllegalStateException("Continent does not exist");
                     }
                 }
             }

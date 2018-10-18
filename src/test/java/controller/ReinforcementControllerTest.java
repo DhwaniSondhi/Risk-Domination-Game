@@ -4,8 +4,10 @@ import model.Card;
 import model.Continent;
 import model.Country;
 import model.Player;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -88,7 +90,7 @@ public class ReinforcementControllerTest {
             }
         }
 
-        cards=new ArrayList<Card>();
+        cards = new ArrayList<Card>();
         cards.add(new Card(Card.TYPE.CAVALRY));
         cards.add(new Card(Card.TYPE.CAVALRY));
         cards.add(new Card(Card.TYPE.CAVALRY));
@@ -97,13 +99,13 @@ public class ReinforcementControllerTest {
         cards.add(new Card(Card.TYPE.ARTILLERY));
         cards.add(new Card(Card.TYPE.ARTILLERY));
         cards.add(new Card(Card.TYPE.ARTILLERY));
-        players.get(1).cards=cards;
+        players.get(1).cards = cards;
 
-        cards=new ArrayList<Card>();
+        cards = new ArrayList<Card>();
         cards.add(new Card(Card.TYPE.CAVALRY));
         cards.add(new Card(Card.TYPE.CAVALRY));
         cards.add(new Card(Card.TYPE.ARTILLERY));
-        players.get(2).cards=cards;
+        players.get(2).cards = cards;
 
 
     }

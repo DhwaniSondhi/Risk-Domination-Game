@@ -39,6 +39,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onMapLoaded() {
+        startUpCompleted = false;
         new StartUpFrame(this);
     }
 
@@ -114,11 +115,13 @@ public class MainFrameController extends BaseController<MainFrame> implements
                             onMapLoaded();
                         } else {
                             FileHelper.emptyConfig();
+                            JOptionPane.showMessageDialog(null, "File Validation Failed", "Error Message", JOptionPane.ERROR_MESSAGE);
                             System.out.println("File validation failed");
                         }
                     } catch (IllegalStateException exception) {
 
                         FileHelper.emptyConfig();
+                        JOptionPane.showMessageDialog(null, exception.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE);
                         System.out.println("File validation failed : " + exception.getMessage());
                     }
                 } else {

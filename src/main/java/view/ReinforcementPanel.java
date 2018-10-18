@@ -85,6 +85,8 @@ public class ReinforcementPanel extends JPanel {
      */
 
     public void update() {
+        reinforcementController.setUnSelectedCards();
+        reinforcementController.setArmiesForReinforcement();
         addCardSection();
         addArmySection();
         revalidate();

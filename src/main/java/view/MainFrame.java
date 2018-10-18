@@ -61,6 +61,7 @@ public class MainFrame extends JFrame {
      * Adds all necessary panel components to the main panel
      */
     public void setUpGamePanels() {
+        mainPanel.removeAll();
         continentPanel = new ContinentPanel();
         mainPanel.add(continentPanel, getConstraints(0, 1));
 
@@ -83,6 +84,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(fortifyPanel, getConstraints(1, 1));
 
         mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
 
@@ -128,6 +130,4 @@ public class MainFrame extends JFrame {
 
         setJMenuBar(menuBar);
     }
-
-
 }
