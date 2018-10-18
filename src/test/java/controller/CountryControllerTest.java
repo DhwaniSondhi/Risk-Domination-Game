@@ -9,6 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import view.CountryPanel;
 
+/**
+ * test class for CountryController
+ */
 public class CountryControllerTest {
     @Mock
     CountryPanel view;
@@ -28,6 +31,9 @@ public class CountryControllerTest {
     public void tearDown() throws Exception {
     }
 
+    /**
+     * check if view method is called or not from controller method
+     */
     @Test
     public void updateCountries() throws Exception {
         controller.updateCountryList();

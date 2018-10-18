@@ -9,6 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import view.ContinentPanel;
 
+/**
+ * Test class for ContinentController
+ */
 public class ContinentControllerTest {
 
     @Mock
@@ -29,6 +32,9 @@ public class ContinentControllerTest {
     public void tearDown() throws Exception {
     }
 
+    /**
+     * check if view method is called or not from controller method
+     */
     @Test
     public void updateContinentList() throws Exception {
         controller.updateContinentList();

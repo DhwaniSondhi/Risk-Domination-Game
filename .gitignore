@@ -2,6 +2,7 @@
 ### Gradle template
 .gradle
 doc/
+public/
 /build/
 
 # Ignore Gradle GUI config

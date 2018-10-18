@@ -2,7 +2,6 @@ image: java:8-jdk
 
 stages:
 - build
-- test
 
 before_script:
 - echo "Start Continuous IntegrationI"
@@ -22,14 +21,19 @@ build:
     expire_in: 1 week
 
 test:
-  stage: test
+  stage: build
   script:
   - ./gradlew check
 
-#deploy:
-#  stage: deploy
-#  script:
-#    - ./deploy
+pages:
+  stage: build
+  script:
+  - ./gradlew createJavaDoc
+  artifacts:
+      paths:
+      - public
+  only:
+  - develop
 
 after_script:
 - echo "End Continuous Integration"

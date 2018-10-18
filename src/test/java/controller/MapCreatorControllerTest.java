@@ -8,6 +8,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Test class for MapCreatorController
+ */
 public class MapCreatorControllerTest {
 
     MapCreatorController controller;
@@ -40,20 +43,25 @@ public class MapCreatorControllerTest {
     public void tearDown() throws Exception {
     }
 
+    /**
+     * Checks if the validateFormData return true for valid data
+     */
     @Test
     public void checkValidFormData() throws Exception {
         boolean errorOccurred = false;
         try {
             controller.validateFormData(continentItems, countryItems);
         } catch (Exception e) {
-            e.printStackTrace();
-            Assert.assertEquals("asd", e.getMessage());
             errorOccurred = true;
         } finally {
             Assert.assertFalse(errorOccurred);
         }
     }
 
+    /**
+     * Checks if the validateFormData return false for invalid data
+     * Check for error message for not connected graph
+     */
     @Test
     public void checkInvalidFormData() throws Exception {
         try {
