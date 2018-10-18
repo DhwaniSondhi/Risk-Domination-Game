@@ -1,30 +1,30 @@
 image: java:8-jdk
 
 stages:
-  - build
-  - test
+- build
+- test
 
 before_script:
-  - echo "Start Continuous IntegrationI"
+- echo "Start Continuous IntegrationI"
 
 cache:
   paths:
-    - .gradle/wrapper
-    - .gradle/caches
+  - .gradle/wrapper
+  - .gradle/caches
 
 build:
   stage: build
   script:
-    - ./gradlew assemble
+  - ./gradlew assemble
   artifacts:
     paths:
-      - build/libs/*.jar
+    - build/libs/*.jar
     expire_in: 1 week
 
 test:
   stage: test
   script:
-    - ./gradlew check
+  - ./gradlew check
 
 #deploy:
 #  stage: deploy
@@ -32,4 +32,4 @@ test:
 #    - ./deploy
 
 after_script:
-  - echo "End Continuous Integration"
+- echo "End Continuous Integration"

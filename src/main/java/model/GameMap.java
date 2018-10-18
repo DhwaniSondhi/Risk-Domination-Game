@@ -17,6 +17,10 @@ public class GameMap {
     public HashMap<Integer, Player> players;
     public HashMap<Integer, HashSet<Country>> countryGraph;
 
+    /**
+     * Initialize countries, continents, players, countryGraph
+     * Inititalize counter continentCounter, countryCounter
+     */
     private GameMap() {
         countries = new HashMap<>();
         continents = new HashMap<>();
@@ -41,6 +45,7 @@ public class GameMap {
      *
      * @param continent      gets continent from file
      * @param continentValue gets confinent value from file
+     * @return true if continent is added to model else false
      */
     public boolean saveContinent(String continent, int continentValue) {
         if (checkContinentExists(continent.trim()) == -1 && !continent.trim().isEmpty()) {
@@ -88,6 +93,7 @@ public class GameMap {
      * While saving checks the validity of the map (Case : Continent for a country doesnot exist)
      *
      * @param territories List of all the countries along with its neighbouring countries
+     * @return true if country is added to model else false
      */
     public boolean saveCountry(List<String> territories) {
         String country = territories.get(0);
@@ -293,6 +299,9 @@ public class GameMap {
         countries.get(countryId).numOfArmies = numArmies;
     }
 
+    /**
+     * adds dummy models for test cases
+     */
     public void setDummyData() {
         Player player1 = new Player(1, "Player 1");
         players.put(1, player1);

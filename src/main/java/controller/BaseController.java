@@ -26,6 +26,8 @@ public abstract class BaseController<T> {
 
     /**
      * setter method for the stateChangeListener
+     *
+     * @param stateChangeListener observer for game state
      */
     public void setStateChangeListener(GameStateChangeListener stateChangeListener) {
         this.stateChangeListener = stateChangeListener;

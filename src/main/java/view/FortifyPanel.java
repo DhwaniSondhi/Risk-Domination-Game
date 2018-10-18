@@ -36,6 +36,8 @@ public class FortifyPanel extends JPanel {
      * Constructor
      * It set up the Panels for Number of countries a player have and countries to which the can transfer army
      * Also set up the panels for choosing number of armies to transfer
+     *
+     * @param stateChangeListener observer for game state
      */
 
     public FortifyPanel(GameStateChangeListener stateChangeListener) {
@@ -201,6 +203,9 @@ public class FortifyPanel extends JPanel {
         revalidate();
     }
 
+    /**
+     * updates the view with latest content
+     */
     public void update() {
         fortifyController.updateCountryListFortify();
         revalidate();

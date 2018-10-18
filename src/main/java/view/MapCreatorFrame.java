@@ -146,6 +146,15 @@ public class MapCreatorFrame extends JFrame {
         return constraints;
     }
 
+    /**
+     * Creates {@link GridBagConstraints} with provided gridX and gridY values
+     *
+     * @param x  value for constraints gridx (row in the grid)
+     * @param y  value for constraints gridY (col in the grid)
+     * @param wx value for constraints weightx
+     * @param wy value for constraints weighty
+     * @return default constraints (see {@link GridBagConstraints}) with provided x,y values
+     */
     private GridBagConstraints getConstraints(int x, int y, int wx, int wy) {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = x;
@@ -165,6 +174,7 @@ public class MapCreatorFrame extends JFrame {
      *
      * @param name  name for the field
      * @param range range of data to show in combo-box
+     * @return combobox with range of data
      */
     private JComboBox<Integer> createComboBox(String name, int range) {
         Integer[] data = new Integer[range];

@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Gui part of Reinforcement Panel
- * extends {@Link JPanel}
+ * extends {@link JPanel}
  */
 public class ReinforcementPanel extends JPanel {
     JPanel cardSection;
@@ -30,7 +30,7 @@ public class ReinforcementPanel extends JPanel {
      * To create the Panel for Reinforcement components
      * </p>
      *
-     * @param stateChangeListener
+     * @param stateChangeListener observer for game state
      */
     public ReinforcementPanel(GameStateChangeListener stateChangeListener) {
         reinforcementController = new ReinforcementController(this);

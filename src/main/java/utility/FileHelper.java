@@ -62,6 +62,7 @@ public class FileHelper {
      * Loads the txt file that user chooses to edit
      *
      * @param selectedFile input file from {@link javafx.stage.FileChooser}
+     * @return Hashmap of countryItems and continentItems
      */
     public static HashMap<String, List<String>> loadToForm(File selectedFile) {
         HashMap<String, List<String>> data = new HashMap<>();

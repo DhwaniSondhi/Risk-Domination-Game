@@ -78,11 +78,6 @@ public class GameMapTest {
         Assert.assertNull(gameMap.continents.get(3));
     }
 
-
-    @Test
-    public void getCountriesOfCurrentPlayer() {
-    }
-
     /**
      * Check if the country is being added to gameMap by checking the size
      */

@@ -97,7 +97,7 @@ public class MapHelperTest {
 
     /**
      * Checks if the nodeGraph is properly created from given list of countries
-     * */
+     */
     @Test
     public void createNodeGraphFromCountries() {
         HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.countries.values());
@@ -113,7 +113,7 @@ public class MapHelperTest {
 
     /**
      * Checks if all the countries inside a continent is not connected
-     * */
+     */
     @Test
     public void bfsNotConnectedInContinent() {
         HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.continents.get(2).countries);
@@ -123,7 +123,7 @@ public class MapHelperTest {
 
     /**
      * Checks if all the countries inside the continent are connected
-     * */
+     */
     @Test
     public void bfsConnectedInContinent() {
         HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.continents.get(1).countries);

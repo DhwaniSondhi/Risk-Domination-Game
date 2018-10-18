@@ -23,6 +23,8 @@ public class AttackPanel extends JPanel {
      * <p>
      * Sets up country panel and neighbouring country panel using {@link JPanel}
      * Updates the country list in the view using {@link AttackController} updateCountryList function
+     *
+     * @param stateChangeListener observer for game state
      */
     public AttackPanel(GameStateChangeListener stateChangeListener) {
         attackController = new AttackController(this);

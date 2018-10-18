@@ -7,7 +7,6 @@ import model.GameMap;
 import model.Node;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,13 @@ import java.util.Map;
  */
 public class MapHelper {
 
+    /**
+     * Implements breadth first search to check connectivity
+     *
+     * @param nodeHashMap hashmap of counties as node
+     * @param node        root of graph
+     * @return true if all nodes are traversed else false
+     */
     public static boolean bfs(HashMap<Integer, Node> nodeHashMap, Node node) {
         node.color = 1;
         node.distance = 0;
@@ -55,6 +61,8 @@ public class MapHelper {
     /**
      * checks if map is valid
      * Case : All the countries are connected
+     *
+     * @return true if connected map else false
      */
     public static boolean validateMap() {
         HashMap<Integer, Node> nodeHashMap = createNodeGraphFromCountries(GameMap.getInstance().countries.values());
@@ -64,6 +72,8 @@ public class MapHelper {
     /**
      * checks if map is valid
      * Case : All the countries in Continent are connected
+     *
+     * @return true if connected continent else false
      */
     public static boolean validateContinentGraph() {
         boolean result = false;
@@ -81,10 +91,11 @@ public class MapHelper {
 
     /**
      * Create a nodeHashMap from collection of countries
+     *
      * @param countries Collection of countries
      * @return nodeHashMap hashmap of nodes
-     * */
-    public static HashMap<Integer, Node> createNodeGraphFromCountries(Collection<Country> countries){
+     */
+    public static HashMap<Integer, Node> createNodeGraphFromCountries(Collection<Country> countries) {
         HashMap<Integer, Node> nodeHashMap = new HashMap<>();
         for (Country country : countries) {
             Node countryNode = new Node(country.id);

@@ -32,7 +32,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
     /**
      * Invoked when an action occurs.
      *
-     * @param e
+     * @param e event
      */
     @Override
     public void actionPerformed(ActionEvent e) {

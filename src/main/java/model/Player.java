@@ -17,6 +17,9 @@ public class Player {
      * <p>
      * Sets up the id, name and selected cards of the player
      * </p>
+     *
+     * @param id   id of player
+     * @param name name of player
      */
     public Player(int id, String name) {
         this.id = id;
@@ -36,6 +39,9 @@ public class Player {
         }
     }
 
+    /**
+     * Adds random cards
+     */
     public void addRandomCard() {
         cards.add(new Card());
     }

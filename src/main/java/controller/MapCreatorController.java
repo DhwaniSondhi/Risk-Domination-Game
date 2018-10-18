@@ -51,7 +51,7 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
     /**
      * Invoked when an action occurs.
      *
-     * @param event
+     * @param event action event
      */
     @Override
     public void actionPerformed(ActionEvent event) {
@@ -143,7 +143,7 @@ public class MapCreatorController extends BaseController<MapCreatorFrame> implem
      *
      * @param continents list of continent items
      * @param countries  list of country items
-     * @throws IllegalAccessException for invalid map
+     * @throws IllegalStateException for invalid map
      */
     public void validateFormData(List<String> continents, List<String> countries) throws IllegalStateException {
         if (continents.isEmpty() || countries.isEmpty())

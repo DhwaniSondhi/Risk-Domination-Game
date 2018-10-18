@@ -11,8 +11,8 @@ import java.util.*;
 
 /**
  * This is the Controller class for reinforcement phase
- * extends the abstract class for controller, {@Link BaseController}
- * implements {@Link ActionListener} for actions performed on Gui part of reinforcement panel
+ * extends the abstract class for controller, {@link BaseController}
+ * implements {@link ActionListener} for actions performed on Gui part of reinforcement panel
  */
 public class ReinforcementController extends BaseController<ReinforcementPanel> implements ActionListener {
 

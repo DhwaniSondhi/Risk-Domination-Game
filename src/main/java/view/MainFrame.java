@@ -5,7 +5,9 @@ import controller.MainFrameController;
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * Main window of the game
+ */
 public class MainFrame extends JFrame {
 
     public ContinentPanel continentPanel;
