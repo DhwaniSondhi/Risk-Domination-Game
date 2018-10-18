@@ -16,9 +16,15 @@ public class MapHelperTest {
 
     GameMap model;
     HashMap<Integer, model.Node> nodeHashMap;
+
+    /**
+     * Setup the country and their respective neighbour in countryGraph
+     * Setup continent and their respective countries in countryGraph
+     * nodeHashMap contains all the countryNodes(Countries)
+     */
     @Before
     public void setUp() throws Exception {
-        nodeHashMap= new HashMap<>();
+        nodeHashMap = new HashMap<>();
         model = GameMap.getInstance();
 
         for (int i = 1; i <= 5; i++) {
@@ -67,37 +73,31 @@ public class MapHelperTest {
     public void tearDown() throws Exception {
     }
 
+    /**
+     * Checks if all the countries are connected
+     */
     @Test
     public void bfsCheckConnection() {
-        boolean result = MapHelper.bfs(nodeHashMap,nodeHashMap.get(1));
+        boolean result = MapHelper.bfs(nodeHashMap, nodeHashMap.get(1));
         Assert.assertTrue(result);
     }
 
+    /**
+     * Removes the connection from two countries of countryGraph
+     * Checks if the map is still connected
+     */
     @Test
     public void bfsNotConnected() {
         model.countryGraph.get(3).remove(model.countries.get(2));
         model.countryGraph.get(2).remove(model.countries.get(3));
 
-        boolean result = MapHelper.bfs(nodeHashMap,nodeHashMap.get(1));
+        boolean result = MapHelper.bfs(nodeHashMap, nodeHashMap.get(1));
         Assert.assertFalse(result);
     }
 
-    @Test
-    public void bfsNotConnectedInContinent() {
-        HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.continents.get(2).countries);
-        boolean result = MapHelper.bfs(nodeGraphFromCountries,nodeGraphFromCountries.get(5));
-        Assert.assertFalse(result);
-    }
-
-    @Test
-    public void bfsConnectedInContinent() {
-        HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.continents.get(1).countries);
-        boolean result = MapHelper.bfs(nodeGraphFromCountries,nodeGraphFromCountries.get(1));
-        Assert.assertTrue(result);
-    }
-
-
-
+    /**
+     * Checks if the nodeGraph is properly created from given list of countries
+     * */
     @Test
     public void createNodeGraphFromCountries() {
         HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.countries.values());
@@ -110,4 +110,26 @@ public class MapHelperTest {
         Assert.assertFalse(nodeGraphFromCountries.containsKey(0));
 
     }
+
+    /**
+     * Checks if all the countries inside a continent is not connected
+     * */
+    @Test
+    public void bfsNotConnectedInContinent() {
+        HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.continents.get(2).countries);
+        boolean result = MapHelper.bfs(nodeGraphFromCountries, nodeGraphFromCountries.get(5));
+        Assert.assertFalse(result);
+    }
+
+    /**
+     * Checks if all the countries inside the continent are connected
+     * */
+    @Test
+    public void bfsConnectedInContinent() {
+        HashMap<Integer, Node> nodeGraphFromCountries = MapHelper.createNodeGraphFromCountries(model.continents.get(1).countries);
+        boolean result = MapHelper.bfs(nodeGraphFromCountries, nodeGraphFromCountries.get(1));
+        Assert.assertTrue(result);
+    }
+
+
 }
