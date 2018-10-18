@@ -7,14 +7,37 @@ import java.util.*;
  * Singleton class containing access to all the game components
  */
 public class GameMap {
-
+    /**
+     * Instance of GameMap class
+     */
     private static GameMap INSTANCE = null;
+    /**
+     * Counter for continent
+     */
     private static int continentCounter;
+    /**
+     * Counter for country
+     */
     private static int countryCounter;
+    /**
+     * Variable for currently playing player
+     */
     public Player currentPlayer = null;
+    /**
+     * HashMap for countries
+     */
     public HashMap<Integer, Country> countries;
+    /**
+     * HashMap for continents
+     */
     public HashMap<Integer, Continent> continents;
+    /**
+     * HashMap for players
+     */
     public HashMap<Integer, Player> players;
+    /**
+     * HashMap for relationship between country and adjacent countries
+     */
     public HashMap<Integer, HashSet<Country>> countryGraph;
 
     /**

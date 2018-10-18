@@ -9,11 +9,29 @@ import java.util.List;
  * Class for Country containing access to all the components of country
  */
 public class Country {
+    /**
+     * Country id
+     */
     public int id;
+    /**
+     * Country name
+     */
     public String name;
+    /**
+     * Player that owns of country
+     */
     public Player owner;
+    /**
+     * Number of armies at country
+     */
     public int numOfArmies;
 
+    /**
+     * Constructor to set current name and id of country
+     *
+     * @param id   id of country
+     * @param name name of country
+     */
     public Country(int id, String name) {
         this.id = id;
         this.name = name;

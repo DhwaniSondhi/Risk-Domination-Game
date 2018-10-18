@@ -10,13 +10,37 @@ import java.awt.*;
  */
 public class MainFrame extends JFrame {
 
+    /**
+     * Reference to continentPanel class
+     */
     public ContinentPanel continentPanel;
+    /**
+     * Reference to countryPanel class
+     */
     public CountryPanel countryPanel;
+    /**
+     * Reference to reinforcementPanel class
+     */
     public ReinforcementPanel reinforcementPanel;
+    /**
+     * Reference to attackPanel class
+     */
     public AttackPanel attackPanel;
+    /**
+     * Reference to fortifyPanel class
+     */
     public FortifyPanel fortifyPanel;
+    /**
+     * Label that display current playing player
+     */
     public JLabel currentPlayer;
+    /**
+     * Panel that will contain all other panel
+     */
     private JPanel mainPanel;
+    /**
+     * Reference for MainFrameController
+     */
     private MainFrameController controller;
 
     public MainFrame() {

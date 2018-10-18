@@ -6,10 +6,21 @@ import java.util.ArrayList;
  * Class containing attributes and functions of a player object
  */
 public class Player {
+    /**
+     * id for player
+     */
     public int id;
+    /**
+     * Name for player
+     */
     public String name;
-    public String colour = "#000";
+    /**
+     * Cards hold by player
+     */
     public ArrayList<Card> cards;
+    /**
+     * Armies on trading card
+     */
     public int updateArmiesForCards;
 
     /**

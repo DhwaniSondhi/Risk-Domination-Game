@@ -9,9 +9,17 @@ import utility.GameStateChangeListener;
  * @param <T> this is the type of View
  */
 public abstract class BaseController<T> {
-
+    /**
+     * View for controller provided by template variable T
+     */
     public T view;
+    /**
+     * Model for game
+     */
     public GameMap model;
+    /**
+     * Observer reference for Game State
+     */
     protected GameStateChangeListener stateChangeListener;
 
     /**

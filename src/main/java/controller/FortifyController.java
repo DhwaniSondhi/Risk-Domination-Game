@@ -16,10 +16,18 @@ import java.util.Queue;
 /**
  * Controller for FortifyPanel
  */
-
 public class FortifyController extends BaseController<FortifyPanel> implements ActionListener, ListSelectionListener {
+    /**
+     * Country selected by player
+     */
     Country selectedCountry;
+    /**
+     * Neighboring country selected by player
+     */
     Country selectedNeighbour;
+    /**
+     * Number of armies player want to fortify
+     */
     int armiesToTransfer;
 
     /**

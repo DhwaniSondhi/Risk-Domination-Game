@@ -15,20 +15,65 @@ import java.util.Map;
  * Class containing Gui and functionality of Fortify part of Game
  */
 public class FortifyPanel extends JPanel {
+    /**
+     * Reference for Fortify Controller
+     */
     FortifyController fortifyController;
+    /**
+     *TextField to display army on selected country
+     */
     JTextField jTextFieldNoOfArmiesCountries;
+    /**
+     * TextField to display army on
+     */
     JTextField jTextFieldNoOfArmiesNeighbour;
+    /**
+     * ScrollPane to display the neighboring countries to which a player can fortify from a selected country
+     */
     JScrollPane scrollPaneNeighboringCountries;
+    /**
+     * ComboBox to show and allow user to select how many armies he want to transfer
+     */
     JComboBox jComboBoxNoOfArmies;
+    /**
+     * Button to transfer army
+     */
     JButton jButtonTransfer;
+    /**
+     * Label for number of armies at neighboring country selected by player
+     */
     JLabel jLabelArmiesAtNeighbor;
+    /**
+     * Label for number of armies at country selected by player
+     */
     JLabel jLabelArmiesAtCountries;
+    /**
+     * Panel for adding components for country list of current player
+     */
     private JPanel jPanelCountries;
+    /**
+     * Panel for adding components for neighboring country list of current player
+     */
     private JPanel jPanelNeighbors;
-    private JPanel jPanelInnerPanelArmies;
+    /**
+     * Panel for adding components for displaying armies at country and neighboring country selected by player
+     */
+    private JPanel jPanelDisplayArmies;
+    /**
+     * Panel that contains add ComboBox ,Proceed button and Transfer button
+     */
     private JPanel jPanelTransferArmy;
+    /**
+     * Layout for the panel which will contain all other panels
+     */
     private GridBagLayout gridBagLayoutMain;
+    /**
+     * Constraints for panel which will contain all panel
+     */
     private GridBagConstraints bagConstraintsMain;
+    /**
+     * Button that will proceed the game
+     */
     private JButton proceedButton;
 
 
@@ -69,12 +114,12 @@ public class FortifyPanel extends JPanel {
         bagConstraintsMain.gridx = 1;
         bagConstraintsMain.gridy = 1;
         add(jPanelNeighbors, bagConstraintsMain);
-        jPanelInnerPanelArmies = new JPanel();
+        jPanelDisplayArmies = new JPanel();
 
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 2;
         bagConstraintsMain.gridy = 1;
-        add(jPanelInnerPanelArmies, bagConstraintsMain);
+        add(jPanelDisplayArmies, bagConstraintsMain);
         jPanelTransferArmy = new JPanel();
 
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
@@ -147,30 +192,30 @@ public class FortifyPanel extends JPanel {
      * It also allow to choose number of armies one can transfer from a country to other country
      */
     public void transferFortify() {
-        jPanelInnerPanelArmies.removeAll();
+        jPanelDisplayArmies.removeAll();
         jPanelTransferArmy.removeAll();
 
         GridBagLayout gridBagLayoutInnerPanelArmies = new GridBagLayout();
         GridBagConstraints gridBagConstraintsInnerPanelArmies = new GridBagConstraints();
-        jPanelInnerPanelArmies.setLayout(gridBagLayoutInnerPanelArmies);
+        jPanelDisplayArmies.setLayout(gridBagLayoutInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.fill = GridBagConstraints.VERTICAL;
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 0;
         jLabelArmiesAtCountries = new JLabel("Army at Country");
-        jPanelInnerPanelArmies.add(jLabelArmiesAtCountries, gridBagConstraintsInnerPanelArmies);
+        jPanelDisplayArmies.add(jLabelArmiesAtCountries, gridBagConstraintsInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 1;
         jTextFieldNoOfArmiesCountries = new JTextField(10);
-        jPanelInnerPanelArmies.add(jTextFieldNoOfArmiesCountries, gridBagConstraintsInnerPanelArmies);
+        jPanelDisplayArmies.add(jTextFieldNoOfArmiesCountries, gridBagConstraintsInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 2;
         jLabelArmiesAtNeighbor = new JLabel("Army at neighbor");
-        jPanelInnerPanelArmies.add(jLabelArmiesAtNeighbor, gridBagConstraintsInnerPanelArmies);
+        jPanelDisplayArmies.add(jLabelArmiesAtNeighbor, gridBagConstraintsInnerPanelArmies);
         jTextFieldNoOfArmiesNeighbour = new JTextField(10);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 3;
-        jPanelInnerPanelArmies.add(jTextFieldNoOfArmiesNeighbour, gridBagConstraintsInnerPanelArmies);
-        jPanelInnerPanelArmies.revalidate();
+        jPanelDisplayArmies.add(jTextFieldNoOfArmiesNeighbour, gridBagConstraintsInnerPanelArmies);
+        jPanelDisplayArmies.revalidate();
 
         GridBagLayout gridBagLayoutTransferArmy = new GridBagLayout();
         GridBagConstraints transferPanelConstraints = new GridBagConstraints();

@@ -4,9 +4,21 @@ package model;
  * Graph node representation of country for BFS
  */
 public class Node {
+    /**
+     * Color of node
+     */
     public int color;
+    /**
+     * Distance of node
+     */
     public int distance;
+    /**
+     * Parent of current node
+     */
     public Node parent;
+    /**
+     * Node id
+     */
     public int id;
 
     /**

@@ -13,9 +13,21 @@ import java.util.Collection;
  * View for attackPanel extends {@link JPanel}
  */
 public class AttackPanel extends JPanel {
+    /**
+     * Controller for AttackPanel
+     */
     AttackController attackController;
+    /**
+     * Panel for displaying Countries owned by current player
+     */
     private JPanel countryPanel;
+    /**
+     * Panel for displaying neighboring countries to selected country to which fortify can done
+     */
     private JPanel neighbouringPanel;
+    /**
+     * Button to proceed to next part of game
+     */
     private JButton proceedButton;
 
     /**

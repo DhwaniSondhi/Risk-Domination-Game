@@ -20,9 +20,16 @@ import java.io.File;
 public class MainFrameController extends BaseController<MainFrame> implements
         ActionListener,
         GameStateChangeListener {
-
+    /**
+     * Boolean for startup
+     */
     private boolean startUpCompleted = false;
 
+    /**
+     * Controller for MainFrame
+     *
+     * @param view MainFrame view
+     */
     public MainFrameController(MainFrame view) {
         super(view);
     }

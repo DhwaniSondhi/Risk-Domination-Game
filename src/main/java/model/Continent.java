@@ -6,9 +6,21 @@ import java.util.ArrayList;
  * Continent Model
  */
 public class Continent {
+    /**
+     * Continent id
+     */
     public int id;
+    /**
+     * Continent name
+     */
     public String name;
+    /**
+     * Countries in the continent
+     */
     public ArrayList<Country> countries;
+    /**
+     * Value of continent
+     */
     public int controlValue;
 
     /**

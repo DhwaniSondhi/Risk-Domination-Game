@@ -19,9 +19,21 @@ import java.util.Set;
  * implements {@link ActionListener} for actions performed on GUI part of StartUp Panel
  */
 public class StartUpController extends BaseController<StartUpFrame> implements ActionListener {
+    /**
+     * Set for player Id
+     */
     Set<Integer> playerIds;
+    /**
+     * Initial armies variable
+     */
     Integer[] playerNumArmies = new Integer[]{40, 35, 30, 25, 20, 15, 10};
+    /**
+     * Array of Id
+     */
     Integer[] countryIdPlayers;
+    /**
+     * Counter for players
+     */
     int checkAllPlayers;
 
     /**
