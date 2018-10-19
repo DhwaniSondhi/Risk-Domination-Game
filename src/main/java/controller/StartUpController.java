@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This is the COntroller class for StartUp Phase
- * extends the abstract class for controller, {@link BaseController}
- * implements {@link ActionListener} for actions performed on GUI part of StartUp Panel
+ * This is the Controller class for StartUp Phase
+ * extends the abstract class {@link BaseController}
+ * implements {@link ActionListener} for actions performed on GUI part (StartUp Panel)
  */
 public class StartUpController extends BaseController<StartUpFrame> implements ActionListener {
     /**
-     * Set for player Id
+     * Set for players' Ids
      */
     Set<Integer> playerIds;
     /**
@@ -28,21 +28,21 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
      */
     Integer[] playerNumArmies = new Integer[]{40, 35, 30, 25, 20, 15, 10};
     /**
-     * Array of Id
+     * Array of countries' Ids
      */
     Integer[] countryIdPlayers;
     /**
-     * Counter for players
+     * Counter for player's turn
      */
     int checkAllPlayers;
 
     /**
-     * Constructor for StartUp Panel
+     * Constructor for StartUp Controller
      * <p>
      *     To initialize attributes
      * </p>
      *
-     * @param view
+     * @param view the reference for Start up Frame
      */
     public StartUpController(StartUpFrame view) {
         super(view);
@@ -56,7 +56,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
      * @return ID for the player
      */
     public int getPlayerId() {
-        String playerId = view.getjLabelPlayerValue();
+        String playerId = view.getLabelPlayerValue();
         if (playerId != null && !playerId.trim().equalsIgnoreCase("")) {
             int playerIdInt = Integer.parseInt(playerId);
             if (GameMap.getInstance().players.size() == playerIdInt) {
@@ -89,9 +89,9 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
     }
 
     /**
-     * To get the number of armies in a particular country
+     * To get the number of armies available for start up phase
      *
-     * @return number of armies
+     * @return array of number of armies
      */
     public Integer[] getArmies() {
         int armiesInCountries = 0;
@@ -140,7 +140,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
 
 
             if (getCountriesLeftCurrentPlayer().size() > 0) {
-                Country country = GameMap.getInstance().countries.get(countryIdPlayers[view.getjComboBoxCountry()]);
+                Country country = GameMap.getInstance().countries.get(countryIdPlayers[view.getCountryIndex()]);
                 country.numOfArmies += view.getNumberOfArmies();
                 GameMap.getInstance().countries.replace(country.id, country);
             }
@@ -150,7 +150,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
             checkAllPlayers++;
             if (++playerId > view.getNumOfPlayers()) {
                 playerId = 1;
-                view.setjLabelPlayerValue(String.valueOf(playerId));
+                view.setLabelPlayerValue(String.valueOf(playerId));
             }
             if (!(checkAllPlayers >= view.getNumOfPlayers())) {
                 view.clickAssignButton();

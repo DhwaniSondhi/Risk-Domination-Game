@@ -11,19 +11,38 @@ import java.util.*;
 
 /**
  * This is the Controller class for reinforcement phase
- * extends the abstract class for controller, {@link BaseController}
- * implements {@link ActionListener} for actions performed on Gui part of reinforcement panel
+ * extends the abstract class {@link BaseController}
+ * implements {@link ActionListener} for actions performed on Gui part(Reinforcement panel)
  */
 public class ReinforcementController extends BaseController<ReinforcementPanel> implements ActionListener {
 
+    /**
+     * HashMap to keep the name of the card as key and number of cards as value
+     */
     public HashMap<String, Integer> unselectedCards;
+
+    /**
+     * List for the cards selected
+     */
     public ArrayList<Card> selectedCards;
+
+    /**
+     * Reference for GameMap
+     */
     GameMap instance;
+
+    /**
+     * Array for country ids of current player
+     */
     Integer[] countryIdsOfCurrentPlayer;
+
+    /**
+     * Variable for total armies for Reinforcement Phase
+     */
     int totalArmies;
 
     /**
-     * Constructor for Reinforcement Panel
+     * Constructor for Reinforcement Controller
      * <p>
      * To initialize attributes
      * </p>
@@ -159,7 +178,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
 
 
     /**
-     * To calculate the total armies from the countries and continents owns by the player
+     * To calculate the total armies from the countries and continents own by the player
      *
      * @param countries  list of countries in the instance
      * @param continents list of continents in the instance

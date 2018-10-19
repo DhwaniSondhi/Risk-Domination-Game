@@ -16,12 +16,40 @@ import java.util.List;
  * extends {@link JPanel}
  */
 public class ReinforcementPanel extends JPanel {
+
+    /**
+     * Panel for card section
+     */
     JPanel cardSection;
+
+    /**
+     * Panel for army section
+     */
     JPanel armySection;
+
+    /**
+     * Reference for Reinforcement controller
+     */
     ReinforcementController reinforcementController;
+
+    /**
+     * Drop down to select countries for placing armies
+     */
     JComboBox countryList;
+
+    /**
+     * Drop down to select armies
+     */
     JComboBox armyList;
+
+    /**
+     * Number of the unselected cards
+     */
     int unselectedCardsNum;
+
+    /**
+     * Array for selected cards
+     */
     Card[] selectedCardsArray;
 
     /**
@@ -246,8 +274,6 @@ public class ReinforcementPanel extends JPanel {
         gridBagConstraints.gridx = x;
         gridBagConstraints.gridy = y;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
-        /*gridBagConstraints.weightx=1;
-        gridBagConstraints.weighty=1;*/
         return gridBagConstraints;
     }
 }

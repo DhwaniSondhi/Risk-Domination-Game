@@ -4,25 +4,52 @@ import model.Card;
 import model.Continent;
 import model.Country;
 import model.Player;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test Class for different test cases for reinforcement phase
+ */
 public class ReinforcementControllerTest {
 
+    /**
+     * HashMap for continents(the continent's id as the key and continent object as the value)
+     */
     HashMap<Integer, Continent> continents;
+
+    /**
+     * HashMap for countries(the country's id as the key and country object as the value)
+     */
     HashMap<Integer, Country> countries;
+
+    /**
+     * List for countries in the continent
+     */
     ArrayList<Country> countriesInContinent;
+
+    /**
+     * HashMap for players(the player's id as the key and player object as the value)
+     */
     HashMap<Integer, Player> players;
+
+    /**
+     * List for cards
+     */
     ArrayList<Card> cards;
 
+    /**
+     * Reference for reinforcement controller
+     */
     ReinforcementController reinforcementController;
 
+    /**
+     * To set up context for the test methods
+     * It sets up the continents, countries, players and cards in the game to test various cases in reinforcement.
+     */
     @Before
     public void before() {
         continents = new HashMap<>();
@@ -81,11 +108,9 @@ public class ReinforcementControllerTest {
 
     }
 
-    @After
-    public void after() {
-
-    }
-
+    /**
+     * To test total armies the player will get for reinforcement phase
+     */
     @Test
     public void toTestTotalArmiesReinforcement() {
         int totalArmies;
@@ -103,10 +128,12 @@ public class ReinforcementControllerTest {
         //---will be given 12/3+7=11 armies
         totalArmies=reinforcementController.getTotalArmies(countries,continents,players.get(1).id);
         assertEquals(11,totalArmies);
-
-
     }
 
+
+    /**
+     * To test armies the player will get for exchanging cards
+     */
     @Test
     public void toTestArmiesFromCards(){
         int totalArmies;
@@ -135,25 +162,24 @@ public class ReinforcementControllerTest {
         assertEquals(34,totalArmies);
     }
 
+    /**
+     * To test number of different types of cards the player has
+     */
     @Test
     public void toTestSetUnselectedCards(){
         HashMap<String,Integer> cardsToBeTested;
 
-        //to test cards for player 1
         cardsToBeTested=reinforcementController.getCardSetsOfPlayer(players.get(1));
         assertEquals(3,cardsToBeTested.size());//size will always be 3
         assertEquals(3,cardsToBeTested.get("CAVALRY").intValue());
         assertEquals(1,cardsToBeTested.get("INFANTRY").intValue());
         assertEquals(4,cardsToBeTested.get("ARTILLERY").intValue());
 
-
-        //to test cards for player 2
         cardsToBeTested=reinforcementController.getCardSetsOfPlayer(players.get(2));
         assertEquals(3,cardsToBeTested.size());//size will always be 3
         assertEquals(2,cardsToBeTested.get("CAVALRY").intValue());
         assertEquals(0,cardsToBeTested.get("INFANTRY").intValue());
         assertEquals(1,cardsToBeTested.get("ARTILLERY").intValue());
-
 
     }
 

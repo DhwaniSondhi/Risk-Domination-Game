@@ -12,20 +12,68 @@ import java.util.List;
 
 /**
  * GUI part of StartUp Panel
- * extends (@link JPanel)
+ * extends {@link JPanel}
  */
 public class StartUpFrame extends JFrame {
 
+    /**
+     * Drop down for the number of players
+     */
     JComboBox numOfPlayers;
+
+    /**
+     * Reference for StartUp Controller
+     */
     StartUpController startUpController;
-    JLabel jLabelplayers;
-    JComboBox jComboBoxCountries;
+
+    /**
+     * Label to display current player playing
+     */
+    JLabel playersLabel;
+
+    /**
+     * Drop down to select the countries
+     */
+    JComboBox countriesDropDown;
+
+    /**
+     * Drop down to select the armies
+     */
     JComboBox numberOfArmies;
-    JButton jButtonAssignArmy;
-    private JPanel mainStartPanel, countriesPanel;
-    private JLabel jlabel = new JLabel("Welcome to the RISK Game\n");
-    private JLabel jlabel2 = new JLabel("Choose number of players:");
+
+    /**
+     * Button to assign armies
+     */
+    JButton assignArmyButton;
+
+    /**
+     * Panel for main start
+     */
+    private JPanel mainStartPanel;
+
+    /**
+     * Panel for countries
+     */
+    private JPanel countriesPanel;
+
+    /**
+     * Label to display "Welcome to the RISK Game"
+     */
+    private JLabel labelWelcome = new JLabel("Welcome to the RISK Game\n");
+
+    /**
+     * Label to display "Choose number of players"
+     */
+    private JLabel labelChoosePlayers = new JLabel("Choose number of players:");
+
+    /**
+     * Button for submit the number of players
+     */
     private JButton buttonSubmit = new JButton("Submit");
+
+    /**
+     * Text Field for adding armies
+     */
     private JTextField addArmies;
 
 
@@ -43,7 +91,7 @@ public class StartUpFrame extends JFrame {
         startUpController.setStateChangeListener(stateChangeListener);
 
         mainStartPanel = new JPanel();
-        jLabelplayers = new JLabel();
+        playersLabel = new JLabel();
         mainStartPanel.setLayout(new BoxLayout(mainStartPanel, BoxLayout.Y_AXIS));
         add(mainStartPanel);
 
@@ -62,23 +110,22 @@ public class StartUpFrame extends JFrame {
 
         countriesPanel = new JPanel();
         countriesPanel.setLayout(new GridBagLayout());
-        //jlabel2.setLabelFor(nuOfPlayers);
-        mainStartPanel.add(jlabel);
-        mainStartPanel.add(jlabel2);
+        mainStartPanel.add(labelWelcome);
+        mainStartPanel.add(labelChoosePlayers);
         mainStartPanel.add(numOfPlayers);
         mainStartPanel.add(buttonSubmit);
         mainStartPanel.add(countriesPanel);
 
         mainStartPanel.revalidate();
-        jButtonAssignArmy = new JButton("Assign");
-        jButtonAssignArmy.setName("Assign");
-        jButtonAssignArmy.addActionListener(startUpController);
+        assignArmyButton = new JButton("Assign");
+        assignArmyButton.setName("Assign");
+        assignArmyButton.addActionListener(startUpController);
     }
 
     /**
      * To get the number of players needed in the game
      *
-     * @return
+     * @return the selected number of players in the drop down
      */
     public int getNumOfPlayers() {
         return (Integer) numOfPlayers.getSelectedItem();
@@ -87,35 +134,35 @@ public class StartUpFrame extends JFrame {
     /**
      * To get the unique player IDs
      *
-     * @return
+     * @return the player Id
      */
-    public String getjLabelPlayerValue() {
-        return jLabelplayers.getText();
+    public String getLabelPlayerValue() {
+        return playersLabel.getText();
     }
 
     /**
-     * TO assign the unique player IDs to players
+     * To update the current player Id displayed
      *
-     * @param newPlayerId
+     * @param newPlayerId  new Player id to be displayed
      */
-    public void setjLabelPlayerValue(String newPlayerId) {
-        jLabelplayers.setText(newPlayerId);
+    public void setLabelPlayerValue(String newPlayerId) {
+        playersLabel.setText(newPlayerId);
     }
 
     /**
-     * to create a list of countries
+     * To get index selected in the countries drop down
      *
-     * @return Combo Box for the countries
+     * @return index of the countries selected
      */
-    public int getjComboBoxCountry() {
+    public int getCountryIndex() {
 
-        return jComboBoxCountries.getSelectedIndex();
+        return countriesDropDown.getSelectedIndex();
     }
 
     /**
-     * To get the number of armies
+     * To get the number of armies selected
      *
-     * @return number of armies which player has
+     * @return armies selected in the drop down
      */
     public int getNumberOfArmies() {
         return (Integer) numberOfArmies.getSelectedItem();
@@ -125,13 +172,13 @@ public class StartUpFrame extends JFrame {
      * observer for the assign button
      */
     public void clickAssignButton() {
-        jButtonAssignArmy.doClick();
+        assignArmyButton.doClick();
     }
 
     /**
      * Creates {@link GridBagConstraints} with provided gridX and gridY values
      *
-     * @param x value for constraints gridx (row in the grid)
+     * @param x value for constraints gridX (row in the grid)
      * @param y value for constraints gridY (col in the grid)
      * @return default constraints (see {@link GridBagConstraints}) with provided x,y values
      */
@@ -153,24 +200,24 @@ public class StartUpFrame extends JFrame {
     public void updateCountries(List<Country> countries) {
         countriesPanel.removeAll();
         addArmies = new JTextField(10);
-        jComboBoxCountries = new JComboBox();
+        countriesDropDown = new JComboBox();
 
         if (countries != null) {
             for (Country countryName : countries) {
-                jComboBoxCountries.addItem(countryName);
+                countriesDropDown.addItem(countryName);
             }
         }
 
         countriesPanel.add(new JLabel("Player"), getConstraints(0, 0));
-        jLabelplayers.setText(String.valueOf(GameMap.getInstance().currentPlayer.id));
-        countriesPanel.add(jLabelplayers, getConstraints(0, 1));
-        countriesPanel.add(jComboBoxCountries, getConstraints(0, 2));
+        playersLabel.setText(String.valueOf(GameMap.getInstance().currentPlayer.id));
+        countriesPanel.add(playersLabel, getConstraints(0, 1));
+        countriesPanel.add(countriesDropDown, getConstraints(0, 2));
         countriesPanel.add(new JLabel("Select Number of armies"), getConstraints(0, 3));
         numberOfArmies = new JComboBox(startUpController.getArmies());
         countriesPanel.add(numberOfArmies, getConstraints(0, 4));
 
 
-        countriesPanel.add(jButtonAssignArmy, getConstraints(0, 5));
+        countriesPanel.add(assignArmyButton, getConstraints(0, 5));
         countriesPanel.revalidate();
         countriesPanel.repaint();
     }
