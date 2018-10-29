@@ -7,10 +7,7 @@ import view.ReinforcementPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This is the Controller class for reinforcement phase
@@ -30,19 +27,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     private ArrayList<Card> selectedCards;
 
     /**
-     * Reference for GameMap
-     */
-    private GameMap instance;
-
-    /**
-     * Array for country ids of current player
-     */
-    private Integer[] countryIdsOfCurrentPlayer;
-
-    /**
      * Variable for total armies for Reinforcement Phase
      */
-    private int totalArmies;
+    int totalArmies;
 
     /**
      * Constructor for Reinforcement Controller
@@ -54,7 +41,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      */
     public ReinforcementController(ReinforcementPanel reinforcementPanel) {
         super(reinforcementPanel);
-        instance = GameMap.getInstance();
         selectedCards = new ArrayList<>();
     }
 
@@ -152,7 +138,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To update the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
      */
     private void setCardsOnUpdate() {
-        totalArmies = getUpdatedArmiesOnCardsExchange(totalArmies, instance.currentPlayer);
+        totalArmies = getUpdatedArmiesOnCardsExchange(totalArmies, model.currentPlayer);
         selectedCards.clear();
         view.addArmySection();
 
@@ -162,7 +148,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To get the updated total armies when a set of three cards are changed
      *
      * @param totalArmiesLocal the armies allotted from countries and continents player has
-     * @param player           the player exchanging the cards
+     * @param player the player exchanging the cards
      * @return the updated armies
      */
     public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal, Player player) {
@@ -171,6 +157,14 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         return totalArmiesLocal;
 
     }
+
+    /**
+     * To set the total armies getting from getTotalArmies() method in totalArmies attribute
+     */
+    public void setArmiesForReinforcement() {
+        totalArmies = getTotalArmies(model.countries, model.continents, model.currentPlayer.id);
+    }
+
 
     /**
      * To calculate the total armies from the countries and continents own by the player
@@ -224,18 +218,10 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
 
     /**
      * To get the countries of currentPlayer
-     * It also the ids for the countries for the current player in countryIdsOfCurrentPlayer attribute
      *
      * @return List of countries of CurrentPlayer
      */
     public List<Country> getCountriesAndIdsOfCurrentPlayer() {
-        List<Country> countries = model.getCountriesOfCurrentPlayer();
-        countryIdsOfCurrentPlayer = new Integer[countries.size()];
-        int loopForIds = 0;
-        for (Country country : countries) {
-            countryIdsOfCurrentPlayer[loopForIds] = country.id;
-            loopForIds++;
-        }
         return model.getCountriesOfCurrentPlayer();
     }
 
@@ -243,7 +229,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To add the armies to the respective countries on click of Add button
      */
     public void changeArmiesOfCountries() {
-        int countryId = countryIdsOfCurrentPlayer[view.getValueOfCountryIndexComboBox()];
+        int countryId = model.getCountriesOfCurrentPlayer().get(view.getValueOfCountryIndexComboBox()).id;
         int addedArmy = Integer.parseInt(view.getValueOfArmyComboBox());
         Country countryChanged = model.countries.get(countryId);
         countryChanged.numOfArmies += addedArmy;
