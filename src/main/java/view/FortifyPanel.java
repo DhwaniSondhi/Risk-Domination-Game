@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -301,7 +301,7 @@ public class FortifyPanel extends JPanel {
      *
      * @param neighbor contains the id's and names of neighboring countries
      */
-    public void updateNeighboringCountries(LinkedHashMap<Integer, Country> neighbor) {
+    public void updateNeighboringCountries(HashMap<Integer, Country> neighbor) {
         Country[] neighborCountriesList = new Country[neighbor.keySet().size()];
         int index = 0;
         for (Map.Entry getCountries : neighbor.entrySet()) {

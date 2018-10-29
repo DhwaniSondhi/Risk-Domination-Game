@@ -7,7 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import view.FortifyPanel;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
+
 
 /**
  * This is test class for functions of FortifyController
@@ -34,7 +35,7 @@ public class FortifyControllerTest {
      */
     @Test
     public void getNeighborsOfCountry() {
-        LinkedHashMap<Integer, Country> neighbor = fortifyController.getNeighborsOfCountry(gameMap.countries.get(1));
+        HashMap<Integer, Country> neighbor = fortifyController.getNeighborsOfCountry(gameMap.countries.get(1));
         Assert.assertFalse(neighbor.isEmpty());
         Assert.assertEquals(1, neighbor.size());
         Assert.assertNotNull(neighbor.get(5));

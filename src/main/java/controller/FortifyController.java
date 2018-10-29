@@ -8,10 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Controller for FortifyPanel
@@ -96,7 +93,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 selectedCountry = source.getSelectedValue();
                 view.enableCountriesArmyLabelAndTextField();
                 view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
-                LinkedHashMap<Integer, Country> neighbor = getNeighborsOfCountry(selectedCountry);
+                HashMap<Integer, Country> neighbor = getNeighborsOfCountry(selectedCountry);
                 view.showNeighbouringCountriesFortify(model.getCountriesOfCurrentPlayer());
                 view.updateNeighboringCountries(neighbor);
 
@@ -131,31 +128,31 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      * Function that get the LinkedHashMap of neighbouring countries of selected country
      *
      * @param selectedCountry country whose neighbours need to find
-     * @return LinkedHashMap of countries where fortify can be done
+     * @return HashMap of countries where fortify can be done
      */
-    public LinkedHashMap getNeighborsOfCountry(Country selectedCountry) {
-        LinkedHashMap<Integer, Country> neighbor = new LinkedHashMap<>();
+    public HashMap getNeighborsOfCountry(Country selectedCountry) {
+        HashMap<Integer, Country> neighbor = new HashMap<>();
         int countryId = selectedCountry.id;
         int ownerId = selectedCountry.owner.id;
         Queue<Integer> queueNeighbor = new LinkedList<>();
         queueNeighbor.add(countryId);
-        LinkedHashMap<Integer, Country> neighborCheck = new LinkedHashMap<Integer, Country>();
-        neighborCheck.put(countryId, selectedCountry);
+        neighbor.put(countryId, selectedCountry);
         while (!queueNeighbor.isEmpty()) {
             int last = queueNeighbor.remove();
             ArrayList<Country> listNeighbouring = new ArrayList<>();
             listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.countryGraph);
             for (int i = 0; i < listNeighbouring.size(); i++) {
                 if (listNeighbouring.get(i).owner.id == ownerId) {
-                    if (neighborCheck.get(listNeighbouring.get(i).id) == null) {
+                    if (neighbor.get(listNeighbouring.get(i).id) == null) {
                         queueNeighbor.add(listNeighbouring.get(i).id);
                         neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
-                        neighborCheck.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
+                        neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
                     }
 
                 }
 
             }
+            neighbor.remove(countryId);
 
         }
 
