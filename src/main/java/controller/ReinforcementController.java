@@ -186,7 +186,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * @return the calculated total armies
      */
     public int getTotalArmies(HashMap<Integer, Country> countries, HashMap<Integer, Continent> continents, int playerId) {
-
         int playerCountries = 0;
         Iterator itForCountries = countries.entrySet().iterator();
         while (itForCountries.hasNext()) {
@@ -208,14 +207,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             Continent continent = (Continent) continentPair.getValue();
             ArrayList<Country> continentCountries = continent.countries;
             for (Country country : continentCountries) {
-                if (country.owner != null) {
-                    if (country.owner.id != playerId) {
+                if (country.owner.id != playerId) { // instead of two if merged if condition
                         hasContinent = false;
                         break;
-                    }
-                } else {
-                    hasContinent = false;
-                    break;
                 }
             }
             if (hasContinent == true) {

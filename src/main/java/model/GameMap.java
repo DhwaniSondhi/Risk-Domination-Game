@@ -68,15 +68,14 @@ public class GameMap {
      *
      * @param continent      gets continent from file
      * @param continentValue gets confinent value from file
-     * @return true if continent is added to model else false
      */
-    public boolean saveContinent(String continent, int continentValue) {
+    public void saveContinent(String continent, int continentValue) {
         if (checkContinentExists(continent.trim()) == -1 && !continent.trim().isEmpty()) {
             continentCounter++;
             continents.put(continentCounter, new Continent(continentCounter, continent.trim(), continentValue));
-            return true;
+//            return true;
         }
-        return false;
+//        return false;
     }
 
     /**
@@ -175,20 +174,6 @@ public class GameMap {
             }
         }
         return -1;
-    }
-
-    /**
-     * update the instance with the game data
-     *
-     * @param continents continents of the game.
-     * @param countries  countries of the game.
-     * @param players    players of the game
-     */
-    public void setUpWithData(HashMap<Integer, Country> countries, HashMap<Integer, Continent> continents,
-                              HashMap<Integer, Player> players) {
-        this.countries = countries;
-        this.continents = continents;
-        this.players = players;
     }
 
     /**
