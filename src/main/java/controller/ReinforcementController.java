@@ -7,7 +7,10 @@ import view.ReinforcementPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is the Controller class for reinforcement phase
@@ -19,27 +22,27 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     /**
      * HashMap to keep the name of the card as key and number of cards as value
      */
-    public HashMap<String, Integer> unselectedCards;
+    private HashMap<String, Integer> unselectedCards;
 
     /**
      * List for the cards selected
      */
-    public ArrayList<Card> selectedCards;
+    private ArrayList<Card> selectedCards;
 
     /**
      * Reference for GameMap
      */
-    GameMap instance;
+    private GameMap instance;
 
     /**
      * Array for country ids of current player
      */
-    Integer[] countryIdsOfCurrentPlayer;
+    private Integer[] countryIdsOfCurrentPlayer;
 
     /**
      * Variable for total armies for Reinforcement Phase
      */
-    int totalArmies;
+    private int totalArmies;
 
     /**
      * Constructor for Reinforcement Controller
@@ -115,7 +118,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To set the list of cards available of a player in the unselectedCards attribute
      */
     public void setUnSelectedCards() {
-        unselectedCards=getCardSetsOfPlayer(model.currentPlayer);
+        unselectedCards = getCardSetsOfPlayer(model.currentPlayer);
     }
 
     /**
@@ -124,9 +127,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * @param player current player
      * @return hashmap with values as the number of each INFANTRY, ARTILLERY and CAVALRY cards
      */
-    public HashMap<String,Integer> getCardSetsOfPlayer(Player player) {
+    public HashMap<String, Integer> getCardSetsOfPlayer(Player player) {
         ArrayList<Card> cards = player.cards;
-        HashMap<String,Integer> cardSets=new HashMap<>();
+        HashMap<String, Integer> cardSets = new HashMap<>();
         int infantry = 0;
         int artillery = 0;
         int cavalry = 0;
@@ -148,8 +151,8 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     /**
      * To update the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
      */
-    public void setCardsOnUpdate() {
-        totalArmies = getUpdatedArmiesOnCardsExchange(totalArmies,instance.currentPlayer);
+    private void setCardsOnUpdate() {
+        totalArmies = getUpdatedArmiesOnCardsExchange(totalArmies, instance.currentPlayer);
         selectedCards.clear();
         view.addArmySection();
 
@@ -159,23 +162,15 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To get the updated total armies when a set of three cards are changed
      *
      * @param totalArmiesLocal the armies allotted from countries and continents player has
-     * @param player the player exchanging the cards
+     * @param player           the player exchanging the cards
      * @return the updated armies
      */
-    public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal,Player player) {
-        totalArmiesLocal+=player.updateArmiesForCards;
+    public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal, Player player) {
+        totalArmiesLocal += player.updateArmiesForCards;
         player.updateArmiesForCards += 5;
         return totalArmiesLocal;
 
     }
-
-    /**
-     * To set the total armies getting from getTotalArmies() method in totalArmies attribute
-     */
-    public void setArmiesForReinforcement() {
-        totalArmies = getTotalArmies(instance.countries, instance.continents, instance.currentPlayer.id);
-    }
-
 
     /**
      * To calculate the total armies from the countries and continents own by the player
@@ -187,32 +182,26 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      */
     public int getTotalArmies(HashMap<Integer, Country> countries, HashMap<Integer, Continent> continents, int playerId) {
         int playerCountries = 0;
-        Iterator itForCountries = countries.entrySet().iterator();
-        while (itForCountries.hasNext()) {
-            Map.Entry countryPair = (Map.Entry) itForCountries.next();
-            Country country = (Country) countryPair.getValue();
-            if (country.owner != null) {
-                if (country.owner.id == playerId) {
-                    playerCountries++;
-                }
+        for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
+            Country country = entry.getValue();
+            if (country.owner.id == playerId) {
+                playerCountries++;
             }
         }
 
         int playerContinentsControlVal = 0;
         boolean hasContinent;
-        Iterator itForContinents = continents.entrySet().iterator();
-        while (itForContinents.hasNext()) {
+        for (Map.Entry<Integer, Continent> entry : continents.entrySet()) {
             hasContinent = true;
-            Map.Entry continentPair = (Map.Entry) itForContinents.next();
-            Continent continent = (Continent) continentPair.getValue();
+            Continent continent = entry.getValue();
             ArrayList<Country> continentCountries = continent.countries;
             for (Country country : continentCountries) {
-                if (country.owner.id != playerId) { // instead of two if merged if condition
-                        hasContinent = false;
-                        break;
+                if (country.owner.id != playerId) {
+                    hasContinent = false;
+                    break;
                 }
             }
-            if (hasContinent == true) {
+            if (hasContinent) {
                 playerContinentsControlVal += continent.controlValue;
             }
         }
