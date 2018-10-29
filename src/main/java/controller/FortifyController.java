@@ -125,7 +125,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     }
 
     /**
-     * Function that get the LinkedHashMap of neighbouring countries of selected country
+     * Function that get the HashMap of neighbouring countries of selected country
      *
      * @param selectedCountry country whose neighbours need to find
      * @return HashMap of countries where fortify can be done
