@@ -9,9 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This is the Controller class for StartUp Phase
@@ -20,21 +18,13 @@ import java.util.Set;
  */
 public class StartUpController extends BaseController<StartUpFrame> implements ActionListener {
     /**
-     * Set for players' Ids
-     */
-    Set<Integer> playerIds;
-    /**
      * Initial armies variable
      */
-    Integer[] playerNumArmies = new Integer[]{40, 35, 30, 25, 20, 15, 10};
-    /**
-     * Array of countries' Ids
-     */
-    Integer[] countryIdPlayers;
+    private Integer[] playerNumArmies = new Integer[]{40, 35, 30, 25, 20, 15, 10};
     /**
      * Counter for player's turn
      */
-    int checkAllPlayers;
+    private int checkAllPlayers = 0;
 
     /**
      * Constructor for StartUp Controller
@@ -46,8 +36,6 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
      */
     public StartUpController(StartUpFrame view) {
         super(view);
-        playerIds = GameMap.getInstance().players.keySet();
-        checkAllPlayers = 0;
     }
 
     /**
@@ -55,7 +43,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
      *
      * @return ID for the player
      */
-    public int getPlayerId() {
+    private int getPlayerId() {
         String playerId = view.getLabelPlayerValue();
         if (playerId != null && !playerId.trim().equalsIgnoreCase("")) {
             int playerIdInt = Integer.parseInt(playerId);
@@ -74,17 +62,13 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
      *
      * @return Countries of the current player
      */
-    public List<Country> getCountriesLeftCurrentPlayer() {
+    private List<Country> getCountriesLeftCurrentPlayer() {
         List<Country> countries = new ArrayList<>();
-        HashSet<Integer> countryIdPlayersLocal = new HashSet<Integer>();
         for (Country country : GameMap.getInstance().getCountriesOfCurrentPlayer()) {
             if (country.numOfArmies == 0) {
-                countryIdPlayersLocal.add(country.id);
                 countries.add(country);
             }
         }
-        countryIdPlayers = new Integer[countryIdPlayersLocal.size()];
-        countryIdPlayersLocal.toArray(countryIdPlayers);
         return countries;
     }
 
@@ -127,7 +111,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
         int playerId = getPlayerId();
         if (btnName != null && btnName.trim().equalsIgnoreCase("submit")) {
             GameMap.getInstance().players.clear();
-            for (int loopPlayer = 1; loopPlayer <= Integer.valueOf(view.getNumOfPlayers()); loopPlayer++) {
+            for (int loopPlayer = 1; loopPlayer <= view.getNumOfPlayers(); loopPlayer++) {
                 Player player = new Player(loopPlayer, "Player" + loopPlayer);
                 if (loopPlayer == 1) {
                     GameMap.getInstance().currentPlayer = player;
@@ -138,9 +122,9 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
             GameMap.getInstance().assignCountriesToPlayers();
         } else if (btnName != null && btnName.trim().equalsIgnoreCase("Assign")) {
 
-
-            if (getCountriesLeftCurrentPlayer().size() > 0) {
-                Country country = GameMap.getInstance().countries.get(countryIdPlayers[view.getCountryIndex()]);
+        List<Country> countries = getCountriesLeftCurrentPlayer();
+            if (countries.size() > 0) {
+                Country country = GameMap.getInstance().countries.get(countries.get(view.getCountryIndex()).id);
                 country.numOfArmies += view.getNumberOfArmies();
                 GameMap.getInstance().countries.replace(country.id, country);
             }
