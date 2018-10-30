@@ -1,7 +1,6 @@
 package controller;
 
 import model.Country;
-import model.GameMap;
 import model.Player;
 import view.StartUpFrame;
 
@@ -47,7 +46,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
         String playerId = view.getLabelPlayerValue();
         if (playerId != null && !playerId.trim().equalsIgnoreCase("")) {
             int playerIdInt = Integer.parseInt(playerId);
-            if (GameMap.getInstance().players.size() == playerIdInt) {
+            if (model.players.size() == playerIdInt) {
                 playerIdInt = 0;
             }
             return ++playerIdInt;
@@ -64,7 +63,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
      */
     private List<Country> getCountriesLeftCurrentPlayer() {
         List<Country> countries = new ArrayList<>();
-        for (Country country : GameMap.getInstance().getCountriesOfCurrentPlayer()) {
+        for (Country country : model.getCountriesOfCurrentPlayer()) {
             if (country.numOfArmies == 0) {
                 countries.add(country);
             }
@@ -80,7 +79,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
     public Integer[] getArmies() {
         int armiesInCountries = 0;
         Integer[] armyArray;
-        for (Country country : GameMap.getInstance().getCountriesOfCurrentPlayer()) {
+        for (Country country : model.getCountriesOfCurrentPlayer()) {
             if (country.numOfArmies != 0) {
                 armiesInCountries += country.numOfArmies;
             }
@@ -110,25 +109,25 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
         String btnName = ((JButton) e.getSource()).getName();
         int playerId = getPlayerId();
         if (btnName != null && btnName.trim().equalsIgnoreCase("submit")) {
-            GameMap.getInstance().players.clear();
+            model.players.clear();
             for (int loopPlayer = 1; loopPlayer <= view.getNumOfPlayers(); loopPlayer++) {
                 Player player = new Player(loopPlayer, "Player" + loopPlayer);
                 if (loopPlayer == 1) {
-                    GameMap.getInstance().currentPlayer = player;
+                    model.currentPlayer = player;
                 }
-                GameMap.getInstance().players.put(player.id, player);
+                model.players.put(player.id, player);
             }
 
-            GameMap.getInstance().assignCountriesToPlayers();
+            model.assignCountriesToPlayers();
         } else if (btnName != null && btnName.trim().equalsIgnoreCase("Assign")) {
 
         List<Country> countries = getCountriesLeftCurrentPlayer();
             if (countries.size() > 0) {
-                Country country = GameMap.getInstance().countries.get(countries.get(view.getCountryIndex()).id);
+                Country country = model.countries.get(countries.get(view.getCountryIndex()).id);
                 country.numOfArmies += view.getNumberOfArmies();
-                GameMap.getInstance().countries.replace(country.id, country);
+                model.countries.replace(country.id, country);
             }
-            GameMap.getInstance().currentPlayer = GameMap.getInstance().players.get(playerId);
+            model.currentPlayer = model.players.get(playerId);
         }
         if (getCountriesLeftCurrentPlayer().size() == 0) {
             checkAllPlayers++;
