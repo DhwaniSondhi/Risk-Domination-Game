@@ -73,9 +73,7 @@ public class GameMap {
         if (checkContinentExists(continent.trim()) == -1 && !continent.trim().isEmpty()) {
             continentCounter++;
             continents.put(continentCounter, new Continent(continentCounter, continent.trim(), continentValue));
-//            return true;
         }
-//        return false;
     }
 
     /**
@@ -129,15 +127,12 @@ public class GameMap {
         } else {
             int countryId = this.checkCountryExists(country);
             this.insertCountry(countryId, country.trim());
-
             continents.get(continentId).countries.add(countries.get(countryId));
 
             for (String territory : territories.subList(2, territories.size())) {
                 int neighbourCountryId = this.checkCountryExists(territory.trim());
                 this.insertCountry(neighbourCountryId, territory.trim());
-
                 neighbours.add(countries.get(neighbourCountryId));
-
                 this.saveToGraph(countryId, neighbours);
             }
 
@@ -185,16 +180,6 @@ public class GameMap {
     }
 
     /**
-     * update the instance with the countryGraph
-     *
-     * @param map {@link HashMap} of game countryGraph
-     */
-    public void setMapData(HashMap<Integer, HashSet<Country>> map) {
-        this.countryGraph = map;
-    }
-
-
-    /**
      * Get the list of all countries owned by the current player
      *
      * @return list of countries
@@ -208,27 +193,6 @@ public class GameMap {
             }
         }
         return countries;
-    }
-
-    /**
-     * @return total number of continents
-     */
-    public int getNumberOfContinents() {
-        return continents.size();
-    }
-
-    /**
-     * @return total number of players
-     */
-    public int getNumberOfPlayers() {
-        return players.size();
-    }
-
-    /**
-     * @return total number of countries
-     */
-    public int getNumberOfCountries() {
-        return countries.size();
     }
 
     /**
@@ -303,16 +267,6 @@ public class GameMap {
         if (!players.isEmpty()) {
             currentPlayer = players.get(1);
         }
-    }
-
-    /**
-     * Assign army to country in startup phase
-     *
-     * @param countryId id of the country
-     * @param numArmies no. of armies
-     */
-    public void assignArmyToCountry(int countryId, int numArmies) {
-        countries.get(countryId).numOfArmies = numArmies;
     }
 
     /**
