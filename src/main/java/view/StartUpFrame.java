@@ -6,179 +6,108 @@ import model.GameMap;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-/**
- * GUI part of StartUp Panel
- * extends {@link JPanel}
- */
-public class StartUpFrame extends JFrame {
 
-    /**
-     * Drop down for the number of players
-     */
-    JComboBox numOfPlayers;
+public class StartUpFrame extends JFrame implements Observer {
 
     /**
-     * Reference for StartUp Controller
-     */
-    StartUpController startUpController;
-
-    /**
-     * Label to display current player playing
-     */
-    JLabel playersLabel;
-
-    /**
-     * Drop down to select the countries
-     */
-    JComboBox countriesDropDown;
-
-    /**
-     * Drop down to select the armies
-     */
-    JComboBox numberOfArmies;
-
-    /**
-     * Button to assign armies
-     */
-    JButton assignArmyButton;
-
-    /**
-     * Panel for main start
-     */
-    private JPanel mainStartPanel;
-
-    /**
-     * Panel for countries
+     * Panel to hold countries
      */
     private JPanel countriesPanel;
+    /**
+     * Drop-down to select number of players
+     */
+    public JComboBox<Integer> numOfPlayers;
+    /**
+     * button to submit number of players
+     */
+    private JButton submitButton;
+    /**
+     * button to assign armies
+     */
+    private JButton assignButton;
+    /**
+     * Label showing current player name
+     */
+    private JLabel selectedPlayer;
+    /**
+     * Drop-down to select number of counrties
+     */
+    public JComboBox<Country> playerCountries;
+    /**
+     * Drop-down to select number of armies
+     */
+    public JComboBox<Integer> numOfArmies;
 
     /**
-     * Label to display "Welcome to the RISK Game"
-     */
-    private JLabel labelWelcome = new JLabel("Welcome to the RISK Game\n");
-
-    /**
-     * Label to display "Choose number of players"
-     */
-    private JLabel labelChoosePlayers = new JLabel("Choose number of players:");
-
-    /**
-     * Button for submit the number of players
-     */
-    private JButton buttonSubmit = new JButton("Submit");
-
-    /**
-     * Text Field for adding armies
-     */
-    private JTextField addArmies;
+     * controller for the view
+     * */
+    private StartUpController controller;
 
 
     /**
-     * Constructor
-     * <p>
-     *     To create the Panel for StartUp Phase of the Game
-     * </p>
-     * @param stateChangeListener observer for game state
-     */
+     * initializes the controller and sets up the layout for the view
+     * */
     public StartUpFrame(GameStateChangeListener stateChangeListener) {
         super("Welcome to the Game");
 
-        startUpController = new StartUpController(this);
-        startUpController.setStateChangeListener(stateChangeListener);
+        controller = new StartUpController(this);
+        controller.setStateChangeListener(stateChangeListener);
 
-        mainStartPanel = new JPanel();
-        playersLabel = new JLabel();
-        mainStartPanel.setLayout(new BoxLayout(mainStartPanel, BoxLayout.Y_AXIS));
-        add(mainStartPanel);
-
-        mainStartPanel.setBorder(new LineBorder(Color.BLACK));
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setSize(400, 400);
+        setAlwaysOnTop(true);
+        setSize(300, 300);
         setVisible(true);
 
-        buttonSubmit.setName("submit");
-        buttonSubmit.addActionListener(startUpController);
-        numOfPlayers = new JComboBox();
-        for (int i = 1; i < Math.min(6, GameMap.getInstance().countries.size()); i++) {
-            numOfPlayers.addItem(i + 1);
-        }
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        add(mainPanel);
 
+        mainPanel.add(new JLabel("Welcome to the RISK Game"));
+        mainPanel.add(new JLabel("Choose number of players:"));
+
+        numOfPlayers = new JComboBox<>();
+        for (int i = 2; i <= Math.min(6, GameMap.getInstance().countries.size()); i++) {
+            numOfPlayers.addItem(i);
+        }
+        mainPanel.add(numOfPlayers);
+
+        submitButton = new JButton("Submit");
+        submitButton.setName("submit");
+        submitButton.addActionListener(controller);
+        mainPanel.add(submitButton);
 
         countriesPanel = new JPanel();
         countriesPanel.setLayout(new GridBagLayout());
-        mainStartPanel.add(labelWelcome);
-        mainStartPanel.add(labelChoosePlayers);
-        mainStartPanel.add(numOfPlayers);
-        mainStartPanel.add(buttonSubmit);
-        mainStartPanel.add(countriesPanel);
+        mainPanel.add(countriesPanel);
 
-        mainStartPanel.revalidate();
-        assignArmyButton = new JButton("Assign");
-        assignArmyButton.setName("Assign");
-        assignArmyButton.addActionListener(startUpController);
-    }
+        selectedPlayer = new JLabel("--");
+        countriesPanel.add(selectedPlayer, getConstraints(0, 0));
 
-    /**
-     * To get the number of players needed in the game
-     *
-     * @return the selected number of players in the drop down
-     */
-    public int getNumOfPlayers() {
-        return (Integer) numOfPlayers.getSelectedItem();
-    }
+        countriesPanel.add(new JLabel("Select the country:"), getConstraints(0, 1));
+        playerCountries = new JComboBox<>();
+        countriesPanel.add(playerCountries, getConstraints(0, 2));
 
-    /**
-     * To get the unique player IDs
-     *
-     * @return the player Id
-     */
-    public String getLabelPlayerValue() {
-        return playersLabel.getText();
-    }
+        countriesPanel.add(new JLabel("Select no. of armies:"), getConstraints(0, 3));
+        numOfArmies = new JComboBox<>();
+        countriesPanel.add(numOfArmies, getConstraints(0, 4));
 
-    /**
-     * To update the current player Id displayed
-     *
-     * @param newPlayerId  new Player id to be displayed
-     */
-    public void setLabelPlayerValue(String newPlayerId) {
-        playersLabel.setText(newPlayerId);
-    }
+        assignButton = new JButton("Assign");
+        assignButton.setName("assign");
+        assignButton.addActionListener(controller);
+        countriesPanel.add(assignButton, getConstraints(0, 5));
 
-    /**
-     * To get index selected in the countries drop down
-     *
-     * @return index of the countries selected
-     */
-    public int getCountryIndex() {
-
-        return countriesDropDown.getSelectedIndex();
-    }
-
-    /**
-     * To get the number of armies selected
-     *
-     * @return armies selected in the drop down
-     */
-    public int getNumberOfArmies() {
-        return (Integer) numberOfArmies.getSelectedItem();
-    }
-
-    /**
-     * observer for the assign button
-     */
-    public void clickAssignButton() {
-        assignArmyButton.doClick();
+        mainPanel.revalidate();
     }
 
     /**
      * Creates {@link GridBagConstraints} with provided gridX and gridY values
      *
-     * @param x value for constraints gridX (row in the grid)
+     * @param x value for constraints gridx (row in the grid)
      * @param y value for constraints gridY (col in the grid)
      * @return default constraints (see {@link GridBagConstraints}) with provided x,y values
      */
@@ -193,32 +122,53 @@ public class StartUpFrame extends JFrame {
     }
 
     /**
-     * To update the list of countries which the player still has
+     * updates the country panel with current players remaining countries
      *
-     * @param countries list of the countries of current player
+     * @param countries        list of countries to display
+     * @param initialArmyCount initial army for the player
+     * @param playerName       name of current player
      */
-    public void updateCountries(List<Country> countries) {
-        countriesPanel.removeAll();
-        addArmies = new JTextField(10);
-        countriesDropDown = new JComboBox();
-
+    public void updateCountriesPanel(String playerName, List<Country> countries, int initialArmyCount) {
+        selectedPlayer.setText(playerName);
+        playerCountries.removeAllItems();
+        int placedArmyCount = 0;
         if (countries != null) {
-            for (Country countryName : countries) {
-                countriesDropDown.addItem(countryName);
+            for (Country country : countries) {
+                if (country.numOfArmies == 0)
+                    playerCountries.addItem(country);
+                else
+                    placedArmyCount += country.numOfArmies;
             }
         }
 
-        countriesPanel.add(new JLabel("Player"), getConstraints(0, 0));
-        playersLabel.setText(String.valueOf(GameMap.getInstance().currentPlayer.id));
-        countriesPanel.add(playersLabel, getConstraints(0, 1));
-        countriesPanel.add(countriesDropDown, getConstraints(0, 2));
-        countriesPanel.add(new JLabel("Select Number of armies"), getConstraints(0, 3));
-        numberOfArmies = new JComboBox(startUpController.getArmies());
-        countriesPanel.add(numberOfArmies, getConstraints(0, 4));
-
-
-        countriesPanel.add(assignArmyButton, getConstraints(0, 5));
+        int maxCount = initialArmyCount - placedArmyCount - playerCountries.getItemCount() + 1;
+        numOfArmies.removeAllItems();
+        if (playerCountries.getItemCount() == 1) {
+            numOfArmies.addItem(maxCount);
+        } else {
+            for (int i = 1; i <= maxCount; i++) {
+                numOfArmies.addItem(i);
+            }
+        }
         countriesPanel.revalidate();
-        countriesPanel.repaint();
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        GameMap instance = GameMap.getInstance();
+        if (instance.currentPlayer != null) {
+            updateCountriesPanel(instance.currentPlayer.name, instance.getCountriesOfCurrentPlayer(),
+                    instance.getInitialArmy());
+        }
     }
 }
+

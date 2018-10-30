@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * Singleton class containing access to all the game components
  */
-public class GameMap {
+public class GameMap extends Observable {
     /**
      * Instance of GameMap class
      */
@@ -231,12 +231,15 @@ public class GameMap {
         int playerId = 1;
         for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
             entry.getValue().owner = players.get(playerId);
+            entry.getValue().numOfArmies = 0;
             if (playerId != players.size()) {
                 playerId++;
             } else {
                 playerId = 1;
             }
         }
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -261,6 +264,8 @@ public class GameMap {
 
             currentPlayer = players.get(next);
         }
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -270,6 +275,24 @@ public class GameMap {
         if (!players.isEmpty()) {
             currentPlayer = players.get(1);
         }
+    }
+
+    /**
+     * Assign army to country in startup phase
+     *
+     * @param countryId id of the country
+     * @param numArmies no. of armies
+     */
+    public void assignArmyToCountry(int countryId, int numArmies) {
+        countries.get(countryId).numOfArmies = numArmies;
+    }
+
+    public int getInitialArmy() {
+        int[] armyCount = new int[]{40, 35, 30, 25, 20};
+        if (!players.isEmpty())
+            return armyCount[players.size() - 2];
+
+        return 0;
     }
 
     /**
