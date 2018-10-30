@@ -126,12 +126,14 @@ public class GameMap {
             return false;
         } else {
             int countryId = this.checkCountryExists(country);
-            this.insertCountry(countryId, country.trim());
+
+            countryId = this.insertCountry(countryId, country.trim());
             continents.get(continentId).countries.add(countries.get(countryId));
 
             for (String territory : territories.subList(2, territories.size())) {
                 int neighbourCountryId = this.checkCountryExists(territory.trim());
-                this.insertCountry(neighbourCountryId, territory.trim());
+
+                neighbourCountryId = this.insertCountry(neighbourCountryId, territory.trim());
                 neighbours.add(countries.get(neighbourCountryId));
                 this.saveToGraph(countryId, neighbours);
             }
@@ -147,11 +149,12 @@ public class GameMap {
      * @param countryId id of the country
      * @param country   name of the country
      */
-    private void insertCountry(int countryId, String country) {
+    private int insertCountry(int countryId, String country) {
         if (countryId == -1) {
             countryId = ++countryCounter;
             countries.put(countryCounter, new Country(countryId, country));
         }
+        return countryId;
     }
 
     /**
