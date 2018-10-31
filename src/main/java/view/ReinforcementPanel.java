@@ -84,6 +84,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To update the details when the cards are updated
      */
     public void update(Observable player,Object obj){
+
         addCardSection();
     }
 

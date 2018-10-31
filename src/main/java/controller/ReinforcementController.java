@@ -75,8 +75,10 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             }
             view.addCardSection();
         } else if (buttonName.equalsIgnoreCase("Update")) {
-            totalArmies = model.currentPlayer.getUpdatedArmiesOnCardsExchange(totalArmies,selectedCards);
+            ArrayList<Card> selectedCardsLocal=selectedCards;
             selectedCards.clear();
+            totalArmies = model.currentPlayer.getUpdatedArmiesOnCardsExchange(totalArmies,selectedCardsLocal);
+
             /*view.addArmySection();
             view.addCardSection();*/
         } else if (buttonName.equalsIgnoreCase("changeArmies")) {
