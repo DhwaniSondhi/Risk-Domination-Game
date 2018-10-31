@@ -136,6 +136,7 @@ public class GameMap extends Observable {
                 neighbourCountryId = this.insertCountry(neighbourCountryId, territory.trim());
                 neighbours.add(countries.get(neighbourCountryId));
                 this.saveToGraph(countryId, neighbours);
+                countries.get(countryId).neighbours = neighbours;
             }
 
         }
@@ -182,21 +183,7 @@ public class GameMap extends Observable {
         return -1;
     }
 
-    /**
-     * Get the list of all countries owned by the current player
-     *
-     * @return list of countries
-     */
-    public List<Country> getCountriesOfCurrentPlayer() {
-        List<Country> countries = new ArrayList<>();
 
-        for (Integer countryId : this.countries.keySet()) {
-            if (this.countries.get(countryId).owner.id == currentPlayer.id) {
-                countries.add(this.countries.get(countryId));
-            }
-        }
-        return countries;
-    }
 
     /**
      * It clears the data of HashMap
@@ -228,15 +215,12 @@ public class GameMap extends Observable {
      * Assign countries randomly to players
      */
     public void assignCountriesToPlayers() {
-        int playerId = 1;
+        changeToNextPlayer();
         for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
-            entry.getValue().owner = players.get(playerId);
+            entry.getValue().owner = currentPlayer;
             entry.getValue().numOfArmies = 0;
-            if (playerId != players.size()) {
-                playerId++;
-            } else {
-                playerId = 1;
-            }
+            currentPlayer.initializeCountryToPlayer(entry.getValue());
+            changeToNextPlayer();
         }
         setChanged();
         notifyObservers();
@@ -311,27 +295,35 @@ public class GameMap extends Observable {
 
         Country country1 = new Country(1, "Country 1");
         country1.owner = players.get(1);
+        player1.initializeCountryToPlayer(country1);
         country1.numOfArmies = 10;
         Country country2 = new Country(2, "Country 2");
         country2.owner = players.get(2);
+        player2.initializeCountryToPlayer(country2);
         country2.numOfArmies = 20;
         Country country3 = new Country(3, "Country 3");
         country3.owner = players.get(3);
+        player3.initializeCountryToPlayer(country3);
         country3.numOfArmies = 40;
         Country country4 = new Country(4, "Country 4");
         country4.owner = players.get(3);
+        player3.initializeCountryToPlayer(country4);
         country4.numOfArmies = 30;
         Country country5 = new Country(5, "Country 5");
         country5.owner = players.get(1);
+        player1.initializeCountryToPlayer(country5);
         country5.numOfArmies = 10;
         Country country6 = new Country(6, "Country 6");
         country6.owner = players.get(2);
+        player2.initializeCountryToPlayer(country6);
         country6.numOfArmies = 2;
         Country country7 = new Country(7, "Country 7");
         country7.owner = players.get(3);
+        player3.initializeCountryToPlayer(country7);
         country7.numOfArmies = 7;
         Country country8 = new Country(8, "Country 8");
         country8.owner = players.get(1);
+        player1.initializeCountryToPlayer(country8);
         country8.numOfArmies = 14;
 
         countries.put(1, country1);
@@ -374,13 +366,21 @@ public class GameMap extends Observable {
 
 
         countryGraph.put(1, n1);
+        country1.neighbours = n1;
         countryGraph.put(2, n2);
+        country2.neighbours = n2;
         countryGraph.put(3, n3);
+        country3.neighbours = n3;
         countryGraph.put(4, n4);
+        country4.neighbours = n4;
         countryGraph.put(5, n5);
+        country5.neighbours = n5;
         countryGraph.put(6, n6);
+        country6.neighbours = n6;
         countryGraph.put(7, n7);
+        country7.neighbours = n7;
         countryGraph.put(8, n8);
+        country8.neighbours = n8;
 
 
         currentPlayer = players.get(1);

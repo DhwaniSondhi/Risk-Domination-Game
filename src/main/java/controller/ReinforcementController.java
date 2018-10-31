@@ -136,14 +136,14 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * @return List of countries of CurrentPlayer
      */
     public List<Country> getCountriesAndIdsOfCurrentPlayer() {
-        return model.getCountriesOfCurrentPlayer();
+        return model.currentPlayer.getCountries();
     }
 
     /**
      * To add the armies to the respective countries on click of Add button
      */
     public void changeArmiesOfCountries() {
-        int countryId = model.getCountriesOfCurrentPlayer().get(view.getValueOfCountryIndexComboBox()).id;
+        int countryId = model.currentPlayer.getCountries().get(view.getValueOfCountryIndexComboBox()).id;
         int addedArmy = Integer.parseInt(view.getValueOfArmyComboBox());
         Country countryChanged = model.countries.get(countryId);
         countryChanged.numOfArmies += addedArmy;

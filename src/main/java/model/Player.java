@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -21,6 +22,11 @@ public class Player extends Observable {
      * Cards hold by player
      */
     public ArrayList<Card> cards;
+
+    /**
+     * HashMap for countries
+     */
+    public ArrayList<Country> countries;
     /**
      * Armies on trading card
      */
@@ -39,9 +45,18 @@ public class Player extends Observable {
         this.id = id;
         this.name = name;
         cards = new ArrayList<>();
+        countries = new ArrayList<>();
         updateArmiesForCards = 5;
 
         initializeWithDummyCards();
+    }
+
+    /**
+     * Initailaizes countries to current player
+     * @param country instance of Country
+     * */
+    public void initializeCountryToPlayer(Country country) {
+        this.countries.add(country);
     }
 
     /**
@@ -61,6 +76,7 @@ public class Player extends Observable {
     }
 
     /**
+<<<<<<< HEAD
      * To calculate the total armies from the countries and continents own by the player
      *
      * @param countries  list of countries in the instance
@@ -135,20 +151,27 @@ public class Player extends Observable {
     public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal, ArrayList<Card> selectedCards) {
         totalArmiesLocal += this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
-        ArrayList<Card> removeCards=new ArrayList<>();
-        for(Card cardSelected:selectedCards){
-            for(Card cardPlayer:this.cards){
-                if(cardPlayer.type==cardSelected.type){
+        ArrayList<Card> removeCards = new ArrayList<>();
+        for (Card cardSelected : selectedCards) {
+            for (Card cardPlayer : this.cards) {
+                if (cardPlayer.type == cardSelected.type) {
                     removeCards.add(cardPlayer);
                     break;
                 }
             }
         }
-        for(Card cardRemove:removeCards){
+        for (Card cardRemove : removeCards) {
             this.cards.remove(cardRemove);
         }
         setChanged();
         notifyObservers(this);
         return totalArmiesLocal;
+    }
+     /** Get the list of all countries owned by the player
+     *
+     * @return list of countries
+     */
+    public List<Country> getCountries() {
+        return countries;
     }
 }

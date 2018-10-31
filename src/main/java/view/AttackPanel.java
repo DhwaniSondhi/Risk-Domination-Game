@@ -8,11 +8,13 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * View for attackPanel extends {@link JPanel}
  */
-public class AttackPanel extends JPanel {
+public class AttackPanel extends JPanel implements Observer {
     /**
      * Controller for AttackPanel
      */
@@ -21,10 +23,18 @@ public class AttackPanel extends JPanel {
      * Panel for displaying Countries owned by current player
      */
     private JPanel countryPanel;
+
+    public JPanel dicePanel;
+    private JComboBox<Country> countries;
+    private JComboBox<Country> neighbouringCountries;
     /**
      * Panel for displaying neighboring countries to selected country to which fortify can done
      */
     private JPanel neighbouringPanel;
+
+    public JComboBox<Integer> playerDice;
+    public JComboBox<Integer> opponentDice;
+
     /**
      * Button to proceed to next part of game
      */
@@ -49,11 +59,35 @@ public class AttackPanel extends JPanel {
         countryPanel = new JPanel();
         countryPanel.setBorder(new LineBorder(Color.black, 1));
         countryPanel.setLayout(new BoxLayout(countryPanel, BoxLayout.Y_AXIS));
+        countries = new JComboBox<>();
+        countries.setName("selectCountry");
+        countries.addItemListener(attackController);
+        countryPanel.add(countries);
+
         neighbouringPanel = new JPanel();
         neighbouringPanel.setBorder(new LineBorder(Color.black, 1));
         neighbouringPanel.setLayout(new BoxLayout(neighbouringPanel, BoxLayout.Y_AXIS));
+        neighbouringCountries = new JComboBox<>();
+        neighbouringPanel.add(neighbouringCountries);
+
+        JComboBox<String> selectMode = new JComboBox<>(new String[]{"Choose Dice", "All out"});
+        selectMode.addItemListener(attackController);
+        selectMode.setName("mode");
+
+        dicePanel = new JPanel();
+        dicePanel.setLayout(new BoxLayout(dicePanel, BoxLayout.Y_AXIS));
+        playerDice = new JComboBox(new Integer[]{1,2,3});
+        opponentDice = new JComboBox(new Integer[]{1,2});
+        dicePanel.add(new JLabel("Player:"));
+        dicePanel.add(playerDice);
+        dicePanel.add(new JLabel("Opponent:"));
+        dicePanel.add(opponentDice);
+
         add(countryPanel);
         add(neighbouringPanel);
+        add(selectMode);
+        add(dicePanel);
+
 
         proceedButton = new JButton("Proceed");
         proceedButton.setName("proceed");
@@ -69,18 +103,9 @@ public class AttackPanel extends JPanel {
      * @param countries collection of countries
      */
     public void showCountries(Collection<Country> countries) {
-        countryPanel.removeAll();
+        this.countries.removeAllItems();
         for (Country country : countries) {
-            JPanel row = new JPanel();
-            row.setLayout(new GridLayout(1, 2, 50, 20));
-            JLabel countryName = new JLabel(country.name + " | " + country.numOfArmies);
-            JButton selectCountryBtn = new JButton("Select");
-            selectCountryBtn.setName(String.valueOf(country.id));
-            selectCountryBtn.addActionListener(attackController);
-            row.add(countryName);
-            row.add(selectCountryBtn);
-
-            countryPanel.add(row);
+            this.countries.addItem(country);
         }
         revalidate();
     }
@@ -91,22 +116,24 @@ public class AttackPanel extends JPanel {
      * @param countries collection of countries
      */
     public void showNeighbouringCountries(Collection<Country> countries) {
-        neighbouringPanel.removeAll();
+        neighbouringCountries.removeAllItems();
         for (Country country : countries) {
-            JPanel row = new JPanel();
-            row.setLayout(new GridLayout(1, 2, 50, 20));
-            JLabel countryName = new JLabel(country.name + " | " + country.numOfArmies);
-            JButton attackCountryBtn = new JButton("Attack");
-            attackCountryBtn.setName(String.valueOf(country.id));
-            attackCountryBtn.addActionListener(attackController);
-            row.add(countryName);
-            row.add(attackCountryBtn);
-
-            neighbouringPanel.add(row);
+            neighbouringCountries.addItem(country);
         }
-
         revalidate();
-
     }
 
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
