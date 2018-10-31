@@ -26,6 +26,8 @@ public class Country {
      */
     public int numOfArmies;
 
+    public HashSet<Country> neighbours;
+
     /**
      * Constructor to set current name and id of country
      *
@@ -35,6 +37,7 @@ public class Country {
     public Country(int id, String name) {
         this.id = id;
         this.name = name;
+        this.neighbours = new HashSet<>();
     }
 
     /**
@@ -66,15 +69,10 @@ public class Country {
     /**
      * Get the list of Neighbour countries
      *
-     * @param map HashMap of country id and set of countries
      * @return list of countries
      */
-    public List<Country> getNeighbours(HashMap<Integer, HashSet<Country>> map) {
-        List<Country> countries = new ArrayList<>();
-        for (Country country : map.get(this.id)) {
-            countries.add(country);
-        }
-        return countries;
+    public HashSet<Country> getNeighbours() {
+        return neighbours;
     }
 
 }

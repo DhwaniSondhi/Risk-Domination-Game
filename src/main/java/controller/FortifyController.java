@@ -139,18 +139,16 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         neighbor.put(countryId, selectedCountry);
         while (!queueNeighbor.isEmpty()) {
             int last = queueNeighbor.remove();
-            ArrayList<Country> listNeighbouring = new ArrayList<>();
-            listNeighbouring = (ArrayList<Country>) model.countries.get(last).getNeighbours(model.countryGraph);
-            for (int i = 0; i < listNeighbouring.size(); i++) {
-                if (listNeighbouring.get(i).owner.id == ownerId) {
-                    if (neighbor.get(listNeighbouring.get(i).id) == null) {
-                        queueNeighbor.add(listNeighbouring.get(i).id);
-                        neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
-                        neighbor.put(listNeighbouring.get(i).id, listNeighbouring.get(i));
+            HashSet<Country> listNeighbouring = model.countries.get(last).getNeighbours();
+            for (Country country : listNeighbouring) {
+                if (country.owner.id == ownerId) {
+                    if (neighbor.get(country.id) == null) {
+                        queueNeighbor.add(country.id);
+                        neighbor.put(country.id, country);
+                        neighbor.put(country.id, country);
                     }
 
                 }
-
             }
             neighbor.remove(countryId);
 

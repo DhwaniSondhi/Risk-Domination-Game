@@ -40,7 +40,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equalsIgnoreCase("select")) {
             int selectedCountryId = Integer.valueOf(((JButton) e.getSource()).getName());
-            view.showNeighbouringCountries(model.countries.get(selectedCountryId).getNeighbours(model.countryGraph));
+            view.showNeighbouringCountries(model.countries.get(selectedCountryId).getNeighbours());
         } else if (e.getActionCommand().equalsIgnoreCase("proceed")) {
             model.assignCardToPlayer(model.currentPlayer.id);
             stateChangeListener.onAttackCompleted();
