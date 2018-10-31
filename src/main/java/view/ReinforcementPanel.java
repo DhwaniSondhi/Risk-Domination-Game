@@ -10,12 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.Observer;
 
 /**
  * Gui part of Reinforcement Panel
  * extends {@link JPanel}
  */
-public class ReinforcementPanel extends JPanel {
+public class ReinforcementPanel extends JPanel implements Observer {
 
     /**
      * Panel for card section
@@ -64,6 +65,7 @@ public class ReinforcementPanel extends JPanel {
         reinforcementController = new ReinforcementController(this);
         reinforcementController.setStateChangeListener(stateChangeListener);
         reinforcementController.setUnSelectedCards();
+        reinforcementController.setArmiesForReinforcement();
 
         setLayout(new GridBagLayout());
 
@@ -78,6 +80,12 @@ public class ReinforcementPanel extends JPanel {
         add(armySection, getGridContraints(0, 1));
     }
 
+    /**
+     * To update the details when the cards are updated
+     */
+    public void update(Observable player,Object obj){
+        addCardSection();
+    }
 
     /**
      * To update the Card Section and Army Section of the Reinforcement Panel
@@ -85,6 +93,7 @@ public class ReinforcementPanel extends JPanel {
 
     public void update() {
         reinforcementController.setUnSelectedCards();
+        reinforcementController.setArmiesForReinforcement();
         addCardSection();
         addArmySection();
         revalidate();
@@ -95,6 +104,7 @@ public class ReinforcementPanel extends JPanel {
      */
     public void addCardSection() {
         cardSection.removeAll();
+        selectedCardsArray=new Card[0];
         reinforcementController.getCardsInGui();
         addButtons();
         cardSection.revalidate();
@@ -107,19 +117,20 @@ public class ReinforcementPanel extends JPanel {
      * @param selectedCards list of the selected cards
      */
     public void addSelectedCardGrid(ArrayList<Card> selectedCards) {
-        selectedCardsArray = new Card[selectedCards.size()];
-        selectedCards.toArray(selectedCardsArray);
-        JPanel cardsSelected = new JPanel();
-        cardsSelected.setLayout(new GridLayout(3, 1));
-        for (Card card : selectedCards) {
-            JPanel cardButtonPanel = new JPanel();
-            cardButtonPanel.setLayout(new GridLayout(1, 1));
-            JLabel cardLabel = new JLabel(card.type.toString());
-            cardButtonPanel.add(cardLabel);
-            cardsSelected.add(cardButtonPanel);
+        if(selectedCards.size()>0){
+            selectedCardsArray = new Card[selectedCards.size()];
+            selectedCards.toArray(selectedCardsArray);
+            JPanel cardsSelected = new JPanel();
+            cardsSelected.setLayout(new GridLayout(3, 1));
+            for (Card card : selectedCards) {
+                JPanel cardButtonPanel = new JPanel();
+                cardButtonPanel.setLayout(new GridLayout(1, 1));
+                JLabel cardLabel = new JLabel(card.type.toString());
+                cardButtonPanel.add(cardLabel);
+                cardsSelected.add(cardButtonPanel);
+            }
+            cardSection.add(cardsSelected, getGridContraints(1, 0));
         }
-        cardSection.add(cardsSelected, getGridContraints(1, 0));
-
     }
 
     /**

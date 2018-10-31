@@ -73,10 +73,15 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
                     selectedCards.add(card);
                 }
             }
+            view.addCardSection();
         } else if (buttonName.equalsIgnoreCase("Update")) {
-            setCardsOnUpdate();
+            totalArmies = model.currentPlayer.getUpdatedArmiesOnCardsExchange(totalArmies,selectedCards);
+            selectedCards.clear();
+            /*view.addArmySection();
+            view.addCardSection();*/
         } else if (buttonName.equalsIgnoreCase("changeArmies")) {
             changeArmiesOfCountries();
+            view.addCardSection();
         } else if (buttonName.equalsIgnoreCase("Reset")) {
             for (Card card : selectedCards) {
                 if (unselectedCards.get(card.type.toString()) != null) {
@@ -84,12 +89,13 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
                 }
             }
             selectedCards.clear();
+            view.addCardSection();
         } else if (buttonName.equalsIgnoreCase("proceed")) {
             if (stateChangeListener != null)
                 stateChangeListener.onReinforcementCompleted();
             return;
         }
-        view.addCardSection();
+
     }
 
     /**
@@ -104,107 +110,15 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      * To set the list of cards available of a player in the unselectedCards attribute
      */
     public void setUnSelectedCards() {
-        unselectedCards = getCardSetsOfPlayer(model.currentPlayer);
+        unselectedCards = model.currentPlayer.getCardSetsOfPlayer();
     }
 
-    /**
-     * To get the number of INFANTRY, ARTILLERY and CAVALRY cards the current player has
-     *
-     * @param player current player
-     * @return hashmap with values as the number of each INFANTRY, ARTILLERY and CAVALRY cards
-     */
-    public HashMap<String, Integer> getCardSetsOfPlayer(Player player) {
-        ArrayList<Card> cards = player.cards;
-        HashMap<String, Integer> cardSets = new HashMap<>();
-        int infantry = 0;
-        int artillery = 0;
-        int cavalry = 0;
-        for (Card card : cards) {
-            if (card.type == Card.TYPE.INFANTRY) {
-                infantry++;
-            } else if (card.type == Card.TYPE.ARTILLERY) {
-                artillery++;
-            } else if (card.type == Card.TYPE.CAVALRY) {
-                cavalry++;
-            }
-            cardSets.put("INFANTRY", infantry);
-            cardSets.put("ARTILLERY", artillery);
-            cardSets.put("CAVALRY", cavalry);
-        }
-        return cardSets;
-    }
-
-    /**
-     * To update the list of selected, unselected cards and armies added for a player in Reinforcement phase on click of update button
-     */
-    private void setCardsOnUpdate() {
-        totalArmies = getUpdatedArmiesOnCardsExchange(totalArmies, model.currentPlayer);
-        selectedCards.clear();
-        view.addArmySection();
-
-    }
-
-    /**
-     * To get the updated total armies when a set of three cards are changed
-     *
-     * @param totalArmiesLocal the armies allotted from countries and continents player has
-     * @param player the player exchanging the cards
-     * @return the updated armies
-     */
-    public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal, Player player) {
-        totalArmiesLocal += player.updateArmiesForCards;
-        player.updateArmiesForCards += 5;
-        return totalArmiesLocal;
-
-    }
 
     /**
      * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      */
     public void setArmiesForReinforcement() {
-        totalArmies = getTotalArmies(model.countries, model.continents, model.currentPlayer.id);
-    }
-
-
-    /**
-     * To calculate the total armies from the countries and continents own by the player
-     *
-     * @param countries  list of countries in the instance
-     * @param continents list of continents in the instance
-     * @param playerId   the Id of the current player
-     * @return the calculated total armies
-     */
-    public int getTotalArmies(HashMap<Integer, Country> countries, HashMap<Integer, Continent> continents, int playerId) {
-        int playerCountries = 0;
-        for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
-            Country country = entry.getValue();
-            if (country.owner.id == playerId) {
-                playerCountries++;
-            }
-        }
-
-        int playerContinentsControlVal = 0;
-        boolean hasContinent;
-        for (Map.Entry<Integer, Continent> entry : continents.entrySet()) {
-            hasContinent = true;
-            Continent continent = entry.getValue();
-            ArrayList<Country> continentCountries = continent.countries;
-            for (Country country : continentCountries) {
-                if (country.owner.id != playerId) {
-                    hasContinent = false;
-                    break;
-                }
-            }
-            if (hasContinent) {
-                playerContinentsControlVal += continent.controlValue;
-            }
-        }
-
-        int totalArmLocal = (playerCountries / 3) + playerContinentsControlVal;
-        if (totalArmLocal < 3) {
-            totalArmLocal = 3;
-        }
-        return totalArmLocal;
+        totalArmies = model.currentPlayer.getTotalArmies(model.countries, model.continents);
     }
 
     /**

@@ -52,6 +52,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
             startUpCompleted = true;
             model.resetCurrentPlayer();
             view.setUpGamePanels();
+            model.currentPlayer.addObserver(view.reinforcementPanel);
             view.currentPlayer.setText(model.currentPlayer.name);
         }
     }
