@@ -211,6 +211,8 @@ public class Player extends Observable {
     /**
      * To get the updated total armies when a set of three cards are changed
      *
+     * @param totalArmiesLocal the armies allotted from countries and continents player has
+     * @return the updated armies
      */
     public void getUpdatedArmiesOnCardsExchange() {
         totalArmies += this.updateArmiesForCards;

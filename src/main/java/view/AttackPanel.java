@@ -36,6 +36,11 @@ public class AttackPanel extends JPanel implements Observer {
     public JComboBox<Integer> opponentDice;
 
     /**
+     * Button to attack neighbouring countries
+     */
+    private JButton attackButton;
+
+    /**
      * Button to proceed to next part of game
      */
     private JButton proceedButton;
@@ -83,11 +88,15 @@ public class AttackPanel extends JPanel implements Observer {
         dicePanel.add(new JLabel("Opponent:"));
         dicePanel.add(opponentDice);
 
+        attackButton = new JButton("Attack");
+        attackButton.setName("attack");
+        attackButton.addActionListener(attackController);
+
         add(countryPanel);
         add(neighbouringPanel);
         add(selectMode);
         add(dicePanel);
-
+        add(attackButton);
 
         proceedButton = new JButton("Proceed");
         proceedButton.setName("proceed");

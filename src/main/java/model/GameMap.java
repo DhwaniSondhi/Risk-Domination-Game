@@ -199,19 +199,6 @@ public class GameMap extends Observable {
     }
 
     /**
-     * Gives the number of armies at a country
-     *
-     * @param idOfCountry id of country whose army value is needed to know
-     * @return number of army at that country
-     */
-    public int getNumberofArmiesAtCountry(int idOfCountry) {
-        int numberOfArmies = countries.get(idOfCountry).numOfArmies;
-        return numberOfArmies;
-
-    }
-
-
-    /**
      * Assign countries randomly to players
      */
     public void assignCountriesToPlayers() {

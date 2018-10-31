@@ -74,7 +74,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         } else {
             view.getTheValueOfComboBox();
             model.updateArmiesOfCountries(armiesToTransfer, selectedCountry, selectedNeighbour);
-            view.updateTextFieldsArmiesAfterTransfer(model.getNumberofArmiesAtCountry(selectedCountry.id), model.getNumberofArmiesAtCountry(selectedNeighbour.id));
+            view.updateTextFieldsArmiesAfterTransfer(model.countries.get(selectedCountry.id).getNumberofArmies(), model.countries.get(selectedNeighbour.id).getNumberofArmies());
         }
     }
 

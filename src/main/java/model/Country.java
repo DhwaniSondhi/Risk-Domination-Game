@@ -75,4 +75,15 @@ public class Country {
         return neighbours;
     }
 
+    /**
+     * Gives the number of armies at a country
+     *
+     * @param countryId id of country whose army value is needed to know
+     * @return number of army at that country
+     */
+    public int getNumberofArmies() {
+        return numOfArmies;
+
+    }
+
 }
