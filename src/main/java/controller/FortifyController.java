@@ -41,7 +41,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      * Hide unnecessary components at first run
      */
     public void updateCountryListFortify() {
-        view.showCountriesFortify(model.getCountriesOfCurrentPlayer());
+        view.showCountriesFortify(model.currentPlayer.getCountries());
         view.transferFortify();
         view.disableButton();
         view.setVisibleFalseNeighbourPanel();
@@ -94,7 +94,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 view.enableCountriesArmyLabelAndTextField();
                 view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
                 HashMap<Integer, Country> neighbor = getNeighborsOfCountry(selectedCountry);
-                view.showNeighbouringCountriesFortify(model.getCountriesOfCurrentPlayer());
+                view.showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
                 view.updateNeighboringCountries(neighbor);
 
             } else {

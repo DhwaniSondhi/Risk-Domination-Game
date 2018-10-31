@@ -166,7 +166,7 @@ public class StartUpFrame extends JFrame implements Observer {
     public void update(Observable o, Object arg) {
         GameMap instance = GameMap.getInstance();
         if (instance.currentPlayer != null) {
-            updateCountriesPanel(instance.currentPlayer.name, instance.getCountriesOfCurrentPlayer(),
+            updateCountriesPanel(instance.currentPlayer.name, instance.currentPlayer.getCountries(),
                     instance.getInitialArmy());
         }
     }

@@ -1,11 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Observable;
 
 /**
  * Class containing attributes and functions of a player object
  */
-public class Player {
+public class Player extends Observable {
     /**
      * id for player
      */
@@ -18,6 +21,11 @@ public class Player {
      * Cards hold by player
      */
     public ArrayList<Card> cards;
+
+    /**
+     * HashMap for countries
+     */
+    public ArrayList<Country> countries;
     /**
      * Armies on trading card
      */
@@ -36,9 +44,18 @@ public class Player {
         this.id = id;
         this.name = name;
         cards = new ArrayList<>();
+        countries = new ArrayList<>();
         updateArmiesForCards = 5;
 
         initializeWithDummyCards();
+    }
+
+    /**
+     * Initailaizes countries to current player
+     * @param country instance of Country
+     * */
+    public void initializeCountryToPlayer(Country country) {
+        this.countries.add(country);
     }
 
     /**
@@ -55,5 +72,14 @@ public class Player {
      */
     public void addRandomCard() {
         cards.add(new Card());
+    }
+
+    /**
+     * Get the list of all countries owned by the player
+     *
+     * @return list of countries
+     */
+    public List<Country> getCountries() {
+        return countries;
     }
 }

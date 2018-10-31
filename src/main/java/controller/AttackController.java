@@ -19,13 +19,15 @@ public class AttackController extends BaseController<AttackPanel> implements Act
      */
     public AttackController(AttackPanel view) {
         super(view);
+        model.addObserver(view);
+        model.currentPlayer.addObserver(view);
     }
 
     /**
      * Update the list of countries in the view with current player's countries
      */
     public void updateCountryList() {
-        view.showCountries(model.getCountriesOfCurrentPlayer());
+        view.showCountries(model.currentPlayer.getCountries());
     }
 
 

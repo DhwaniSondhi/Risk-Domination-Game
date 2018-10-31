@@ -182,21 +182,7 @@ public class GameMap extends Observable {
         return -1;
     }
 
-    /**
-     * Get the list of all countries owned by the current player
-     *
-     * @return list of countries
-     */
-    public List<Country> getCountriesOfCurrentPlayer() {
-        List<Country> countries = new ArrayList<>();
 
-        for (Integer countryId : this.countries.keySet()) {
-            if (this.countries.get(countryId).owner.id == currentPlayer.id) {
-                countries.add(this.countries.get(countryId));
-            }
-        }
-        return countries;
-    }
 
     /**
      * It clears the data of HashMap
@@ -228,15 +214,12 @@ public class GameMap extends Observable {
      * Assign countries randomly to players
      */
     public void assignCountriesToPlayers() {
-        int playerId = 1;
+        changeToNextPlayer();
         for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
-            entry.getValue().owner = players.get(playerId);
+            entry.getValue().owner = currentPlayer;
             entry.getValue().numOfArmies = 0;
-            if (playerId != players.size()) {
-                playerId++;
-            } else {
-                playerId = 1;
-            }
+            currentPlayer.initializeCountryToPlayer(entry.getValue());
+            changeToNextPlayer();
         }
         setChanged();
         notifyObservers();
