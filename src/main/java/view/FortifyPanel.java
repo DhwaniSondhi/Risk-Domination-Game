@@ -2,19 +2,18 @@ package view;
 
 import controller.FortifyController;
 import model.Country;
+import model.GameMap;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class containing Gui and functionality of Fortify part of Game
  */
-public class FortifyPanel extends JPanel {
+public class FortifyPanel extends JPanel implements Observer {
     /**
      * Reference for Fortify Controller
      */
@@ -126,6 +125,8 @@ public class FortifyPanel extends JPanel {
         bagConstraintsMain.gridx = 3;
         bagConstraintsMain.gridy = 1;
         add(jPanelTransferArmy, bagConstraintsMain);
+
+        showNeighbouringCountriesFortify();
         fortifyController.updateCountryListFortify();
     }
 
@@ -161,9 +162,8 @@ public class FortifyPanel extends JPanel {
      * It set up the component for displaying neighboring countries
      * It takes current player's countries as a default
      *
-     * @param countries Neighboring countries
      */
-    public void showNeighbouringCountriesFortify(Collection<Country> countries) {
+    public void showNeighbouringCountriesFortify() {
         jPanelNeighbors.removeAll();
         GridBagLayout gridBagLayoutCountriesPanel = new GridBagLayout();
         GridBagConstraints gridBagConstraintsCountriesPanel = new GridBagConstraints();
@@ -177,7 +177,7 @@ public class FortifyPanel extends JPanel {
         jPanelNeighbors.repaint();
         JLabel jLabelCountries = new JLabel("Neighbours");
         jPanelNeighbors.add(jLabelCountries, gridBagConstraintsCountriesPanel);
-        JList list = new JList(countries.toArray());
+        JList list = new JList();
         scrollPaneNeighboringCountries = new JScrollPane(list);
         gridBagConstraintsCountriesPanel.gridx = 0;
         gridBagConstraintsCountriesPanel.gridy = 1;
@@ -393,4 +393,46 @@ public class FortifyPanel extends JPanel {
         jLabelArmiesAtCountries.setVisible(true);
     }
 
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+
+        if (o instanceof Country) {
+
+            Country country= (Country) o;
+            enableCountriesArmyLabelAndTextField();
+            updateCountriesArmyTextField(country.numOfArmies);
+            // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
+            //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
+            updateNeighboringCountries(country.connectedCountries);
+            if (country.connectedCountries.isEmpty()) {
+                disableButton();
+                setVisibleFalseNeighbourPanel();
+                setComboBoxAndNeighborTextFieldFalse();
+            } else {
+                setVisibleTrueNeighbourPanel();
+                disableButton();
+                setComboBoxAndNeighborTextFieldFalse();
+            }
+
+        }
+        else if(o instanceof GameMap)
+        {
+            GameMap gameMap=GameMap.getInstance();
+            showCountriesFortify(gameMap.currentPlayer.getCountries());
+            transferFortify();
+            disableButton();
+            setVisibleFalseNeighbourPanel();
+            setComboBoxAndNeighborTextFieldFalse();
+            disableCountriesArmyLabelAndTextField();
+        }
+    }
 }

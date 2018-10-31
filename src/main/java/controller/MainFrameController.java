@@ -50,9 +50,9 @@ public class MainFrameController extends BaseController<MainFrame> implements
     public void onStartUpCompleted() {
         if (!startUpCompleted) {
             startUpCompleted = true;
-            model.resetCurrentPlayer();
             view.setUpGamePanels();
             view.currentPlayer.setText(model.currentPlayer.name);
+            model.resetCurrentPlayer();
         }
     }
 

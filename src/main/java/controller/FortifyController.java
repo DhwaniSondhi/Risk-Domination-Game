@@ -37,6 +37,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      */
     public FortifyController(FortifyPanel view) {
         super(view);
+        model.addObserver(view);
     }
 
     /**
@@ -44,12 +45,12 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      * Hide unnecessary components at first run
      */
     public void updateCountryListFortify() {
-        view.showCountriesFortify(model.currentPlayer.getCountries());
-        view.transferFortify();
-        view.disableButton();
-        view.setVisibleFalseNeighbourPanel();
-        view.setComboBoxAndNeighborTextFieldFalse();
-        view.disableCountriesArmyLabelAndTextField();
+//        view.showCountriesFortify(model.currentPlayer.getCountries());
+//        view.transferFortify();
+//        view.disableButton();
+//        view.setVisibleFalseNeighbourPanel();
+//        view.setComboBoxAndNeighborTextFieldFalse();
+//        view.disableCountriesArmyLabelAndTextField();
     }
 
     /**
@@ -93,12 +94,16 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         JList<Country> source = (JList<Country>) e.getSource();
         if (e.getValueIsAdjusting()) {
             if (((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country")) {
+               if(selectedCountry!=null)
+                   selectedCountry.deleteObserver(view);
                 selectedCountry = source.getSelectedValue();
-                view.enableCountriesArmyLabelAndTextField();
-                view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
-                HashMap<Integer, Country> neighbor = getNeighborsOfCountry(selectedCountry);
-                view.showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
-                view.updateNeighboringCountries(neighbor);
+                selectedCountry.addObserver(view);
+                selectedCountry.updateConnectedCountries();
+//                view.enableCountriesArmyLabelAndTextField();
+//                view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
+//                HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
+//                view.showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
+//               view.updateNeighboringCountries(neighbor);
 
             } else {
                 selectedNeighbour = source.getSelectedValue();
@@ -148,7 +153,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                     if (neighbor.get(country.id) == null) {
                         queueNeighbor.add(country.id);
                         neighbor.put(country.id, country);
-                        neighbor.put(country.id, country);
+                        //neighbor.put(country.id, country);
                     }
 
                 }

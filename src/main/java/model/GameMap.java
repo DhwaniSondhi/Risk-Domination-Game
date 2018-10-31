@@ -245,6 +245,8 @@ public class GameMap extends Observable {
         if (!players.isEmpty()) {
             currentPlayer = players.get(1);
         }
+        setChanged();
+        notifyObservers();
     }
 
     /**

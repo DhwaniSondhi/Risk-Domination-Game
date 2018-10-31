@@ -1,12 +1,11 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Observable;
+import java.util.*;
 
 /**
  * Class for Country containing access to all the components of country
  */
-public class Country extends Observable {
+public class Country extends Observable{
     /**
      * Country id
      */
@@ -28,6 +27,7 @@ public class Country extends Observable {
 
     public HashSet<Country> neighbours;
 
+    public HashMap<Integer , Country> connectedCountries;
 
     /**
      * Constructor to set current name and id of country
@@ -36,6 +36,7 @@ public class Country extends Observable {
      * @param name name of country
      */
     public Country(int id, String name) {
+        connectedCountries=new HashMap<>();
         this.id = id;
         this.name = name;
         this.neighbours = new HashSet<>();
@@ -102,13 +103,40 @@ public class Country extends Observable {
         notifyObservers();
     }
 
+    public void updateConnectedCountries() {
+        connectedCountries.clear();
+        //int countryId = selectedCountry.id;
+        //int ownerId = selectedCountry.owner.id;
+        Queue<Country> queueNeighbor = new LinkedList<>();
+        queueNeighbor.add(this);
+        connectedCountries.put(id, this);
+        while (!queueNeighbor.isEmpty()) {
+            Country last = queueNeighbor.remove();
+            HashSet<Country> listNeighbouring = last.getNeighbours();
+            for (Country country : listNeighbouring) {
+                if (country.owner.id == owner.id) {
+                    if (connectedCountries.get(country.id) == null) {
+                        queueNeighbor.add(country);
+                        connectedCountries.put(country.id, country);
+                        //neighbor.put(country.id, country);
+                    }
+
+                }
+            }
+            connectedCountries.remove(id);
+
+        }
+
+        setChanged();
+        notifyObservers();
+    }
+
     /**
      * To update Country's armies in Reinforcement
      */
     public void updateArmies(int addedArmies) {
         numOfArmies += addedArmies;
     }
-
 
     public void deductArmy() {
         this.numOfArmies -= 1;
@@ -121,4 +149,5 @@ public class Country extends Observable {
         setChanged();
         notifyObservers();
     }
+
 }

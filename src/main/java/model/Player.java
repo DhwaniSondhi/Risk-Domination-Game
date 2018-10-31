@@ -79,6 +79,12 @@ public class Player extends Observable {
         updateReinforcementPanel = true;
     }
 
+
+    public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected)
+    {
+        GameMap.getInstance().updateArmiesOfCountries( numberOfArmiesTransfer, countrySelected, neighborSelected);
+    }
+
     /**
      * Initializes countries to current player
      *
