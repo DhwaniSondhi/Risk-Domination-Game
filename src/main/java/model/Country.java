@@ -27,6 +27,8 @@ public class Country extends Observable {
 
     public HashSet<Country> neighbours;
 
+
+
     /**
      * Constructor to set current name and id of country
      *
@@ -96,5 +98,7 @@ public class Country extends Observable {
         setChanged();
         notifyObservers();
     }
+
+
 
 }

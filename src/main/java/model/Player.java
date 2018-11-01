@@ -44,6 +44,10 @@ public class Player extends Observable {
      */
     public HashMap<String, Integer> unselectedCards;
 
+    public ArrayList<Integer> diceValuesPlayer = new ArrayList<>();
+    public ArrayList<Integer> diceValuesOpponent = new ArrayList<>();
+
+
     /**
      * Constructor
      * <p>
@@ -260,4 +264,45 @@ public class Player extends Observable {
         setChanged();
         notifyObservers(this);
     }
+
+    /** Get the list of all countries owned by player which are eligible to attack
+     * @return list of countries
+     * */
+    public List<Country> getCountriesAllowedToAttack(){
+        ArrayList<Country> countriesAllowedToAttack = new ArrayList<>();
+        for (Country country : countries) {
+            if(country.getNumberofArmies() > 1){
+                countriesAllowedToAttack.add(country);
+            }
+
+        }
+        return countriesAllowedToAttack;
+    }
+
+    public void rollDice(int playerNumDiceAllowed, int opponentNumDiceAllowed) {
+        diceValuesPlayer.clear();
+        diceValuesOpponent.clear();
+        Random r = new Random();
+        for (int i = 0; i < playerNumDiceAllowed; i++) {
+            diceValuesPlayer.add(r.nextInt(6) + 1);
+        }
+
+        for (int i = 0; i < opponentNumDiceAllowed; i++) {
+            diceValuesOpponent.add(r.nextInt(6) + 1);
+        }
+
+        Collections.sort(diceValuesPlayer, diceComparator);
+        Collections.sort(diceValuesOpponent, diceComparator);
+        setChanged();
+        notifyObservers();
+    }
+
+    private Comparator<Integer> diceComparator = new Comparator<Integer>() {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
+        }
+    };
+
+
 }
