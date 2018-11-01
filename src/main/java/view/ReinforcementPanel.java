@@ -4,6 +4,7 @@ package view;
 import controller.ReinforcementController;
 import model.Card;
 import model.Country;
+import model.Player;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;
@@ -53,6 +54,10 @@ public class ReinforcementPanel extends JPanel implements Observer {
      */
     Card[] selectedCardsArray;
 
+    HashMap<String, Integer> unselectedCards;
+    ArrayList<Card> selectedCards;
+    int totalArmies;
+
     /**
      * Constructor
      * <p>
@@ -64,8 +69,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
     public ReinforcementPanel(GameStateChangeListener stateChangeListener) {
         reinforcementController = new ReinforcementController(this);
         reinforcementController.setStateChangeListener(stateChangeListener);
-        reinforcementController.setUnSelectedCards();
-        reinforcementController.setArmiesForReinforcement();
+        reinforcementController.initialize();
 
         setLayout(new GridBagLayout());
 
@@ -84,8 +88,11 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To update the details when the cards are updated
      */
     public void update(Observable player,Object obj){
-
+        unselectedCards=((Player)player).unselectedCards;
+        selectedCards=((Player)player).selectedCards;
+        totalArmies=((Player)player).totalArmies;
         addCardSection();
+        addArmySection();
     }
 
     /**
@@ -93,8 +100,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
      */
 
     public void update() {
-        reinforcementController.setUnSelectedCards();
-        reinforcementController.setArmiesForReinforcement();
+        reinforcementController.initialize();
         addCardSection();
         addArmySection();
         revalidate();
@@ -104,9 +110,16 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To add CardSection Panel for cards' selection, updation and resetting
      */
     public void addCardSection() {
-        cardSection.removeAll();
+        if(cardSection!=null){
+            cardSection.removeAll();
+        }else{
+            cardSection=new JPanel();
+            cardSection.setLayout(new GridBagLayout());
+        }
+
         selectedCardsArray=new Card[0];
-        reinforcementController.getCardsInGui();
+        addUnselectedCardGrid();
+        addSelectedCardGrid();
         addButtons();
         cardSection.revalidate();
         cardSection.repaint();
@@ -115,9 +128,8 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * To add Selected Cards Grid in CardSection Panel
      *
-     * @param selectedCards list of the selected cards
      */
-    public void addSelectedCardGrid(ArrayList<Card> selectedCards) {
+    public void addSelectedCardGrid(/*ArrayList<Card> selectedCards*/) {
         if(selectedCards.size()>0){
             selectedCardsArray = new Card[selectedCards.size()];
             selectedCards.toArray(selectedCardsArray);
@@ -137,13 +149,12 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * To add Unselected Cards Grid with add buttons in CardSection Panel
      *
-     * @param cardsOfCurrentPlayer the list of cards of current player
      */
-    public void addUnselectedCardGrid(HashMap<String, Integer> cardsOfCurrentPlayer) {
+    public void addUnselectedCardGrid(/*HashMap<String, Integer> cardsOfCurrentPlayer*/) {
         unselectedCardsNum = 0;
         JPanel cardsUnselected = new JPanel();
         cardsUnselected.setLayout(new GridLayout(3, 1));
-        Iterator itForCards = cardsOfCurrentPlayer.entrySet().iterator();
+        Iterator itForCards = unselectedCards.entrySet().iterator();
         while (itForCards.hasNext()) {
             Map.Entry cardPair = (Map.Entry) itForCards.next();
             JPanel cardButtonPanel = new JPanel();
@@ -195,8 +206,13 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To add Army Section Panel for armies display and distribution among countries
      */
     public void addArmySection() {
-        armySection.removeAll();
-        int armiesLeft = reinforcementController.getArmiesForReinforcement();
+        if(armySection!=null){
+            armySection.removeAll();
+        }else{
+            armySection = new JPanel();
+            armySection.setLayout(new GridBagLayout());
+        }
+        int armiesLeft = totalArmies;
         JPanel armyDisplay = new JPanel();
         JLabel armies = new JLabel("Armies: " + armiesLeft);
         armyDisplay.add(armies);

@@ -31,6 +31,18 @@ public class Player extends Observable {
      * Armies on trading card
      */
     public int updateArmiesForCards;
+    /**
+     * Variable for total armies for Reinforcement Phase
+     */
+    public int totalArmies;
+    /**
+     * List for the cards selected
+     */
+    public ArrayList<Card> selectedCards;
+    /**
+     * HashMap to keep the name of the card as key and number of cards as value
+     */
+    public HashMap<String, Integer> unselectedCards;
 
     /**
      * Constructor
@@ -47,7 +59,7 @@ public class Player extends Observable {
         cards = new ArrayList<>();
         countries = new ArrayList<>();
         updateArmiesForCards = 5;
-
+        selectedCards = new ArrayList<>();
         initializeWithDummyCards();
     }
 
@@ -76,7 +88,45 @@ public class Player extends Observable {
     }
 
     /**
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+     * To get the total armies available from totalArmies attribute
+     *
+     * @return the value of totalArmies attribute
+     */
+    public int getArmiesForReinforcement() {
+        return totalArmies;
+    }
+
+    /**
+     * To add cards to selected card section on ADD button click
+     *
+     * @param cardName the card added
+     */
+    public void addInSelectedCards(String cardName){
+        if (selectedCards.size() < 3) {
+            if (unselectedCards.get(cardName) != null) {
+                unselectedCards.replace(cardName, unselectedCards.get(cardName) - 1);
+            }
+            Card card = null;
+            if (cardName.equalsIgnoreCase("ARTILLERY")) {
+                card = new Card(Card.TYPE.ARTILLERY);
+            } else if (cardName.equalsIgnoreCase("INFANTRY")) {
+                card = new Card(Card.TYPE.INFANTRY);
+            } else if (cardName.equalsIgnoreCase("CAVALRY")) {
+                card = new Card(Card.TYPE.CAVALRY);
+            }
+            if (card != null) {
+                selectedCards.add(card);
+            }
+        }
+        setChanged();
+        notifyObservers(this);
+    }
+
+    /**
+>>>>>>> Stashed changes
      * To calculate the total armies from the countries and continents own by the player
      *
      * @param countries  list of countries in the instance
@@ -143,13 +193,43 @@ public class Player extends Observable {
     }
 
     /**
+     * To set the list of cards available of a player in the unselectedCards attribute
+     */
+    public void setUnSelectedCards() {
+        unselectedCards = getCardSetsOfPlayer();
+        setChanged();
+        notifyObservers(this);
+    }
+
+    /**
+     * To add the armies to the respective countries on click of Add button
+     */
+    public void changeArmiesOfCountries(int countryIdFromView,String armySelected) {
+        int countryId = countries.get(countryIdFromView).id;
+        int addedArmy = Integer.parseInt(armySelected);
+        Country countryChanged = GameMap.getInstance().countries.get(countryId);
+        countryChanged.numOfArmies += addedArmy;
+        GameMap.getInstance().countries.replace(countryId, countryChanged);
+        totalArmies -= addedArmy;
+        setChanged();
+        notifyObservers(this);
+    }
+
+    /**
+     * To set the total armies getting from getTotalArmies() method in totalArmies attribute
+     */
+    public void setArmiesForReinforcement() {
+        totalArmies=getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
+        setChanged();
+        notifyObservers(this);
+    }
+
+    /**
      * To get the updated total armies when a set of three cards are changed
      *
-     * @param totalArmiesLocal the armies allotted from countries and continents player has
-     * @return the updated armies
      */
-    public int getUpdatedArmiesOnCardsExchange(int totalArmiesLocal, ArrayList<Card> selectedCards) {
-        totalArmiesLocal += this.updateArmiesForCards;
+    public void getUpdatedArmiesOnCardsExchange() {
+        totalArmies += this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
         for (Card cardSelected : selectedCards) {
@@ -163,9 +243,23 @@ public class Player extends Observable {
         for (Card cardRemove : removeCards) {
             this.cards.remove(cardRemove);
         }
+        selectedCards.clear();
         setChanged();
         notifyObservers(this);
-        return totalArmiesLocal;
+    }
+
+    /**
+     * To reset the selected cards
+     */
+    public void resetSelectedCards(){
+        for (Card card : selectedCards) {
+            if (unselectedCards.get(card.type.toString()) != null) {
+                unselectedCards.replace(card.type.toString(), unselectedCards.get(card.type.toString()) + 1);
+            }
+        }
+        selectedCards.clear();
+        setChanged();
+        notifyObservers(this);
     }
      /** Get the list of all countries owned by the player
      *
