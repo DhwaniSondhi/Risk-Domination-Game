@@ -107,6 +107,7 @@ public class Country extends Observable{
         connectedCountries.clear();
         //int countryId = selectedCountry.id;
         //int ownerId = selectedCountry.owner.id;
+
         Queue<Country> queueNeighbor = new LinkedList<>();
         queueNeighbor.add(this);
         connectedCountries.put(id, this);
@@ -149,5 +150,7 @@ public class Country extends Observable{
         setChanged();
         notifyObservers();
     }
+
+
 
 }

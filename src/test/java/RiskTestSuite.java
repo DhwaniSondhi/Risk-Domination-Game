@@ -16,9 +16,8 @@ import utility.MapHelperTest;
 @Suite.SuiteClasses({
         ContinentControllerTest.class,
         CountryControllerTest.class,
-        FortifyControllerTest.class,
-        MapCreatorControllerTest.class,/*
-        ReinforcementControllerTest.class,*/
+        CountryTest.class,
+        MapCreatorControllerTest.class,
         GameMapTest.class,
         FileHelperTest.class,
         MapHelperTest.class

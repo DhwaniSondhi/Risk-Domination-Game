@@ -1,7 +1,6 @@
-package controller;
+package model;
 
-import model.Country;
-import model.GameMap;
+import controller.FortifyController;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,13 +8,10 @@ import view.FortifyPanel;
 
 import java.util.HashMap;
 
+import static org.junit.Assert.*;
 
-/**
- * This is test class for functions of FortifyController
- */
-public class FortifyControllerTest {
+public class CountryTest {
     GameMap gameMap;
-    FortifyController fortifyController;
 
     /**
      * This sets up dummy data by calling setDummyData function in GameMap class
@@ -26,16 +22,15 @@ public class FortifyControllerTest {
     public void setUp() throws Exception {
         gameMap = GameMap.getInstance();
         gameMap.setDummyData();
-        fortifyController = new FortifyController(new FortifyPanel(null));
+
 
     }
 
-    /**
-     * It test the function for getting neighboring countries from selected country.
-     */
+
     @Test
-    public void getNeighborsOfCountry() {
-        HashMap<Integer, Country> neighbor = fortifyController.getNeighborsOfCountry(gameMap.countries.get(1));
+    public void updateConnectedCountries() {
+        gameMap.countries.get(1).updateConnectedCountries();
+        HashMap<Integer, Country> neighbor = gameMap.countries.get(1).connectedCountries;
         Assert.assertFalse(neighbor.isEmpty());
         Assert.assertEquals(1, neighbor.size());
         Assert.assertNotNull(neighbor.get(5));
