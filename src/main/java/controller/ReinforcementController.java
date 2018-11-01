@@ -83,6 +83,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     public List<Country> getCountriesAndIdsOfCurrentPlayer() {
         return model.currentPlayer.getCountries();
     }
-    
+
 
 }
