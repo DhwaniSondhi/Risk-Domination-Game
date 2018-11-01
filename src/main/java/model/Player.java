@@ -64,11 +64,12 @@ public class Player extends Observable {
     }
 
     /**
-     * Initailaizes countries to current player
+     * Initializes countries to current player
      * @param country instance of Country
      * */
     public void initializeCountryToPlayer(Country country) {
         this.countries.add(country);
+        updateView();
     }
 
     /**
@@ -85,18 +86,6 @@ public class Player extends Observable {
      */
     public void addRandomCard() {
         cards.add(new Card());
-    }
-
-    /**
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-=======
-     * To get the total armies available from totalArmies attribute
-     *
-     * @return the value of totalArmies attribute
-     */
-    public int getArmiesForReinforcement() {
-        return totalArmies;
     }
 
     /**
@@ -121,12 +110,10 @@ public class Player extends Observable {
                 selectedCards.add(card);
             }
         }
-        setChanged();
-        notifyObservers(this);
+        updateView();
     }
 
     /**
->>>>>>> Stashed changes
      * To calculate the total armies from the countries and continents own by the player
      *
      * @param countries  list of countries in the instance
@@ -197,8 +184,7 @@ public class Player extends Observable {
      */
     public void setUnSelectedCards() {
         unselectedCards = getCardSetsOfPlayer();
-        setChanged();
-        notifyObservers(this);
+        updateView();
     }
 
     /**
@@ -211,8 +197,7 @@ public class Player extends Observable {
         countryChanged.numOfArmies += addedArmy;
         GameMap.getInstance().countries.replace(countryId, countryChanged);
         totalArmies -= addedArmy;
-        setChanged();
-        notifyObservers(this);
+        updateView();
     }
 
     /**
@@ -220,8 +205,7 @@ public class Player extends Observable {
      */
     public void setArmiesForReinforcement() {
         totalArmies=getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
-        setChanged();
-        notifyObservers(this);
+        updateView();
     }
 
     /**
@@ -244,8 +228,7 @@ public class Player extends Observable {
             this.cards.remove(cardRemove);
         }
         selectedCards.clear();
-        setChanged();
-        notifyObservers(this);
+        updateView();
     }
 
     /**
@@ -258,8 +241,7 @@ public class Player extends Observable {
             }
         }
         selectedCards.clear();
-        setChanged();
-        notifyObservers(this);
+        updateView();
     }
      /** Get the list of all countries owned by the player
      *
@@ -267,5 +249,13 @@ public class Player extends Observable {
      */
     public List<Country> getCountries() {
         return countries;
+    }
+
+    /**
+     * To update view whenever any parameter changes
+     */
+    public void updateView(){
+        setChanged();
+        notifyObservers(this);
     }
 }

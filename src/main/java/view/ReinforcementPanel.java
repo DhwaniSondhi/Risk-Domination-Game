@@ -57,6 +57,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
     HashMap<String, Integer> unselectedCards;
     ArrayList<Card> selectedCards;
     int totalArmies;
+    ArrayList<Country> countries;
 
     /**
      * Constructor
@@ -91,6 +92,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
         unselectedCards=((Player)player).unselectedCards;
         selectedCards=((Player)player).selectedCards;
         totalArmies=((Player)player).totalArmies;
+        countries=((Player)player).countries;
         addCardSection();
         addArmySection();
     }
@@ -220,7 +222,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
 
 
         JPanel armiesChange = new JPanel(new GridBagLayout());
-        List<Country> countriesOfPlayer = reinforcementController.getCountriesAndIdsOfCurrentPlayer();
+        List<Country> countriesOfPlayer = countries;
         int loopForCountryNames = 0;
         String[] countriesNames = new String[countriesOfPlayer.size()];
         for (Country country : countriesOfPlayer) {

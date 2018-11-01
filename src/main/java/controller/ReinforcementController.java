@@ -46,26 +46,14 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         String buttonName = ((JButton) e.getSource()).getName();
 
         if (buttonName.substring(0, 3).equalsIgnoreCase("ADD")) {
-
-            String cardName = buttonName.substring(3);
-            model.currentPlayer.addInSelectedCards(cardName);
-
+            model.currentPlayer.addInSelectedCards(buttonName.substring(3));
         } else if (buttonName.equalsIgnoreCase("Update")) {
-
             model.currentPlayer.getUpdatedArmiesOnCardsExchange();
-
         } else if (buttonName.equalsIgnoreCase("changeArmies")) {
-
             model.currentPlayer.changeArmiesOfCountries(view.getValueOfCountryIndexComboBox(),view.getValueOfArmyComboBox());
-            view.addArmySection();
-            view.addCardSection();
-
         } else if (buttonName.equalsIgnoreCase("Reset")) {
-
             model.currentPlayer.resetSelectedCards();
-
         } else if (buttonName.equalsIgnoreCase("proceed")) {
-
             if (stateChangeListener != null)
                 stateChangeListener.onReinforcementCompleted();
             model.currentPlayer.deleteObserver(view);
@@ -74,15 +62,4 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
         }
 
     }
-
-    /**
-     * To get the countries of currentPlayer
-     *
-     * @return List of countries of CurrentPlayer
-     */
-    public List<Country> getCountriesAndIdsOfCurrentPlayer() {
-        return model.currentPlayer.getCountries();
-    }
-
-
 }
