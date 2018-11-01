@@ -3,7 +3,6 @@ package controller;
 import model.Country;
 import view.AttackPanel;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,9 @@ import java.awt.event.ItemListener;
  */
 public class AttackController extends BaseController<AttackPanel> implements ActionListener, ItemListener {
 
+
+    public Country selectedCountry;
+    public Country selectedNeighbouringCountry;
 
     /**
      * This is the constructor for the Controller
@@ -60,15 +62,26 @@ public class AttackController extends BaseController<AttackPanel> implements Act
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-        if(e.getStateChange() == ItemEvent.SELECTED){
+        if (e.getStateChange() == ItemEvent.SELECTED) {
             String sourceName = ((Component) e.getSource()).getName();
-            if(sourceName.equals("selectCountry")) {
-                Country selectedCountry = ((Country) e.getItem());
-                view.showNeighbouringCountries(selectedCountry.getNeighbours());
-            } else if(sourceName.equals("mode")){
-                if(e.getItem().equals("Choose Dice")){
+            if (sourceName.equals("selectCountry")) {
+                if (selectedCountry != null) {
+                    selectedCountry.deleteObserver(view);
+                }
+                selectedCountry = ((Country) e.getItem());
+                selectedCountry.addObserver(view);
+                selectedCountry.updateNumOfDiceAllowed();
+            } else if(sourceName.equals("selectNeighbourCountry")){
+                if (selectedNeighbouringCountry != null) {
+                    selectedNeighbouringCountry.deleteObserver(view);
+                }
+                selectedNeighbouringCountry = ((Country) e.getItem());
+                selectedNeighbouringCountry.addObserver(view);
+                selectedNeighbouringCountry.updateNumOfDiceAllowed();
+            } else if (sourceName.equals("mode")) {
+                if (e.getItem().equals("Choose Dice")) {
                     view.dicePanel.show();
-                }else{
+                } else {
                     view.dicePanel.hide();
                 }
                 view.dicePanel.revalidate();

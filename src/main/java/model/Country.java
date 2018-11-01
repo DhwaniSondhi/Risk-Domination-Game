@@ -1,14 +1,11 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class for Country containing access to all the components of country
  */
-public class Country {
+public class Country extends Observable {
     /**
      * Country id
      */
@@ -25,6 +22,8 @@ public class Country {
      * Number of armies at country
      */
     public int numOfArmies;
+
+    public int numOfDiceAllowed = 0;
 
     public HashSet<Country> neighbours;
 
@@ -78,12 +77,24 @@ public class Country {
     /**
      * Gives the number of armies at a country
      *
-     * @param countryId id of country whose army value is needed to know
      * @return number of army at that country
      */
     public int getNumberofArmies() {
         return numOfArmies;
+    }
 
+    public void updateNumOfDiceAllowed(){
+        numOfDiceAllowed = 0;
+        int numArmies = this.getNumberofArmies();
+        if(numArmies > 3){
+            numOfDiceAllowed = 3;
+        } else if(numArmies == 3){
+            numOfDiceAllowed = 2;
+        } else if(numArmies == 2){
+            numOfDiceAllowed = 1;
+        }
+        setChanged();
+        notifyObservers();
     }
 
 }

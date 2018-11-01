@@ -73,6 +73,8 @@ public class AttackPanel extends JPanel implements Observer {
         neighbouringPanel.setBorder(new LineBorder(Color.black, 1));
         neighbouringPanel.setLayout(new BoxLayout(neighbouringPanel, BoxLayout.Y_AXIS));
         neighbouringCountries = new JComboBox<>();
+        neighbouringCountries.setName("selectNeighbourCountry");
+        neighbouringCountries.addItemListener(attackController);
         neighbouringPanel.add(neighbouringCountries);
 
         JComboBox<String> selectMode = new JComboBox<>(new String[]{"Choose Dice", "All out"});
@@ -81,8 +83,10 @@ public class AttackPanel extends JPanel implements Observer {
 
         dicePanel = new JPanel();
         dicePanel.setLayout(new BoxLayout(dicePanel, BoxLayout.Y_AXIS));
-        playerDice = new JComboBox(new Integer[]{1,2,3});
-        opponentDice = new JComboBox(new Integer[]{1,2});
+
+        playerDice = new JComboBox();
+
+        opponentDice = new JComboBox();
         dicePanel.add(new JLabel("Player:"));
         dicePanel.add(playerDice);
         dicePanel.add(new JLabel("Opponent:"));
@@ -124,12 +128,28 @@ public class AttackPanel extends JPanel implements Observer {
      *
      * @param countries collection of countries
      */
-    public void showNeighbouringCountries(Collection<Country> countries) {
+    public void updateNeighbouringCountries(Collection<Country> countries) {
         neighbouringCountries.removeAllItems();
         for (Country country : countries) {
-            neighbouringCountries.addItem(country);
+            if(country.owner.id != attackController.model.currentPlayer.id) {
+                neighbouringCountries.addItem(country);
+            }
         }
         revalidate();
+    }
+
+    public void updatePlayerDiceDropdown(int numOfDiceAllowed){
+        this.playerDice.removeAllItems();
+        for (int i = 0; i < numOfDiceAllowed; i++) {
+            playerDice.addItem(i+1);
+        }
+    }
+
+    public void updateOpponentDiceDropdown(int numOfDiceAllowed){
+        this.opponentDice.removeAllItems();
+        for (int i = 0; i < Math.min(2,numOfDiceAllowed); i++) {
+            opponentDice.addItem(i+1);
+        }
     }
 
     /**
@@ -143,6 +163,17 @@ public class AttackPanel extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
+        if(o instanceof Country){
+            Country country = ((Country) o);
+            if(country.id == attackController.selectedCountry.id) {
+                updateNeighbouringCountries(country.getNeighbours());
+                updatePlayerDiceDropdown(country.numOfDiceAllowed);
+            } else {
+                updateOpponentDiceDropdown(country.numOfDiceAllowed);
+            }
+
+
+        }
 
     }
 }
