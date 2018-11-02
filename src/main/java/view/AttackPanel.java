@@ -2,6 +2,7 @@ package view;
 
 import controller.AttackController;
 import model.Country;
+import model.GameMap;
 import model.Player;
 import utility.GameStateChangeListener;
 
@@ -208,6 +209,8 @@ public class AttackPanel extends JPanel implements Observer {
             Player player = ((Player) o);
             updateResultPlayer(player.diceValuesPlayer.toString());
             updateResultOpponent(player.diceValuesOpponent.toString());
+        } else if(o instanceof GameMap){
+            showCountries(GameMap.getInstance().currentPlayer.getCountries());
         }
 
     }

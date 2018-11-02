@@ -1,10 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 /**
  * Class containing attributes and functions of a player object
@@ -215,8 +211,6 @@ public class Player extends Observable {
     /**
      * To get the updated total armies when a set of three cards are changed
      *
-     * @param totalArmiesLocal the armies allotted from countries and continents player has
-     * @return the updated armies
      */
     public void getUpdatedArmiesOnCardsExchange() {
         totalArmies += this.updateArmiesForCards;

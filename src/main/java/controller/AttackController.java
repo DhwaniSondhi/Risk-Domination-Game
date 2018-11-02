@@ -80,14 +80,14 @@ public class AttackController extends BaseController<AttackPanel> implements Act
                 }
                 selectedCountry = ((Country) e.getItem());
                 selectedCountry.addObserver(view);
-                selectedCountry.updateNumOfDiceAllowed();
+                selectedCountry.updateNumOfDiceAllowed(false);
             } else if (sourceName.equals("selectNeighbourCountry")) {
                 if (selectedNeighbouringCountry != null) {
                     selectedNeighbouringCountry.deleteObserver(view);
                 }
                 selectedNeighbouringCountry = ((Country) e.getItem());
                 selectedNeighbouringCountry.addObserver(view);
-                selectedNeighbouringCountry.updateNumOfDiceAllowed();
+                selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
             } else if (sourceName.equals("mode")) {
                 if (e.getItem().equals("Choose Dice")) {
                     view.dicePanel.show();

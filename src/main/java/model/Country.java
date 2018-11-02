@@ -85,7 +85,7 @@ public class Country extends Observable {
         return numOfArmies;
     }
 
-    public void updateNumOfDiceAllowed() {
+    public void updateNumOfDiceAllowed(boolean isOpponent) {
         numOfDiceAllowed = 0;
         int numArmies = this.getNumberofArmies();
         if (numArmies > 3) {
@@ -94,6 +94,9 @@ public class Country extends Observable {
             numOfDiceAllowed = 2;
         } else if (numArmies == 2) {
             numOfDiceAllowed = 1;
+            if(isOpponent){
+                numOfDiceAllowed = 2;
+            }
         }
         setChanged();
         notifyObservers();
