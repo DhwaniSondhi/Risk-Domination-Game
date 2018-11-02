@@ -191,7 +191,16 @@ public class AttackPanel extends JPanel implements Observer {
             if (country.id == attackController.selectedCountry.id) {
                 updateNeighbouringCountries(country.getNeighbours());
                 updatePlayerDiceDropdown(country.numOfDiceAllowed);
-
+                if(country.numOfArmies == 1) {
+                    countries.removeItem(country);
+                }
+                if(neighbouringCountries.getItemCount() == 0){
+                    attackButton.hide();
+                    dicePanel.hide();
+                }else{
+                    attackButton.show();
+                    dicePanel.show();
+                }
             } else {
                 updateOpponentDiceDropdown(country.numOfDiceAllowed);
             }

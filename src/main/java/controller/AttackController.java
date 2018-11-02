@@ -1,7 +1,6 @@
 package controller;
 
 import model.Country;
-import model.Player;
 import view.AttackPanel;
 
 import java.awt.*;
@@ -9,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Controller for {@link AttackPanel} extends {@link BaseController} and implements {@link ActionListener}
@@ -40,7 +37,6 @@ public class AttackController extends BaseController<AttackPanel> implements Act
     }
 
 
-
     /**
      * Invoked when an action occurs.
      *
@@ -50,8 +46,15 @@ public class AttackController extends BaseController<AttackPanel> implements Act
     public void actionPerformed(ActionEvent e) {
 
         if (e.getActionCommand().equalsIgnoreCase("attack")) {
+            selectedCountry.addObserver(view);
+            selectedNeighbouringCountry.addObserver(view);
+
             model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(),
                     (Integer) view.opponentDice.getSelectedItem());
+            model.currentPlayer.attack(selectedCountry,selectedNeighbouringCountry);
+
+            selectedCountry.deleteObserver(view);
+            selectedNeighbouringCountry.deleteObserver(view);
 
         } else if (e.getActionCommand().equalsIgnoreCase("proceed")) {
             model.assignCardToPlayer(model.currentPlayer.id);
@@ -78,7 +81,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
                 selectedCountry = ((Country) e.getItem());
                 selectedCountry.addObserver(view);
                 selectedCountry.updateNumOfDiceAllowed();
-            } else if(sourceName.equals("selectNeighbourCountry")){
+            } else if (sourceName.equals("selectNeighbourCountry")) {
                 if (selectedNeighbouringCountry != null) {
                     selectedNeighbouringCountry.deleteObserver(view);
                 }

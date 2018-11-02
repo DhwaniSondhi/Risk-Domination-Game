@@ -70,7 +70,7 @@ public class Player extends Observable {
     /**
      * Initializes countries to current player
      * @param country instance of Country
-     * */
+     */
     public void initializeCountryToPlayer(Country country) {
         this.countries.add(country);
         updateView();
@@ -295,6 +295,31 @@ public class Player extends Observable {
         Collections.sort(diceValuesOpponent, diceComparator);
         setChanged();
         notifyObservers();
+    }
+
+    public void attack(Country selectedCountry, Country selectedNeighbouringCountry) {
+        int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
+        for (int i = 0; i < numConsideredDice; i++) {
+            if (diceValuesPlayer.get(i) > diceValuesOpponent.get(i)) {
+                selectedNeighbouringCountry.deductArmy();
+                int noArmies = selectedNeighbouringCountry.getNumberofArmies();
+                if (noArmies == 0) {
+                    selectedNeighbouringCountry.changeOwner(this);
+                    winCards(selectedNeighbouringCountry.owner);
+                }
+            } else {
+                selectedCountry.deductArmy();
+            }
+        }
+    }
+
+    private void winCards(Player prevOwner) {
+        if (prevOwner.countries.size() == 0) {
+            for (Card card : prevOwner.cards) {
+                cards.add(card);
+            }
+            prevOwner.cards.clear();
+        }
     }
 
     private Comparator<Integer> diceComparator = new Comparator<Integer>() {

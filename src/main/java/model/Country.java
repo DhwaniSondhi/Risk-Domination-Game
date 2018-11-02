@@ -1,6 +1,7 @@
 package model;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Observable;
 
 /**
  * Class for Country containing access to all the components of country
@@ -26,7 +27,6 @@ public class Country extends Observable {
     public int numOfDiceAllowed = 0;
 
     public HashSet<Country> neighbours;
-
 
 
     /**
@@ -85,14 +85,14 @@ public class Country extends Observable {
         return numOfArmies;
     }
 
-    public void updateNumOfDiceAllowed(){
+    public void updateNumOfDiceAllowed() {
         numOfDiceAllowed = 0;
         int numArmies = this.getNumberofArmies();
-        if(numArmies > 3){
+        if (numArmies > 3) {
             numOfDiceAllowed = 3;
-        } else if(numArmies == 3){
+        } else if (numArmies == 3) {
             numOfDiceAllowed = 2;
-        } else if(numArmies == 2){
+        } else if (numArmies == 2) {
             numOfDiceAllowed = 1;
         }
         setChanged();
@@ -100,5 +100,15 @@ public class Country extends Observable {
     }
 
 
+    public void deductArmy() {
+        this.numOfArmies -= 1;
+        setChanged();
+        notifyObservers();
+    }
 
+    public void changeOwner(Player newOwner) {
+        this.owner = newOwner;
+        setChanged();
+        notifyObservers();
+    }
 }
