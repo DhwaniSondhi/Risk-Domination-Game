@@ -2,11 +2,14 @@ package view;
 
 import controller.CountryController;
 import model.Country;
+import model.GameMap;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
@@ -14,7 +17,7 @@ import static javax.swing.BoxLayout.Y_AXIS;
  * Class containing functions and GUI for the country panel
  **/
 
-public class CountryPanel extends JPanel {
+public class CountryPanel extends JPanel implements Observer {
 
     /**
      * controller for the view
@@ -43,6 +46,7 @@ public class CountryPanel extends JPanel {
         contentPanel1 = new JPanel();
         contentPanel1.setBackground(Color.LIGHT_GRAY);
         contentPanel1.setLayout(new BoxLayout(contentPanel1, BoxLayout.Y_AXIS));
+
         add(contentPanel1);
 
         controller1.updateCountryList();
@@ -60,16 +64,30 @@ public class CountryPanel extends JPanel {
         int index = 0;
         String[] countriesAll = new String[countries.size()];
         if (countries != null) {
-            for (Country countryname : countries.values()) {
-                countriesAll[index] = countryname.id + ". " + countryname.name + " (" + countryname.owner.name + ")";
+            for (Country country : countries.values()) {
+                countriesAll[index] = country.id + ". " + country.name + " (" + country.numOfArmies + " - " + country.owner.name + ")";
                 index++;
             }
         }
         JList list = new JList(countriesAll);
         JScrollPane jScrollPaneCountries = new JScrollPane(list);
-        add(jScrollPaneCountries);
+        contentPanel1.add(jScrollPaneCountries);
 
         contentPanel1.revalidate();
+        contentPanel1.repaint();
     }
 
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        updateCountries(GameMap.getInstance().countries);
+    }
 }

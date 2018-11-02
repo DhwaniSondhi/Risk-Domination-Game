@@ -17,12 +17,7 @@ import java.util.Observer;
  * View for attackPanel extends {@link JPanel}
  */
 public class AttackPanel extends JPanel implements Observer {
-    public JPanel dicePanel;
-    public JPanel resultPanel;
-    public JComboBox<Integer> playerDice;
-    public JComboBox<Integer> opponentDice;
-    public JLabel resultPlayer;
-    public JLabel resultOpponent;
+    ;
     /**
      * Controller for AttackPanel
      */
@@ -31,12 +26,22 @@ public class AttackPanel extends JPanel implements Observer {
      * Panel for displaying Countries owned by current player
      */
     private JPanel countryPanel;
+
+    public JPanel dicePanel;
+    public JPanel resultPanel;
     private JComboBox<Country> countries;
     private JComboBox<Country> neighbouringCountries;
+    public JComboBox<String> selectMode;
     /**
      * Panel for displaying neighboring countries to selected country to which fortify can done
      */
     private JPanel neighbouringPanel;
+
+    public JComboBox<Integer> playerDice;
+    public JComboBox<Integer> opponentDice;
+    public JLabel resultPlayer;
+    public JLabel resultOpponent;
+
     /**
      * Button to attack neighbouring countries
      */
@@ -79,7 +84,7 @@ public class AttackPanel extends JPanel implements Observer {
         neighbouringCountries.addItemListener(attackController);
         neighbouringPanel.add(neighbouringCountries);
 
-        JComboBox<String> selectMode = new JComboBox<>(new String[]{"Choose Dice", "All out"});
+        selectMode = new JComboBox<>(new String[]{"Choose Dice", "All out"});
         selectMode.addItemListener(attackController);
         selectMode.setName("mode");
 
@@ -147,6 +152,13 @@ public class AttackPanel extends JPanel implements Observer {
                 neighbouringCountries.addItem(country);
             }
         }
+        if (neighbouringCountries.getItemCount() == 0) {
+            attackButton.hide();
+            dicePanel.hide();
+        } else {
+            attackButton.show();
+            dicePanel.show();
+        }
         revalidate();
     }
 
@@ -187,20 +199,31 @@ public class AttackPanel extends JPanel implements Observer {
         if (o instanceof Country) {
             Country country = ((Country) o);
             if (country.id == attackController.selectedCountry.id) {
-                updateNeighbouringCountries(country.getNeighbours());
-                updatePlayerDiceDropdown(country.numOfDiceAllowed);
-                if (country.numOfArmies == 1) {
-                    countries.removeItem(country);
-                }
-                if (neighbouringCountries.getItemCount() == 0) {
-                    attackButton.hide();
-                    dicePanel.hide();
-                } else {
-                    attackButton.show();
-                    dicePanel.show();
+                switch (country.state) {
+                    case ARMY:
+                        country.updateNumOfDiceAllowed(false);
+                        
+                        if (country.numOfArmies == 1) {
+                            showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
+                            updateNeighbouringCountries(attackController.selectedCountry.neighbours);
+                        }
+                        break;
+                    case DICE:
+                        updatePlayerDiceDropdown(country.numOfDiceAllowed);
+                        break;
+                    case OWNER:
+                        showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
+//                        moveArmies();
+                        break;
                 }
             } else {
-                updateOpponentDiceDropdown(country.numOfDiceAllowed);
+                switch (country.state) {
+                    case ARMY:
+                        country.updateNumOfDiceAllowed(true);
+                    default:
+                        updateOpponentDiceDropdown(country.numOfDiceAllowed);
+                        break;
+                }
             }
         } else if (o instanceof Player) {
             Player player = ((Player) o);

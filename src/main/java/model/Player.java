@@ -207,7 +207,19 @@ public class Player extends Observable {
     }
 
     /**
-     * To add the selected card by the player in selected cards attribute
+     * To add the armies to the respective countries on click of Add button
+     */
+    public void changeArmiesOfCountries(int countryIndex, String armySelected) {
+        Country country = countries.get(countryIndex);
+        int addedArmy = Integer.parseInt(armySelected);
+        country.addArmies(addedArmy);
+        totalArmies -= addedArmy;
+        updateView();
+    }
+
+
+    /**
+     * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      */
     public void addInSelectedCards(String cardName) {
         if (selectedCards.size() < 3) {
@@ -291,13 +303,13 @@ public class Player extends Observable {
     /**
      * To add the armies to the respective countries on click of Add button
      */
-    public void changeArmiesOfCountries(int countryIdFromView, String armySelected) {
+    /*public void changeArmiesOfCountries(int countryIdFromView, String armySelected) {
         int countryId = countries.get(countryIdFromView).id;
         int addedArmy = Integer.parseInt(armySelected);
         GameMap.getInstance().countries.get(countryId).updateArmies(addedArmy);
         totalArmies -= addedArmy;
         updateView();
-    }
+    }*/
 
     /**
      * Get the list of all countries owned by player which are eligible to attack
@@ -333,18 +345,28 @@ public class Player extends Observable {
         notifyObservers();
     }
 
-    public void attack(Country selectedCountry, Country selectedNeighbouringCountry) {
-        int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
-        for (int i = 0; i < numConsideredDice; i++) {
-            if (diceValuesPlayer.get(i) > diceValuesOpponent.get(i)) {
-                selectedNeighbouringCountry.deductArmy();
-                int noArmies = selectedNeighbouringCountry.getNumberofArmies();
-                if (noArmies == 0) {
-                    selectedNeighbouringCountry.changeOwner(this);
-                    winCards(selectedNeighbouringCountry.owner);
+    public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
+        if (isAllOut) {
+            //condition for blitz -> !this.countries.contains(selectedNeighbouringCountry) || selectedCountry.numOfArmies > 1
+            while (selectedCountry.numOfDiceAllowed != 0 || selectedNeighbouringCountry.numOfDiceAllowed != 0) {
+                selectedCountry.updateNumOfDiceAllowed(false);
+                selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
+                rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed);
+                attack(selectedCountry, selectedNeighbouringCountry, true);
+            }
+        } else {
+            int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
+            for (int i = 0; i < numConsideredDice; i++) {
+                if (diceValuesPlayer.get(i) > diceValuesOpponent.get(i)) {
+                    selectedNeighbouringCountry.deductArmies(1);
+                    int noArmies = selectedNeighbouringCountry.getNumberofArmies();
+                    if (noArmies == 0) {
+                        selectedNeighbouringCountry.changeOwner(this);
+                        winCards(selectedNeighbouringCountry.owner);
+                    }
+                } else {
+                    selectedCountry.deductArmies(1);
                 }
-            } else {
-                selectedCountry.deductArmy();
             }
         }
     }
@@ -357,6 +379,4 @@ public class Player extends Observable {
             prevOwner.cards.clear();
         }
     }
-
-
 }

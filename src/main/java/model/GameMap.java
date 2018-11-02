@@ -91,11 +91,7 @@ public class GameMap extends Observable {
         return -1;
     }
 
-
-
-
-    /**
-     * Saves the country and their neighbouring countries
+     /** Saves the country and their neighbouring countries
      * While saving checks the validity of the map (Case : Continent for a country doesnot exist)
      *
      * @param territories List of all the countries along with its neighbouring countries
@@ -251,6 +247,11 @@ public class GameMap extends Observable {
             return armyCount[players.size() - 2];
 
         return 0;
+    }
+
+    public void notifyChanges() {
+        setChanged();
+        notifyObservers();
     }
 
     /**

@@ -5,7 +5,14 @@ import java.util.*;
 /**
  * Class for Country containing access to all the components of country
  */
-public class Country extends Observable{
+public class Country extends Observable {
+
+    public enum Update{
+        ARMY,
+        OWNER,
+        DICE
+    }
+    public Update state = null;
     /**
      * Country id
      */
@@ -104,6 +111,9 @@ public class Country extends Observable{
         int numArmies = this.getNumberofArmies();
         if (numArmies > 3) {
             numOfDiceAllowed = 3;
+            if(isOpponent){
+                numOfDiceAllowed = 2;
+            }
         } else if (numArmies == 3) {
             numOfDiceAllowed = 2;
         } else if (numArmies == 2) {
@@ -111,7 +121,10 @@ public class Country extends Observable{
             if (isOpponent) {
                 numOfDiceAllowed = 2;
             }
+        } else if(numArmies == 1 && isOpponent){
+            numOfDiceAllowed = 1;
         }
+        state = Update.DICE;
         setChanged();
         notifyObservers();
     }
@@ -160,27 +173,44 @@ public class Country extends Observable{
         notifyObservers();
     }
 
-    /**
-     * To update Country's armies in Reinforcement
+    /*
+     * Updates the armies of countries in which armies are transferred
+     *
+     * @param numberOfArmiesTransfer armies user select to transfer
+     * @param country       country which user select transfer to
      */
-    public void updateArmies(int addedArmies) {
-        numOfArmies += addedArmies;
-    }
-
-    public void deductArmy() {
-        this.numOfArmies -= 1;
-        setChanged();
-        notifyObservers();
-    }
+    /*public void updateArmiesOfCountries(int numberOfArmiesTransfer, Country country) {
+        this.deductArmies(numberOfArmiesTransfer);
+        country.addArmies(numberOfArmiesTransfer);
+        GameMap.getInstance().countries.put(this.id, this);
+        GameMap.getInstance().countries.put(country.id, country);
+    }*/
 
     public void changeOwner(Player newOwner) {
+        System.out.println("test");
+        owner.countries.remove(this);
         this.owner = newOwner;
+
+        owner.countries.add(this);
+        GameMap.getInstance().notifyChanges();
+        state = Update.OWNER;
         setChanged();
         notifyObservers();
     }
 
+    public void addArmies(int numOfArmies){
+        this.numOfArmies += numOfArmies;
+        GameMap.getInstance().notifyChanges();
+        state = Update.ARMY;
+        setChanged();
+        notifyObservers();
+    }
 
-
-
-
+    public void deductArmies(int numOfArmies){
+        this.numOfArmies -= numOfArmies;
+        GameMap.getInstance().notifyChanges();
+        state = Update.ARMY;
+        setChanged();
+        notifyObservers();
+    }
 }

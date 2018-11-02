@@ -15,6 +15,7 @@ public class CountryController extends BaseController<CountryPanel> {
      */
     public CountryController(CountryPanel view) {
         super(view);
+        model.addObserver(view);
     }
 
     /**

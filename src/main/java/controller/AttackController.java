@@ -27,6 +27,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
         super(view);
         model.addObserver(view);
         model.currentPlayer.addObserver(view);
+
     }
 
     /**
@@ -48,10 +49,10 @@ public class AttackController extends BaseController<AttackPanel> implements Act
         if (e.getActionCommand().equalsIgnoreCase("attack")) {
             selectedCountry.addObserver(view);
             selectedNeighbouringCountry.addObserver(view);
+            boolean isAllOut = view.selectMode.getSelectedIndex() == 1;
 
-            model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(),
-                    (Integer) view.opponentDice.getSelectedItem());
-            model.currentPlayer.attack(selectedCountry, selectedNeighbouringCountry);
+            model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(),(Integer) view.opponentDice.getSelectedItem());
+            model.currentPlayer.attack(selectedCountry,selectedNeighbouringCountry,isAllOut);
 
             selectedCountry.deleteObserver(view);
             selectedNeighbouringCountry.deleteObserver(view);
@@ -81,6 +82,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
                 selectedCountry = ((Country) e.getItem());
                 selectedCountry.addObserver(view);
                 selectedCountry.updateNumOfDiceAllowed(false);
+                view.updateNeighbouringCountries(selectedCountry.neighbours);
             } else if (sourceName.equals("selectNeighbourCountry")) {
                 if (selectedNeighbouringCountry != null) {
                     selectedNeighbouringCountry.deleteObserver(view);
@@ -93,6 +95,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
                     view.dicePanel.show();
                 } else {
                     view.dicePanel.hide();
+
                 }
                 view.dicePanel.revalidate();
                 view.dicePanel.repaint();
