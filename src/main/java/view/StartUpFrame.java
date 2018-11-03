@@ -15,13 +15,21 @@ import java.util.Observer;
 public class StartUpFrame extends JFrame implements Observer {
 
     /**
-     * Panel to hold countries
-     */
-    private JPanel countriesPanel;
-    /**
      * Drop-down to select number of players
      */
     public JComboBox<Integer> numOfPlayers;
+    /**
+     * Drop-down to select number of counrties
+     */
+    public JComboBox<Country> playerCountries;
+    /**
+     * Drop-down to select number of armies
+     */
+    public JComboBox<Integer> numOfArmies;
+    /**
+     * Panel to hold countries
+     */
+    private JPanel countriesPanel;
     /**
      * button to submit number of players
      */
@@ -35,23 +43,14 @@ public class StartUpFrame extends JFrame implements Observer {
      */
     private JLabel selectedPlayer;
     /**
-     * Drop-down to select number of counrties
-     */
-    public JComboBox<Country> playerCountries;
-    /**
-     * Drop-down to select number of armies
-     */
-    public JComboBox<Integer> numOfArmies;
-
-    /**
      * controller for the view
-     * */
+     */
     private StartUpController controller;
 
 
     /**
      * initializes the controller and sets up the layout for the view
-     * */
+     */
     public StartUpFrame(GameStateChangeListener stateChangeListener) {
         super("Welcome to the Game");
 

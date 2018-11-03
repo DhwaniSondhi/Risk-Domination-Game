@@ -28,6 +28,10 @@ public class Player extends Observable {
      */
     public int updateArmiesForCards;
     /**
+     * Reinforcement Panel will be updated or not on change
+     */
+    public boolean updateReinforcementPanel;
+    /**
      * Variable for total armies for Reinforcement Phase
      */
     public int totalArmies;
@@ -42,7 +46,12 @@ public class Player extends Observable {
 
     public ArrayList<Integer> diceValuesPlayer = new ArrayList<>();
     public ArrayList<Integer> diceValuesOpponent = new ArrayList<>();
-
+    private Comparator<Integer> diceComparator = new Comparator<Integer>() {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
+        }
+    };
 
     /**
      * Constructor
@@ -60,11 +69,14 @@ public class Player extends Observable {
         countries = new ArrayList<>();
         updateArmiesForCards = 5;
         selectedCards = new ArrayList<>();
+
         initializeWithDummyCards();
+        updateReinforcementPanel = true;
     }
 
     /**
      * Initializes countries to current player
+     *
      * @param country instance of Country
      */
     public void initializeCountryToPlayer(Country country) {
@@ -86,31 +98,6 @@ public class Player extends Observable {
      */
     public void addRandomCard() {
         cards.add(new Card());
-    }
-
-    /**
-     * To add cards to selected card section on ADD button click
-     *
-     * @param cardName the card added
-     */
-    public void addInSelectedCards(String cardName){
-        if (selectedCards.size() < 3) {
-            if (unselectedCards.get(cardName) != null) {
-                unselectedCards.replace(cardName, unselectedCards.get(cardName) - 1);
-            }
-            Card card = null;
-            if (cardName.equalsIgnoreCase("ARTILLERY")) {
-                card = new Card(Card.TYPE.ARTILLERY);
-            } else if (cardName.equalsIgnoreCase("INFANTRY")) {
-                card = new Card(Card.TYPE.INFANTRY);
-            } else if (cardName.equalsIgnoreCase("CAVALRY")) {
-                card = new Card(Card.TYPE.CAVALRY);
-            }
-            if (card != null) {
-                selectedCards.add(card);
-            }
-        }
-        updateView();
     }
 
     /**
@@ -190,7 +177,7 @@ public class Player extends Observable {
     /**
      * To add the armies to the respective countries on click of Add button
      */
-    public void changeArmiesOfCountries(int countryIdFromView,String armySelected) {
+    public void changeArmiesOfCountries(int countryIdFromView, String armySelected) {
         int countryId = countries.get(countryIdFromView).id;
         int addedArmy = Integer.parseInt(armySelected);
         Country countryChanged = GameMap.getInstance().countries.get(countryId);
@@ -204,21 +191,43 @@ public class Player extends Observable {
      * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      */
     public void setArmiesForReinforcement() {
-        totalArmies=getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
+        if (totalArmies == 0)
+            totalArmies = getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
+        updateView();
+    }
+
+    public void addInSelectedCards(String cardName) {
+        if (selectedCards.size() < 3) {
+            if (unselectedCards.get(cardName) != null) {
+                unselectedCards.replace(cardName, unselectedCards.get(cardName) - 1);
+            }
+            Card card = null;
+            if (cardName.equalsIgnoreCase("ARTILLERY")) {
+                card = new Card(Card.TYPE.ARTILLERY);
+            } else if (cardName.equalsIgnoreCase("INFANTRY")) {
+                card = new Card(Card.TYPE.INFANTRY);
+            } else if (cardName.equalsIgnoreCase("CAVALRY")) {
+                card = new Card(Card.TYPE.CAVALRY);
+            }
+            if (card != null) {
+                selectedCards.add(card);
+            }
+        }
         updateView();
     }
 
     /**
      * To get the updated total armies when a set of three cards are changed
      *
+     * @return the updated armies
      */
-    public void getUpdatedArmiesOnCardsExchange() {
+    public int getUpdatedArmiesOnCardsExchange() {
         totalArmies += this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
         for (Card cardSelected : selectedCards) {
             for (Card cardPlayer : this.cards) {
-                if (cardPlayer.type == cardSelected.type) {
+                if (cardPlayer.type == cardSelected.type && !removeCards.contains(cardPlayer)) {
                     removeCards.add(cardPlayer);
                     break;
                 }
@@ -227,6 +236,11 @@ public class Player extends Observable {
         for (Card cardRemove : removeCards) {
             this.cards.remove(cardRemove);
         }
+        emptySelectedCards();
+        return totalArmies;
+    }
+
+    public void emptySelectedCards() {
         selectedCards.clear();
         updateView();
     }
@@ -234,7 +248,7 @@ public class Player extends Observable {
     /**
      * To reset the selected cards
      */
-    public void resetSelectedCards(){
+    public void resetSelectedCards() {
         for (Card card : selectedCards) {
             if (unselectedCards.get(card.type.toString()) != null) {
                 unselectedCards.replace(card.type.toString(), unselectedCards.get(card.type.toString()) + 1);
@@ -243,7 +257,9 @@ public class Player extends Observable {
         selectedCards.clear();
         updateView();
     }
-     /** Get the list of all countries owned by the player
+
+    /**
+     * Get the list of all countries owned by the player
      *
      * @return list of countries
      */
@@ -254,18 +270,20 @@ public class Player extends Observable {
     /**
      * To update view whenever any parameter changes
      */
-    public void updateView(){
+    public void updateView() {
         setChanged();
         notifyObservers(this);
     }
 
-    /** Get the list of all countries owned by player which are eligible to attack
+    /**
+     * Get the list of all countries owned by player which are eligible to attack
+     *
      * @return list of countries
-     * */
-    public List<Country> getCountriesAllowedToAttack(){
+     */
+    public List<Country> getCountriesAllowedToAttack() {
         ArrayList<Country> countriesAllowedToAttack = new ArrayList<>();
         for (Country country : countries) {
-            if(country.getNumberofArmies() > 1){
+            if (country.getNumberofArmies() > 1) {
                 countriesAllowedToAttack.add(country);
             }
 
@@ -315,13 +333,6 @@ public class Player extends Observable {
             prevOwner.cards.clear();
         }
     }
-
-    private Comparator<Integer> diceComparator = new Comparator<Integer>() {
-        @Override
-        public int compare(Integer o1, Integer o2) {
-            return o2 - o1;
-        }
-    };
 
 
 }

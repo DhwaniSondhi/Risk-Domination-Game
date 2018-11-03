@@ -8,7 +8,7 @@ import utility.MapHelperTest;
 
 /**
  * Test suite with all the test classes
- * */
+ */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         ContinentControllerTest.class,

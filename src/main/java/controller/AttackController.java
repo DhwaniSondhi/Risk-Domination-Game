@@ -51,7 +51,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
 
             model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(),
                     (Integer) view.opponentDice.getSelectedItem());
-            model.currentPlayer.attack(selectedCountry,selectedNeighbouringCountry);
+            model.currentPlayer.attack(selectedCountry, selectedNeighbouringCountry);
 
             selectedCountry.deleteObserver(view);
             selectedNeighbouringCountry.deleteObserver(view);

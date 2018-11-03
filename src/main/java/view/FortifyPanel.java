@@ -20,7 +20,7 @@ public class FortifyPanel extends JPanel {
      */
     FortifyController fortifyController;
     /**
-     *TextField to display army on selected country
+     * TextField to display army on selected country
      */
     JTextField jTextFieldNoOfArmiesCountries;
     /**

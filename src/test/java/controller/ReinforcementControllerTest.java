@@ -4,14 +4,11 @@ import model.Card;
 import model.Continent;
 import model.Country;
 import model.Player;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test Class for different test cases for reinforcement phase
@@ -137,7 +134,7 @@ public class ReinforcementControllerTest {
      * To test armies the player will get for exchanging cards
      */
     @Test
-    public void toTestArmiesFromCards(){
+    public void toTestArmiesFromCards() {
         /*int totalArmies;
 
         //to check armies for player having countries equal to 13 but not complete continent
@@ -168,7 +165,7 @@ public class ReinforcementControllerTest {
      * To test number of different types of cards the player has
      */
     @Test
-    public void toTestSetUnselectedCards(){
+    public void toTestSetUnselectedCards() {
         /*HashMap<String,Integer> cardsToBeTested;
 
         cardsToBeTested=reinforcementController.getCardSetsOfPlayer(players.get(1));

@@ -94,7 +94,7 @@ public class Country extends Observable {
             numOfDiceAllowed = 2;
         } else if (numArmies == 2) {
             numOfDiceAllowed = 1;
-            if(isOpponent){
+            if (isOpponent) {
                 numOfDiceAllowed = 2;
             }
         }

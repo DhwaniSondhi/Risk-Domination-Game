@@ -184,7 +184,6 @@ public class GameMap extends Observable {
     }
 
 
-
     /**
      * It clears the data of HashMap
      */

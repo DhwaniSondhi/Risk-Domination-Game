@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.Observer;
 
 /**
  * Gui part of Reinforcement Panel
@@ -53,9 +52,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * Array for selected cards
      */
     Card[] selectedCardsArray;
-
-    HashMap<String, Integer> unselectedCards;
-    ArrayList<Card> selectedCards;
+    HashMap<String, Integer> cardSets;
     int totalArmies;
     ArrayList<Country> countries;
 
@@ -88,11 +85,13 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * To update the details when the cards are updated
      */
-    public void update(Observable player,Object obj){
-        unselectedCards=((Player)player).unselectedCards;
-        selectedCards=((Player)player).selectedCards;
-        totalArmies=((Player)player).totalArmies;
-        countries=((Player)player).countries;
+    public void update(Observable player, Object obj) {
+        boolean selectedObserver = ((Player) player).updateReinforcementPanel;
+        if (selectedObserver) {
+            cardSets = ((Player) player).unselectedCards;
+            totalArmies = ((Player) player).totalArmies;
+            countries = ((Player) player).countries;
+        }
         addCardSection();
         addArmySection();
     }
@@ -112,69 +111,59 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To add CardSection Panel for cards' selection, updation and resetting
      */
     public void addCardSection() {
-        if(cardSection!=null){
+        if (cardSection != null) {
             cardSection.removeAll();
-        }else{
-            cardSection=new JPanel();
+        } else {
+            cardSection = new JPanel();
             cardSection.setLayout(new GridBagLayout());
         }
-
-        selectedCardsArray=new Card[0];
         addUnselectedCardGrid();
-        addSelectedCardGrid();
         addButtons();
         cardSection.revalidate();
         cardSection.repaint();
     }
 
-    /**
-     * To add Selected Cards Grid in CardSection Panel
-     *
-     */
-    public void addSelectedCardGrid(/*ArrayList<Card> selectedCards*/) {
-        if(selectedCards.size()>0){
-            selectedCardsArray = new Card[selectedCards.size()];
-            selectedCards.toArray(selectedCardsArray);
-            JPanel cardsSelected = new JPanel();
-            cardsSelected.setLayout(new GridLayout(3, 1));
-            for (Card card : selectedCards) {
-                JPanel cardButtonPanel = new JPanel();
-                cardButtonPanel.setLayout(new GridLayout(1, 1));
-                JLabel cardLabel = new JLabel(card.type.toString());
-                cardButtonPanel.add(cardLabel);
-                cardsSelected.add(cardButtonPanel);
-            }
-            cardSection.add(cardsSelected, getGridContraints(1, 0));
-        }
-    }
 
     /**
      * To add Unselected Cards Grid with add buttons in CardSection Panel
-     *
      */
-    public void addUnselectedCardGrid(/*HashMap<String, Integer> cardsOfCurrentPlayer*/) {
+    public void addUnselectedCardGrid() {
         unselectedCardsNum = 0;
         JPanel cardsUnselected = new JPanel();
         cardsUnselected.setLayout(new GridLayout(3, 1));
-        Iterator itForCards = unselectedCards.entrySet().iterator();
-        while (itForCards.hasNext()) {
-            Map.Entry cardPair = (Map.Entry) itForCards.next();
-            JPanel cardButtonPanel = new JPanel();
-            cardButtonPanel.setLayout(new GridLayout(1, 2));
-            String label = cardPair.getValue() + " " + cardPair.getKey();
-            unselectedCardsNum += (Integer.parseInt(cardPair.getValue().toString()));
+        Iterator itForCards = cardSets.entrySet().iterator();
+        if (!itForCards.hasNext()) {
+            JPanel cardButtonPanelArtillery = new JPanel();
+            cardButtonPanelArtillery.setLayout(new GridLayout(1, 1));
+            String labelA = "0 ARTILLERY";
+            JLabel cardLabelA = new JLabel(labelA);
+            cardButtonPanelArtillery.add(cardLabelA);
+            cardsUnselected.add(cardButtonPanelArtillery);
+
+            JPanel cardButtonPanelInfantry = new JPanel();
+            cardButtonPanelInfantry.setLayout(new GridLayout(1, 1));
+            String labelI = "0 INFANTRY";
+            JLabel cardLabelI = new JLabel(labelI);
+            cardButtonPanelInfantry.add(cardLabelI);
+            cardsUnselected.add(cardButtonPanelInfantry);
+
+            JPanel cardButtonPanelCavalry = new JPanel();
+            cardButtonPanelCavalry.setLayout(new GridLayout(1, 1));
+            String label = "0 CAVALRY";
             JLabel cardLabel = new JLabel(label);
-            cardButtonPanel.add(cardLabel);
-            JButton add = new JButton("Add");
-            add.addActionListener(reinforcementController);
-            add.setName("Add" + cardPair.getKey());
-            if (Integer.valueOf(label.substring(0, 1)) < 1) {
-                add.setEnabled(false);
-            } else {
-                add.setEnabled(true);
+            cardButtonPanelCavalry.add(cardLabel);
+            cardsUnselected.add(cardButtonPanelCavalry);
+        } else {
+            while (itForCards.hasNext()) {
+                Map.Entry cardPair = (Map.Entry) itForCards.next();
+                JPanel cardButtonPanel = new JPanel();
+                cardButtonPanel.setLayout(new GridLayout(1, 1));
+                String label = cardPair.getValue() + " " + cardPair.getKey();
+                unselectedCardsNum += (Integer.parseInt(cardPair.getValue().toString()));
+                JLabel cardLabel = new JLabel(label);
+                cardButtonPanel.add(cardLabel);
+                cardsUnselected.add(cardButtonPanel);
             }
-            cardButtonPanel.add(add);
-            cardsUnselected.add(cardButtonPanel);
         }
         cardSection.add(cardsUnselected, getGridContraints(0, 0));
     }
@@ -184,36 +173,25 @@ public class ReinforcementPanel extends JPanel implements Observer {
      */
     public void addButtons() {
         JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(2, 1));
-        JButton update = new JButton("Update");
-        update.setName("Update");
-        update.addActionListener(reinforcementController);
-        if (selectedCardsArray != null && selectedCardsArray.length > 2
-                && ((selectedCardsArray[0].type == selectedCardsArray[1].type && selectedCardsArray[0].type == selectedCardsArray[2].type && selectedCardsArray[1].type == selectedCardsArray[2].type)
-                || (!(selectedCardsArray[0].type == selectedCardsArray[1].type) && !(selectedCardsArray[0].type == selectedCardsArray[2].type) && !(selectedCardsArray[1].type == selectedCardsArray[2].type)))) {
-            update.setEnabled(true);
-        } else {
-            update.setEnabled(false);
-        }
-        buttons.add(update);
-        JButton reset = new JButton("Reset");
-        reset.setName("Reset");
-        reset.addActionListener(reinforcementController);
-        buttons.add(reset);
+        buttons.setLayout(new GridLayout(1, 1));
+        JButton exchangeCards = new JButton("Exchange Cards");
+        exchangeCards.setName("exchangeCards");
+        exchangeCards.addActionListener(reinforcementController);
+        buttons.add(exchangeCards);
         cardSection.add(buttons, getGridContraints(2, 0));
-
     }
 
     /**
      * To add Army Section Panel for armies display and distribution among countries
      */
     public void addArmySection() {
-        if(armySection!=null){
+        if (armySection != null) {
             armySection.removeAll();
-        }else{
+        } else {
             armySection = new JPanel();
             armySection.setLayout(new GridBagLayout());
         }
+
         int armiesLeft = totalArmies;
         JPanel armyDisplay = new JPanel();
         JLabel armies = new JLabel("Armies: " + armiesLeft);
