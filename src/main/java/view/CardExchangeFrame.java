@@ -1,3 +1,5 @@
+
+
 package view;
 
 import controller.CardExchangeController;
@@ -7,6 +9,12 @@ import model.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+
+/**
+ * Gui part of Exchange View Frame
+ * extends {@link JFrame}
+ * implements {@link Observer}
+ */
 
 public class CardExchangeFrame extends JFrame implements Observer {
 
@@ -30,15 +38,33 @@ public class CardExchangeFrame extends JFrame implements Observer {
      */
     Card[] selectedCardsArray;
 
+    /**
+     * Cards sets of the player available for exchange
+     */
     HashMap<String, Integer> unselectedCards;
+
+    /**
+     * Cards selected by the player for exchange
+     */
     ArrayList<Card> selectedCards;
+
+    /**
+     * Total armies available for reinforcement
+     */
     int totalArmies;
 
-    public CardExchangeFrame() {
+    /**
+     * Constructor
+     * <p>
+     * To create the Frame for Exchanging cards in Reinforcement phase
+     * </p>
+     *
+     */
+    public CardExchangeFrame(){
         super("Card Exchange View");
-        cardExchangeController = new CardExchangeController(this);
+        cardExchangeController=new CardExchangeController(this);
         cardExchangeController.initialize();
-        cardSection = new JPanel();
+        cardSection=new JPanel();
         cardSection.setLayout(new GridBagLayout());
         addCardSection();
         add(cardSection);
@@ -53,11 +79,11 @@ public class CardExchangeFrame extends JFrame implements Observer {
      * To update the details when the cards are updated
      */
     @Override
-    public void update(java.util.Observable player, Object obj) {
-        if (player instanceof Player) {
-            unselectedCards = ((Player) player).unselectedCards;
-            selectedCards = ((Player) player).selectedCards;
-            totalArmies = ((Player) player).totalArmies;
+    public void update(java.util.Observable player, Object obj){
+        if(player instanceof Player){
+            unselectedCards=((Player)player).unselectedCards;
+            selectedCards=((Player)player).selectedCards;
+            totalArmies=((Player)player).totalArmies;
             addCardSection();
         }
     }
@@ -67,14 +93,14 @@ public class CardExchangeFrame extends JFrame implements Observer {
      * To add CardSection Panel for cards' selection, updation and resetting
      */
     public void addCardSection() {
-        if (cardSection != null) {
+        if(cardSection!=null){
             cardSection.removeAll();
-        } else {
-            cardSection = new JPanel();
+        }else{
+            cardSection=new JPanel();
             cardSection.setLayout(new GridBagLayout());
         }
 
-        selectedCardsArray = new Card[0];
+        selectedCardsArray=new Card[0];
         addUnselectedCardGrid();
         addSelectedCardGrid();
         addButtons();
@@ -84,9 +110,10 @@ public class CardExchangeFrame extends JFrame implements Observer {
 
     /**
      * To add Selected Cards Grid in CardSection Panel
+     *
      */
     public void addSelectedCardGrid(/*ArrayList<Card> selectedCards*/) {
-        if (selectedCards.size() > 0) {
+        if(selectedCards.size()>0){
             selectedCardsArray = new Card[selectedCards.size()];
             selectedCards.toArray(selectedCardsArray);
             JPanel cardsSelected = new JPanel();
@@ -104,13 +131,14 @@ public class CardExchangeFrame extends JFrame implements Observer {
 
     /**
      * To add Unselected Cards Grid with add buttons in CardSection Panel
+     *
      */
     public void addUnselectedCardGrid() {
         unselectedCardsNum = 0;
         JPanel cardsUnselected = new JPanel();
         cardsUnselected.setLayout(new GridLayout(3, 1));
         Iterator itForCards = unselectedCards.entrySet().iterator();
-        if (!itForCards.hasNext()) {
+        if(!itForCards.hasNext()){
             JPanel cardButtonPanelArtillery = new JPanel();
             cardButtonPanelArtillery.setLayout(new GridLayout(1, 2));
             String labelA = "0 ARTILLERY";
@@ -140,7 +168,7 @@ public class CardExchangeFrame extends JFrame implements Observer {
             addC.setEnabled(false);
             cardButtonPanelCavalry.add(addC);
             cardsUnselected.add(cardButtonPanelCavalry);
-        } else {
+        }else{
             while (itForCards.hasNext()) {
                 Map.Entry cardPair = (Map.Entry) itForCards.next();
                 JPanel cardButtonPanel = new JPanel();
@@ -186,11 +214,11 @@ public class CardExchangeFrame extends JFrame implements Observer {
         reset.addActionListener(cardExchangeController);
         buttons.add(reset);
         cardSection.add(buttons, getGridContraints(2, 0));
-        JLabel whiteSpace1 = new JLabel("                    ");
+        JLabel whiteSpace1=new JLabel("                    ");
         cardSection.add(whiteSpace1, getGridContraints(0, 1));
-        JLabel armies = new JLabel("Armies: " + totalArmies);
+        JLabel armies=new JLabel("Armies: "+totalArmies);
         cardSection.add(armies, getGridContraints(0, 2));
-        JLabel whiteSpace2 = new JLabel("                    ");
+        JLabel whiteSpace2=new JLabel("                    ");
         cardSection.add(whiteSpace2, getGridContraints(0, 3));
         JButton exit = new JButton("Exit");
         exit.setName("exit");

@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * Class containing attributes and functions of a player object
+ * extends {@link Observable}
  */
 public class Player extends Observable {
     /**
@@ -27,22 +28,26 @@ public class Player extends Observable {
      * Armies on trading card
      */
     public int updateArmiesForCards;
+
     /**
      * Reinforcement Panel will be updated or not on change
      */
     public boolean updateReinforcementPanel;
+
     /**
-     * Variable for total armies for Reinforcement Phase
+     * Total armies player gets during reinforcement
      */
     public int totalArmies;
+
     /**
-     * List for the cards selected
-     */
-    public ArrayList<Card> selectedCards;
-    /**
-     * HashMap to keep the name of the card as key and number of cards as value
+     * Cards not selected by the player yet
      */
     public HashMap<String, Integer> unselectedCards;
+
+    /**
+     * Cards selected by the player
+     */
+    public ArrayList<Card> selectedCards;
 
     public ArrayList<Integer> diceValuesPlayer = new ArrayList<>();
     public ArrayList<Integer> diceValuesOpponent = new ArrayList<>();
@@ -85,7 +90,7 @@ public class Player extends Observable {
     }
 
     /**
-     * adds 3 random cards to the player.
+     * Adds 3 random cards to the player.
      */
     private void initializeWithDummyCards() {
         for (int i = 0; i < 3; i++) {
@@ -175,28 +180,18 @@ public class Player extends Observable {
     }
 
     /**
-     * To add the armies to the respective countries on click of Add button
-     */
-    public void changeArmiesOfCountries(int countryIdFromView, String armySelected) {
-        int countryId = countries.get(countryIdFromView).id;
-        int addedArmy = Integer.parseInt(armySelected);
-        Country countryChanged = GameMap.getInstance().countries.get(countryId);
-        countryChanged.numOfArmies += addedArmy;
-        GameMap.getInstance().countries.replace(countryId, countryChanged);
-        totalArmies -= addedArmy;
-        updateView();
-    }
-
-    /**
      * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      */
     public void setArmiesForReinforcement() {
-        if (totalArmies == 0)
-            totalArmies = getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
+        if(totalArmies==0)
+            totalArmies=getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
         updateView();
     }
-
-    public void addInSelectedCards(String cardName) {
+    
+    /**
+     * To add the selected card by the player in selected cards attribute
+     */
+    public void addInSelectedCards(String cardName){
         if (selectedCards.size() < 3) {
             if (unselectedCards.get(cardName) != null) {
                 unselectedCards.replace(cardName, unselectedCards.get(cardName) - 1);
@@ -213,6 +208,27 @@ public class Player extends Observable {
                 selectedCards.add(card);
             }
         }
+        updateView();
+    }
+
+    /**
+     * To reset the selected cards
+     */
+    public void resetSelectedCards(){
+        for (Card card : selectedCards) {
+            if (unselectedCards.get(card.type.toString()) != null) {
+                unselectedCards.replace(card.type.toString(), unselectedCards.get(card.type.toString()) + 1);
+            }
+        }
+        selectedCards.clear();
+        updateView();
+    }
+
+    /**
+     * To empty the selected cards attribute
+     */
+    public void emptySelectedCards(){
+        selectedCards.clear();
         updateView();
     }
 
@@ -240,26 +256,11 @@ public class Player extends Observable {
         return totalArmies;
     }
 
-    public void emptySelectedCards() {
-        selectedCards.clear();
-        updateView();
+    public void updateView(){
+        setChanged();
+        notifyObservers(this);
     }
-
-    /**
-     * To reset the selected cards
-     */
-    public void resetSelectedCards() {
-        for (Card card : selectedCards) {
-            if (unselectedCards.get(card.type.toString()) != null) {
-                unselectedCards.replace(card.type.toString(), unselectedCards.get(card.type.toString()) + 1);
-            }
-        }
-        selectedCards.clear();
-        updateView();
-    }
-
-    /**
-     * Get the list of all countries owned by the player
+     /** Get the list of all countries owned by the player
      *
      * @return list of countries
      */
@@ -268,11 +269,14 @@ public class Player extends Observable {
     }
 
     /**
-     * To update view whenever any parameter changes
+     * To add the armies to the respective countries on click of Add button
      */
-    public void updateView() {
-        setChanged();
-        notifyObservers(this);
+    public void changeArmiesOfCountries(int countryIdFromView,String armySelected) {
+        int countryId = countries.get(countryIdFromView).id;
+        int addedArmy = Integer.parseInt(armySelected);
+        GameMap.getInstance().countries.get(countryId).updateArmies(addedArmy);
+        totalArmies -= addedArmy;
+        updateView();
     }
 
     /**

@@ -6,6 +6,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This is the Controller class for card exchange frame
+ * extends the abstract class {@link BaseController}
+ * implements {@link ActionListener} for actions performed on Gui part(CardExchange Frame)
+ */
 public class CardExchangeController extends BaseController<CardExchangeFrame> implements ActionListener {
     /**
      * Constructor for Card Exchange Controller
@@ -20,17 +25,20 @@ public class CardExchangeController extends BaseController<CardExchangeFrame> im
 
     }
 
+    /**
+     * To initialize the values for cards exchange frame
+     */
     public void initialize() {
-        model.currentPlayer.addObserver(view);
-        model.currentPlayer.setUnSelectedCards();
-        model.currentPlayer.setArmiesForReinforcement();
-        model.currentPlayer.emptySelectedCards();
+            model.currentPlayer.addObserver(view);
+            model.currentPlayer.setUnSelectedCards();
+            model.currentPlayer.setArmiesForReinforcement();
+            model.currentPlayer.emptySelectedCards();
 
     }
 
 
     /**
-     * Invoked on any action performed on Add, Reset and Update buttons for Card Section in Reinforcement Panel
+     * Invoked on any action performed on Add, Update, Reset and Exit buttons for Card Section in Reinforcement Panel
      *
      * @param e {@link ActionEvent}
      */
@@ -47,7 +55,7 @@ public class CardExchangeController extends BaseController<CardExchangeFrame> im
         } else if (buttonName.equalsIgnoreCase("exit")) {
             view.setVisible(false);
             model.currentPlayer.emptySelectedCards();
-            model.currentPlayer.updateReinforcementPanel = true;
+            model.currentPlayer.updateReinforcementPanel =true;
             model.currentPlayer.setArmiesForReinforcement();
             initialize();
         }

@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Gui part of Reinforcement Panel
  * extends {@link JPanel}
+ * implements {@link Observer}
  */
 public class ReinforcementPanel extends JPanel implements Observer {
 
@@ -49,11 +50,18 @@ public class ReinforcementPanel extends JPanel implements Observer {
     int unselectedCardsNum;
 
     /**
-     * Array for selected cards
+     * Cards sets of the player available for exchange
      */
-    Card[] selectedCardsArray;
     HashMap<String, Integer> cardSets;
+
+    /**
+     * Total armies available for reinforcement
+     */
     int totalArmies;
+
+    /**
+     * Countries player has for reinforcement
+     */
     ArrayList<Country> countries;
 
     /**

@@ -102,6 +102,13 @@ public class Country extends Observable {
         notifyObservers();
     }
 
+    /**
+     * To update Country's armies in Reinforcement
+     */
+    public void updateArmies(int addedArmies) {
+        numOfArmies += addedArmies;
+    }
+
 
     public void deductArmy() {
         this.numOfArmies -= 1;
