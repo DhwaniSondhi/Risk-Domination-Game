@@ -2,7 +2,6 @@ package view;
 
 
 import controller.ReinforcementController;
-import model.Card;
 import model.Country;
 import model.Player;
 import utility.GameStateChangeListener;

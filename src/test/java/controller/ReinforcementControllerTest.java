@@ -1,4 +1,3 @@
-
 package controller;
 
 import org.junit.Test;
@@ -30,51 +29,70 @@ public class ReinforcementControllerTest {
 
     */
 /**
-     * HashMap for continents(the continent's id as the key and continent object as the value)
-     *//*
+ * HashMap for continents(the continent's id as the key and continent object as the value)
+ * <p>
+ * HashMap for countries(the country's id as the key and country object as the value)
+ * <p>
+ * List for countries in the continent
+ * <p>
+ * HashMap for players(the player's id as the key and player object as the value)
+ * <p>
+ * List for cards
+ * <p>
+ * Reference for reinforcement controller
+ * <p>
+ * To set up context for the test methods
+ * It sets up the continents, countries, players and cards in the game to test various cases in reinforcement.
+ * <p>
+ * To test total armies the player will get for reinforcement phase
+ * <p>
+ * To test armies the player will get for exchanging cards
+ * <p>
+ * To test number of different types of cards the player has
+ *//*
 
     HashMap<Integer, Continent> continents;
 
     */
 /**
-     * HashMap for countries(the country's id as the key and country object as the value)
-     *//*
+ * HashMap for countries(the country's id as the key and country object as the value)
+ *//*
 
     HashMap<Integer, Country> countries;
 
     */
 /**
-     * List for countries in the continent
-     *//*
+ * List for countries in the continent
+ *//*
 
     ArrayList<Country> countriesInContinent;
 
     */
 /**
-     * HashMap for players(the player's id as the key and player object as the value)
-     *//*
+ * HashMap for players(the player's id as the key and player object as the value)
+ *//*
 
     HashMap<Integer, Player> players;
 
     */
 /**
-     * List for cards
-     *//*
+ * List for cards
+ *//*
 
     ArrayList<Card> cards;
 
     */
 /**
-     * Reference for reinforcement controller
-     *//*
+ * Reference for reinforcement controller
+ *//*
 
     ReinforcementController reinforcementController;
 
     */
 /**
-     * To set up context for the test methods
-     * It sets up the continents, countries, players and cards in the game to test various cases in reinforcement.
-     *//*
+ * To set up context for the test methods
+ * It sets up the continents, countries, players and cards in the game to test various cases in reinforcement.
+ *//*
 
     @Before
     public void before() {
@@ -136,8 +154,8 @@ public class ReinforcementControllerTest {
 
     */
 /**
-     * To test total armies the player will get for reinforcement phase
-     *//*
+ * To test total armies the player will get for reinforcement phase
+ *//*
 
     @Test
     public void toTestTotalArmiesReinforcement() {
@@ -161,8 +179,8 @@ public class ReinforcementControllerTest {
 
     */
 /**
-     * To test armies the player will get for exchanging cards
-     *//*
+ * To test armies the player will get for exchanging cards
+ *//*
 
     @Test
     public void toTestArmiesFromCards(){
@@ -194,8 +212,8 @@ public class ReinforcementControllerTest {
 
     */
 /**
-     * To test number of different types of cards the player has
-     *//*
+ * To test number of different types of cards the player has
+ *//*
 
     @Test
     public void toTestSetUnselectedCards(){

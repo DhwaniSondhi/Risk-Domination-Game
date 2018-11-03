@@ -29,10 +29,10 @@ public class CardExchangeController extends BaseController<CardExchangeFrame> im
      * To initialize the values for cards exchange frame
      */
     public void initialize() {
-            model.currentPlayer.addObserver(view);
-            model.currentPlayer.setUnSelectedCards();
-            model.currentPlayer.setArmiesForReinforcement();
-            model.currentPlayer.emptySelectedCards();
+        model.currentPlayer.addObserver(view);
+        model.currentPlayer.setUnSelectedCards();
+        model.currentPlayer.setArmiesForReinforcement();
+        model.currentPlayer.emptySelectedCards();
 
     }
 
@@ -55,7 +55,7 @@ public class CardExchangeController extends BaseController<CardExchangeFrame> im
         } else if (buttonName.equalsIgnoreCase("exit")) {
             view.setVisible(false);
             model.currentPlayer.emptySelectedCards();
-            model.currentPlayer.updateReinforcementPanel =true;
+            model.currentPlayer.updateReinforcementPanel = true;
             model.currentPlayer.setArmiesForReinforcement();
             initialize();
         }

@@ -183,15 +183,15 @@ public class Player extends Observable {
      * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      */
     public void setArmiesForReinforcement() {
-        if(totalArmies==0)
-            totalArmies=getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
+        if (totalArmies == 0)
+            totalArmies = getTotalArmies(GameMap.getInstance().countries, GameMap.getInstance().continents);
         updateView();
     }
-    
+
     /**
      * To add the selected card by the player in selected cards attribute
      */
-    public void addInSelectedCards(String cardName){
+    public void addInSelectedCards(String cardName) {
         if (selectedCards.size() < 3) {
             if (unselectedCards.get(cardName) != null) {
                 unselectedCards.replace(cardName, unselectedCards.get(cardName) - 1);
@@ -214,7 +214,7 @@ public class Player extends Observable {
     /**
      * To reset the selected cards
      */
-    public void resetSelectedCards(){
+    public void resetSelectedCards() {
         for (Card card : selectedCards) {
             if (unselectedCards.get(card.type.toString()) != null) {
                 unselectedCards.replace(card.type.toString(), unselectedCards.get(card.type.toString()) + 1);
@@ -227,7 +227,7 @@ public class Player extends Observable {
     /**
      * To empty the selected cards attribute
      */
-    public void emptySelectedCards(){
+    public void emptySelectedCards() {
         selectedCards.clear();
         updateView();
     }
@@ -256,11 +256,13 @@ public class Player extends Observable {
         return totalArmies;
     }
 
-    public void updateView(){
+    public void updateView() {
         setChanged();
         notifyObservers(this);
     }
-     /** Get the list of all countries owned by the player
+
+    /**
+     * Get the list of all countries owned by the player
      *
      * @return list of countries
      */
@@ -271,7 +273,7 @@ public class Player extends Observable {
     /**
      * To add the armies to the respective countries on click of Add button
      */
-    public void changeArmiesOfCountries(int countryIdFromView,String armySelected) {
+    public void changeArmiesOfCountries(int countryIdFromView, String armySelected) {
         int countryId = countries.get(countryIdFromView).id;
         int addedArmy = Integer.parseInt(armySelected);
         GameMap.getInstance().countries.get(countryId).updateArmies(addedArmy);
