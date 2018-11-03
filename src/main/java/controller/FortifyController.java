@@ -41,19 +41,6 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     }
 
     /**
-     * Updates the countries and its Neighbouring countries and also show number of armies in them
-     * Hide unnecessary components at first run
-     */
-    public void updateCountryListFortify() {
-//        view.showCountriesFortify(model.currentPlayer.getCountries());
-//        view.transferFortify();
-//        view.disableButton();
-//        view.setVisibleFalseNeighbourPanel();
-//        view.setComboBoxAndNeighborTextFieldFalse();
-//        view.disableCountriesArmyLabelAndTextField();
-    }
-
-    /**
      * Sets the selected value from ComboBox
      *
      * @param number number selected by user
@@ -77,8 +64,8 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 stateChangeListener.onFortificationCompleted();
         } else {
             view.getTheValueOfComboBox();
-            model.updateArmiesOfCountries(armiesToTransfer, selectedCountry, selectedNeighbour);
-            view.updateTextFieldsArmiesAfterTransfer(model.countries.get(selectedCountry.id).getNumberofArmies(), model.countries.get(selectedNeighbour.id).getNumberofArmies());
+            model.currentPlayer.fortify(armiesToTransfer, selectedCountry, selectedNeighbour);
+            view.updateTextFieldsArmiesAfterTransfer(model.getNumberofArmiesAtCountry(selectedCountry.id), model.getNumberofArmiesAtCountry(selectedNeighbour.id));
         }
     }
 
@@ -94,22 +81,18 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         JList<Country> source = (JList<Country>) e.getSource();
         if (e.getValueIsAdjusting()) {
             if (((JList<Country>) e.getSource()).getName().equalsIgnoreCase("Country")) {
-               if(selectedCountry!=null)
-                   selectedCountry.deleteObserver(view);
+                if (selectedCountry != null)
+                    selectedCountry.deleteObserver(view);
                 selectedCountry = source.getSelectedValue();
                 selectedCountry.addObserver(view);
                 selectedCountry.updateConnectedCountries();
-//                view.enableCountriesArmyLabelAndTextField();
-//                view.updateCountriesArmyTextField(source.getSelectedValue().numOfArmies);
-//                HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
-//                view.showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
-//               view.updateNeighboringCountries(neighbor);
-
             } else {
+                if(selectedNeighbour!=null)
+                    selectedNeighbour.deleteObserver(view);
                 selectedNeighbour = source.getSelectedValue();
-                getArmiesOfSelectedNeighbor(selectedNeighbour);
-                view.enableButton();
-                view.setComboBoxAndNeighborTextFieldTrue();
+                selectedNeighbour.addObserver(view);
+                selectedNeighbour.updateTextFieldForNeighbour();
+
             }
 
 
@@ -132,46 +115,5 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
     }
 
-    /**
-     * Function that get the HashMap of neighbouring countries of selected country
-     *
-     * @param selectedCountry country whose neighbours need to find
-     * @return HashMap of countries where fortify can be done
-     */
-    public HashMap getNeighborsOfCountry(Country selectedCountry) {
-        HashMap<Integer, Country> neighbor = new HashMap<>();
-        int countryId = selectedCountry.id;
-        int ownerId = selectedCountry.owner.id;
-        Queue<Integer> queueNeighbor = new LinkedList<>();
-        queueNeighbor.add(countryId);
-        neighbor.put(countryId, selectedCountry);
-        while (!queueNeighbor.isEmpty()) {
-            int last = queueNeighbor.remove();
-            HashSet<Country> listNeighbouring = model.countries.get(last).getNeighbours();
-            for (Country country : listNeighbouring) {
-                if (country.owner.id == ownerId) {
-                    if (neighbor.get(country.id) == null) {
-                        queueNeighbor.add(country.id);
-                        neighbor.put(country.id, country);
-                        //neighbor.put(country.id, country);
-                    }
-
-                }
-            }
-            neighbor.remove(countryId);
-
-        }
-
-        if (neighbor.isEmpty()) {
-            view.disableButton();
-            view.setVisibleFalseNeighbourPanel();
-            view.setComboBoxAndNeighborTextFieldFalse();
-        } else {
-            view.setVisibleTrueNeighbourPanel();
-            view.disableButton();
-            view.setComboBoxAndNeighborTextFieldFalse();
-        }
-        return neighbor;
-    }
 
 }

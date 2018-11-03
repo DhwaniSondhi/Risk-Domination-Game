@@ -80,9 +80,19 @@ public class Player extends Observable {
     }
 
 
-    public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected)
-    {
-        GameMap.getInstance().updateArmiesOfCountries( numberOfArmiesTransfer, countrySelected, neighborSelected);
+    /**
+     * Updates the armies of countries in which armies are transferred
+     *
+     * @param numberOfArmiesTransfer armies user select to transfer
+     * @param countrySelected        country which user select transfer from
+     * @param neighborSelected       country which user select transfer to
+     */
+    public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+        int idOfCountry = countrySelected.id;
+        countrySelected.numOfArmies = countrySelected.numOfArmies - numberOfArmiesTransfer;
+        int idOfNeighbor = neighborSelected.id;
+        neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
+
     }
 
     /**

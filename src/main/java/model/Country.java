@@ -28,6 +28,7 @@ public class Country extends Observable{
     public HashSet<Country> neighbours;
 
     public HashMap<Integer , Country> connectedCountries;
+    int numberOfArmiesAtNeighbour;
 
     /**
      * Constructor to set current name and id of country
@@ -127,7 +128,13 @@ public class Country extends Observable{
             connectedCountries.remove(id);
 
         }
+        setChanged();
+        notifyObservers();
+    }
 
+    public void updateTextFieldForNeighbour() {
+        numberOfArmiesAtNeighbour=this.numOfArmies;
+        flagForObserver=2;
         setChanged();
         notifyObservers();
     }
@@ -150,7 +157,5 @@ public class Country extends Observable{
         setChanged();
         notifyObservers();
     }
-
-
 
 }

@@ -127,7 +127,7 @@ public class FortifyPanel extends JPanel implements Observer {
         add(jPanelTransferArmy, bagConstraintsMain);
 
         showNeighbouringCountriesFortify();
-        fortifyController.updateCountryListFortify();
+        //fortifyController.updateCountryListFortify();
     }
 
     /**
@@ -250,7 +250,7 @@ public class FortifyPanel extends JPanel implements Observer {
      * updates the view with latest content
      */
     public void update() {
-        fortifyController.updateCountryListFortify();
+        //fortifyController.updateCountryListFortify();
         revalidate();
         repaint();
     }
@@ -406,22 +406,32 @@ public class FortifyPanel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
 
         if (o instanceof Country) {
-
             Country country= (Country) o;
-            enableCountriesArmyLabelAndTextField();
-            updateCountriesArmyTextField(country.numOfArmies);
-            // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
-            //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
-            updateNeighboringCountries(country.connectedCountries);
-            if (country.connectedCountries.isEmpty()) {
-                disableButton();
-                setVisibleFalseNeighbourPanel();
-                setComboBoxAndNeighborTextFieldFalse();
-            } else {
-                setVisibleTrueNeighbourPanel();
-                disableButton();
-                setComboBoxAndNeighborTextFieldFalse();
+
+            if(country.flagForObserver==1){
+                enableCountriesArmyLabelAndTextField();
+                updateCountriesArmyTextField(country.numOfArmies);
+                // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
+                //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
+                updateNeighboringCountries(country.connectedCountries);
+                if (country.connectedCountries.isEmpty()) {
+                    disableButton();
+                    setVisibleFalseNeighbourPanel();
+                    setComboBoxAndNeighborTextFieldFalse();
+                } else {
+                    setVisibleTrueNeighbourPanel();
+                    disableButton();
+                    setComboBoxAndNeighborTextFieldFalse();
+                    updateJComboboxArmies(country.numOfArmies);
+                }
+            }else if(country.flagForObserver==2)
+            { enableButton();
+              setComboBoxAndNeighborTextFieldTrue();
+              updateNeighboringCountriesArmyTextField(country.numOfArmies);
+              
             }
+
+
 
         }
         else if(o instanceof GameMap)

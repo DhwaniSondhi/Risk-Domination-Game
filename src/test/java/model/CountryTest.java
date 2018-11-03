@@ -1,16 +1,20 @@
 package model;
 
-import controller.FortifyController;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import view.FortifyPanel;
 
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for Country Class
+ */
 public class CountryTest {
+    /**
+     * Instance of GameMap Class
+     */
     GameMap gameMap;
 
     /**
@@ -26,7 +30,9 @@ public class CountryTest {
 
     }
 
-
+    /**
+     * Method that tests connected countries from a selected country
+     */
     @Test
     public void updateConnectedCountries() {
         gameMap.countries.get(1).updateConnectedCountries();
