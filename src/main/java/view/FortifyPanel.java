@@ -75,6 +75,10 @@ public class FortifyPanel extends JPanel implements Observer {
      */
     private JButton proceedButton;
 
+    int selectedCountryArmies;
+
+    int selectedConnectedCountryArmies;
+
 
     /**
      * Constructor
@@ -316,17 +320,6 @@ public class FortifyPanel extends JPanel implements Observer {
     }
 
     /**
-     * Sets the new value of armies for selected countries after transfer
-     *
-     * @param selectedCountryArmies  updated number of armies at country from where army is transferred
-     * @param selectedNeighborArmies updated number of armies at country to which army is transferred
-     */
-    public void updateTextFieldsArmiesAfterTransfer(int selectedCountryArmies, int selectedNeighborArmies) {
-        jTextFieldNoOfArmiesCountries.setText(Integer.toString(selectedCountryArmies));
-        jTextFieldNoOfArmiesNeighbour.setText(Integer.toString(selectedNeighborArmies));
-    }
-
-    /**
      * Function to enable Button of transfer
      */
     public void enableButton() {
@@ -370,8 +363,7 @@ public class FortifyPanel extends JPanel implements Observer {
      * Function to enable ComboBox
      * Show Neighbor army TextField
      */
-    public void setComboBoxAndNeighborTextFieldTrue() {
-        jComboBoxNoOfArmies.setEnabled(true);
+    public void setNeighborTextFieldTrue() {
         jLabelArmiesAtNeighbor.setVisible(true);
         jTextFieldNoOfArmiesNeighbour.setVisible(true);
 
@@ -411,6 +403,7 @@ public class FortifyPanel extends JPanel implements Observer {
             if(country.flagForObserver==1){
                 enableCountriesArmyLabelAndTextField();
                 updateCountriesArmyTextField(country.numOfArmies);
+                selectedCountryArmies=country.numOfArmies;
                 // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
                 //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
                 updateNeighboringCountries(country.connectedCountries);
@@ -423,11 +416,21 @@ public class FortifyPanel extends JPanel implements Observer {
                     disableButton();
                     setComboBoxAndNeighborTextFieldFalse();
                     updateJComboboxArmies(country.numOfArmies);
+
                 }
             }else if(country.flagForObserver==2)
-            { enableButton();
-              setComboBoxAndNeighborTextFieldTrue();
+            {
+                if(selectedCountryArmies<=1)
+                {   jComboBoxNoOfArmies.setEnabled(false);
+                    disableButton();
+                }
+                else{
+                    jComboBoxNoOfArmies.setEnabled(true);
+                    enableButton();
+                }
+              setNeighborTextFieldTrue();
               updateNeighboringCountriesArmyTextField(country.numOfArmies);
+              selectedConnectedCountryArmies=country.numOfArmies;
               
             }
 
@@ -443,6 +446,13 @@ public class FortifyPanel extends JPanel implements Observer {
             setVisibleFalseNeighbourPanel();
             setComboBoxAndNeighborTextFieldFalse();
             disableCountriesArmyLabelAndTextField();
+        }
+
+        else if(o instanceof GameMap)
+        {
+
+            jTextFieldNoOfArmiesCountries.setText(String.valueOf(selectedCountryArmies));
+            jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(selectedConnectedCountryArmies));
         }
     }
 }

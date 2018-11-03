@@ -63,9 +63,9 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             if (stateChangeListener != null)
                 stateChangeListener.onFortificationCompleted();
         } else {
-            view.getTheValueOfComboBox();
+            //view.getTheValueOfComboBox();
             model.currentPlayer.fortify(armiesToTransfer, selectedCountry, selectedNeighbour);
-            view.updateTextFieldsArmiesAfterTransfer(model.getNumberofArmiesAtCountry(selectedCountry.id), model.getNumberofArmiesAtCountry(selectedNeighbour.id));
+          
         }
     }
 
@@ -99,21 +99,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         }
     }
 
-    /**
-     * Update TextField for armies on neighboring countries before transfer
-     *
-     * @param selectedNeighbour Country to which player want to transfer army
-     */
-    public void getArmiesOfSelectedNeighbor(Country selectedNeighbour) {
-        String selectedNeighborCountry = selectedNeighbour.name;
-        view.updateNeighboringCountriesArmyTextField(selectedNeighbour.numOfArmies);
-        int armyOnCountry = selectedCountry.numOfArmies;
-        if (armyOnCountry == 1) {
-            view.disableButton();
-        }
-        view.updateJComboboxArmies(armyOnCountry);
 
-    }
 
 
 }
