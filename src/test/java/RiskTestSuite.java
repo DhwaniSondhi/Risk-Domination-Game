@@ -14,8 +14,8 @@ import utility.MapHelperTest;
         ContinentControllerTest.class,
         CountryControllerTest.class,
         FortifyControllerTest.class,
-        MapCreatorControllerTest.class,
-        ReinforcementControllerTest.class,
+        MapCreatorControllerTest.class,/*
+        ReinforcementControllerTest.class,*/
         GameMapTest.class,
         FileHelperTest.class,
         MapHelperTest.class
