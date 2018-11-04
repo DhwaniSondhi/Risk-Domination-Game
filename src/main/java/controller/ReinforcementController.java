@@ -69,7 +69,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             CardExchangeFrame cardExchangeFrame = new CardExchangeFrame();
 
         } else if (buttonName.equalsIgnoreCase("changeArmies")) {
-            model.currentPlayer.changeArmiesOfCountries(view.getValueOfCountryIndexComboBox(), view.getValueOfArmyComboBox());
+            model.currentPlayer.reinforce(view.getValueOfCountryIndexComboBox(), view.getValueOfArmyComboBox());
 
         } else if (buttonName.equalsIgnoreCase("proceed")) {
 

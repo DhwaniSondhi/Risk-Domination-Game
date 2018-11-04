@@ -49,7 +49,7 @@ public class CardExchangeController extends BaseController<CardExchangeFrame> im
         if (buttonName.substring(0, 3).equalsIgnoreCase("ADD")) {
             model.currentPlayer.addInSelectedCards(buttonName.substring(3));
         } else if (buttonName.equalsIgnoreCase("Update")) {
-            model.currentPlayer.getUpdatedArmiesOnCardsExchange();
+            model.currentPlayer.exhangeCardsForArmies();
         } else if (buttonName.equalsIgnoreCase("Reset")) {
             model.currentPlayer.resetSelectedCards();
         } else if (buttonName.equalsIgnoreCase("exit")) {

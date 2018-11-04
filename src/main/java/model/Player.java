@@ -232,7 +232,7 @@ public class Player extends Observable {
     /**
      * To add the armies to the respective countries on click of Add button
      */
-    public void changeArmiesOfCountries(int countryIndex, String armySelected) {
+    public void reinforce(int countryIndex, String armySelected) {
         Country country = countries.get(countryIndex);
         int addedArmy = Integer.parseInt(armySelected);
         country.addArmies(addedArmy);
@@ -290,7 +290,7 @@ public class Player extends Observable {
      *
      * @return the updated armies
      */
-    public int getUpdatedArmiesOnCardsExchange() {
+    public int exhangeCardsForArmies() {
         totalArmies += this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
