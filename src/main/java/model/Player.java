@@ -334,7 +334,7 @@ public class Player extends Observable {
         return countriesAllowedToAttack;
     }
 
-    public void rollDice(int playerNumDiceAllowed, int opponentNumDiceAllowed) {
+    public void rollDice(int playerNumDiceAllowed, int opponentNumDiceAllowed, boolean isAllOut) {
         diceValuesPlayer.clear();
         diceValuesOpponent.clear();
         Random r = new Random();
@@ -348,42 +348,49 @@ public class Player extends Observable {
 
         Collections.sort(diceValuesPlayer, diceComparator);
         Collections.sort(diceValuesOpponent, diceComparator);
-        setChanged();
-        notifyObservers();
+        if (!isAllOut) {
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    private void checkVictory(Country selectedCountry, Country selectedNeighbouringCountry) {
+        int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
+        for (int i = 0; i < numConsideredDice; i++) {
+            if (diceValuesPlayer.get(i) > diceValuesOpponent.get(i)) {
+                selectedNeighbouringCountry.deductArmies(1);
+                int noArmies = selectedNeighbouringCountry.getNumberofArmies();
+                if (noArmies == 0) {
+                    latestDiceRolled = diceValuesPlayer.size();
+                    numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
+                    attackingCountry = selectedCountry;
+                    attackedCountry = selectedNeighbouringCountry;
+                    selectedNeighbouringCountry.changeOwner(this);
+                    winCards(selectedNeighbouringCountry.owner);
+                    state = Update.CAPTURED;
+                    setChanged();
+                    notifyObservers();
+                }
+            } else {
+                selectedCountry.deductArmies(1);
+            }
+        }
     }
 
     public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         if (isAllOut) {
-            //condition for blitz -> !this.countries.contains(selectedNeighbouringCountry) || selectedCountry.numOfArmies > 1
-            while (selectedCountry.numOfDiceAllowed != 0 || selectedNeighbouringCountry.numOfDiceAllowed != 0) {
+            //selectedCountry.numOfDiceAllowed != 0 || selectedNeighbouringCountry.numOfDiceAllowed != 0
+            while (!this.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
                 selectedCountry.updateNumOfDiceAllowed(false);
                 selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
-                rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed);
-                latestDiceRolled = selectedCountry.numOfDiceAllowed;
-                numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
+                rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);
+                int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
+                checkVictory(selectedCountry, selectedNeighbouringCountry);
                 attack(selectedCountry, selectedNeighbouringCountry, true);
             }
         } else {
-            int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
-            for (int i = 0; i < numConsideredDice; i++) {
-                if (diceValuesPlayer.get(i) > diceValuesOpponent.get(i)) {
-                    selectedNeighbouringCountry.deductArmies(1);
-                    int noArmies = selectedNeighbouringCountry.getNumberofArmies();
-                    if (noArmies == 0) {
-                        latestDiceRolled = diceValuesPlayer.size();
-                        numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
-                        attackingCountry = selectedCountry;
-                        attackedCountry = selectedNeighbouringCountry;
-                        selectedNeighbouringCountry.changeOwner(this);
-                        winCards(selectedNeighbouringCountry.owner);
-                        state = Update.CAPTURED;
-                        setChanged();
-                        notifyObservers();
-                    }
-                } else {
-                    selectedCountry.deductArmies(1);
-                }
-            }
+
+            checkVictory(selectedCountry, selectedNeighbouringCountry);
         }
     }
 

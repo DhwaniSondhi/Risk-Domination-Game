@@ -46,7 +46,6 @@ public class AttackPanel extends JPanel implements Observer {
     public JLabel resultOpponent;
 
 
-
     private JButton moveButton;
     /**
      * Button to attack neighbouring countries
@@ -159,7 +158,7 @@ public class AttackPanel extends JPanel implements Observer {
         revalidate();
     }
 
-    public void update(){
+    public void update() {
         attackController.initialize();
     }
 
@@ -185,23 +184,29 @@ public class AttackPanel extends JPanel implements Observer {
         revalidate();
     }
 
-    public void updatePlayerDiceDropdown(int numOfDiceAllowed) {
-        this.playerDice.removeAllItems();
-        for (int i = 0; i < numOfDiceAllowed; i++) {
+    public void updatePlayerDiceDropdown(int numOfDiceAllowed, boolean allOut) {
+        if(!allOut) {
+            this.playerDice.removeAllItems();
+        }
+        int counter = (allOut == true)? numOfDiceAllowed : 0;
+        for (int i = counter; i < numOfDiceAllowed; i++) {
             playerDice.addItem(i + 1);
         }
     }
 
-    public void updateOpponentDiceDropdown(int numOfDiceAllowed) {
-        this.opponentDice.removeAllItems();
-        for (int i = 0; i < Math.min(2, numOfDiceAllowed); i++) {
+    public void updateOpponentDiceDropdown(int numOfDiceAllowed, boolean allOut) {
+        if(!allOut) {
+            this.opponentDice.removeAllItems();
+        }
+        int counter = (allOut)? numOfDiceAllowed : 0;
+        for (int i = counter; i < Math.min(2, numOfDiceAllowed); i++) {
             opponentDice.addItem(i + 1);
         }
     }
 
     public void updateMoveArmyPanel(int minArmyToMove, int maxArmyToMove) {
         this.armyToMove.removeAllItems();
-        for (int i = minArmyToMove; i < maxArmyToMove; i++){
+        for (int i = minArmyToMove; i <= maxArmyToMove; i++) {
             armyToMove.addItem(i);
         }
     }
@@ -239,7 +244,8 @@ public class AttackPanel extends JPanel implements Observer {
                         }
                         break;
                     case DICE:
-                        updatePlayerDiceDropdown(country.numOfDiceAllowed);
+                        boolean isAllOut = selectMode.getSelectedItem().equals("All out")? true:false;
+                        updatePlayerDiceDropdown(country.numOfDiceAllowed, isAllOut);
                         break;
                 }
             } else {
@@ -251,7 +257,8 @@ public class AttackPanel extends JPanel implements Observer {
                     case ARMY:
                         country.updateNumOfDiceAllowed(true);
                     default:
-                        updateOpponentDiceDropdown(country.numOfDiceAllowed);
+                        boolean isAllOut = selectMode.getSelectedItem().equals("All out")? true:false;
+                        updateOpponentDiceDropdown(country.numOfDiceAllowed, isAllOut);
                         break;
                 }
             }

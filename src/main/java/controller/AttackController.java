@@ -56,7 +56,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
             selectedNeighbouringCountry.addObserver(view);
             boolean isAllOut = view.selectMode.getSelectedIndex() == 1;
 
-            model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(),(Integer) view.opponentDice.getSelectedItem());
+            model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(),(Integer) view.opponentDice.getSelectedItem(), isAllOut);
             model.currentPlayer.attack(selectedCountry,selectedNeighbouringCountry,isAllOut);
 
             selectedCountry.deleteObserver(view);

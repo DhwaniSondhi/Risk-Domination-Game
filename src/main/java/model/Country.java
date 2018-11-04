@@ -11,6 +11,7 @@ public class Country extends Observable {
         ARMY,
         OWNER,
         DICE
+
     }
     public Update state = null;
     /**
