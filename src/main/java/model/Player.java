@@ -8,12 +8,13 @@ import java.util.*;
  */
 public class Player extends Observable {
 
-    public enum Update {
-        CAPTURED
-    }
-
-    public Update state;
+    /**
+     * store the value of attacking Country
+     */
     public Country attackingCountry;
+    /**
+     * store the value of country being attacked
+     */
     public Country attackedCountry;
     /**
      * id for player
@@ -57,10 +58,26 @@ public class Player extends Observable {
      */
     public ArrayList<Card> selectedCards;
 
-    public ArrayList<Integer> diceValuesPlayer = new ArrayList<>();
-    public ArrayList<Integer> diceValuesOpponent = new ArrayList<>();
+    /**
+     * dice values of player
+     */
+    public ArrayList<Integer> diceValuesPlayer;
+    /**
+     * dice values of opponent
+     */
+    public ArrayList<Integer> diceValuesOpponent;
+    /**
+     * the last dice rolled by the player
+     */
     public int latestDiceRolled;
+    /**
+     * number of armies allowed to move if player wins
+     */
     public int numArmiesAllowedToMove;
+    /**
+     * flag to check if player has conquered any country during the attack phase
+     */
+    public boolean hasConquered;
 
 
     /**
@@ -77,6 +94,8 @@ public class Player extends Observable {
         this.name = name;
         cards = new ArrayList<>();
         countries = new ArrayList<>();
+        diceValuesPlayer = new ArrayList<>();
+        diceValuesOpponent = new ArrayList<>();
         updateArmiesForCards = 5;
         selectedCards = new ArrayList<>();
 
@@ -93,15 +112,12 @@ public class Player extends Observable {
      * @param neighborSelected       country which user select transfer to
      */
     public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
-        int idOfCountry = countrySelected.id;
         countrySelected.numOfArmies = countrySelected.numOfArmies - numberOfArmiesTransfer;
-        int idOfNeighbor = neighborSelected.id;
         neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
         System.out.println(countrySelected.numOfArmies);
         System.out.println(neighborSelected.numOfArmies);
         setChanged();
         notifyObservers();
-
     }
 
     /**
@@ -308,17 +324,6 @@ public class Player extends Observable {
     }
 
     /**
-     * To add the armies to the respective countries on click of Add button
-     */
-    /*public void changeArmiesOfCountries(int countryIdFromView, String armySelected) {
-        int countryId = countries.get(countryIdFromView).id;
-        int addedArmy = Integer.parseInt(armySelected);
-        GameMap.getInstance().countries.get(countryId).updateArmies(addedArmy);
-        totalArmies -= addedArmy;
-        updateView();
-    }*/
-
-    /**
      * Get the list of all countries owned by player which are eligible to attack
      *
      * @return list of countries
@@ -334,6 +339,13 @@ public class Player extends Observable {
         return countriesAllowedToAttack;
     }
 
+    /**
+     * Rolls the dice and sorts their values
+     *
+     * @param playerNumDiceAllowed   number of valid dice rolls allowed for player
+     * @param opponentNumDiceAllowed number of valid dice rolls allowed for opponent
+     * @param isAllOut               a flag to check if the option is AllOut game mode
+     */
     public void rollDice(int playerNumDiceAllowed, int opponentNumDiceAllowed, boolean isAllOut) {
         diceValuesPlayer.clear();
         diceValuesOpponent.clear();
@@ -354,6 +366,12 @@ public class Player extends Observable {
         }
     }
 
+    /**
+     * Check which country won and do the necessary deduction of armies and addition of cards
+     *
+     * @param selectedCountry             country of the player
+     * @param selectedNeighbouringCountry country of the opponent
+     */
     private void checkVictory(Country selectedCountry, Country selectedNeighbouringCountry) {
         int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
         for (int i = 0; i < numConsideredDice; i++) {
@@ -361,13 +379,13 @@ public class Player extends Observable {
                 selectedNeighbouringCountry.deductArmies(1);
                 int noArmies = selectedNeighbouringCountry.getNumberofArmies();
                 if (noArmies == 0) {
+                    hasConquered = true;
                     latestDiceRolled = diceValuesPlayer.size();
                     numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
                     attackingCountry = selectedCountry;
                     attackedCountry = selectedNeighbouringCountry;
                     selectedNeighbouringCountry.changeOwner(this);
                     winCards(selectedNeighbouringCountry.owner);
-                    state = Update.CAPTURED;
                     setChanged();
                     notifyObservers();
                 }
@@ -377,6 +395,13 @@ public class Player extends Observable {
         }
     }
 
+    /**
+     * Attack phase of the game
+     *
+     * @param selectedCountry             country of the player
+     * @param selectedNeighbouringCountry country of the opponent
+     * @param isAllOut                    flag to check the mode of the game
+     */
     public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         if (isAllOut) {
             //selectedCountry.numOfDiceAllowed != 0 || selectedNeighbouringCountry.numOfDiceAllowed != 0
@@ -384,25 +409,42 @@ public class Player extends Observable {
                 selectedCountry.updateNumOfDiceAllowed(false);
                 selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
                 rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);
-                int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
                 checkVictory(selectedCountry, selectedNeighbouringCountry);
                 attack(selectedCountry, selectedNeighbouringCountry, true);
             }
         } else {
-
             checkVictory(selectedCountry, selectedNeighbouringCountry);
         }
     }
 
+    /**
+     * move cards from previous owner to current player if previous owner has zero countries
+     * @param prevOwner previous owner of a country
+     * */
     private void winCards(Player prevOwner) {
         if (prevOwner.countries.size() == 0) {
+
             for (Card card : prevOwner.cards) {
                 cards.add(card);
             }
             prevOwner.cards.clear();
         }
+
     }
 
+    /**
+     * if a player has won any country during the attack add random card to the player
+     * */
+    public void gainCard() {
+        if (hasConquered) {
+            addRandomCard();
+            hasConquered = false;
+        }
+    }
+
+    /**
+     * comparator function for sorting
+     * */
     private Comparator<Integer> diceComparator = new Comparator<Integer>() {
         @Override
         public int compare(Integer o1, Integer o2) {

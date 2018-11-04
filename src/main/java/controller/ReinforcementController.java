@@ -39,7 +39,6 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      *
      * @param reinforcementPanel the reinforcement panel attached to it
      */
-
     public ReinforcementController(ReinforcementPanel reinforcementPanel) {
         super(reinforcementPanel);
     }

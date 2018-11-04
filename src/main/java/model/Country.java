@@ -6,13 +6,15 @@ import java.util.*;
  * Class for Country containing access to all the components of country
  */
 public class Country extends Observable {
-
-    public enum Update{
+    /**
+     * @see java.lang.Enum to check what to observe
+     */
+    public enum Update {
         ARMY,
         OWNER,
         DICE
-
     }
+
     public Update state = null;
     /**
      * Country id
@@ -30,7 +32,9 @@ public class Country extends Observable {
      * Number of armies at country
      */
     public int numOfArmies;
-
+    /**
+     * Number of Dice allowed for a country
+     * */
     public int numOfDiceAllowed = 0;
 
     /**
@@ -44,7 +48,7 @@ public class Country extends Observable {
     /**
      * HashSet to save connected Country
      */
-    public HashMap<Integer , Country> connectedCountries;
+    public HashMap<Integer, Country> connectedCountries;
     /**
      * Variable for number of armies at selected connected country
      */
@@ -57,7 +61,7 @@ public class Country extends Observable {
      * @param name name of country
      */
     public Country(int id, String name) {
-        connectedCountries=new HashMap<>();
+        connectedCountries = new HashMap<>();
         this.id = id;
         this.name = name;
         this.neighbours = new HashSet<>();
@@ -107,29 +111,6 @@ public class Country extends Observable {
         return numOfArmies;
     }
 
-    public void updateNumOfDiceAllowed(boolean isOpponent) {
-        numOfDiceAllowed = 0;
-        int numArmies = this.getNumberofArmies();
-        if (numArmies > 3) {
-            numOfDiceAllowed = 3;
-            if(isOpponent){
-                numOfDiceAllowed = 2;
-            }
-        } else if (numArmies == 3) {
-            numOfDiceAllowed = 2;
-        } else if (numArmies == 2) {
-            numOfDiceAllowed = 1;
-            if (isOpponent) {
-                numOfDiceAllowed = 2;
-            }
-        } else if(numArmies == 1 && isOpponent){
-            numOfDiceAllowed = 1;
-        }
-        state = Update.DICE;
-        setChanged();
-        notifyObservers();
-    }
-
     /**
      * This give updated connected countries based on selected country
      */
@@ -158,7 +139,7 @@ public class Country extends Observable {
 
         }
 
-        flagForObserver=1;
+        flagForObserver = 1;
         setChanged();
         notifyObservers();
     }
@@ -166,27 +147,44 @@ public class Country extends Observable {
     /**
      * This function update the TextField for number of armies at selected connected country
      */
-    public void updateTextFieldForNeighbour()
-    {
-        numberOfArmiesAtConnnectedCountry =this.numOfArmies;
-        flagForObserver=2;
+    public void updateTextFieldForNeighbour() {
+        numberOfArmiesAtConnnectedCountry = this.numOfArmies;
+        flagForObserver = 2;
         setChanged();
         notifyObservers();
     }
 
-    /*
-     * Updates the armies of countries in which armies are transferred
-     *
-     * @param numberOfArmiesTransfer armies user select to transfer
-     * @param country       country which user select transfer to
-     */
-    /*public void updateArmiesOfCountries(int numberOfArmiesTransfer, Country country) {
-        this.deductArmies(numberOfArmiesTransfer);
-        country.addArmies(numberOfArmiesTransfer);
-        GameMap.getInstance().countries.put(this.id, this);
-        GameMap.getInstance().countries.put(country.id, country);
-    }*/
+    /**
+     * computes the number of dice allowed during the attack phase
+     * @param isOpponent flag to check if it is opponent
+     * */
+    public void updateNumOfDiceAllowed(boolean isOpponent) {
+        numOfDiceAllowed = 0;
+        int numArmies = this.getNumberofArmies();
+        if (numArmies > 3) {
+            numOfDiceAllowed = 3;
+            if (isOpponent) {
+                numOfDiceAllowed = 2;
+            }
+        } else if (numArmies == 3) {
+            numOfDiceAllowed = 2;
+        } else if (numArmies == 2) {
+            numOfDiceAllowed = 1;
+            if (isOpponent) {
+                numOfDiceAllowed = 2;
+            }
+        } else if (numArmies == 1 && isOpponent) {
+            numOfDiceAllowed = 1;
+        }
+        state = Update.DICE;
+        setChanged();
+        notifyObservers();
+    }
 
+    /**
+     * Change owner of the country
+     * @param newOwner player who won the country
+     * */
     public void changeOwner(Player newOwner) {
         owner.countries.remove(this);
         this.owner = newOwner;
@@ -198,7 +196,11 @@ public class Country extends Observable {
         notifyObservers();
     }
 
-    public void addArmies(int numOfArmies){
+    /**
+     * add and assign the new number of armies
+     * @param numOfArmies number of armies to be added
+     * */
+    public void addArmies(int numOfArmies) {
         this.numOfArmies += numOfArmies;
         GameMap.getInstance().notifyChanges();
         state = Update.ARMY;
@@ -206,7 +208,11 @@ public class Country extends Observable {
         notifyObservers();
     }
 
-    public void deductArmies(int numOfArmies){
+    /**
+     * deduct and assign the new number of armies
+     * @param numOfArmies number of armies to be deducted
+     * */
+    public void deductArmies(int numOfArmies) {
         this.numOfArmies -= numOfArmies;
         GameMap.getInstance().notifyChanges();
         state = Update.ARMY;

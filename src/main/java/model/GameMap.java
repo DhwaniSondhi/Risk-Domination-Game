@@ -214,15 +214,6 @@ public class GameMap extends Observable {
     }
 
     /**
-     * Assign a random card to player
-     *
-     * @param playerId id of the player to assign card to
-     */
-    public void assignCardToPlayer(Integer playerId) {
-        players.get(playerId).addRandomCard();
-    }
-
-    /**
      * Change the current player to next player in round robin fashion
      */
     public void changeToNextPlayer() {

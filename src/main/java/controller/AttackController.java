@@ -3,7 +3,6 @@ package controller;
 import model.Country;
 import view.AttackPanel;
 
-import javax.swing.plaf.metal.MetalFileChooserUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,8 +14,13 @@ import java.awt.event.ItemListener;
  */
 public class AttackController extends BaseController<AttackPanel> implements ActionListener, ItemListener {
 
-
+    /**
+     * Store the value of player country
+     * */
     public Country selectedCountry;
+    /**
+     * store the value of opponent country
+     */
     public Country selectedNeighbouringCountry;
 
     /**
@@ -31,7 +35,10 @@ public class AttackController extends BaseController<AttackPanel> implements Act
 
     }
 
-    public void initialize(){
+    /**
+     * observe the current player
+     */
+    public void initialize() {
         model.currentPlayer.addObserver(view);
     }
 
@@ -56,22 +63,24 @@ public class AttackController extends BaseController<AttackPanel> implements Act
             selectedNeighbouringCountry.addObserver(view);
             boolean isAllOut = view.selectMode.getSelectedIndex() == 1;
 
-            model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(),(Integer) view.opponentDice.getSelectedItem(), isAllOut);
-            model.currentPlayer.attack(selectedCountry,selectedNeighbouringCountry,isAllOut);
+            model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(), (Integer) view.opponentDice.getSelectedItem(), isAllOut);
+            model.currentPlayer.attack(selectedCountry, selectedNeighbouringCountry, isAllOut);
 
             selectedCountry.deleteObserver(view);
             selectedNeighbouringCountry.deleteObserver(view);
 
         } else if (e.getActionCommand().equalsIgnoreCase("proceed")) {
+            model.currentPlayer.gainCard();
             model.currentPlayer.deleteObserver(view);
-            model.assignCardToPlayer(model.currentPlayer.id);
             stateChangeListener.onAttackCompleted();
-        } else if (e.getActionCommand().equalsIgnoreCase("move")){
+
+        } else if (e.getActionCommand().equalsIgnoreCase("move")) {
             selectedCountry.addObserver(view);
             selectedNeighbouringCountry.addObserver(view);
-            model.updateArmiesOfCountries((Integer)view.armyToMove.getSelectedItem(), selectedCountry, selectedNeighbouringCountry);
+            model.updateArmiesOfCountries((Integer) view.armyToMove.getSelectedItem(), selectedCountry, selectedNeighbouringCountry);
             selectedCountry.deleteObserver(view);
             selectedNeighbouringCountry.deleteObserver(view);
+            view.moveArmyPanel.hide();
         }
 
     }

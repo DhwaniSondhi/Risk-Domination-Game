@@ -27,25 +27,60 @@ public class AttackPanel extends JPanel implements Observer {
      */
     private JPanel countryPanel;
 
+    /**
+     * Panel for displaying the dice
+     */
     public JPanel dicePanel;
+    /**
+     * Panel for displaying the result of dice roll
+     */
     public JPanel resultPanel;
+    /**
+     * Panel for moving the army
+     */
     public JPanel moveArmyPanel;
+    /**
+     * Select box to choose between players' country for attacking
+     */
     private JComboBox<Country> countries;
+    /**
+     * Select box to choose between players' neighbouring countries to attack
+     */
     private JComboBox<Country> neighbouringCountries;
+    /**
+     * Select box to choose between game mode
+     */
     public JComboBox<String> selectMode;
     /**
      * Panel for displaying neighboring countries to selected country to which fortify can done
      */
     private JPanel neighbouringPanel;
 
+    /**
+     * Select box for choosing no. of dice to roll for player
+     */
     public JComboBox<Integer> playerDice;
+    /**
+     * Select box for choosing no. of dice to roll for opponent
+     */
     public JComboBox<Integer> opponentDice;
+    /**
+     * Select box for choosing no. of armies to transfer
+     */
     public JComboBox<Integer> armyToMove;
 
+    /**
+     * shows the result of dice roll of player
+     */
     public JLabel resultPlayer;
+    /**
+     * shows the result of dice roll of opponent
+     */
     public JLabel resultOpponent;
 
-
+    /**
+     * button to move the armies
+     * */
     private JButton moveButton;
     /**
      * Button to attack neighbouring countries
@@ -71,8 +106,10 @@ public class AttackPanel extends JPanel implements Observer {
 
         setBackground(Color.LIGHT_GRAY);
         setBorder(new LineBorder(Color.BLACK, 2));
-        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        JPanel countriesHolder = new JPanel();
+        countriesHolder.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         countryPanel = new JPanel();
         countryPanel.setBorder(new LineBorder(Color.black, 1));
         countryPanel.setLayout(new BoxLayout(countryPanel, BoxLayout.Y_AXIS));
@@ -88,7 +125,12 @@ public class AttackPanel extends JPanel implements Observer {
         neighbouringCountries.setName("selectNeighbourCountry");
         neighbouringCountries.addItemListener(attackController);
         neighbouringPanel.add(neighbouringCountries);
+        countriesHolder.add(countryPanel);
+        countriesHolder.add(neighbouringPanel);
 
+
+        JPanel optionsHolder = new JPanel();
+        optionsHolder.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         selectMode = new JComboBox<>(new String[]{"Choose Dice", "All out"});
         selectMode.addItemListener(attackController);
         selectMode.setName("mode");
@@ -111,9 +153,11 @@ public class AttackPanel extends JPanel implements Observer {
         resultPanel.add(new JLabel("Opponent:"));
         resultPanel.add(resultOpponent);
 
+        optionsHolder.add(selectMode);
+        optionsHolder.add(dicePanel);
+        optionsHolder.add(resultPanel);
+
         armyToMove = new JComboBox();
-
-
         moveButton = new JButton("Move");
         moveButton.setName("move");
         moveButton.addActionListener(attackController);
@@ -128,12 +172,9 @@ public class AttackPanel extends JPanel implements Observer {
         attackButton.addActionListener(attackController);
 
 
-        add(countryPanel);
-        add(neighbouringPanel);
-        add(selectMode);
-        add(dicePanel);
+        add(countriesHolder);
+        add(optionsHolder);
         add(attackButton);
-        add(resultPanel);
         add(moveArmyPanel);
 
 
@@ -142,6 +183,7 @@ public class AttackPanel extends JPanel implements Observer {
         proceedButton.addActionListener(attackController);
         add(proceedButton);
 
+        moveArmyPanel.hide();
         attackController.updateCountryList();
     }
 
@@ -158,8 +200,12 @@ public class AttackPanel extends JPanel implements Observer {
         revalidate();
     }
 
+    /**
+     * Initialize the players and gamesetup
+     * */
     public void update() {
         attackController.initialize();
+        selectMode.setSelectedIndex(0);
     }
 
     /**
@@ -184,26 +230,41 @@ public class AttackPanel extends JPanel implements Observer {
         revalidate();
     }
 
+    /**
+     * updates the dropdown list for choosing no. of dice to roll for player
+     * @param numOfDiceAllowed number of dice allowed to roll
+     * @param allOut flag to check the mode of game
+     * */
     public void updatePlayerDiceDropdown(int numOfDiceAllowed, boolean allOut) {
-        if(!allOut) {
+        if (!allOut) {
             this.playerDice.removeAllItems();
         }
-        int counter = (allOut == true)? numOfDiceAllowed : 0;
+        int counter = (allOut == true) ? numOfDiceAllowed : 0;
         for (int i = counter; i < numOfDiceAllowed; i++) {
             playerDice.addItem(i + 1);
         }
     }
 
+    /**
+     * updates the dropdown list for choosing no. of dice to roll for opponent
+     * @param numOfDiceAllowed number of dice allowed to roll
+     * @param allOut flag to check the mode of game
+     * */
     public void updateOpponentDiceDropdown(int numOfDiceAllowed, boolean allOut) {
-        if(!allOut) {
+        if (!allOut) {
             this.opponentDice.removeAllItems();
         }
-        int counter = (allOut)? numOfDiceAllowed : 0;
+        int counter = (allOut) ? numOfDiceAllowed : 0;
         for (int i = counter; i < Math.min(2, numOfDiceAllowed); i++) {
             opponentDice.addItem(i + 1);
         }
     }
 
+    /**
+     * gives the option to move army from one country to another
+     * @param minArmyToMove mininum number of army you have to moce
+     * @param maxArmyToMove maximum number of army you can move
+     * */
     public void updateMoveArmyPanel(int minArmyToMove, int maxArmyToMove) {
         this.armyToMove.removeAllItems();
         for (int i = minArmyToMove; i <= maxArmyToMove; i++) {
@@ -211,10 +272,18 @@ public class AttackPanel extends JPanel implements Observer {
         }
     }
 
+    /**
+     * sets the result of the dice roll of player
+     * @param diceValues result of dice roll
+     * */
     public void updateResultPlayer(String diceValues) {
         resultPlayer.setText(diceValues);
     }
 
+    /**
+     * sets the result of the dice roll of opponent
+     * @param diceValues result of dice roll
+     * */
     public void updateResultOpponent(String diceValues) {
         resultOpponent.setText(diceValues);
     }
@@ -244,7 +313,7 @@ public class AttackPanel extends JPanel implements Observer {
                         }
                         break;
                     case DICE:
-                        boolean isAllOut = selectMode.getSelectedItem().equals("All out")? true:false;
+                        boolean isAllOut = selectMode.getSelectedItem().equals("All out") ? true : false;
                         updatePlayerDiceDropdown(country.numOfDiceAllowed, isAllOut);
                         break;
                 }
@@ -252,12 +321,12 @@ public class AttackPanel extends JPanel implements Observer {
                 switch (country.state) {
                     case OWNER:
                         showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
-
+                        moveArmyPanel.show();
                         break;
                     case ARMY:
                         country.updateNumOfDiceAllowed(true);
                     default:
-                        boolean isAllOut = selectMode.getSelectedItem().equals("All out")? true:false;
+                        boolean isAllOut = selectMode.getSelectedItem().equals("All out") ? true : false;
                         updateOpponentDiceDropdown(country.numOfDiceAllowed, isAllOut);
                         break;
                 }
@@ -267,7 +336,7 @@ public class AttackPanel extends JPanel implements Observer {
             updateResultPlayer(player.diceValuesPlayer.toString());
             updateResultOpponent(player.diceValuesOpponent.toString());
             updateMoveArmyPanel(player.latestDiceRolled, player.numArmiesAllowedToMove);
-            moveArmyPanel.show();
+
         } else if (o instanceof GameMap) {
             showCountries(GameMap.getInstance().currentPlayer.getCountries());
         }
