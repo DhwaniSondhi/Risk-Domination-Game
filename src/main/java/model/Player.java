@@ -290,7 +290,7 @@ public class Player extends Observable {
      *
      * @return the updated armies
      */
-    public int exhangeCardsForArmies() {
+    public int exchangeCardsForArmies() {
         totalArmies += this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
