@@ -3,6 +3,7 @@ package controller;
 import model.Country;
 import view.AttackPanel;
 
+import javax.swing.plaf.metal.MetalFileChooserUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,10 @@ public class AttackController extends BaseController<AttackPanel> implements Act
         model.addObserver(view);
         model.currentPlayer.addObserver(view);
 
+    }
+
+    public void initialize(){
+        model.currentPlayer.addObserver(view);
     }
 
     /**
@@ -58,8 +63,15 @@ public class AttackController extends BaseController<AttackPanel> implements Act
             selectedNeighbouringCountry.deleteObserver(view);
 
         } else if (e.getActionCommand().equalsIgnoreCase("proceed")) {
+            model.currentPlayer.deleteObserver(view);
             model.assignCardToPlayer(model.currentPlayer.id);
             stateChangeListener.onAttackCompleted();
+        } else if (e.getActionCommand().equalsIgnoreCase("move")){
+            selectedCountry.addObserver(view);
+            selectedNeighbouringCountry.addObserver(view);
+            model.updateArmiesOfCountries((Integer)view.armyToMove.getSelectedItem(), selectedCountry, selectedNeighbouringCountry);
+            selectedCountry.deleteObserver(view);
+            selectedNeighbouringCountry.deleteObserver(view);
         }
 
     }

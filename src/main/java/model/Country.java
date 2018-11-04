@@ -187,7 +187,6 @@ public class Country extends Observable {
     }*/
 
     public void changeOwner(Player newOwner) {
-        System.out.println("test");
         owner.countries.remove(this);
         this.owner = newOwner;
 

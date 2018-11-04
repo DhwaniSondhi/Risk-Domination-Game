@@ -91,7 +91,25 @@ public class GameMap extends Observable {
         return -1;
     }
 
-     /** Saves the country and their neighbouring countries
+    /**
+     * Updates the armies of countries in which armies are transferred
+     *
+     * @param numberOfArmiesTransfer armies user select to transfer
+     * @param countrySelected        country which user select transfer from
+     * @param neighborSelected       country which user select transfer to
+     */
+    public void updateArmiesOfCountries(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+        int idOfCountry = countrySelected.id;
+        countrySelected.deductArmies(numberOfArmiesTransfer);
+        int idOfNeighbor = neighborSelected.id;
+        neighborSelected.addArmies(numberOfArmiesTransfer);
+        countries.put(idOfCountry, countrySelected);
+        countries.put(idOfNeighbor, neighborSelected);
+    }
+
+
+    /**
+     * Saves the country and their neighbouring countries
      * While saving checks the validity of the map (Case : Continent for a country doesnot exist)
      *
      * @param territories List of all the countries along with its neighbouring countries
@@ -164,6 +182,7 @@ public class GameMap extends Observable {
         }
         return -1;
     }
+
 
 
     /**

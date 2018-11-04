@@ -7,6 +7,14 @@ import java.util.*;
  * extends {@link Observable}
  */
 public class Player extends Observable {
+
+    public enum Update {
+        CAPTURED
+    }
+
+    public Update state;
+    public Country attackingCountry;
+    public Country attackedCountry;
     /**
      * id for player
      */
@@ -51,12 +59,9 @@ public class Player extends Observable {
 
     public ArrayList<Integer> diceValuesPlayer = new ArrayList<>();
     public ArrayList<Integer> diceValuesOpponent = new ArrayList<>();
-    private Comparator<Integer> diceComparator = new Comparator<Integer>() {
-        @Override
-        public int compare(Integer o1, Integer o2) {
-            return o2 - o1;
-        }
-    };
+    public int latestDiceRolled;
+    public int numArmiesAllowedToMove;
+
 
     /**
      * Constructor
@@ -352,6 +357,8 @@ public class Player extends Observable {
                 selectedCountry.updateNumOfDiceAllowed(false);
                 selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
                 rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed);
+                latestDiceRolled = selectedCountry.numOfDiceAllowed;
+                numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
                 attack(selectedCountry, selectedNeighbouringCountry, true);
             }
         } else {
@@ -361,8 +368,15 @@ public class Player extends Observable {
                     selectedNeighbouringCountry.deductArmies(1);
                     int noArmies = selectedNeighbouringCountry.getNumberofArmies();
                     if (noArmies == 0) {
+                        latestDiceRolled = diceValuesPlayer.size();
+                        numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
+                        attackingCountry = selectedCountry;
+                        attackedCountry = selectedNeighbouringCountry;
                         selectedNeighbouringCountry.changeOwner(this);
                         winCards(selectedNeighbouringCountry.owner);
+                        state = Update.CAPTURED;
+                        setChanged();
+                        notifyObservers();
                     }
                 } else {
                     selectedCountry.deductArmies(1);
@@ -379,4 +393,11 @@ public class Player extends Observable {
             prevOwner.cards.clear();
         }
     }
+
+    private Comparator<Integer> diceComparator = new Comparator<Integer>() {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
+        }
+    };
 }

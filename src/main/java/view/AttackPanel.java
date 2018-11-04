@@ -29,6 +29,7 @@ public class AttackPanel extends JPanel implements Observer {
 
     public JPanel dicePanel;
     public JPanel resultPanel;
+    public JPanel moveArmyPanel;
     private JComboBox<Country> countries;
     private JComboBox<Country> neighbouringCountries;
     public JComboBox<String> selectMode;
@@ -39,9 +40,14 @@ public class AttackPanel extends JPanel implements Observer {
 
     public JComboBox<Integer> playerDice;
     public JComboBox<Integer> opponentDice;
+    public JComboBox<Integer> armyToMove;
+
     public JLabel resultPlayer;
     public JLabel resultOpponent;
 
+
+
+    private JButton moveButton;
     /**
      * Button to attack neighbouring countries
      */
@@ -106,6 +112,17 @@ public class AttackPanel extends JPanel implements Observer {
         resultPanel.add(new JLabel("Opponent:"));
         resultPanel.add(resultOpponent);
 
+        armyToMove = new JComboBox();
+
+
+        moveButton = new JButton("Move");
+        moveButton.setName("move");
+        moveButton.addActionListener(attackController);
+        moveArmyPanel = new JPanel();
+        moveArmyPanel.add(new JLabel("Army to move:"));
+        moveArmyPanel.add(armyToMove);
+        moveArmyPanel.add(moveButton);
+
 
         attackButton = new JButton("Attack");
         attackButton.setName("attack");
@@ -118,6 +135,8 @@ public class AttackPanel extends JPanel implements Observer {
         add(dicePanel);
         add(attackButton);
         add(resultPanel);
+        add(moveArmyPanel);
+
 
         proceedButton = new JButton("Proceed");
         proceedButton.setName("proceed");
@@ -138,6 +157,10 @@ public class AttackPanel extends JPanel implements Observer {
             this.countries.addItem(country);
         }
         revalidate();
+    }
+
+    public void update(){
+        attackController.initialize();
     }
 
     /**
@@ -176,6 +199,13 @@ public class AttackPanel extends JPanel implements Observer {
         }
     }
 
+    public void updateMoveArmyPanel(int minArmyToMove, int maxArmyToMove) {
+        this.armyToMove.removeAllItems();
+        for (int i = minArmyToMove; i < maxArmyToMove; i++){
+            armyToMove.addItem(i);
+        }
+    }
+
     public void updateResultPlayer(String diceValues) {
         resultPlayer.setText(diceValues);
     }
@@ -202,7 +232,7 @@ public class AttackPanel extends JPanel implements Observer {
                 switch (country.state) {
                     case ARMY:
                         country.updateNumOfDiceAllowed(false);
-                        
+
                         if (country.numOfArmies == 1) {
                             showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
                             updateNeighbouringCountries(attackController.selectedCountry.neighbours);
@@ -211,13 +241,13 @@ public class AttackPanel extends JPanel implements Observer {
                     case DICE:
                         updatePlayerDiceDropdown(country.numOfDiceAllowed);
                         break;
-                    case OWNER:
-                        showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
-//                        moveArmies();
-                        break;
                 }
             } else {
                 switch (country.state) {
+                    case OWNER:
+                        showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
+
+                        break;
                     case ARMY:
                         country.updateNumOfDiceAllowed(true);
                     default:
@@ -229,6 +259,8 @@ public class AttackPanel extends JPanel implements Observer {
             Player player = ((Player) o);
             updateResultPlayer(player.diceValuesPlayer.toString());
             updateResultOpponent(player.diceValuesOpponent.toString());
+            updateMoveArmyPanel(player.latestDiceRolled, player.numArmiesAllowedToMove);
+            moveArmyPanel.show();
         } else if (o instanceof GameMap) {
             showCountries(GameMap.getInstance().currentPlayer.getCountries());
         }

@@ -64,6 +64,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
         view.reinforcementPanel.setVisible(false);
         view.attackPanel.setVisible(true);
         view.attackPanel.revalidate();
+        view.attackPanel.update();
     }
 
     /**
