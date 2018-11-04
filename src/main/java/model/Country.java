@@ -25,10 +25,22 @@ public class Country extends Observable{
 
     public int numOfDiceAllowed = 0;
 
+    /**
+     * flag for distinction
+     */
+    public int flagForObserver;
+    /**
+     * HashSet for Countries
+     */
     public HashSet<Country> neighbours;
-
+    /**
+     * HashSet to save connected Country
+     */
     public HashMap<Integer , Country> connectedCountries;
-    int numberOfArmiesAtNeighbour;
+    /**
+     * Variable for number of armies at selected connected country
+     */
+    int numberOfArmiesAtConnnectedCountry;
 
     /**
      * Constructor to set current name and id of country
@@ -104,6 +116,9 @@ public class Country extends Observable{
         notifyObservers();
     }
 
+    /**
+     * This give updated connected countries based on selected country
+     */
     public void updateConnectedCountries() {
         connectedCountries.clear();
         //int countryId = selectedCountry.id;
@@ -128,12 +143,18 @@ public class Country extends Observable{
             connectedCountries.remove(id);
 
         }
+
+        flagForObserver=1;
         setChanged();
         notifyObservers();
     }
 
-    public void updateTextFieldForNeighbour() {
-        numberOfArmiesAtNeighbour=this.numOfArmies;
+    /**
+     * This function update the TextField for number of armies at selected connected country
+     */
+    public void updateTextFieldForNeighbour()
+    {
+        numberOfArmiesAtConnnectedCountry =this.numOfArmies;
         flagForObserver=2;
         setChanged();
         notifyObservers();
@@ -157,5 +178,9 @@ public class Country extends Observable{
         setChanged();
         notifyObservers();
     }
+
+
+
+
 
 }

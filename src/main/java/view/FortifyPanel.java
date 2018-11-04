@@ -3,6 +3,7 @@ package view;
 import controller.FortifyController;
 import model.Country;
 import model.GameMap;
+import model.Player;
 import utility.GameStateChangeListener;
 
 import javax.swing.*;
@@ -74,10 +75,14 @@ public class FortifyPanel extends JPanel implements Observer {
      * Button that will proceed the game
      */
     private JButton proceedButton;
-
-    int selectedCountryArmies;
-
-    int selectedConnectedCountryArmies;
+    /**
+     * Variable to get armies of selected country
+     */
+    Country updateSelectedCountryArmy;
+    /**
+     * Variable to get armies of selected connected country
+     */
+    Country updateSelectedConnectedCountryArmy;
 
 
     /**
@@ -165,7 +170,6 @@ public class FortifyPanel extends JPanel implements Observer {
     /**
      * It set up the component for displaying neighboring countries
      * It takes current player's countries as a default
-     *
      */
     public void showNeighbouringCountriesFortify() {
         jPanelNeighbors.removeAll();
@@ -235,6 +239,7 @@ public class FortifyPanel extends JPanel implements Observer {
         transferPanelConstraints.gridx = 0;
         transferPanelConstraints.gridy = 2;
         jComboBoxNoOfArmies.setName("ComboBox");
+        jComboBoxNoOfArmies.addActionListener(fortifyController);
         jButtonTransfer = new JButton("Transfer");
         jButtonTransfer.addActionListener(fortifyController);
         jPanelTransferArmy.add(jButtonTransfer, transferPanelConstraints);
@@ -276,13 +281,6 @@ public class FortifyPanel extends JPanel implements Observer {
      */
     public void updateNeighboringCountriesArmyTextField(int numberOfArmies) {
         jTextFieldNoOfArmiesNeighbour.setText(Integer.toString(numberOfArmies));
-    }
-
-    /**
-     * Function to get the value of ComboBox of armies to transfer
-     */
-    public void getTheValueOfComboBox() {
-        fortifyController.updateComboBoxValue((Integer) jComboBoxNoOfArmies.getSelectedItem());
     }
 
     /**
@@ -398,12 +396,12 @@ public class FortifyPanel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
 
         if (o instanceof Country) {
-            Country country= (Country) o;
+            Country country = (Country) o;
 
-            if(country.flagForObserver==1){
+            if (country.flagForObserver == 1) {
                 enableCountriesArmyLabelAndTextField();
                 updateCountriesArmyTextField(country.numOfArmies);
-                selectedCountryArmies=country.numOfArmies;
+                updateSelectedCountryArmy = country;
                 // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
                 //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
                 updateNeighboringCountries(country.connectedCountries);
@@ -418,41 +416,33 @@ public class FortifyPanel extends JPanel implements Observer {
                     updateJComboboxArmies(country.numOfArmies);
 
                 }
-            }else if(country.flagForObserver==2)
-            {
-                if(selectedCountryArmies<=1)
-                {   jComboBoxNoOfArmies.setEnabled(false);
+            } else if (country.flagForObserver == 2) {
+                if (updateSelectedCountryArmy.numOfArmies <= 1) {
+                    jComboBoxNoOfArmies.setEnabled(false);
                     disableButton();
-                }
-                else{
+                } else {
                     jComboBoxNoOfArmies.setEnabled(true);
                     enableButton();
                 }
-              setNeighborTextFieldTrue();
-              updateNeighboringCountriesArmyTextField(country.numOfArmies);
-              selectedConnectedCountryArmies=country.numOfArmies;
-              
+                setNeighborTextFieldTrue();
+                updateNeighboringCountriesArmyTextField(country.numOfArmies);
+                updateSelectedConnectedCountryArmy = country;
+
             }
 
 
-
-        }
-        else if(o instanceof GameMap)
-        {
-            GameMap gameMap=GameMap.getInstance();
+        } else if (o instanceof GameMap) {
+            GameMap gameMap = GameMap.getInstance();
             showCountriesFortify(gameMap.currentPlayer.getCountries());
             transferFortify();
             disableButton();
             setVisibleFalseNeighbourPanel();
             setComboBoxAndNeighborTextFieldFalse();
             disableCountriesArmyLabelAndTextField();
-        }
+        } else if (o instanceof Player) {
+            jTextFieldNoOfArmiesCountries.setText(String.valueOf(updateSelectedCountryArmy.numOfArmies));
+            jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateSelectedConnectedCountryArmy.numOfArmies));
 
-        else if(o instanceof GameMap)
-        {
-
-            jTextFieldNoOfArmiesCountries.setText(String.valueOf(selectedCountryArmies));
-            jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(selectedConnectedCountryArmies));
         }
     }
 }

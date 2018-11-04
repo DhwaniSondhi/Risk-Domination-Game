@@ -1,6 +1,7 @@
 package controller;
 
 import model.Country;
+import model.Player;
 import view.FortifyPanel;
 
 import javax.swing.*;
@@ -38,16 +39,9 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     public FortifyController(FortifyPanel view) {
         super(view);
         model.addObserver(view);
+        model.currentPlayer.addObserver(view);
     }
 
-    /**
-     * Sets the selected value from ComboBox
-     *
-     * @param number number selected by user
-     */
-    public void updateComboBoxValue(int number) {
-        armiesToTransfer = number;
-    }
 
     /**
      * Perform action when invoked
@@ -62,10 +56,19 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
         if (e.getActionCommand().equalsIgnoreCase("proceed")) {
             if (stateChangeListener != null)
                 stateChangeListener.onFortificationCompleted();
-        } else {
+        } else if(e.getActionCommand().equalsIgnoreCase("Transfer")){
             //view.getTheValueOfComboBox();
+
             model.currentPlayer.fortify(armiesToTransfer, selectedCountry, selectedNeighbour);
-          
+
+        }
+        else
+        {
+
+            JComboBox jComboBox= (JComboBox) e.getSource();
+            armiesToTransfer= (int) jComboBox.getSelectedItem();
+           
+
         }
     }
 
