@@ -1,7 +1,7 @@
 import controller.ContinentControllerTest;
 import controller.CountryControllerTest;
-import controller.FortifyControllerTest;
 import controller.MapCreatorControllerTest;
+import model.CountryTest;
 import model.GameMapTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

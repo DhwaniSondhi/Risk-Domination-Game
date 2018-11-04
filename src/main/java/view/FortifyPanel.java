@@ -239,7 +239,7 @@ public class FortifyPanel extends JPanel implements Observer {
         transferPanelConstraints.gridx = 0;
         transferPanelConstraints.gridy = 2;
         jComboBoxNoOfArmies.setName("ComboBox");
-        jComboBoxNoOfArmies.addActionListener(fortifyController);
+        jComboBoxNoOfArmies.addItemListener(fortifyController);
         jButtonTransfer = new JButton("Transfer");
         jButtonTransfer.addActionListener(fortifyController);
         jPanelTransferArmy.add(jButtonTransfer, transferPanelConstraints);
@@ -440,8 +440,10 @@ public class FortifyPanel extends JPanel implements Observer {
             setComboBoxAndNeighborTextFieldFalse();
             disableCountriesArmyLabelAndTextField();
         } else if (o instanceof Player) {
-            jTextFieldNoOfArmiesCountries.setText(String.valueOf(updateSelectedCountryArmy.numOfArmies));
-            jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateSelectedConnectedCountryArmy.numOfArmies));
+            if(updateSelectedCountryArmy!=null && updateSelectedConnectedCountryArmy!=null) {
+                jTextFieldNoOfArmiesCountries.setText(String.valueOf(updateSelectedCountryArmy.numOfArmies));
+                jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateSelectedConnectedCountryArmy.numOfArmies));
+            }
 
         }
     }

@@ -9,6 +9,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,7 +19,7 @@ import java.util.Queue;
 /**
  * Controller for FortifyPanel
  */
-public class FortifyController extends BaseController<FortifyPanel> implements ActionListener, ListSelectionListener {
+public class FortifyController extends BaseController<FortifyPanel> implements ActionListener, ListSelectionListener, ItemListener {
     /**
      * Country selected by player
      */
@@ -62,14 +64,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             model.currentPlayer.fortify(armiesToTransfer, selectedCountry, selectedNeighbour);
 
         }
-        else
-        {
 
-            JComboBox jComboBox= (JComboBox) e.getSource();
-            armiesToTransfer= (int) jComboBox.getSelectedItem();
-           
-
-        }
     }
 
     /**
@@ -103,6 +98,19 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     }
 
 
+    /**
+     * Invoked when an item has been selected or deselected by the user.
+     * The code written for this method performs the operations
+     * that need to occur when an item is selected (or deselected).
+     *
+     * @param e
+     */
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if(e.equals(ItemEvent.SELECTED)){
+            JComboBox jComboBox= (JComboBox) e.getSource();
+            armiesToTransfer= (int) jComboBox.getSelectedItem();
+        }
 
-
+    }
 }
