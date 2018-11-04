@@ -97,6 +97,8 @@ public class Player extends Observable {
         countrySelected.numOfArmies = countrySelected.numOfArmies - numberOfArmiesTransfer;
         int idOfNeighbor = neighborSelected.id;
         neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
+        System.out.println(countrySelected.numOfArmies);
+        System.out.println(neighborSelected.numOfArmies);
         setChanged();
         notifyObservers();
 

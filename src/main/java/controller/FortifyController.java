@@ -56,6 +56,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equalsIgnoreCase("proceed")) {
+            model.currentPlayer.deleteObserver(view);
             if (stateChangeListener != null)
                 stateChangeListener.onFortificationCompleted();
         } else if(e.getActionCommand().equalsIgnoreCase("Transfer")){
@@ -107,10 +108,17 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-        if(e.equals(ItemEvent.SELECTED)){
+        if(e.getStateChange() == ItemEvent.SELECTED){
+
+
             JComboBox jComboBox= (JComboBox) e.getSource();
             armiesToTransfer= (int) jComboBox.getSelectedItem();
+            System.out.println(armiesToTransfer);
         }
 
+    }
+
+    public void observeCurrentPlayer() {
+        model.currentPlayer.addObserver(view);
     }
 }
