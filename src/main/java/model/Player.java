@@ -219,8 +219,8 @@ public class Player extends Observable {
     /**
      * To add the armies to the respective countries on click of Add button
      */
-    public void reinforce(int countryIndex, String armySelected) {
-        Country country = countries.get(countryIndex);
+    public void reinforce(int countryId, String armySelected) {
+        Country country = countries.get(countryId);
         int addedArmy = Integer.parseInt(armySelected);
         country.addArmies(addedArmy);
         totalArmies -= addedArmy;
@@ -329,19 +329,19 @@ public class Player extends Observable {
     /**
      * Rolls the dice and sorts their values
      *
-     * @param playerNumDiceAllowed   number of valid dice rolls allowed for player
-     * @param opponentNumDiceAllowed number of valid dice rolls allowed for opponent
+     * @param playerNumDiceSelected   number of valid dice rolls allowed for player
+     * @param opponentNumDiceSelected number of valid dice rolls allowed for opponent
      * @param isAllOut               a flag to check if the option is AllOut game mode
      */
-    public void rollDice(int playerNumDiceAllowed, int opponentNumDiceAllowed, boolean isAllOut) {
+    public void rollDice(int playerNumDiceSelected, int opponentNumDiceSelected, boolean isAllOut) {
         diceValuesPlayer.clear();
         diceValuesOpponent.clear();
         Random r = new Random();
-        for (int i = 0; i < playerNumDiceAllowed; i++) {
+        for (int i = 0; i < playerNumDiceSelected; i++) {
             diceValuesPlayer.add(r.nextInt(6) + 1);
         }
 
-        for (int i = 0; i < opponentNumDiceAllowed; i++) {
+        for (int i = 0; i < opponentNumDiceSelected; i++) {
             diceValuesOpponent.add(r.nextInt(6) + 1);
         }
 
@@ -394,7 +394,6 @@ public class Player extends Observable {
      */
     public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         if (isAllOut) {
-            //selectedCountry.numOfDiceAllowed != 0 || selectedNeighbouringCountry.numOfDiceAllowed != 0
             while (!this.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
                 selectedCountry.updateNumOfDiceAllowed(false);
                 selectedNeighbouringCountry.updateNumOfDiceAllowed(true);

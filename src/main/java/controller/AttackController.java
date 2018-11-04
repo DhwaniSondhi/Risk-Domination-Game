@@ -43,14 +43,6 @@ public class AttackController extends BaseController<AttackPanel> implements Act
     }
 
     /**
-     * Update the list of countries in the view with current player's countries
-     */
-    public void updateCountryList() {
-        view.showCountries(model.currentPlayer.getCountriesAllowedToAttack());
-    }
-
-
-    /**
      * Invoked when an action occurs.
      *
      * @param e event

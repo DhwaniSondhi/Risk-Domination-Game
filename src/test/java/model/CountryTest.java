@@ -1,12 +1,11 @@
 package model;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
-
-import static org.junit.Assert.*;
 
 /**
  * Test class for Country Class
@@ -44,4 +43,87 @@ public class CountryTest {
         Assert.assertEquals("Country 5", neighbor.get(5).name);
         Assert.assertEquals(1, neighbor.get(5).owner.id);
     }
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
+    /**
+     * Method that tests if the function is giving the correct no, of neighbours of a country
+     */
+    @Test
+    public void getNeighbours() {
+        Assert.assertEquals(3, gameMap.countries.get(1).neighbours.size());
+    }
+
+    /**
+     * Method that tests the number of armies of a country
+     */
+    @Test
+    public void getNumberofArmies() {
+        Assert.assertEquals(10, gameMap.countries.get(1).numOfArmies);
+    }
+
+    /**
+     * Method that is checking the number of dice allowed for a player according to the number of armies they have
+     */
+    @Test
+    public void updateNumOfDiceAllowedPlayer() {
+        gameMap.countries.get(1).updateNumOfDiceAllowed(false);
+        Assert.assertEquals(3, gameMap.countries.get(1).numOfDiceAllowed);
+        gameMap.countries.get(5).updateNumOfDiceAllowed(false);
+        Assert.assertEquals(2, gameMap.countries.get(5).numOfDiceAllowed);
+        gameMap.countries.get(6).updateNumOfDiceAllowed(false);
+        Assert.assertEquals(1, gameMap.countries.get(6).numOfDiceAllowed);
+        gameMap.countries.get(7).updateNumOfDiceAllowed(false);
+        Assert.assertEquals(0, gameMap.countries.get(7).numOfDiceAllowed);
+
+    }
+
+    /**
+     * Method that is checking the number of dice allowed for an opponent according to the number of armies they have
+     */
+    @Test
+    public void updateNumOfDiceAllowedOpponent() {
+        gameMap.countries.get(1).updateNumOfDiceAllowed(true);
+        Assert.assertEquals(2, gameMap.countries.get(1).numOfDiceAllowed);
+        gameMap.countries.get(5).updateNumOfDiceAllowed(true);
+        Assert.assertEquals(2, gameMap.countries.get(5).numOfDiceAllowed);
+        gameMap.countries.get(6).updateNumOfDiceAllowed(true);
+        Assert.assertEquals(2, gameMap.countries.get(6).numOfDiceAllowed);
+        gameMap.countries.get(7).updateNumOfDiceAllowed(true);
+        Assert.assertEquals(1, gameMap.countries.get(7).numOfDiceAllowed);
+    }
+
+    /**
+     * Method that checks if the owner is being changed of a country
+     */
+    @Test
+    public void changeOwner() {
+        Player newPlayer = new Player(100, "Rashmi");
+        gameMap.countries.get(7).changeOwner(newPlayer);
+        Assert.assertTrue(gameMap.countries.get(7).owner == newPlayer);
+        Assert.assertEquals(1, newPlayer.countries.size());
+        Assert.assertEquals(Country.Update.OWNER, gameMap.countries.get(7).state);
+    }
+
+
+    /**
+     * Method that checks the number of armies after adding to the number of armies
+     * */
+    @Test
+    public void addArmies() {
+        gameMap.countries.get(7).addArmies(5);
+        Assert.assertEquals(6, gameMap.countries.get(7).numOfArmies);
+    }
+
+    /**
+     * Method that checks the number of armies after reducing to the number of armies
+     * */
+    @Test
+    public void deductArmies() {
+        gameMap.countries.get(1).deductArmies(4);
+        Assert.assertEquals(6, gameMap.countries.get(1).numOfArmies);
+    }
+
 }

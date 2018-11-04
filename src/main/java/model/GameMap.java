@@ -315,7 +315,7 @@ public class GameMap extends Observable {
         Country country5 = new Country(5, "Country 5");
         country5.owner = players.get(1);
         player1.initializeCountryToPlayer(country5);
-        country5.numOfArmies = 10;
+        country5.numOfArmies = 3;
         Country country6 = new Country(6, "Country 6");
         country6.owner = players.get(2);
         player2.initializeCountryToPlayer(country6);
@@ -323,7 +323,7 @@ public class GameMap extends Observable {
         Country country7 = new Country(7, "Country 7");
         country7.owner = players.get(3);
         player3.initializeCountryToPlayer(country7);
-        country7.numOfArmies = 7;
+        country7.numOfArmies = 1;
         Country country8 = new Country(8, "Country 8");
         country8.owner = players.get(1);
         player1.initializeCountryToPlayer(country8);
