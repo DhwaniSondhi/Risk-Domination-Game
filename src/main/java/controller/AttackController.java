@@ -114,12 +114,18 @@ public class AttackController extends BaseController<AttackPanel> implements Act
             } else if (sourceName.equals("mode")) {
                 if (e.getItem().equals("Choose Dice")) {
                     view.dicePanel.show();
+                    view.resultPanel.show();
+                    view.resultPlayer.setText("");
+                    view.resultOpponent.setText("");
                 } else {
                     view.dicePanel.hide();
+                    view.resultPanel.hide();
 
                 }
                 view.dicePanel.revalidate();
                 view.dicePanel.repaint();
+                view.resultPanel.revalidate();
+                view.resultPanel.repaint();
             }
         }
     }

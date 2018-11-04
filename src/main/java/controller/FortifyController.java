@@ -113,7 +113,6 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
 
             JComboBox jComboBox= (JComboBox) e.getSource();
             armiesToTransfer= (int) jComboBox.getSelectedItem();
-            System.out.println(armiesToTransfer);
         }
 
     }

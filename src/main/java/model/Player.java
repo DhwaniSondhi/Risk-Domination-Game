@@ -98,8 +98,6 @@ public class Player extends Observable {
         diceValuesOpponent = new ArrayList<>();
         updateArmiesForCards = 5;
         selectedCards = new ArrayList<>();
-
-        initializeWithDummyCards();
         updateReinforcementPanel = true;
     }
 
@@ -114,8 +112,6 @@ public class Player extends Observable {
     public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
         countrySelected.numOfArmies = countrySelected.numOfArmies - numberOfArmiesTransfer;
         neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
-        System.out.println(countrySelected.numOfArmies);
-        System.out.println(neighborSelected.numOfArmies);
         setChanged();
         notifyObservers();
     }
@@ -128,15 +124,6 @@ public class Player extends Observable {
     public void initializeCountryToPlayer(Country country) {
         this.countries.add(country);
         updateView();
-    }
-
-    /**
-     * Adds 3 random cards to the player.
-     */
-    private void initializeWithDummyCards() {
-        for (int i = 0; i < 3; i++) {
-            cards.add(new Card());
-        }
     }
 
     /**
@@ -386,6 +373,7 @@ public class Player extends Observable {
                     attackedCountry = selectedNeighbouringCountry;
                     selectedNeighbouringCountry.changeOwner(this);
                     winCards(selectedNeighbouringCountry.owner);
+                    GameMap.getInstance().checkGameEnd();
                     setChanged();
                     notifyObservers();
                 }
@@ -394,6 +382,8 @@ public class Player extends Observable {
             }
         }
     }
+
+
 
     /**
      * Attack phase of the game

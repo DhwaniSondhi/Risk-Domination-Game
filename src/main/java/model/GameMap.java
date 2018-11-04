@@ -41,6 +41,11 @@ public class GameMap extends Observable {
     public HashMap<Integer, HashSet<Country>> countryGraph;
 
     /**
+     * flag to check if game ended
+     * */
+    public boolean gameEnded;
+
+    /**
      * Initialize countries, continents, players, countryGraph
      * Inititalize counter continentCounter, countryCounter
      */
@@ -262,6 +267,19 @@ public class GameMap extends Observable {
     public void notifyChanges() {
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * A check to see if the current player has conquered all the countries
+     * */
+    public void checkGameEnd(){
+        if(currentPlayer.countries.size() == countries.size()){
+            gameEnded = true;
+        } else{
+            gameEnded = false;
+        }
+        setChanged();
+        notifyChanges();
     }
 
     /**

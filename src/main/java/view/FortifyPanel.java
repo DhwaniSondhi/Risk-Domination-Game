@@ -440,11 +440,7 @@ public class FortifyPanel extends JPanel implements Observer {
             setComboBoxAndNeighborTextFieldFalse();
             disableCountriesArmyLabelAndTextField();
         } else if (o instanceof Player) {
-            System.out.println(updateSelectedConnectedCountryArmy);
-            System.out.println(updateSelectedCountryArmy);
             if(updateSelectedCountryArmy!=null && updateSelectedConnectedCountryArmy!=null) {
-                System.out.println("ds");
-                System.out.println(updateSelectedCountryArmy.numOfArmies);
                 jTextFieldNoOfArmiesCountries.setText(String.valueOf(updateSelectedCountryArmy.numOfArmies));
                 jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateSelectedConnectedCountryArmy.numOfArmies));
             }

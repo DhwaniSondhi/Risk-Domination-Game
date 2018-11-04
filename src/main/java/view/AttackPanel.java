@@ -80,7 +80,7 @@ public class AttackPanel extends JPanel implements Observer {
 
     /**
      * button to move the armies
-     * */
+     */
     private JButton moveButton;
     /**
      * Button to attack neighbouring countries
@@ -183,8 +183,9 @@ public class AttackPanel extends JPanel implements Observer {
         proceedButton.addActionListener(attackController);
         add(proceedButton);
 
+
         moveArmyPanel.hide();
-        attackController.updateCountryList();
+
     }
 
     /**
@@ -202,10 +203,12 @@ public class AttackPanel extends JPanel implements Observer {
 
     /**
      * Initialize the players and gamesetup
-     * */
+     */
     public void update() {
         attackController.initialize();
         selectMode.setSelectedIndex(0);
+        resultOpponent.setText("");
+        resultPlayer.setText("");
     }
 
     /**
@@ -232,12 +235,14 @@ public class AttackPanel extends JPanel implements Observer {
 
     /**
      * updates the dropdown list for choosing no. of dice to roll for player
+     *
      * @param numOfDiceAllowed number of dice allowed to roll
-     * @param allOut flag to check the mode of game
-     * */
+     * @param allOut           flag to check the mode of game
+     */
     public void updatePlayerDiceDropdown(int numOfDiceAllowed, boolean allOut) {
         if (!allOut) {
             this.playerDice.removeAllItems();
+
         }
         int counter = (allOut == true) ? numOfDiceAllowed : 0;
         for (int i = counter; i < numOfDiceAllowed; i++) {
@@ -247,9 +252,10 @@ public class AttackPanel extends JPanel implements Observer {
 
     /**
      * updates the dropdown list for choosing no. of dice to roll for opponent
+     *
      * @param numOfDiceAllowed number of dice allowed to roll
-     * @param allOut flag to check the mode of game
-     * */
+     * @param allOut           flag to check the mode of game
+     */
     public void updateOpponentDiceDropdown(int numOfDiceAllowed, boolean allOut) {
         if (!allOut) {
             this.opponentDice.removeAllItems();
@@ -262,9 +268,10 @@ public class AttackPanel extends JPanel implements Observer {
 
     /**
      * gives the option to move army from one country to another
+     *
      * @param minArmyToMove mininum number of army you have to moce
      * @param maxArmyToMove maximum number of army you can move
-     * */
+     */
     public void updateMoveArmyPanel(int minArmyToMove, int maxArmyToMove) {
         this.armyToMove.removeAllItems();
         for (int i = minArmyToMove; i <= maxArmyToMove; i++) {
@@ -274,16 +281,18 @@ public class AttackPanel extends JPanel implements Observer {
 
     /**
      * sets the result of the dice roll of player
+     *
      * @param diceValues result of dice roll
-     * */
+     */
     public void updateResultPlayer(String diceValues) {
         resultPlayer.setText(diceValues);
     }
 
     /**
      * sets the result of the dice roll of opponent
+     *
      * @param diceValues result of dice roll
-     * */
+     */
     public void updateResultOpponent(String diceValues) {
         resultOpponent.setText(diceValues);
     }
@@ -338,9 +347,24 @@ public class AttackPanel extends JPanel implements Observer {
             updateMoveArmyPanel(player.latestDiceRolled, player.numArmiesAllowedToMove);
 
         } else if (o instanceof GameMap) {
-            showCountries(GameMap.getInstance().currentPlayer.getCountries());
+            GameMap map = ((GameMap) o);
+            if (map.gameEnded) {
+                showAlert();
+            } else {
+                showCountries(GameMap.getInstance().currentPlayer.getCountries());
+            }
         }
 
+    }
+
+    private void showAlert() {
+
+        int action = JOptionPane.showOptionDialog(null, GameMap.getInstance().currentPlayer.name + " won!!!", "Game Ended", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+        if (action == JOptionPane.OK_OPTION) {
+            System.exit(0);
+        }
     }
 
 
