@@ -42,9 +42,13 @@ public class MainFrame extends JFrame implements Observer {
      */
     public JLabel currentPhase;
     /**
-     * Label that display recentMove
+     * panel that display recentMove
      */
-    public JLabel recentMove;
+    public JPanel recentMovesPanel;
+    /**
+     * scroll container for recent moves
+     */
+    public JScrollPane messagesPanel;
 
     /**
      * Panel that will contain all other panel
@@ -59,14 +63,42 @@ public class MainFrame extends JFrame implements Observer {
         super("Risk Game - SOEN 6441 - Team 19");
 
         controller = new MainFrameController(this);
+        JPanel mainContainer = new JPanel();
+        mainContainer.setLayout(new BoxLayout(mainContainer, BoxLayout.Y_AXIS));
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
-        add(mainPanel);
+
+        mainContainer.add(initPhaseViewPanel());
+        mainContainer.add(mainPanel);
+        add(mainContainer);
+
         setUpMenuBar();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(900, 700);
         setVisible(true);
+    }
+
+    /**
+     * Set up the phase view panel
+     *
+     * @return phase view panel
+     */
+    private JPanel initPhaseViewPanel() {
+        currentPlayer = new JLabel("Current Player: ");
+        currentPhase = new JLabel("Current Phase: ");
+        recentMovesPanel = new JPanel();
+        recentMovesPanel.setLayout(new BoxLayout(recentMovesPanel, BoxLayout.Y_AXIS));
+        JPanel phaseViewPanel = new JPanel();
+        phaseViewPanel.setLayout(new BoxLayout(phaseViewPanel, BoxLayout.Y_AXIS));
+        phaseViewPanel.add(currentPhase);
+        phaseViewPanel.add(currentPlayer);
+        phaseViewPanel.add(new JLabel("Recent Moves: "));
+        messagesPanel = new JScrollPane(recentMovesPanel);
+        messagesPanel.setPreferredSize(new Dimension(0, 150));
+        phaseViewPanel.add(messagesPanel);
+
+        return phaseViewPanel;
     }
 
     /**
@@ -79,18 +111,6 @@ public class MainFrame extends JFrame implements Observer {
 
         countryPanel = new CountryPanel();
         mainPanel.add(countryPanel, getConstraints(0, 2));
-
-
-        currentPlayer = new JLabel();
-        currentPhase = new JLabel();
-        recentMove = new JLabel();
-        JPanel phaseViewPanel = new JPanel();
-        phaseViewPanel.setLayout(new BoxLayout(phaseViewPanel, BoxLayout.Y_AXIS));
-        phaseViewPanel.add(currentPhase);
-        phaseViewPanel.add(currentPlayer);
-        phaseViewPanel.add(recentMove);
-        GridBagConstraints constraints = getConstraints(1, 0);
-        mainPanel.add(phaseViewPanel, constraints);
 
         reinforcementPanel = new ReinforcementPanel(controller);
         mainPanel.add(reinforcementPanel, getConstraints(1, 1));
@@ -163,11 +183,14 @@ public class MainFrame extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof GameMap) {
-            if (currentPhase != null) {
+            if (recentMovesPanel != null) {
                 GameMap instance = GameMap.getInstance();
-                currentPhase.setText(instance.currentPhase.toString());
-                currentPlayer.setText(instance.currentPlayer.name);
-                recentMove.setText(instance.recentMove);
+                currentPhase.setText("Current Phase : " + instance.currentPhase.toString());
+                currentPlayer.setText("Current Player: " + instance.currentPlayer.name);
+                if(instance.recentMove != null)
+                    recentMovesPanel.add(new JLabel(instance.recentMove));
+                JScrollBar scroll = messagesPanel.getVerticalScrollBar();
+                scroll.setValue(scroll.getMaximum());
             }
         }
     }

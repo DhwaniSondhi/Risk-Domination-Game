@@ -145,4 +145,22 @@ public class FileHelper {
 //        GameMap.getInstance().setDummyData();
 
     }
+
+    public static void writeLog(String message) {
+        try {
+            File folder = new File("logs");
+            folder.mkdir();
+            File file = new File("logs/gameLog");
+            file.createNewFile();
+
+            FileWriter fileWriter = new FileWriter(file, true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.append(message);
+            printWriter.append("\n\n");
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

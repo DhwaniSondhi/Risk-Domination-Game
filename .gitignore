@@ -3,6 +3,7 @@
 .gradle
 doc/
 public/
+logs/
 /build/
 
 # Ignore Gradle GUI config

@@ -1,5 +1,7 @@
 package model;
 
+import utility.FileHelper;
+
 import java.util.*;
 
 
@@ -336,6 +338,9 @@ public class GameMap extends Observable {
         recentMove = move;
         setChanged();
         notifyObservers();
+
+        FileHelper.writeLog(recentMove);
+        recentMove = null;
     }
 
     /**
@@ -352,6 +357,7 @@ public class GameMap extends Observable {
     public void checkGameEnd() {
         if (currentPlayer.countries.size() == countries.size()) {
             setRecentMove("Game Over: " + currentPlayer + " wins the game.");
+            FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
             gameEnded = true;
         } else {
             gameEnded = false;
