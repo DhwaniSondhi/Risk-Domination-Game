@@ -377,7 +377,7 @@ public class Player extends Observable {
      * @param selectedCountry             country of the player
      * @param selectedNeighbouringCountry country of the opponent
      */
-    private void checkVictory(Country selectedCountry, Country selectedNeighbouringCountry) {
+    public void checkVictory(Country selectedCountry, Country selectedNeighbouringCountry) {
         int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
         for (int i = 0; i < numConsideredDice; i++) {
             if (diceValuesPlayer.get(i) > diceValuesOpponent.get(i)) {
@@ -437,7 +437,7 @@ public class Player extends Observable {
      *
      * @param prevOwner previous owner of a country
      */
-    private void winCards(Player prevOwner) {
+    public void winCards(Player prevOwner) {
         if (prevOwner.countries.size() == 0) {
             GameMap.getInstance().setRecentMove(name + " won " + prevOwner.cards.size() + " from " +
                     prevOwner.name);

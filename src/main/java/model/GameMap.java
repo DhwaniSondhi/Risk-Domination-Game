@@ -172,7 +172,6 @@ public class GameMap extends Observable {
         String continent = territories.get(1).trim();
         int continentId = checkContinentExists(continent.trim());
         if (continentId == -1) {
-            System.out.println("Invalid map");
             return false;
         } else {
             int countryId = this.checkCountryExists(country);
