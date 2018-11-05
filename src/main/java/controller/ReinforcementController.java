@@ -1,15 +1,13 @@
 package controller;
 
 
-import model.Card;
+import model.Country;
 import view.CardExchangeFrame;
 import view.ReinforcementPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This is the Controller class for reinforcement phase
@@ -17,19 +15,6 @@ import java.util.HashMap;
  * implements {@link ActionListener} for actions performed on Gui part(Reinforcement panel)
  */
 public class ReinforcementController extends BaseController<ReinforcementPanel> implements ActionListener {
-
-    /**
-     * Variable for total armies for Reinforcement Phase
-     */
-    int totalArmies;
-    /**
-     * HashMap to keep the name of the card as key and number of cards as value
-     */
-    private HashMap<String, Integer> unselectedCards;
-    /**
-     * List for the cards selected
-     */
-    private ArrayList<Card> selectedCards;
 
     /**
      * Constructor for Reinforcement Controller
@@ -67,9 +52,11 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
 
             model.currentPlayer.updateReinforcementPanel = false;
             CardExchangeFrame cardExchangeFrame = new CardExchangeFrame();
-
+            model.setRecentMove(model.currentPlayer.name + " started card exchange.");
         } else if (buttonName.equalsIgnoreCase("changeArmies")) {
-            model.currentPlayer.reinforce(view.getValueOfCountryIndexComboBox(), view.getValueOfArmyComboBox());
+            int numOfArmies = view.getValueOfArmyComboBox();
+            Country selectedCountry = view.getValueOfCountryIndexComboBox();
+            model.currentPlayer.reinforce(selectedCountry, numOfArmies);
 
         } else if (buttonName.equalsIgnoreCase("proceed")) {
 

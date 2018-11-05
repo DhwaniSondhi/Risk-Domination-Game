@@ -1,14 +1,17 @@
 package view;
 
 import controller.MainFrameController;
+import model.GameMap;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Main window of the game
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements Observer {
 
     /**
      * Reference to continentPanel class
@@ -34,6 +37,15 @@ public class MainFrame extends JFrame {
      * Label that display current playing player
      */
     public JLabel currentPlayer;
+    /**
+     * Label that display current phase
+     */
+    public JLabel currentPhase;
+    /**
+     * Label that display recentMove
+     */
+    public JLabel recentMove;
+
     /**
      * Panel that will contain all other panel
      */
@@ -68,9 +80,17 @@ public class MainFrame extends JFrame {
         countryPanel = new CountryPanel();
         mainPanel.add(countryPanel, getConstraints(0, 2));
 
+
         currentPlayer = new JLabel();
+        currentPhase = new JLabel();
+        recentMove = new JLabel();
+        JPanel phaseViewPanel = new JPanel();
+        phaseViewPanel.setLayout(new BoxLayout(phaseViewPanel, BoxLayout.Y_AXIS));
+        phaseViewPanel.add(currentPhase);
+        phaseViewPanel.add(currentPlayer);
+        phaseViewPanel.add(recentMove);
         GridBagConstraints constraints = getConstraints(1, 0);
-        mainPanel.add(currentPlayer, constraints);
+        mainPanel.add(phaseViewPanel, constraints);
 
         reinforcementPanel = new ReinforcementPanel(controller);
         mainPanel.add(reinforcementPanel, getConstraints(1, 1));
@@ -129,5 +149,26 @@ public class MainFrame extends JFrame {
         menuBar.add(menuFile);
 
         setJMenuBar(menuBar);
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof GameMap) {
+            if (currentPhase != null) {
+                GameMap instance = GameMap.getInstance();
+                currentPhase.setText(instance.currentPhase.toString());
+                currentPlayer.setText(instance.currentPlayer.name);
+                recentMove.setText(instance.recentMove);
+            }
+        }
     }
 }

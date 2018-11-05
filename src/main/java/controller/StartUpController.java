@@ -38,9 +38,9 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
             changeCurrentPlayer();
         } else if (e.getActionCommand().equalsIgnoreCase("assign")) {
             if (view.playerCountries.getSelectedItem() != null) {
-                int countryId = ((Country) view.playerCountries.getSelectedItem()).id;
+                Country country = (Country) view.playerCountries.getSelectedItem();
                 int armies = ((Integer) view.numOfArmies.getSelectedItem());
-                model.assignArmyToCountry(countryId, armies);
+                model.assignArmyToCountry(country, armies);
             }
             if (view.playerCountries.getItemCount() == 1)
                 completedPlayers.add(model.currentPlayer.id);
@@ -56,8 +56,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
         if (completedPlayers.size() == model.players.size())
             return false;
 
-
-        model.changeToNextPlayer();
+        model.changeToNextPlayer(false);
         if (!completedPlayers.contains(model.currentPlayer.id)) {
             return true;
         } else {

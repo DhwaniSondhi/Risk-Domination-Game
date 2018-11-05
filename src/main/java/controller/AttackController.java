@@ -16,7 +16,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
 
     /**
      * Store the value of player country
-     * */
+     */
     public Country selectedCountry;
     /**
      * store the value of opponent country
@@ -57,7 +57,6 @@ public class AttackController extends BaseController<AttackPanel> implements Act
 
             model.currentPlayer.rollDice((Integer) view.playerDice.getSelectedItem(), (Integer) view.opponentDice.getSelectedItem(), isAllOut);
             model.currentPlayer.attack(selectedCountry, selectedNeighbouringCountry, isAllOut);
-
             selectedCountry.deleteObserver(view);
             selectedNeighbouringCountry.deleteObserver(view);
 
@@ -69,7 +68,10 @@ public class AttackController extends BaseController<AttackPanel> implements Act
         } else if (e.getActionCommand().equalsIgnoreCase("move")) {
             selectedCountry.addObserver(view);
             selectedNeighbouringCountry.addObserver(view);
-            model.updateArmiesOfCountries((Integer) view.armyToMove.getSelectedItem(), selectedCountry, selectedNeighbouringCountry);
+            int armies = (Integer) view.armyToMove.getSelectedItem();
+            model.setRecentMove(model.currentPlayer.name + " moved " + armies + " armies from " + selectedCountry.name
+                    + " to " + selectedNeighbouringCountry.name);
+            model.updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
             selectedCountry.deleteObserver(view);
             selectedNeighbouringCountry.deleteObserver(view);
             view.moveArmyPanel.hide();

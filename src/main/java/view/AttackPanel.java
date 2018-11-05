@@ -17,7 +17,6 @@ import java.util.Observer;
  * View for attackPanel extends {@link JPanel}
  */
 public class AttackPanel extends JPanel implements Observer {
-    ;
     /**
      * Controller for AttackPanel
      */

@@ -36,12 +36,12 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * Drop down to select countries for placing armies
      */
-    JComboBox countryList;
+    JComboBox<Country> countryList;
 
     /**
      * Drop down to select armies
      */
-    JComboBox armyList;
+    JComboBox<Integer> armyList;
 
     /**
      * Number of the unselected cards
@@ -208,23 +208,20 @@ public class ReinforcementPanel extends JPanel implements Observer {
 
         JPanel armiesChange = new JPanel(new GridBagLayout());
         List<Country> countriesOfPlayer = countries;
-        int loopForCountryNames = 0;
-        String[] countriesNames = new String[countriesOfPlayer.size()];
+        countryList = new JComboBox<>();
         for (Country country : countriesOfPlayer) {
-            countriesNames[loopForCountryNames] = country.name + "(" + country.numOfArmies + "armies)";
-            loopForCountryNames++;
+            countryList.addItem(country);
         }
-        countryList = new JComboBox(countriesNames);
         countryList.setName("countryList");
         countryList.setSelectedIndex(0);
         armiesChange.add(countryList, getGridContraints(0, 0));
 
 
-        String[] addArmy = new String[armiesLeft];
+        Integer[] addArmy = new Integer[armiesLeft];
         for (int loopForArmies = 1; loopForArmies <= armiesLeft; loopForArmies++) {
-            addArmy[loopForArmies - 1] = String.valueOf(loopForArmies);
+            addArmy[loopForArmies - 1] = loopForArmies;
         }
-        armyList = new JComboBox(addArmy);
+        armyList = new JComboBox<>(addArmy);
         armyList.setName("armyList");
         armiesChange.add(armyList, getGridContraints(1, 0));
 
@@ -264,8 +261,8 @@ public class ReinforcementPanel extends JPanel implements Observer {
      *
      * @return the index of selected country in the Country ComboBox
      */
-    public int getValueOfCountryIndexComboBox() {
-        return countryList.getSelectedIndex();
+    public Country getValueOfCountryIndexComboBox() {
+        return (Country) countryList.getSelectedItem();
     }
 
     /**
@@ -273,8 +270,8 @@ public class ReinforcementPanel extends JPanel implements Observer {
      *
      * @return the item selected in the Army ComboBox
      */
-    public String getValueOfArmyComboBox() {
-        return armyList.getSelectedItem().toString();
+    public int getValueOfArmyComboBox() {
+        return (int) armyList.getSelectedItem();
     }
 
     /**

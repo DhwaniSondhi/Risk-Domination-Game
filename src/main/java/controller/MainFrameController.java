@@ -1,5 +1,6 @@
 package controller;
 
+import model.GameMap;
 import utility.FileHelper;
 import utility.GameStateChangeListener;
 import utility.MapHelper;
@@ -20,10 +21,6 @@ import java.io.File;
 public class MainFrameController extends BaseController<MainFrame> implements
         ActionListener,
         GameStateChangeListener {
-    /**
-     * Boolean for startup
-     */
-    private boolean startUpCompleted = false;
 
     /**
      * Controller for MainFrame
@@ -32,6 +29,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     public MainFrameController(MainFrame view) {
         super(view);
+        model.addObserver(view);
     }
 
     /**
@@ -39,7 +37,6 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onMapLoaded() {
-        startUpCompleted = false;
         new StartUpFrame(this);
     }
 
@@ -48,12 +45,9 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onStartUpCompleted() {
-        if (!startUpCompleted) {
-            startUpCompleted = true;
-            view.setUpGamePanels();
-            view.currentPlayer.setText(model.currentPlayer.name);
-            model.resetCurrentPlayer();
-        }
+        model.changePhase(GameMap.Phase.REINFORCE);
+        view.setUpGamePanels();
+        model.resetCurrentPlayer();
     }
 
     /**
@@ -61,6 +55,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onReinforcementCompleted() {
+        model.changePhase(GameMap.Phase.ATTACK);
         view.reinforcementPanel.setVisible(false);
         view.attackPanel.setVisible(true);
         view.attackPanel.revalidate();
@@ -72,6 +67,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onAttackCompleted() {
+        model.changePhase(GameMap.Phase.FORTIFY);
         view.attackPanel.setVisible(false);
         view.fortifyPanel.setVisible(true);
         view.fortifyPanel.update();
@@ -82,11 +78,11 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onFortificationCompleted() {
-        model.changeToNextPlayer();
+        model.changePhase(GameMap.Phase.REINFORCE);
+        model.changeToNextPlayer(true);
         view.fortifyPanel.setVisible(false);
         view.reinforcementPanel.setVisible(true);
         view.reinforcementPanel.update();
-        view.currentPlayer.setText(model.currentPlayer.name);
     }
 
     /**
@@ -97,7 +93,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        boolean isLoadMap = false, isEditMap = false;
+        boolean isLoadMap, isEditMap;
         isLoadMap = e.getActionCommand().equalsIgnoreCase("Load GameMap");
         isEditMap = e.getActionCommand().equalsIgnoreCase("Edit GameMap");
         if (isEditMap || isLoadMap) {

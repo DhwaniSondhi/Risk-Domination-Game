@@ -47,12 +47,14 @@ public class CardExchangeController extends BaseController<CardExchangeFrame> im
         String buttonName = ((JButton) e.getSource()).getName();
 
         if (buttonName.substring(0, 3).equalsIgnoreCase("ADD")) {
-            model.currentPlayer.addInSelectedCards(buttonName.substring(3));
+            String cardName = buttonName.substring(3);
+            model.currentPlayer.addInSelectedCards(cardName);
         } else if (buttonName.equalsIgnoreCase("Update")) {
             model.currentPlayer.exchangeCardsForArmies();
         } else if (buttonName.equalsIgnoreCase("Reset")) {
             model.currentPlayer.resetSelectedCards();
         } else if (buttonName.equalsIgnoreCase("exit")) {
+            model.setRecentMove(model.currentPlayer.name + " closed card exchange.");
             view.setVisible(false);
             model.currentPlayer.emptySelectedCards();
             model.currentPlayer.updateReinforcementPanel = true;

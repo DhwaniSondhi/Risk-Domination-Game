@@ -110,6 +110,8 @@ public class Player extends Observable {
      * @param neighborSelected       country which user select transfer to
      */
     public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+        GameMap.getInstance().setRecentMove(name + " fortified " + neighborSelected.name + " with " + numberOfArmiesTransfer
+                + " armies from " + countrySelected.name);
         countrySelected.numOfArmies = countrySelected.numOfArmies - numberOfArmiesTransfer;
         neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
         setChanged();
@@ -219,11 +221,11 @@ public class Player extends Observable {
     /**
      * To add the armies to the respective countries on click of Add button
      */
-    public void reinforce(int countryId, String armySelected) {
-        Country country = countries.get(countryId);
-        int addedArmy = Integer.parseInt(armySelected);
-        country.addArmies(addedArmy);
-        totalArmies -= addedArmy;
+    public void reinforce(Country country, int armySelected) {
+        GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
+                country.name + " with " + armySelected + " armies.");
+        country.addArmies(armySelected);
+        totalArmies -= armySelected;
         updateView();
     }
 
@@ -245,6 +247,7 @@ public class Player extends Observable {
                 card = new Card(Card.TYPE.CAVALRY);
             }
             if (card != null) {
+                GameMap.getInstance().setRecentMove(name + " added " + cardName + " card for exchange.");
                 selectedCards.add(card);
             }
         }
@@ -255,6 +258,7 @@ public class Player extends Observable {
      * To reset the selected cards
      */
     public void resetSelectedCards() {
+        GameMap.getInstance().setRecentMove(name + " reset his/her selected cards.");
         for (Card card : selectedCards) {
             if (unselectedCards.get(card.type.toString()) != null) {
                 unselectedCards.replace(card.type.toString(), unselectedCards.get(card.type.toString()) + 1);
@@ -278,6 +282,7 @@ public class Player extends Observable {
      * @return the updated armies
      */
     public int exchangeCardsForArmies() {
+        GameMap.getInstance().setRecentMove(name + " exchanged cards for " + updateArmiesForCards + " armies.");
         totalArmies += this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
@@ -331,7 +336,7 @@ public class Player extends Observable {
      *
      * @param playerNumDiceSelected   number of valid dice rolls allowed for player
      * @param opponentNumDiceSelected number of valid dice rolls allowed for opponent
-     * @param isAllOut               a flag to check if the option is AllOut game mode
+     * @param isAllOut                a flag to check if the option is AllOut game mode
      */
     public void rollDice(int playerNumDiceSelected, int opponentNumDiceSelected, boolean isAllOut) {
         diceValuesPlayer.clear();
@@ -363,9 +368,12 @@ public class Player extends Observable {
         int numConsideredDice = Math.min(diceValuesPlayer.size(), diceValuesOpponent.size());
         for (int i = 0; i < numConsideredDice; i++) {
             if (diceValuesPlayer.get(i) > diceValuesOpponent.get(i)) {
+                GameMap.getInstance().setRecentMove(name + " won dice roll " + diceValuesPlayer.get(i)
+                        + " to " + diceValuesOpponent.get(i));
                 selectedNeighbouringCountry.deductArmies(1);
                 int noArmies = selectedNeighbouringCountry.getNumberofArmies();
                 if (noArmies == 0) {
+                    GameMap.getInstance().setRecentMove(name + " conquered " + selectedNeighbouringCountry.name);
                     hasConquered = true;
                     latestDiceRolled = diceValuesPlayer.size();
                     numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
@@ -378,11 +386,12 @@ public class Player extends Observable {
                     notifyObservers();
                 }
             } else {
+                GameMap.getInstance().setRecentMove(name + " lost dice roll " + diceValuesPlayer.get(i)
+                        + " to " + diceValuesOpponent.get(i));
                 selectedCountry.deductArmies(1);
             }
         }
     }
-
 
 
     /**
@@ -394,6 +403,8 @@ public class Player extends Observable {
      */
     public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         if (isAllOut) {
+            GameMap.getInstance().setRecentMove(name + " started AllOut attack with " + selectedCountry.name
+                    + " on " + selectedNeighbouringCountry.name);
             while (!this.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
                 selectedCountry.updateNumOfDiceAllowed(false);
                 selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
@@ -402,17 +413,21 @@ public class Player extends Observable {
                 attack(selectedCountry, selectedNeighbouringCountry, true);
             }
         } else {
+            GameMap.getInstance().setRecentMove(name + " started Normal attack with " + selectedCountry.name
+                    + " on " + selectedNeighbouringCountry.name);
             checkVictory(selectedCountry, selectedNeighbouringCountry);
         }
     }
 
     /**
      * move cards from previous owner to current player if previous owner has zero countries
+     *
      * @param prevOwner previous owner of a country
-     * */
+     */
     private void winCards(Player prevOwner) {
         if (prevOwner.countries.size() == 0) {
-
+            GameMap.getInstance().setRecentMove(name + " won " + prevOwner.cards.size() + " from " +
+                    prevOwner.name);
             for (Card card : prevOwner.cards) {
                 cards.add(card);
             }
@@ -423,9 +438,10 @@ public class Player extends Observable {
 
     /**
      * if a player has won any country during the attack add random card to the player
-     * */
+     */
     public void gainCard() {
         if (hasConquered) {
+            GameMap.getInstance().setRecentMove(name + " got a card for conquering atleast one country.");
             addRandomCard();
             hasConquered = false;
         }
@@ -433,7 +449,7 @@ public class Player extends Observable {
 
     /**
      * comparator function for sorting
-     * */
+     */
     private Comparator<Integer> diceComparator = new Comparator<Integer>() {
         @Override
         public int compare(Integer o1, Integer o2) {

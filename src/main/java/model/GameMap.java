@@ -42,12 +42,55 @@ public class GameMap extends Observable {
 
     /**
      * flag to check if game ended
-     * */
+     */
     public boolean gameEnded;
+
+    public enum Phase {
+        /**
+         * Enum values
+         */
+        STARTUP("StartUp Phase"),
+        REINFORCE("Reinforcement Phase"),
+        ATTACK("Attack Phase"),
+        FORTIFY("Fortify Phase");
+        /**
+         * enum name
+         */
+        String name;
+
+        /**
+         * @param name name value for the enum
+         */
+        Phase(final String name) {
+            this.name = name;
+        }
+
+
+        /**
+         * Returns the name of this enum constant, as contained in the
+         * declaration.
+         *
+         * @return the name of this enum constant
+         */
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
+    /**
+     * current phase
+     */
+    public Phase currentPhase = Phase.STARTUP;
+    /**
+     * stores the recent move made in the game
+     */
+    public String recentMove;
+
 
     /**
      * Initialize countries, continents, players, countryGraph
-     * Inititalize counter continentCounter, countryCounter
+     * Initialize counter continentCounter, countryCounter
      */
     private GameMap() {
         countries = new HashMap<>();
@@ -189,7 +232,6 @@ public class GameMap extends Observable {
     }
 
 
-
     /**
      * It clears the data of HashMap
      */
@@ -207,12 +249,13 @@ public class GameMap extends Observable {
      * Assign countries randomly to players
      */
     public void assignCountriesToPlayers() {
-        changeToNextPlayer();
+        resetCurrentPlayer();
         for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
             entry.getValue().owner = currentPlayer;
+
             entry.getValue().numOfArmies = 0;
             currentPlayer.initializeCountryToPlayer(entry.getValue());
-            changeToNextPlayer();
+            changeToNextPlayer(false);
         }
         setChanged();
         notifyObservers();
@@ -220,8 +263,10 @@ public class GameMap extends Observable {
 
     /**
      * Change the current player to next player in round robin fashion
+     *
+     * @param checkIfLost skips player with 0 countries if set to true
      */
-    public void changeToNextPlayer() {
+    public void changeToNextPlayer(boolean checkIfLost) {
         if (currentPlayer == null)
             currentPlayer = players.get(1);
         else {
@@ -230,6 +275,7 @@ public class GameMap extends Observable {
                 next = 1;
 
             currentPlayer = players.get(next);
+            if (checkIfLost && currentPlayer.countries.size() == 0) changeToNextPlayer(checkIfLost);
         }
         setChanged();
         notifyObservers();
@@ -249,13 +295,19 @@ public class GameMap extends Observable {
     /**
      * Assign army to country in startup phase
      *
-     * @param countryId id of the country
+     * @param country   country to assign armies
      * @param numArmies no. of armies
      */
-    public void assignArmyToCountry(int countryId, int numArmies) {
-        countries.get(countryId).numOfArmies = numArmies;
+    public void assignArmyToCountry(Country country, int numArmies) {
+        setRecentMove(currentPlayer.name + " assigned " + numArmies + " armies  to " + country.name);
+        country.numOfArmies = numArmies;
     }
 
+    /**
+     * provides initial number of army based on number of players
+     *
+     * @return number of armies
+     */
     public int getInitialArmy() {
         int[] armyCount = new int[]{40, 35, 30, 25, 20};
         if (!players.isEmpty())
@@ -264,6 +316,31 @@ public class GameMap extends Observable {
         return 0;
     }
 
+    /**
+     * changes the current phase and notifies observers
+     *
+     * @param phase new phase
+     */
+    public void changePhase(Phase phase) {
+        this.currentPhase = phase;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * changes the recent move and notifies the observer
+     *
+     * @param move new move
+     */
+    public void setRecentMove(String move) {
+        recentMove = move;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * notifies all the observers for the new changes
+     */
     public void notifyChanges() {
         setChanged();
         notifyObservers();
@@ -271,11 +348,12 @@ public class GameMap extends Observable {
 
     /**
      * A check to see if the current player has conquered all the countries
-     * */
-    public void checkGameEnd(){
-        if(currentPlayer.countries.size() == countries.size()){
+     */
+    public void checkGameEnd() {
+        if (currentPlayer.countries.size() == countries.size()) {
+            setRecentMove("Game Over: " + currentPlayer + " wins the game.");
             gameEnded = true;
-        } else{
+        } else {
             gameEnded = false;
         }
         setChanged();
