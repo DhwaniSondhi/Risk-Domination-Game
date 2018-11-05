@@ -136,6 +136,19 @@ public class Player extends Observable {
     }
 
     /**
+     * calculate the total armies from owned countries
+     *
+     * @return total army count
+     * */
+    public int getTotalArmies() {
+        int count = 0;
+        for (Country country : countries) {
+            count += country.numOfArmies;
+        }
+        return count;
+    }
+
+    /**
      * To calculate the total armies from the countries and continents own by the player
      *
      * @param countries  list of countries in the instance

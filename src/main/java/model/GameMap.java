@@ -248,6 +248,49 @@ public class GameMap extends Observable {
     }
 
     /**
+     * Get number of countriesOwned by every Players
+     *
+     * @return List with number of countries owned
+     **/
+    public List<Integer> getNumberOfCountriesOwnedByPlayers() {
+        List<Integer> information = new ArrayList<>();
+        for (Player player : players.values()) {
+            information.add(player.countries.size());
+        }
+        return information;
+    }
+
+    /**
+     * Get number of armies owned by every Players
+     *
+     * @return List with number of armies owned
+     **/
+    public List<Integer> getNumberOfArmiesOwnedByPlayers() {
+        List<Integer> information = new ArrayList<>();
+        for (Player player : players.values()) {
+            information.add(player.getTotalArmies());
+        }
+        return information;
+    }
+
+    /**
+     * Get number of continentsOwned by every Players
+     *
+     * @return List with number of continents owned
+     **/
+    public List<Integer> getNumberOfContinentsOwnedByPlayers() {
+        List<Integer> information = new ArrayList<>();
+        for (Player player : players.values()) {
+            int count = 0;
+            for (Continent continent : continents.values()) {
+                if (continent.isOwnedBy(player)) count++;
+            }
+            information.add(count);
+        }
+        return information;
+    }
+
+    /**
      * Assign countries randomly to players
      */
     public void assignCountriesToPlayers() {

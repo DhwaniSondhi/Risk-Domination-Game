@@ -123,6 +123,9 @@ public class MainFrame extends JFrame implements Observer {
         fortifyPanel.setVisible(false);
         mainPanel.add(fortifyPanel, getConstraints(1, 1));
 
+        PlayerDominationView dominationPanel = new PlayerDominationView();
+        mainPanel.add(dominationPanel, getConstraints(1, 2));
+
         mainPanel.revalidate();
         mainPanel.repaint();
     }
@@ -187,7 +190,7 @@ public class MainFrame extends JFrame implements Observer {
                 GameMap instance = GameMap.getInstance();
                 currentPhase.setText("Current Phase : " + instance.currentPhase.toString());
                 currentPlayer.setText("Current Player: " + instance.currentPlayer.name);
-                if(instance.recentMove != null)
+                if (instance.recentMove != null)
                     recentMovesPanel.add(new JLabel(instance.recentMove));
                 JScrollBar scroll = messagesPanel.getVerticalScrollBar();
                 scroll.setValue(scroll.getMaximum());

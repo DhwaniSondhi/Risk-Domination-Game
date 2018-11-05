@@ -37,6 +37,17 @@ public class Continent {
         countries = new ArrayList<>();
     }
 
+    public boolean isOwnedBy(Player player) {
+        boolean flag = true;
+        for (Country country : countries) {
+            if(country.owner.id != player.id) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
     /**
      * Returns a string representation of the object. In general, the
      * {@code toString} method returns a string that
