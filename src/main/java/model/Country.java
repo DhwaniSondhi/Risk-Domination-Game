@@ -15,6 +15,9 @@ public class Country extends Observable {
         DICE
     }
 
+    /**
+     * Variable for state
+     */
     public Update state = null;
     /**
      * Country id

@@ -9,11 +9,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 
-
+/**
+ * This class contain functionality to start up game
+ */
 public class StartUpController extends BaseController<StartUpFrame> implements ActionListener {
-
+    /**
+     * HashSet for number of submitted player
+     */
     HashSet<Integer> completedPlayers;
 
+    /**
+     * This is controller constructor for Startup
+     *
+     * @param view associated with controller
+     */
     public StartUpController(StartUpFrame view) {
         super(view);
         completedPlayers = new HashSet<>();
@@ -52,6 +61,11 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
         }
     }
 
+    /**
+     * Function for current player change
+     *
+     * @return true,false
+     */
     private boolean changeCurrentPlayer() {
         if (completedPlayers.size() == model.players.size())
             return false;

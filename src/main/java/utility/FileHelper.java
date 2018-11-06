@@ -142,10 +142,15 @@ public class FileHelper {
      */
     public static void emptyConfig() {
         GameMap.getInstance().clearInformation();
-//        GameMap.getInstance().setDummyData();
+
 
     }
 
+    /**
+     * Function to write logs during game play
+     *
+     * @param message string to print
+     */
     public static void writeLog(String message) {
         try {
             File folder = new File("logs");

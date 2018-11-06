@@ -4,6 +4,9 @@ import model.Country;
 import model.Player;
 import view.PlayerDominationView;
 
+/**
+ * This implement player domination functionality
+ */
 public class PlayerDominationController extends BaseController<PlayerDominationView> {
 
     /**

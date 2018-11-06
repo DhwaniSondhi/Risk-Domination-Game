@@ -1,7 +1,6 @@
 package controller;
 
 import model.Country;
-import model.Player;
 import view.FortifyPanel;
 
 import javax.swing.*;
@@ -11,10 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Controller for FortifyPanel
@@ -59,7 +54,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             model.currentPlayer.deleteObserver(view);
             if (stateChangeListener != null)
                 stateChangeListener.onFortificationCompleted();
-        } else if(e.getActionCommand().equalsIgnoreCase("Transfer")){
+        } else if (e.getActionCommand().equalsIgnoreCase("Transfer")) {
             //view.getTheValueOfComboBox();
 
             model.currentPlayer.fortify(armiesToTransfer, selectedCountry, selectedNeighbour);
@@ -86,7 +81,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 selectedCountry.addObserver(view);
                 selectedCountry.updateConnectedCountries();
             } else {
-                if(selectedNeighbour!=null)
+                if (selectedNeighbour != null)
                     selectedNeighbour.deleteObserver(view);
                 selectedNeighbour = source.getSelectedValue();
                 selectedNeighbour.addObserver(view);
@@ -108,15 +103,16 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-        if(e.getStateChange() == ItemEvent.SELECTED){
-
-
-            JComboBox jComboBox= (JComboBox) e.getSource();
-            armiesToTransfer= (int) jComboBox.getSelectedItem();
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            JComboBox jComboBox = (JComboBox) e.getSource();
+            armiesToTransfer = (int) jComboBox.getSelectedItem();
         }
 
     }
 
+    /**
+     * It observe current player
+     */
     public void observeCurrentPlayer() {
         model.currentPlayer.addObserver(view);
     }

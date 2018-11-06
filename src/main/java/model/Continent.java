@@ -37,6 +37,12 @@ public class Continent {
         countries = new ArrayList<>();
     }
 
+    /**
+     * Function to check player own the country or not.
+     *
+     * @param player player
+     * @return true false of the basis of country owned or not
+     */
     public boolean isOwnedBy(Player player) {
         boolean flag = true;
         for (Country country : countries) {

@@ -59,6 +59,10 @@ public class MainFrame extends JFrame implements Observer {
      */
     private MainFrameController controller;
 
+    /**
+     * Constructor for MainFrame class
+     * Setup the main panel
+     */
     public MainFrame() {
         super("Risk Game - SOEN 6441 - Team 19");
 

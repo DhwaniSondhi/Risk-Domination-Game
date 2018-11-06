@@ -314,6 +314,9 @@ public class Player extends Observable {
         return totalArmies;
     }
 
+    /**
+     * Function to update view
+     */
     public void updateView() {
         setChanged();
         notifyObservers(this);

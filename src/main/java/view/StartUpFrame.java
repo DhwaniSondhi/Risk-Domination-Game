@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-
+/**
+ * Class to implement view of startup
+ */
 public class StartUpFrame extends JFrame implements Observer {
 
     /**

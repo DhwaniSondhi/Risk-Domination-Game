@@ -12,6 +12,9 @@ import java.util.List;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
+/**
+ * This class implements view of player domination
+ */
 public class PlayerDominationView extends JPanel implements Observer {
 
     /**
