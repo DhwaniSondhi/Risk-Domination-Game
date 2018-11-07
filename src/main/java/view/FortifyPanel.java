@@ -214,12 +214,14 @@ public class FortifyPanel extends JPanel implements Observer {
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 1;
         jTextFieldNoOfArmiesCountries = new JTextField(10);
+        jTextFieldNoOfArmiesCountries.setEditable(false);
         jPanelDisplayArmies.add(jTextFieldNoOfArmiesCountries, gridBagConstraintsInnerPanelArmies);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 2;
         jLabelArmiesAtNeighbor = new JLabel("Army at neighbor");
         jPanelDisplayArmies.add(jLabelArmiesAtNeighbor, gridBagConstraintsInnerPanelArmies);
         jTextFieldNoOfArmiesNeighbour = new JTextField(10);
+        jTextFieldNoOfArmiesNeighbour.setEditable(false);
         gridBagConstraintsInnerPanelArmies.gridx = 0;
         gridBagConstraintsInnerPanelArmies.gridy = 3;
         jPanelDisplayArmies.add(jTextFieldNoOfArmiesNeighbour, gridBagConstraintsInnerPanelArmies);

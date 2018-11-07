@@ -13,23 +13,33 @@ import view.CountryPanel;
  * test class for CountryController
  */
 public class CountryControllerTest {
+    /**
+     * Variable for testing view
+     */
     @Mock
     CountryPanel view;
-
+    /**
+     * Reference for CountryController class
+     */
     CountryController controller;
-    GameMap config;
+    /**
+     * Reference to GameMap class
+     */
+    GameMap gameMap;
 
+    /**
+     * It set up the environment for tests
+     *
+     * @throws Exception when exception occurs
+     */
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         controller = new CountryController(view);
-        config = GameMap.getInstance();
-        config.setDummyData();
+        gameMap = GameMap.getInstance();
+        gameMap.setDummyData();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
 
     /**
      * check if view method is called or not from controller method
@@ -37,6 +47,6 @@ public class CountryControllerTest {
     @Test
     public void updateCountries() throws Exception {
         controller.updateCountryList();
-        Mockito.verify(view).updateCountries(config.countries);
+        Mockito.verify(view).updateCountries(gameMap.countries);
     }
 }

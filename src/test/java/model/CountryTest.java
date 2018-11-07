@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +43,6 @@ public class CountryTest {
         Assert.assertEquals(1, neighbor.get(5).owner.id);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
 
     /**
      * Method that tests if the function is giving the correct no, of neighbours of a country
@@ -110,7 +106,7 @@ public class CountryTest {
 
     /**
      * Method that checks the number of armies after adding to the number of armies
-     * */
+     */
     @Test
     public void addArmies() {
         gameMap.countries.get(7).addArmies(5);
@@ -119,7 +115,7 @@ public class CountryTest {
 
     /**
      * Method that checks the number of armies after reducing to the number of armies
-     * */
+     */
     @Test
     public void deductArmies() {
         gameMap.countries.get(1).deductArmies(4);

@@ -12,12 +12,24 @@ import java.util.List;
  * Test class for MapCreatorController
  */
 public class MapCreatorControllerTest {
-
+    /**
+     * Reference for MapCreatorController class
+     */
     MapCreatorController controller;
-
+    /**
+     * List containing countries and continents
+     */
     List<String> continentItems, countryItems;
+    /**
+     * List containing invalid data for countries and continents
+     */
     List<String> invalidContinentItems, invalidCountryItems;
 
+    /**
+     * It set up the environment for tests
+     *
+     * @throws Exception when exception occurs
+     */
     @Before
     public void setUp() throws Exception {
         controller = new MapCreatorController(null);
@@ -39,9 +51,6 @@ public class MapCreatorControllerTest {
                 "Spain,Europe, Italy");
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
 
     /**
      * Checks if the validateFormData return true for valid data

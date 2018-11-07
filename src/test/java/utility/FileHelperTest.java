@@ -15,17 +15,30 @@ import java.util.List;
  * Test class to test the functionality of {@link FileHelper} class
  */
 public class FileHelperTest {
-
+    /**
+     * Variable to test Valid File
+     */
     File testFile1, testFile2;
+    /**
+     * Variable to test Invalid File
+     */
     File errorFile;
-
+    /**
+     * It set up the environment for tests
+     *
+     * @throws Exception when exception occurs
+     */
     @Before
     public void setUp() throws Exception {
         testFile1 = new File("maps/test-case/test.map");
         testFile2 = new File("maps/test-case/test1.map");
         errorFile = new File("maps/test-case/404.map");
     }
-
+    /**
+     * It remove environment after tests
+     *
+     * @throws Exception when exception occurs
+     */
     @After
     public void tearDown() throws Exception {
         testFile1 = null;

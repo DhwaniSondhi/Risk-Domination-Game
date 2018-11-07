@@ -1,7 +1,6 @@
 package controller;
 
 import model.GameMap;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -13,24 +12,33 @@ import view.ContinentPanel;
  * Test class for ContinentController
  */
 public class ContinentControllerTest {
-
+    /**
+     * Variable for testing view
+     */
     @Mock
     ContinentPanel view;
-
+    /**
+     * Reference for ContinentController class
+     */
     ContinentController controller;
-    GameMap config;
+    /**
+     * Reference for GameMap class
+     */
+    GameMap gameMap;
 
+    /**
+     * It set up the environment for tests
+     *
+     * @throws Exception when exception occurs
+     */
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         controller = new ContinentController(view);
-        config = GameMap.getInstance();
-        config.setDummyData();
+        gameMap = GameMap.getInstance();
+        gameMap.setDummyData();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
 
     /**
      * check if view method is called or not from controller method
@@ -38,6 +46,6 @@ public class ContinentControllerTest {
     @Test
     public void updateContinentList() throws Exception {
         controller.updateContinentList();
-        Mockito.verify(view).updateContinentList(config.continents.values());
+        Mockito.verify(view).updateContinentList(gameMap.continents.values());
     }
 }

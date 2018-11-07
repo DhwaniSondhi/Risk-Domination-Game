@@ -3,7 +3,6 @@ import controller.CountryControllerTest;
 import controller.MapCreatorControllerTest;
 import model.CountryTest;
 import model.GameMapTest;
-import model.Player;
 import model.PlayerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -8,7 +8,9 @@ import org.junit.Test;
 import java.util.Arrays;
 
 public class GameMapTest {
-
+    /**
+     * Reference for GameMap Class
+     */
     GameMap gameMap;
 
     @Before
