@@ -1,5 +1,6 @@
 package controller;
 
+import model.Country;
 import view.CountryPanel;
 
 /**
@@ -15,7 +16,9 @@ public class CountryController extends BaseController<CountryPanel> {
      */
     public CountryController(CountryPanel view) {
         super(view);
-        model.addObserver(view);
+        for (Country country : model.countries.values()) {
+            country.addObserver(view);
+        }
     }
 
     /**
