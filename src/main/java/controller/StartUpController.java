@@ -49,7 +49,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
             if (view.playerCountries.getSelectedItem() != null) {
                 Country country = (Country) view.playerCountries.getSelectedItem();
                 int armies = ((Integer) view.numOfArmies.getSelectedItem());
-                model.assignArmyToCountry(country, armies);
+                country.setNumOfArmies( armies);
             }
             if (view.playerCountries.getItemCount() == 1)
                 completedPlayers.add(model.currentPlayer.id);

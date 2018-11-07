@@ -112,8 +112,8 @@ public class Player extends Observable {
     public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
         GameMap.getInstance().setRecentMove(name + " fortified " + neighborSelected.name + " with " + numberOfArmiesTransfer
                 + " armies from " + countrySelected.name);
-        countrySelected.numOfArmies = countrySelected.numOfArmies - numberOfArmiesTransfer;
-        neighborSelected.numOfArmies = neighborSelected.numOfArmies + numberOfArmiesTransfer;
+        countrySelected.deductArmies(numberOfArmiesTransfer);
+        neighborSelected.addArmies(numberOfArmiesTransfer);
         setChanged();
         notifyObservers();
     }

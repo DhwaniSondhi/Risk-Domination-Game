@@ -113,6 +113,16 @@ public class Country extends Observable {
     public int getNumberofArmies() {
         return numOfArmies;
     }
+    /**
+     * Assign army to country in startup phase
+     *
+     * @param numOfArmies no. of armies
+     */
+    public void setNumOfArmies(int numOfArmies) {
+        this.numOfArmies = numOfArmies;
+        setChanged();
+        notifyObservers();
+    }
 
     /**
      * This give updated connected countries based on selected country

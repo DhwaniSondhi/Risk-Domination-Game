@@ -336,16 +336,8 @@ public class GameMap extends Observable {
         notifyObservers();
     }
 
-    /**
-     * Assign army to country in startup phase
-     *
-     * @param country   country to assign armies
-     * @param numArmies no. of armies
-     */
-    public void assignArmyToCountry(Country country, int numArmies) {
-        setRecentMove(currentPlayer.name + " assigned " + numArmies + " armies  to " + country.name);
-        country.numOfArmies = numArmies;
-    }
+
+
 
     /**
      * provides initial number of army based on number of players
