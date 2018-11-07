@@ -1,6 +1,5 @@
 package model;
 
-
 import java.util.Random;
 
 /**
@@ -20,7 +19,6 @@ public class Card {
     public Card(TYPE type) {
         this.type = type;
     }
-
 
     /**
      * Initializes with random card type

@@ -1,6 +1,7 @@
 package controller;
 
 import model.Country;
+import model.Player;
 import view.FortifyPanel;
 
 import javax.swing.*;
@@ -10,6 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Controller for FortifyPanel
@@ -54,7 +59,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             model.currentPlayer.deleteObserver(view);
             if (stateChangeListener != null)
                 stateChangeListener.onFortificationCompleted();
-        } else if (e.getActionCommand().equalsIgnoreCase("Transfer")) {
+        } else if(e.getActionCommand().equalsIgnoreCase("Transfer")){
             //view.getTheValueOfComboBox();
 
             model.currentPlayer.fortify(armiesToTransfer, selectedCountry, selectedNeighbour);
@@ -111,7 +116,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     }
 
     /**
-     * It observe current player
+     * Observer for the current player
      */
     public void observeCurrentPlayer() {
         model.currentPlayer.addObserver(view);

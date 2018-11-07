@@ -69,6 +69,15 @@ public class ContinentPanel extends JPanel implements Observer {
         contentPanel.revalidate();
     }
 
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notifies of the change.
+     *
+     * @param o     the observable object.
+     * @param arg   an argument passed to the <code>notifyObservers</code>
+     */
     @Override
     public void update(Observable o, Object arg) {
         updateContinentList(GameMap.getInstance().continents.values());

@@ -30,7 +30,7 @@ public class CountryPanel extends JPanel implements Observer {
     JPanel contentPanel1;
 
     /**
-     * Contructor
+     * Constructor
      * Sets up the panel for country list
      */
     public CountryPanel() {

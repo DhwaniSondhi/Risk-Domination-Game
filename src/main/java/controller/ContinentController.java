@@ -1,9 +1,6 @@
 package controller;
 
-import model.Continent;
 import view.ContinentPanel;
-
-import java.util.Collection;
 
 /**
  * Controller for {@link view.ContinentPanel} extends {@link BaseController}
