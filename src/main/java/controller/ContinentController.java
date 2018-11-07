@@ -1,6 +1,9 @@
 package controller;
 
+import model.Continent;
 import view.ContinentPanel;
+
+import java.util.Collection;
 
 /**
  * Controller for {@link view.ContinentPanel} extends {@link BaseController}
@@ -14,7 +17,7 @@ public class ContinentController extends BaseController<ContinentPanel> {
      */
     public ContinentController(ContinentPanel view) {
         super(view);
-
+        model.addObserver(view);
     }
 
     /**

@@ -2,16 +2,19 @@ package view;
 
 import controller.ContinentController;
 import model.Continent;
+import model.GameMap;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * View for the continents extends {@link JPanel}
  */
-public class ContinentPanel extends JPanel {
+public class ContinentPanel extends JPanel implements Observer {
 
     /**
      * controller for the view
@@ -64,5 +67,10 @@ public class ContinentPanel extends JPanel {
             }
         }
         contentPanel.revalidate();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        updateContinentList(GameMap.getInstance().continents.values());
     }
 }

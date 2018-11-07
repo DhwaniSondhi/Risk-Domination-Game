@@ -1,11 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Continent Model
  */
-public class Continent {
+public class Continent extends Observable {
     /**
      * Continent id
      */
