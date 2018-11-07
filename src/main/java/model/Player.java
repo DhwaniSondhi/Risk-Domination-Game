@@ -294,9 +294,9 @@ public class Player extends Observable {
      *
      * @return the updated armies
      */
-    public int exchangeCardsForArmies() {
+    public int exchangeCardsForArmies(int totalArmiesLocal) {
         GameMap.getInstance().setRecentMove(name + " exchanged cards for " + updateArmiesForCards + " armies.");
-        totalArmies += this.updateArmiesForCards;
+        totalArmiesLocal += this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
         for (Card cardSelected : selectedCards) {
@@ -311,7 +311,7 @@ public class Player extends Observable {
             this.cards.remove(cardRemove);
         }
         emptySelectedCards();
-        return totalArmies;
+        return totalArmiesLocal;
     }
 
     /**
