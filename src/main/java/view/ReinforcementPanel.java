@@ -46,7 +46,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * Number of the unselected cards
      */
-    int unselectedCardsNum;
+    int cardsNum;
 
     /**
      * Cards sets of the player available for exchange
@@ -62,6 +62,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * Countries player has for reinforcement
      */
     ArrayList<Country> countries;
+
 
     /**
      * Constructor
@@ -135,7 +136,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To add Unselected Cards Grid with add buttons in CardSection Panel
      */
     public void addUnselectedCardGrid() {
-        unselectedCardsNum = 0;
+        cardsNum = 0;
         JPanel cardsUnselected = new JPanel();
         cardsUnselected.setLayout(new GridLayout(3, 1));
         Iterator itForCards = cardSets.entrySet().iterator();
@@ -160,13 +161,15 @@ public class ReinforcementPanel extends JPanel implements Observer {
             JLabel cardLabel = new JLabel(label);
             cardButtonPanelCavalry.add(cardLabel);
             cardsUnselected.add(cardButtonPanelCavalry);
+
+            cardsNum =0;
         } else {
             while (itForCards.hasNext()) {
                 Map.Entry cardPair = (Map.Entry) itForCards.next();
                 JPanel cardButtonPanel = new JPanel();
                 cardButtonPanel.setLayout(new GridLayout(1, 1));
                 String label = cardPair.getValue() + " " + cardPair.getKey();
-                unselectedCardsNum += (Integer.parseInt(cardPair.getValue().toString()));
+                cardsNum += (Integer.parseInt(cardPair.getValue().toString()));
                 JLabel cardLabel = new JLabel(label);
                 cardButtonPanel.add(cardLabel);
                 cardsUnselected.add(cardButtonPanel);
@@ -183,6 +186,11 @@ public class ReinforcementPanel extends JPanel implements Observer {
         buttons.setLayout(new GridLayout(1, 1));
         JButton exchangeCards = new JButton("Exchange Cards");
         exchangeCards.setName("exchangeCards");
+        if(cardsNum==0){
+            exchangeCards.setEnabled(false);
+        }else{
+            exchangeCards.setEnabled(true);
+        }
         exchangeCards.addActionListener(reinforcementController);
         buttons.add(exchangeCards);
         cardSection.add(buttons, getGridContraints(2, 0));
@@ -229,14 +237,14 @@ public class ReinforcementPanel extends JPanel implements Observer {
         JButton changeArmies = new JButton("Add Armies");
         changeArmies.setName("changeArmies");
         changeArmies.addActionListener(reinforcementController);
-        if (armiesLeft > 0 && unselectedCardsNum < 5) {
+        if (armiesLeft > 0 && cardsNum < 5) {
             changeArmies.setEnabled(true);
         } else {
             changeArmies.setEnabled(false);
         }
         armiesChange.add(changeArmies, getGridContraints(2, 0));
         armySection.add(armiesChange, getGridContraints(0, 2));
-        if (unselectedCardsNum >= 5) {
+        if (cardsNum >= 5) {
             JLabel msgForCards = new JLabel("Cards cannot be greater than 5. Please exchange them.");
             armySection.add(msgForCards, getGridContraints(0, 3));
         }
