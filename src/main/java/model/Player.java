@@ -133,6 +133,7 @@ public class Player extends Observable {
      */
     public void addRandomCard() {
         cards.add(new Card());
+        GameMap.getInstance().cardStack -= 1;
     }
 
     /**
@@ -309,6 +310,7 @@ public class Player extends Observable {
         }
         for (Card cardRemove : removeCards) {
             this.cards.remove(cardRemove);
+            GameMap.getInstance().cardStack += 1;
         }
         emptySelectedCards();
         return totalArmiesLocal;
@@ -456,10 +458,11 @@ public class Player extends Observable {
      * if a player has won any country during the attack add random card to the player
      */
     public void gainCard() {
-        if (hasConquered) {
+        if (hasConquered && GameMap.getInstance().cardStack > 0) {
             GameMap.getInstance().setRecentMove(name + " got a card for conquering atleast one country.");
             addRandomCard();
             hasConquered = false;
+
         }
     }
 

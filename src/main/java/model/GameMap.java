@@ -27,6 +27,11 @@ public class GameMap extends Observable {
      * HashMap for countries
      */
     public HashMap<Integer, Country> countries;
+
+    /**
+     * Stack of cards for the game
+     * */
+    public int cardStack;
     /**
      * HashMap for continents
      */
@@ -99,6 +104,7 @@ public class GameMap extends Observable {
         countryGraph = new HashMap<>();
         continentCounter = 0;
         countryCounter = 0;
+        cardStack = 0;
     }
 
     /**
@@ -242,6 +248,7 @@ public class GameMap extends Observable {
         countryCounter = 0;
         continentCounter = 0;
         currentPlayer = null;
+        cardStack = 0;
     }
 
     /**
@@ -288,10 +295,17 @@ public class GameMap extends Observable {
     }
 
     /**
+     * initializes the card stack value for the game
+     * */
+    public void setCardStack(){
+        cardStack = countries.size();
+    }
+    /**
      * Assign countries randomly to players
      */
     public void assignCountriesToPlayers() {
         resetCurrentPlayer();
+        setCardStack();
         for (Map.Entry<Integer, Country> entry : countries.entrySet()) {
             entry.getValue().owner = currentPlayer;
 
@@ -503,5 +517,6 @@ public class GameMap extends Observable {
 
 
         currentPlayer = players.get(1);
+        cardStack = 8;
     }
 }
