@@ -78,6 +78,15 @@ public class Player extends Observable {
      * flag to check if player has conquered any country during the attack phase
      */
     public boolean hasConquered;
+    /**
+     * comparator function for sorting
+     */
+    private Comparator<Integer> diceComparator = new Comparator<Integer>() {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
+        }
+    };
 
 
     /**
@@ -100,7 +109,6 @@ public class Player extends Observable {
         selectedCards = new ArrayList<>();
         updateReinforcementPanel = true;
     }
-
 
     /**
      * Updates the armies of countries in which armies are transferred
@@ -140,7 +148,7 @@ public class Player extends Observable {
      * calculate the total armies from owned countries
      *
      * @return total army count
-     * */
+     */
     public int getTotalArmies() {
         int count = 0;
         for (Country country : countries) {
@@ -234,6 +242,9 @@ public class Player extends Observable {
 
     /**
      * To add the armies to the respective countries on click of Add button
+     *
+     * @param country      country to reinforce
+     * @param armySelected number of armies
      */
     public void reinforce(Country country, int armySelected) {
         GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
@@ -243,9 +254,10 @@ public class Player extends Observable {
         updateView();
     }
 
-
     /**
      * To set the total armies getting from getTotalArmies() method in totalArmies attribute
+     *
+     * @param cardName name of card
      */
     public void addInSelectedCards(String cardName) {
         if (selectedCards.size() < 3) {
@@ -293,6 +305,7 @@ public class Player extends Observable {
     /**
      * To get the updated total armies when a set of three cards are changed
      *
+     * @param totalArmiesLocal number of armies
      * @return the updated armies
      */
     public int exchangeCardsForArmies(int totalArmiesLocal) {
@@ -411,7 +424,6 @@ public class Player extends Observable {
         }
     }
 
-
     /**
      * Attack phase of the game
      *
@@ -465,14 +477,4 @@ public class Player extends Observable {
 
         }
     }
-
-    /**
-     * comparator function for sorting
-     */
-    private Comparator<Integer> diceComparator = new Comparator<Integer>() {
-        @Override
-        public int compare(Integer o1, Integer o2) {
-            return o2 - o1;
-        }
-    };
 }

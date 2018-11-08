@@ -18,15 +18,6 @@ import java.util.Observer;
  */
 public class AttackPanel extends JPanel implements Observer {
     /**
-     * Controller for AttackPanel
-     */
-    AttackController attackController;
-    /**
-     * Panel for displaying Countries owned by current player
-     */
-    private JPanel countryPanel;
-
-    /**
      * Panel for displaying the dice
      */
     public JPanel dicePanel;
@@ -39,22 +30,9 @@ public class AttackPanel extends JPanel implements Observer {
      */
     public JPanel moveArmyPanel;
     /**
-     * Select box to choose between players' country for attacking
-     */
-    private JComboBox<Country> countries;
-    /**
-     * Select box to choose between players' neighbouring countries to attack
-     */
-    private JComboBox<Country> neighbouringCountries;
-    /**
      * Select box to choose between game mode
      */
     public JComboBox<String> selectMode;
-    /**
-     * Panel for displaying neighboring countries to selected country to which fortify can done
-     */
-    private JPanel neighbouringPanel;
-
     /**
      * Select box for choosing no. of dice to roll for player
      */
@@ -67,7 +45,6 @@ public class AttackPanel extends JPanel implements Observer {
      * Select box for choosing no. of armies to transfer
      */
     public JComboBox<Integer> armyToMove;
-
     /**
      * shows the result of dice roll of player
      */
@@ -76,7 +53,26 @@ public class AttackPanel extends JPanel implements Observer {
      * shows the result of dice roll of opponent
      */
     public JLabel resultOpponent;
-
+    /**
+     * Controller for AttackPanel
+     */
+    AttackController attackController;
+    /**
+     * Panel for displaying Countries owned by current player
+     */
+    private JPanel countryPanel;
+    /**
+     * Select box to choose between players' country for attacking
+     */
+    private JComboBox<Country> countries;
+    /**
+     * Select box to choose between players' neighbouring countries to attack
+     */
+    private JComboBox<Country> neighbouringCountries;
+    /**
+     * Panel for displaying neighboring countries to selected country to which fortify can done
+     */
+    private JPanel neighbouringPanel;
     /**
      * button to move the armies
      */

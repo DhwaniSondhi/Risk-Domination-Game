@@ -7,15 +7,6 @@ import java.util.*;
  */
 public class Country extends Observable {
     /**
-     * @see java.lang.Enum to check what to observe
-     */
-    public enum Update {
-        ARMY,
-        OWNER,
-        DICE
-    }
-
-    /**
      * Variable for state
      */
     public Update state = null;
@@ -37,9 +28,8 @@ public class Country extends Observable {
     public int numOfArmies;
     /**
      * Number of Dice allowed for a country
-     * */
+     */
     public int numOfDiceAllowed = 0;
-
     /**
      * flag for distinction
      */
@@ -56,7 +46,6 @@ public class Country extends Observable {
      * Variable for number of armies at selected connected country
      */
     int numberOfArmiesAtConnnectedCountry;
-
     /**
      * Constructor to set current name and id of country
      *
@@ -113,6 +102,7 @@ public class Country extends Observable {
     public int getNumberofArmies() {
         return numOfArmies;
     }
+
     /**
      * Assign army to country in startup phase
      *
@@ -165,8 +155,9 @@ public class Country extends Observable {
 
     /**
      * computes the number of dice allowed during the attack phase
+     *
      * @param isOpponent flag to check if it is opponent
-     * */
+     */
     public void updateNumOfDiceAllowed(boolean isOpponent) {
         numOfDiceAllowed = 0;
         int numArmies = this.getNumberofArmies();
@@ -192,8 +183,9 @@ public class Country extends Observable {
 
     /**
      * Change owner of the country
+     *
      * @param newOwner player who won the country
-     * */
+     */
     public void changeOwner(Player newOwner) {
         owner.countries.remove(this);
         this.owner = newOwner;
@@ -207,8 +199,9 @@ public class Country extends Observable {
 
     /**
      * add and assign the new number of armies
+     *
      * @param numOfArmies number of armies to be added
-     * */
+     */
     public void addArmies(int numOfArmies) {
         this.numOfArmies += numOfArmies;
         GameMap.getInstance().notifyChanges();
@@ -219,13 +212,23 @@ public class Country extends Observable {
 
     /**
      * deduct and assign the new number of armies
+     *
      * @param numOfArmies number of armies to be deducted
-     * */
+     */
     public void deductArmies(int numOfArmies) {
         this.numOfArmies -= numOfArmies;
         GameMap.getInstance().notifyChanges();
         state = Update.ARMY;
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * @see java.lang.Enum to check what to observe
+     */
+    public enum Update {
+        ARMY,
+        OWNER,
+        DICE
     }
 }

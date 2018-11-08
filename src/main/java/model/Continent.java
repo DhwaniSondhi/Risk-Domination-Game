@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Continent Model
@@ -48,7 +47,7 @@ public class Continent extends Observable {
     public boolean isOwnedBy(Player player) {
         boolean flag = true;
         for (Country country : countries) {
-            if(country.owner.id != player.id) {
+            if (country.owner.id != player.id) {
                 flag = false;
                 break;
             }

@@ -84,7 +84,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
      * The code written for this method performs the operations
      * that need to occur when an item is selected (or deselected).
      *
-     * @param e
+     * @param e event for state change
      */
     @Override
     public void itemStateChanged(ItemEvent e) {

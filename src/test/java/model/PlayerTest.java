@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
 
@@ -19,23 +19,23 @@ public class PlayerTest {
     GameMap gameMap;
 
     /**
-    * HashMap for countries(the country's id as the key and country object as the value)
-    */
+     * HashMap for countries(the country's id as the key and country object as the value)
+     */
     HashMap<Integer, Country> countries;
 
     /**
-    * List for countries in the continent
-    */
+     * List for countries in the continent
+     */
     ArrayList<Country> countriesInContinent;
 
     /**
      * HashMap for players(the player's id as the key and player object as the value)
-    */
+     */
     HashMap<Integer, Player> players;
 
     /**
-    * List for cards
-    */
+     * List for cards
+     */
     ArrayList<Card> cards;
 
     /**
@@ -106,92 +106,52 @@ public class PlayerTest {
         players.get(2).cards = cards;
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void fortify() {
-    }
-
-    @Test
-    public void initializeCountryToPlayer() {
-    }
-
-    @Test
-    public void addRandomCard() {
-    }
-
     @Test
     public void getTotalArmies() {
         int totalArmies;
-       // to check armies for player having countries less than 9
-       //---will be given 3 armies
-       Player currentPlayerLocal= gameMap.currentPlayer;
-       gameMap.currentPlayer=players.get(2);
-       totalArmies=gameMap.currentPlayer.getTotalArmies(countries,continents);
-       assertEquals(3,totalArmies);
+        // to check armies for player having countries less than 9
+        //---will be given 3 armies
+        Player currentPlayerLocal = gameMap.currentPlayer;
+        gameMap.currentPlayer = players.get(2);
+        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
+        assertEquals(3, totalArmies);
 
-       //to check armies for player having countries equal to 13 but not complete continent
-       //---will be given 13/3=4 armies
-        gameMap.currentPlayer=players.get(3);
-        totalArmies=gameMap.currentPlayer.getTotalArmies(countries,continents);
-       assertEquals(4,totalArmies);
+        //to check armies for player having countries equal to 13 but not complete continent
+        //---will be given 13/3=4 armies
+        gameMap.currentPlayer = players.get(3);
+        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
+        assertEquals(4, totalArmies);
 
-       //to check armies for player having countries equal to 12 but have a complete continent with control value 7
-       //---will be given 12/3+7=11 armies
-        gameMap.currentPlayer=players.get(1);
-        totalArmies=gameMap.currentPlayer.getTotalArmies(countries,continents);
-       assertEquals(11,totalArmies);
+        //to check armies for player having countries equal to 12 but have a complete continent with control value 7
+        //---will be given 12/3+7=11 armies
+        gameMap.currentPlayer = players.get(1);
+        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
+        assertEquals(11, totalArmies);
 
-        gameMap.currentPlayer=currentPlayerLocal;
+        gameMap.currentPlayer = currentPlayerLocal;
     }
 
     @Test
     public void getCardSetsOfPlayer() {
 
-        HashMap<String,Integer> cardsToBeTested;
+        HashMap<String, Integer> cardsToBeTested;
 
-        Player currentPlayerLocal= gameMap.currentPlayer;
-        gameMap.currentPlayer=players.get(1);
-        cardsToBeTested=gameMap.currentPlayer.getCardSetsOfPlayer();
-        assertEquals(3,cardsToBeTested.size());//size will always be 3
-        assertEquals(3,cardsToBeTested.get("CAVALRY").intValue());
-        assertEquals(1,cardsToBeTested.get("INFANTRY").intValue());
-        assertEquals(4,cardsToBeTested.get("ARTILLERY").intValue());
+        Player currentPlayerLocal = gameMap.currentPlayer;
+        gameMap.currentPlayer = players.get(1);
+        cardsToBeTested = gameMap.currentPlayer.getCardSetsOfPlayer();
+        assertEquals(3, cardsToBeTested.size());//size will always be 3
+        assertEquals(3, cardsToBeTested.get("CAVALRY").intValue());
+        assertEquals(1, cardsToBeTested.get("INFANTRY").intValue());
+        assertEquals(4, cardsToBeTested.get("ARTILLERY").intValue());
 
-        gameMap.currentPlayer=players.get(2);
-        cardsToBeTested=gameMap.currentPlayer.getCardSetsOfPlayer();
-        assertEquals(3,cardsToBeTested.size());//size will always be 3
-        assertEquals(2,cardsToBeTested.get("CAVALRY").intValue());
-        assertEquals(0,cardsToBeTested.get("INFANTRY").intValue());
-        assertEquals(1,cardsToBeTested.get("ARTILLERY").intValue());
+        gameMap.currentPlayer = players.get(2);
+        cardsToBeTested = gameMap.currentPlayer.getCardSetsOfPlayer();
+        assertEquals(3, cardsToBeTested.size());//size will always be 3
+        assertEquals(2, cardsToBeTested.get("CAVALRY").intValue());
+        assertEquals(0, cardsToBeTested.get("INFANTRY").intValue());
+        assertEquals(1, cardsToBeTested.get("ARTILLERY").intValue());
 
-        gameMap.currentPlayer=currentPlayerLocal;
-    }
-
-    @Test
-    public void setUnSelectedCards() {
-    }
-
-    @Test
-    public void setArmiesForReinforcement() {
-    }
-
-    @Test
-    public void changeArmiesOfCountries() {
-    }
-
-    @Test
-    public void addInSelectedCards() {
-    }
-
-    @Test
-    public void resetSelectedCards() {
-    }
-
-    @Test
-    public void emptySelectedCards() {
+        gameMap.currentPlayer = currentPlayerLocal;
     }
 
     @Test
@@ -200,32 +160,32 @@ public class PlayerTest {
 
         //to check armies for player having countries equal to 13 but not complete continent
         //---will be given 13/3=4 armies
-        Player currentPlayerLocal= gameMap.currentPlayer;
-        gameMap.currentPlayer=players.get(3);
-        totalArmies=gameMap.currentPlayer.getTotalArmies(countries,continents);
+        Player currentPlayerLocal = gameMap.currentPlayer;
+        gameMap.currentPlayer = players.get(3);
+        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
         gameMap.currentPlayer.setArmiesForReinforcement();
-        assertEquals(4,totalArmies);
+        assertEquals(4, totalArmies);
 
         //initially the armies were 4
         //on every set of 3 cards are exchanged---5 armies will be allotted on first exchange
         //---will be given 4+5=9 armies
-        totalArmies=gameMap.currentPlayer.exchangeCardsForArmies(totalArmies);
-        assertEquals(9,totalArmies);
+        totalArmies = gameMap.currentPlayer.exchangeCardsForArmies(totalArmies);
+        assertEquals(9, totalArmies);
 
         //now the armies were 9
         //on every set of 3 cards are exchanged---10 armies will be allotted on second exchange
         //---will be given 9+10=19 armies
-        totalArmies=gameMap.currentPlayer.exchangeCardsForArmies(totalArmies);
-        assertEquals(19,totalArmies);
+        totalArmies = gameMap.currentPlayer.exchangeCardsForArmies(totalArmies);
+        assertEquals(19, totalArmies);
 
         //now the armies were 19
         //on every set of 3 cards are exchanged---15 armies will be allotted on third exchange
         //---will be given 19+15=34 armies
-        gameMap.currentPlayer=players.get(3);
-        totalArmies=gameMap.currentPlayer.exchangeCardsForArmies(totalArmies);
-        assertEquals(34,totalArmies);
+        gameMap.currentPlayer = players.get(3);
+        totalArmies = gameMap.currentPlayer.exchangeCardsForArmies(totalArmies);
+        assertEquals(34, totalArmies);
 
-        gameMap.currentPlayer=currentPlayerLocal;
+        gameMap.currentPlayer = currentPlayerLocal;
     }
 
     /**
@@ -400,7 +360,7 @@ public class PlayerTest {
 
     /**
      * check if the cards are transfered to another player if all the countries of player is captured
-     * */
+     */
     @Test
     public void winCards() {
         gameMap.players.get(3).addRandomCard();

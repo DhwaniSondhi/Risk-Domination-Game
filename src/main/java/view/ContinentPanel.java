@@ -75,8 +75,8 @@ public class ContinentPanel extends JPanel implements Observer {
      * <code>notifyObservers</code> method to have all the object's
      * observers notifies of the change.
      *
-     * @param o     the observable object.
-     * @param arg   an argument passed to the <code>notifyObservers</code>
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
      */
     @Override
     public void update(Observable o, Object arg) {

@@ -15,9 +15,9 @@
     2. function declarations should come after variable definitions
     3. group together private and public variables / functions
 4. Comments
-    1. Add comments before all the code blocks (class, function, variables)
-    2. should follow javadoc format
-    3. No unwanted commented code should be present 
+    1. Add comments before all the code blocks (class, function, variables) 
+    2. No unwanted commented code should be present 
+    3. Javadoc comments should include all the parameter and return type if there is any.
 5. Folder Structure
     1. Only 4 folders
     2. Model : Core Component Classes and Business logic only.

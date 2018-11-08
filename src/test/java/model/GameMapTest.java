@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class GameMapTest {
     /**
@@ -110,4 +111,43 @@ public class GameMapTest {
 
     }
 
+    /**
+     * test for the number of armies of player calculation
+     */
+    @Test
+    public void getNumberOfArmiesOwnedByPlayers() {
+        gameMap.setDummyData();
+        List<Integer> armies = gameMap.getNumberOfArmiesOwnedByPlayers();
+        Assert.assertEquals(3, armies.size());
+        Assert.assertEquals(Integer.valueOf(27), armies.get(0));
+        Assert.assertEquals(Integer.valueOf(22), armies.get(1));
+        Assert.assertEquals(Integer.valueOf(71), armies.get(2));
+    }
+
+    /**
+     * test for the number of countries of player calculation
+     */
+    @Test
+    public void getNumberOfCountriesOwnedByPlayers() {
+        gameMap.setDummyData();
+        List<Integer> countries = gameMap.getNumberOfCountriesOwnedByPlayers();
+        Assert.assertEquals(3, countries.size());
+        Assert.assertEquals(Integer.valueOf(3), countries.get(0));
+        Assert.assertEquals(Integer.valueOf(2), countries.get(1));
+        Assert.assertEquals(Integer.valueOf(3), countries.get(2));
+    }
+
+    /**
+     * test for the number of armies of player calculation
+     */
+
+    @Test
+    public void getNumberOfContinentsOwnedByPlayers() {
+        gameMap.setDummyData();
+        List<Integer> data = gameMap.getNumberOfContinentsOwnedByPlayers();
+        Assert.assertEquals(3, data.size());
+        Assert.assertEquals(Integer.valueOf(2), data.get(0));
+        Assert.assertEquals(Integer.valueOf(2), data.get(1));
+        Assert.assertEquals(Integer.valueOf(2), data.get(2));
+    }
 }

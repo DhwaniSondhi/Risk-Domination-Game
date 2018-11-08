@@ -4,7 +4,6 @@ import model.Continent;
 import model.Country;
 import model.GameMap;
 import model.Node;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

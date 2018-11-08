@@ -32,7 +32,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
     /**
      * Invoked when an action occurs.
      *
-     * @param e
+     * @param e event for the action performed
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -49,7 +49,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
             if (view.playerCountries.getSelectedItem() != null) {
                 Country country = (Country) view.playerCountries.getSelectedItem();
                 int armies = ((Integer) view.numOfArmies.getSelectedItem());
-                country.setNumOfArmies( armies);
+                country.setNumOfArmies(armies);
             }
             if (view.playerCountries.getItemCount() == 1)
                 completedPlayers.add(model.currentPlayer.id);
@@ -64,7 +64,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
     /**
      * Function for current player change
      *
-     * @return true,false
+     * @return true, false
      */
     private boolean changeCurrentPlayer() {
         if (completedPlayers.size() == model.players.size())

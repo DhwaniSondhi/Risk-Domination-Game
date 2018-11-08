@@ -23,6 +23,7 @@ public class FileHelperTest {
      * Variable to test Invalid File
      */
     File errorFile;
+
     /**
      * It set up the environment for tests
      *
@@ -34,6 +35,7 @@ public class FileHelperTest {
         testFile2 = new File("maps/test-case/test1.map");
         errorFile = new File("maps/test-case/404.map");
     }
+
     /**
      * It remove environment after tests
      *

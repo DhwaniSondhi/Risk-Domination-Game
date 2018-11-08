@@ -162,7 +162,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
             cardButtonPanelCavalry.add(cardLabel);
             cardsUnselected.add(cardButtonPanelCavalry);
 
-            cardsNum =0;
+            cardsNum = 0;
         } else {
             while (itForCards.hasNext()) {
                 Map.Entry cardPair = (Map.Entry) itForCards.next();
@@ -186,9 +186,9 @@ public class ReinforcementPanel extends JPanel implements Observer {
         buttons.setLayout(new GridLayout(1, 1));
         JButton exchangeCards = new JButton("Exchange Cards");
         exchangeCards.setName("exchangeCards");
-        if(cardsNum==0){
+        if (cardsNum == 0) {
             exchangeCards.setEnabled(false);
-        }else{
+        } else {
             exchangeCards.setEnabled(true);
         }
         exchangeCards.addActionListener(reinforcementController);

@@ -1,6 +1,7 @@
 package model;
 
 import utility.FileHelper;
+
 import java.util.*;
 
 /**
@@ -30,7 +31,7 @@ public class GameMap extends Observable {
 
     /**
      * Stack of cards for the game
-     * */
+     */
     public int cardStack;
     /**
      * HashMap for continents
@@ -49,40 +50,6 @@ public class GameMap extends Observable {
      * flag to check if game ended
      */
     public boolean gameEnded;
-
-    public enum Phase {
-        /**
-         * Enum values
-         */
-        STARTUP("StartUp Phase"),
-        REINFORCE("Reinforcement Phase"),
-        ATTACK("Attack Phase"),
-        FORTIFY("Fortify Phase");
-        /**
-         * enum name
-         */
-        String name;
-
-        /**
-         * @param name name value for the enum
-         */
-        Phase(final String name) {
-            this.name = name;
-        }
-
-
-        /**
-         * Returns the name of this enum constant, as contained in the
-         * declaration.
-         *
-         * @return the name of this enum constant
-         */
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
     /**
      * current phase
      */
@@ -91,8 +58,6 @@ public class GameMap extends Observable {
      * stores the recent move made in the game
      */
     public String recentMove;
-
-
     /**
      * Initialize countries, continents, players, countryGraph
      * Initialize counter continentCounter, countryCounter
@@ -105,6 +70,8 @@ public class GameMap extends Observable {
         continentCounter = 0;
         countryCounter = 0;
         cardStack = 0;
+
+        FileHelper.writeLog("=================== NEW GAME =====================");
     }
 
     /**
@@ -161,7 +128,6 @@ public class GameMap extends Observable {
         countries.put(idOfNeighbor, neighborSelected);
     }
 
-
     /**
      * Saves the country and their neighbouring countries
      * While saving checks the validity of the map (Case : Continent for a country doesnot exist)
@@ -202,6 +168,7 @@ public class GameMap extends Observable {
      *
      * @param countryId id of the country
      * @param country   name of the country
+     * @return countryId
      */
     private int insertCountry(int countryId, String country) {
         if (countryId == -1) {
@@ -235,7 +202,6 @@ public class GameMap extends Observable {
         }
         return -1;
     }
-
 
     /**
      * It clears the data of HashMap
@@ -296,10 +262,11 @@ public class GameMap extends Observable {
 
     /**
      * initializes the card stack value for the game
-     * */
-    public void setCardStack(){
+     */
+    public void setCardStack() {
         cardStack = countries.size();
     }
+
     /**
      * Assign countries randomly to players
      */
@@ -347,9 +314,6 @@ public class GameMap extends Observable {
         setChanged();
         notifyObservers();
     }
-
-
-
 
     /**
      * provides initial number of army based on number of players
@@ -518,5 +482,38 @@ public class GameMap extends Observable {
 
         currentPlayer = players.get(1);
         cardStack = 8;
+    }
+
+    public enum Phase {
+        /**
+         * Enum values
+         */
+        STARTUP("StartUp Phase"),
+        REINFORCE("Reinforcement Phase"),
+        ATTACK("Attack Phase"),
+        FORTIFY("Fortify Phase");
+        /**
+         * enum name
+         */
+        String name;
+
+        /**
+         * @param name name value for the enum
+         */
+        Phase(final String name) {
+            this.name = name;
+        }
+
+
+        /**
+         * Returns the name of this enum constant, as contained in the
+         * declaration.
+         *
+         * @return the name of this enum constant
+         */
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

@@ -48,7 +48,11 @@ public class PlayerDominationView extends JPanel implements Observer {
     /**
      * update the player information
      *
-     * @param players player data
+     * @param players         player data
+     * @param countriesOwned  list of countries owned corresponding to player
+     * @param percentageOwned list of percentage domination corresponding to player
+     * @param continentsOwned list of continents owned corresponding to player
+     * @param numOfArmies     list of armies belonging to corresponding player
      */
 
     public void updateData(HashMap<Integer, Player> players, List<Integer> countriesOwned, List<Double> percentageOwned,

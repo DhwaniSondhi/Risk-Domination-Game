@@ -49,9 +49,10 @@ public class StartUpFrame extends JFrame implements Observer {
      */
     private StartUpController controller;
 
-
     /**
      * initializes the controller and sets up the layout for the view
+     *
+     * @param stateChangeListener listener for state change
      */
     public StartUpFrame(GameStateChangeListener stateChangeListener) {
         super("Welcome to the Game");

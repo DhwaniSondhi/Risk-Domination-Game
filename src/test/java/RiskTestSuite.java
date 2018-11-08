@@ -1,6 +1,7 @@
 import controller.ContinentControllerTest;
 import controller.CountryControllerTest;
 import controller.MapCreatorControllerTest;
+import model.ContinentTest;
 import model.CountryTest;
 import model.GameMapTest;
 import model.PlayerTest;
@@ -19,6 +20,7 @@ import utility.MapHelperTest;
         CountryControllerTest.class,
         CountryTest.class,
         PlayerTest.class,
+        ContinentTest.class,
         MapCreatorControllerTest.class,
         GameMapTest.class,
         FileHelperTest.class,
