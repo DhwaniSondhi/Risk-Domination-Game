@@ -59,7 +59,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
     int totalArmies;
 
     /**
-     * Countries player has for reinforcement
+     * Countries player has during reinforcement
      */
     ArrayList<Country> countries;
 
@@ -91,7 +91,10 @@ public class ReinforcementPanel extends JPanel implements Observer {
     }
 
     /**
-     * To update the details when the cards are updated
+     * To update the details when the cards and armies are updated
+     *
+     * @param player   the observable object.
+     * @param obj an argument passed to the <code>notifyObservers</code>
      */
     public void update(Observable player, Object obj) {
         boolean selectedObserver = ((Player) player).updateReinforcementPanel;
@@ -116,7 +119,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
     }
 
     /**
-     * To add CardSection Panel for cards' selection, updation and resetting
+     * To add CardSection Panel for cards' exchange
      */
     public void addCardSection() {
         if (cardSection != null) {
@@ -179,7 +182,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
     }
 
     /**
-     * To add panel for Update and Reset buttons in CardSection Panel
+     * To add panel for Exchange Cards in CardSection Panel
      */
     public void addButtons() {
         JPanel buttons = new JPanel();

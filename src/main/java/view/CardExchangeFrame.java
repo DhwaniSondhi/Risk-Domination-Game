@@ -73,7 +73,10 @@ public class CardExchangeFrame extends JFrame implements Observer {
     }
 
     /**
-     * To update the details when the cards are updated
+     * To update the details when the cards and armies are updated
+     *
+     *  @param player   the observable object.
+     *  @param obj an argument passed to the <code>notifyObservers</code>
      */
     @Override
     public void update(java.util.Observable player, Object obj) {
@@ -108,7 +111,7 @@ public class CardExchangeFrame extends JFrame implements Observer {
     /**
      * To add Selected Cards Grid in CardSection Panel
      */
-    public void addSelectedCardGrid(/*ArrayList<Card> selectedCards*/) {
+    public void addSelectedCardGrid() {
         if (selectedCards.size() > 0) {
             selectedCardsArray = new Card[selectedCards.size()];
             selectedCards.toArray(selectedCardsArray);

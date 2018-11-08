@@ -106,6 +106,9 @@ public class PlayerTest {
         players.get(2).cards = cards;
     }
 
+    /**
+     * Check the function calculating the total armies on start of every reinforcement phase
+     */
     @Test
     public void getTotalArmies() {
         int totalArmies;
@@ -131,6 +134,9 @@ public class PlayerTest {
         gameMap.currentPlayer = currentPlayerLocal;
     }
 
+    /**
+     * Check the function which converts the cards' list to HashMap(the card's name as the key and the card's number as the value)
+     */
     @Test
     public void getCardSetsOfPlayer() {
 
@@ -154,6 +160,9 @@ public class PlayerTest {
         gameMap.currentPlayer = currentPlayerLocal;
     }
 
+    /**
+     * Check the function updating the total armies when the set of three cards are exchanged
+     */
     @Test
     public void getUpdatedArmiesOnCardsExchange() {
         int totalArmies;

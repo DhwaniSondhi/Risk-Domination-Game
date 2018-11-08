@@ -33,6 +33,7 @@ public class Player extends Observable {
      * HashMap for countries
      */
     public ArrayList<Country> countries;
+
     /**
      * Armies on trading card
      */
@@ -92,7 +93,7 @@ public class Player extends Observable {
     /**
      * Constructor
      * <p>
-     * Sets up the id, name and selected cards of the player
+     * Sets up the various attributes of the player
      * </p>
      *
      * @param id   id of player
@@ -158,7 +159,7 @@ public class Player extends Observable {
     }
 
     /**
-     * To calculate the total armies from the countries and continents own by the player
+     * To calculate the total armies from the countries and continents own by the player for reinforcement phase
      *
      * @param countries  list of countries in the instance
      * @param continents list of continents in the instance

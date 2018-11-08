@@ -38,7 +38,7 @@ public class CardExchangeController extends BaseController<CardExchangeFrame> im
 
 
     /**
-     * Invoked on any action performed on Add, Update, Reset and Exit buttons for Card Section in Reinforcement Panel
+     * Invoked on any action performed on Add, Update, Reset and Exit buttons for Card Section in Exchange Cards View
      *
      * @param e {@link ActionEvent}
      */
