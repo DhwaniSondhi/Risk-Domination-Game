@@ -93,8 +93,8 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * To update the details when the cards and armies are updated
      *
-     * @param player   the observable object.
-     * @param obj an argument passed to the <code>notifyObservers</code>
+     * @param player the observable object.
+     * @param obj    an argument passed to the <code>notifyObservers</code>
      */
     public void update(Observable player, Object obj) {
         boolean selectedObserver = ((Player) player).updateReinforcementPanel;

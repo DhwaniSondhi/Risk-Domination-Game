@@ -46,6 +46,7 @@ public class Country extends Observable {
      * Variable for number of armies at selected connected country
      */
     int numberOfArmiesAtConnnectedCountry;
+
     /**
      * Constructor to set current name and id of country
      *

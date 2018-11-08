@@ -44,7 +44,7 @@ public class ContinentControllerTest {
      * check if view method is called or not from controller method
      */
     @Test
-    public void updateContinentList() throws Exception {
+    public void updateContinentList() {
         controller.updateContinentList();
         Mockito.verify(view).updateContinentList(gameMap.continents.values());
     }

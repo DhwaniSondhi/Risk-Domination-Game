@@ -27,7 +27,7 @@ public class MapHelperTest {
      * nodeHashMap contains all the countryNodes(Countries)
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         nodeHashMap = new HashMap<>();
         gameMap = GameMap.getInstance();
 

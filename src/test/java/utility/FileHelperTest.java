@@ -26,11 +26,9 @@ public class FileHelperTest {
 
     /**
      * It set up the environment for tests
-     *
-     * @throws Exception when exception occurs
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         testFile1 = new File("maps/test-case/test.map");
         testFile2 = new File("maps/test-case/test1.map");
         errorFile = new File("maps/test-case/404.map");
@@ -38,11 +36,9 @@ public class FileHelperTest {
 
     /**
      * It remove environment after tests
-     *
-     * @throws Exception when exception occurs
      */
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         testFile1 = null;
         testFile2 = null;
     }
@@ -76,7 +72,7 @@ public class FileHelperTest {
      * Checks if the contents of the file are properly loaded to file or not
      */
     @Test
-    public void loadToForm() throws Exception {
+    public void loadToForm() {
         HashMap<String, List<String>> data = FileHelper.loadToForm(testFile2);
         Assert.assertNotNull(data);
         List<String> continents = data.get("continent");
@@ -102,7 +98,7 @@ public class FileHelperTest {
      * <code>loadToFrom</code> method of <code>FileHelper</code> class
      */
     @Test
-    public void saveMapToFile() throws Exception {
+    public void saveMapToFile() {
         File file = new File("maps/test-case/trial.map");
         String[] continents = new String[]{"Asia=4"};
         String[] countries = new String[]{"Nepal,Asia,China", "India,Asia,China", "China,Asia,India,Nepal"};
@@ -123,7 +119,7 @@ public class FileHelperTest {
      * Check if the all the elements of the map has been cleared or not
      */
     @Test
-    public void emptyConfig() throws Exception {
+    public void emptyConfig() {
         FileHelper.emptyConfig();
         GameMap map = GameMap.getInstance();
         Assert.assertTrue(map.countries.isEmpty());

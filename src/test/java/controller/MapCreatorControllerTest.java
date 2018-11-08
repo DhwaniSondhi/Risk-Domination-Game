@@ -55,7 +55,7 @@ public class MapCreatorControllerTest {
      * Checks if the validateFormData return true for valid data
      */
     @Test
-    public void checkValidFormData() throws Exception {
+    public void checkValidFormData() {
         boolean errorOccurred = false;
         try {
             controller.validateFormData(continentItems, countryItems);
@@ -71,7 +71,7 @@ public class MapCreatorControllerTest {
      * Check for error message for not connected graph
      */
     @Test
-    public void checkInvalidFormData() throws Exception {
+    public void checkInvalidFormData() {
         try {
             controller.validateFormData(invalidContinentItems, invalidCountryItems);
         } catch (Exception e) {

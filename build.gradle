@@ -28,7 +28,9 @@ dependencies {
 
 task createJavadoc(type: Javadoc) {
     source = sourceSets.main.allJava
+    source += sourceSets.test.allJava
     options.memberLevel = JavadocMemberLevel.PRIVATE
     classpath = configurations.compile
+    classpath += configurations.testCompile
     destinationDir = file("./public/")
 }

@@ -49,7 +49,7 @@ public class ContinentTest {
      * Test for the owner of continent
      */
     @Test
-    public void isOwnedBy() throws Exception {
+    public void isOwnedBy() {
         Assert.assertFalse(continent1.isOwnedBy(player1));
         Assert.assertTrue(continent2.isOwnedBy(player1));
     }

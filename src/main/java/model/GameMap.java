@@ -58,6 +58,7 @@ public class GameMap extends Observable {
      * stores the recent move made in the game
      */
     public String recentMove;
+
     /**
      * Initialize countries, continents, players, countryGraph
      * Initialize counter continentCounter, countryCounter
@@ -366,7 +367,7 @@ public class GameMap extends Observable {
      */
     public void checkGameEnd() {
         if (currentPlayer.countries.size() == countries.size()) {
-            setRecentMove("Game Over: " + currentPlayer + " wins the game.");
+            setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
             gameEnded = true;
         } else {
