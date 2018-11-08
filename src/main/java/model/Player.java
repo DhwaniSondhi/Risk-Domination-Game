@@ -411,8 +411,8 @@ public class Player extends Observable {
                     numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
                     attackingCountry = selectedCountry;
                     attackedCountry = selectedNeighbouringCountry;
-                    selectedNeighbouringCountry.changeOwner(this);
                     winCards(selectedNeighbouringCountry.owner);
+                    selectedNeighbouringCountry.changeOwner(this);
                     GameMap.getInstance().checkGameEnd();
                     setChanged();
                     notifyObservers();
@@ -471,11 +471,14 @@ public class Player extends Observable {
      * if a player has won any country during the attack add random card to the player
      */
     public void gainCard() {
-        if (hasConquered && GameMap.getInstance().cardStack > 0) {
-            GameMap.getInstance().setRecentMove(name + " got a card for conquering atleast one country.");
-            addRandomCard();
-            hasConquered = false;
-
+        if (hasConquered) {
+            if(GameMap.getInstance().cardStack > 0) {
+                GameMap.getInstance().setRecentMove(name + " got a card for conquering atleast one country.");
+                addRandomCard();
+                hasConquered = false;
+            }else {
+                GameMap.getInstance().setRecentMove(name + " did not receive a card because no card available in stack.");
+            }
         }
     }
 }

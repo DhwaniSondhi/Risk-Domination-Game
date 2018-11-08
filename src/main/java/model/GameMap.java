@@ -370,11 +370,11 @@ public class GameMap extends Observable {
             setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
             gameEnded = true;
+            setChanged();
+            notifyChanges();
         } else {
             gameEnded = false;
         }
-        setChanged();
-        notifyChanges();
     }
 
     /**

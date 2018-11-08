@@ -201,6 +201,7 @@ public class AttackPanel extends JPanel implements Observer {
      */
     public void update() {
         attackController.initialize();
+        showCountries(GameMap.getInstance().currentPlayer.getCountriesAllowedToAttack());
         selectMode.setSelectedIndex(0);
         resultOpponent.setText("");
         resultPlayer.setText("");
@@ -324,8 +325,8 @@ public class AttackPanel extends JPanel implements Observer {
             } else {
                 switch (country.state) {
                     case OWNER:
-                        showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
                         moveArmyPanel.show();
+                        attackButton.hide();
                         break;
                     case ARMY:
                         country.updateNumOfDiceAllowed(true);
@@ -345,8 +346,6 @@ public class AttackPanel extends JPanel implements Observer {
             GameMap map = ((GameMap) o);
             if (map.gameEnded) {
                 showAlert();
-            } else {
-                showCountries(GameMap.getInstance().currentPlayer.getCountries());
             }
         }
 
