@@ -192,12 +192,18 @@ public class MainFrame extends JFrame implements Observer {
         if (o instanceof GameMap) {
             if (recentMovesPanel != null) {
                 GameMap instance = GameMap.getInstance();
+                if(!currentPhase.getText().contains(instance.currentPhase.toString())) {
+                    recentMovesPanel.removeAll();
+                }
                 currentPhase.setText("Current Phase : " + instance.currentPhase.toString());
                 currentPlayer.setText("Current Player: " + instance.currentPlayer.name);
+
                 if (instance.recentMove != null)
                     recentMovesPanel.add(new JLabel(instance.recentMove));
                 JScrollBar scroll = messagesPanel.getVerticalScrollBar();
                 scroll.setValue(scroll.getMaximum());
+                recentMovesPanel.revalidate();
+                recentMovesPanel.repaint();
             }
         }
     }
