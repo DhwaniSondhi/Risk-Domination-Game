@@ -11,3 +11,10 @@
 * team discussion
 * peer programing
 * IDE lint suggestions
+
+### how we chose the targets
+
+* for every phase of the game, we checked if the code could be optimized
+* We checked if refactor targets were backed by test cases 
+* Refactorings were thought in order to simplify the coding process required for the design patterns we needed for future builds.
+ 
