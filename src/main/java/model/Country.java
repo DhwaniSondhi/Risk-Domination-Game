@@ -162,20 +162,18 @@ public class Country extends Observable {
     public void updateNumOfDiceAllowed(boolean isOpponent) {
         numOfDiceAllowed = 0;
         int numArmies = this.getNumberofArmies();
-        if (numArmies > 3) {
-            numOfDiceAllowed = 3;
-            if (isOpponent) {
+        if (isOpponent) {
+            if (numArmies >= 2) {
                 numOfDiceAllowed = 2;
+            } else if (numArmies == 1) {
+                numOfDiceAllowed = 1;
             }
-        } else if (numArmies == 3) {
-            numOfDiceAllowed = 2;
-        } else if (numArmies == 2) {
-            numOfDiceAllowed = 1;
-            if (isOpponent) {
-                numOfDiceAllowed = 2;
+        } else {
+            if (numArmies > 3) {
+                numOfDiceAllowed = 3;
+            } else {
+                numOfDiceAllowed = numArmies - 1;
             }
-        } else if (numArmies == 1 && isOpponent) {
-            numOfDiceAllowed = 1;
         }
         state = Update.DICE;
         setChanged();
@@ -190,9 +188,7 @@ public class Country extends Observable {
     public void changeOwner(Player newOwner) {
         owner.countries.remove(this);
         this.owner = newOwner;
-
         owner.countries.add(this);
-        GameMap.getInstance().notifyChanges();
         state = Update.OWNER;
         setChanged();
         notifyObservers();

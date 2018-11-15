@@ -150,4 +150,11 @@ public class GameMapTest {
         Assert.assertEquals(Integer.valueOf(2), data.get(1));
         Assert.assertEquals(Integer.valueOf(2), data.get(2));
     }
+
+
+    @Test
+    public void checkGameEnd() {
+
+    }
+
 }

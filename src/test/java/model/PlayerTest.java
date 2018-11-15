@@ -1,5 +1,6 @@
 package model;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -115,19 +116,19 @@ public class PlayerTest {
         //---will be given 3 armies
         Player currentPlayerLocal = gameMap.currentPlayer;
         gameMap.currentPlayer = players.get(2);
-        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
+        totalArmies = gameMap.currentPlayer.getTotalArmiesReinforce(countries, continents);
         assertEquals(3, totalArmies);
 
         //to check armies for player having countries equal to 13 but not complete continent
         //---will be given 13/3=4 armies
         gameMap.currentPlayer = players.get(3);
-        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
+        totalArmies = gameMap.currentPlayer.getTotalArmiesReinforce(countries, continents);
         assertEquals(4, totalArmies);
 
         //to check armies for player having countries equal to 12 but have a complete continent with control value 7
         //---will be given 12/3+7=11 armies
         gameMap.currentPlayer = players.get(1);
-        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
+        totalArmies = gameMap.currentPlayer.getTotalArmiesReinforce(countries, continents);
         assertEquals(11, totalArmies);
 
         gameMap.currentPlayer = currentPlayerLocal;
@@ -170,7 +171,7 @@ public class PlayerTest {
         //---will be given 13/3=4 armies
         Player currentPlayerLocal = gameMap.currentPlayer;
         gameMap.currentPlayer = players.get(3);
-        totalArmies = gameMap.currentPlayer.getTotalArmies(countries, continents);
+        totalArmies = gameMap.currentPlayer.getTotalArmiesReinforce(countries, continents);
         gameMap.currentPlayer.setArmiesForReinforcement();
         assertEquals(4, totalArmies);
 
@@ -381,5 +382,16 @@ public class PlayerTest {
         gameMap.currentPlayer.winCards(gameMap.players.get(3));
         assertEquals(0, gameMap.players.get(3).cards.size());
         assertEquals(3, gameMap.currentPlayer.cards.size());
+    }
+
+
+    @Test
+    public void countryConquered() {
+        List<Country> countriesAllowedToAttack = gameMap.currentPlayer.getCountriesAllowedToAttack();
+        Country selectedCountry = countriesAllowedToAttack.get(1);
+        Country selectedNeighbour = gameMap.countries.get(6);
+        gameMap.currentPlayer.countryConquered(selectedCountry, selectedNeighbour);
+        Assert.assertTrue(gameMap.currentPlayer.hasConquered);
+        Assert.assertEquals(selectedNeighbour.owner, selectedCountry.owner);
     }
 }

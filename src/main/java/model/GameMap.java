@@ -485,6 +485,8 @@ public class GameMap extends Observable {
         cardStack = 8;
     }
 
+
+
     public enum Phase {
         /**
          * Enum values
