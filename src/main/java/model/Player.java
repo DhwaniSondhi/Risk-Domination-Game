@@ -1,6 +1,8 @@
 package model;
 
-import java.lang.reflect.Type;
+import utility.strategy.HumanStrategy;
+import utility.strategy.PlayerStrategy;
+
 import java.util.*;
 
 /**
@@ -9,7 +11,10 @@ import java.util.*;
  */
 public class Player extends Observable {
 
-
+    /**
+     * Strategy for the player
+     */
+    PlayerStrategy strategy;
     /**
      * id for player
      */
@@ -90,12 +95,14 @@ public class Player extends Observable {
      * Sets up the various attributes of the player
      * </p>
      *
-     * @param id   id of player
-     * @param name name of player
+     * @param id       id of player
+     * @param name     name of player
+     * @param strategy strategy for the player
      */
-    public Player(int id, String name) {
+    public Player(int id, String name, PlayerStrategy strategy) {
         this.id = id;
         this.name = name;
+        this.strategy = strategy;
         cards = new ArrayList<>();
         countries = new ArrayList<>();
         diceValuesPlayer = new ArrayList<>();
@@ -106,19 +113,16 @@ public class Player extends Observable {
     }
 
     /**
-     * Updates the armies of countries in which armies are transferred
+     * Constructor
+     * <p>
+     * Sets up the various attributes of the player
+     * </p>
      *
-     * @param numberOfArmiesTransfer armies user select to transfer
-     * @param countrySelected        country which user select transfer from
-     * @param neighborSelected       country which user select transfer to
+     * @param id   id of player
+     * @param name name of player
      */
-    public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
-        GameMap.getInstance().setRecentMove(name + " fortified " + neighborSelected.name + " with " + numberOfArmiesTransfer
-                + " armies from " + countrySelected.name);
-        countrySelected.deductArmies(numberOfArmiesTransfer);
-        neighborSelected.addArmies(numberOfArmiesTransfer);
-        setChanged();
-        notifyObservers();
+    public Player(int id, String name) {
+        this(id, name, new HumanStrategy());
     }
 
     /**
@@ -219,7 +223,7 @@ public class Player extends Observable {
     }
 
     /**
-     * To set the total armies getting from getTotalArmiesReinforce() method in totalArmies attribute
+     * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      */
     public void setArmiesForReinforcement() {
         if (totalArmies == 0)
@@ -228,21 +232,7 @@ public class Player extends Observable {
     }
 
     /**
-     * To add the armies to the respective countries on click of Add button
-     *
-     * @param country      country to reinforce
-     * @param armySelected number of armies
-     */
-    public void reinforce(Country country, int armySelected) {
-        GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
-                country.name + " with " + armySelected + " armies.");
-        country.addArmies(armySelected);
-        totalArmies -= armySelected;
-        updateView();
-    }
-
-    /**
-     * To set the total armies getting from getTotalArmiesReinforce() method in totalArmies attribute
+     * To set the total armies getting from getTotalArmies() method in totalArmies attribute
      *
      * @param cardName name of card
      */
@@ -299,13 +289,11 @@ public class Player extends Observable {
         GameMap.getInstance().setRecentMove(name + " exchanged cards for " + updateArmiesForCards + " armies.");
         totalArmies = totalArmiesLocal + this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
-
-        for (Card selectedCard : selectedCards) {
-            Iterator<Card> iterator = cards.iterator();
-            while(iterator.hasNext()){
-                Card card = iterator.next();
-                if(card.type == selectedCard.type){
-                    iterator.remove();
+        ArrayList<Card> removeCards = new ArrayList<>();
+        for (Card cardSelected : selectedCards) {
+            for (Card cardPlayer : this.cards) {
+                if (cardPlayer.type == cardSelected.type && !removeCards.contains(cardPlayer)) {
+                    removeCards.add(cardPlayer);
                     break;
                 }
             }
@@ -342,6 +330,7 @@ public class Player extends Observable {
             if (country.getNumberofArmies() > 1) {
                 countriesAllowedToAttack.add(country);
             }
+
         }
         return countriesAllowedToAttack;
     }
@@ -416,30 +405,6 @@ public class Player extends Observable {
         }
     }
 
-    /**
-     * Attack phase of the game
-     *
-     * @param selectedCountry             country of the player
-     * @param selectedNeighbouringCountry country of the opponent
-     * @param isAllOut                    flag to check the mode of the game
-     */
-    public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        if (isAllOut) {
-            GameMap.getInstance().setRecentMove(name + " started AllOut attack with " + selectedCountry.name
-                    + " on " + selectedNeighbouringCountry.name);
-            while (!this.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
-                selectedCountry.updateNumOfDiceAllowed(false);
-                selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
-                rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);
-                checkVictory(selectedCountry, selectedNeighbouringCountry);
-                attack(selectedCountry, selectedNeighbouringCountry, true);
-            }
-        } else {
-            GameMap.getInstance().setRecentMove(name + " started Normal attack with " + selectedCountry.name
-                    + " on " + selectedNeighbouringCountry.name);
-            checkVictory(selectedCountry, selectedNeighbouringCountry);
-        }
-    }
 
     /**
      * move cards from previous owner to current player if previous owner has zero countries
@@ -471,5 +436,41 @@ public class Player extends Observable {
                 GameMap.getInstance().setRecentMove(name + " did not receive a card because no card available in stack.");
             }
         }
+    }
+
+    /**
+     * To add the armies to the respective countries on click of Add button
+     *
+     * @param country      country to reinforce
+     * @param armySelected number of armies
+     */
+    public void reinforce(Country country, int armySelected) {
+        strategy.reinforce(this, country, armySelected);
+        updateView();
+    }
+
+    /**
+     * Attack phase of the game
+     *
+     * @param selectedCountry             country of the player
+     * @param selectedNeighbouringCountry country of the opponent
+     * @param isAllOut                    flag to check the mode of the game
+     */
+    public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
+        strategy.attack(this, selectedCountry, selectedNeighbouringCountry, isAllOut);
+    }
+
+    /**
+     * Updates the armies of countries in which armies are transferred
+     *
+     * @param numberOfArmiesTransfer armies user select to transfer
+     * @param countrySelected        country which user select transfer from
+     * @param neighborSelected       country which user select transfer to
+     */
+    public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+        strategy.fortify(this, numberOfArmiesTransfer, countrySelected, neighborSelected);
+
+        setChanged();
+        notifyObservers();
     }
 }
