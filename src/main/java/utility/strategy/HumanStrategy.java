@@ -41,10 +41,7 @@ public class HumanStrategy implements PlayerStrategy {
             GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
                     + " on " + selectedNeighbouringCountry.name);
             while (!context.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
-                selectedCountry.updateNumOfDiceAllowed(false);
-                selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
-                context.rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);
-                context.checkVictory(selectedCountry, selectedNeighbouringCountry);
+                context.allOut(selectedCountry, selectedNeighbouringCountry);
                 attack(context, selectedCountry, selectedNeighbouringCountry, true);
             }
         } else {

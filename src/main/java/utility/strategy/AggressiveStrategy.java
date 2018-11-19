@@ -1,7 +1,10 @@
 package utility.strategy;
 
 import model.Country;
+import model.GameMap;
 import model.Player;
+
+import java.util.HashSet;
 
 public class AggressiveStrategy implements PlayerStrategy {
 
@@ -33,7 +36,14 @@ public class AggressiveStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-
+        selectedCountry = context.getStrongestCountry();
+        selectedNeighbouringCountry = selectedCountry.getNeighbours().iterator().next();
+        GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
+                + " on " + selectedNeighbouringCountry.name);
+        while (!context.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
+            context.allOut(selectedCountry, selectedNeighbouringCountry);
+            attack(context, selectedCountry, selectedNeighbouringCountry, true);
+        }
     }
 
     /**

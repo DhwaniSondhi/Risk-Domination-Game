@@ -1,5 +1,6 @@
 package model;
 
+import utility.strategy.AggressiveStrategy;
 import utility.strategy.HumanStrategy;
 import utility.strategy.PlayerStrategy;
 
@@ -122,7 +123,23 @@ public class Player extends Observable {
      * @param name name of player
      */
     public Player(int id, String name) {
-        this(id, name, new HumanStrategy());
+        this(id, name, new AggressiveStrategy());
+    }
+
+    /**
+     * Checks the country who has the largest army
+     * @return strongestCountry country which has the largest number of army
+     * */
+    public Country getStrongestCountry(){
+        Country strongestCountry = null;
+        int largestArmy = 0;
+        for(Country country : countries){
+            if(largestArmy < country.getNumberofArmies()){
+                largestArmy = country.getNumberofArmies();
+                strongestCountry = country;
+            }
+        }
+        return strongestCountry;
     }
 
     /**
@@ -447,6 +464,16 @@ public class Player extends Observable {
     public void reinforce(Country country, int armySelected) {
         strategy.reinforce(this, country, armySelected);
         updateView();
+    }
+
+    /**
+     * Steps to be followed when allout mode is active
+     * */
+    public void allOut(Country selectedCountry, Country selectedNeighbouringCountry){
+        selectedCountry.updateNumOfDiceAllowed(false);
+        selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
+        rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, true);
+        checkVictory(selectedCountry, selectedNeighbouringCountry);
     }
 
     /**
