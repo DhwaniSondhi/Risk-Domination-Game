@@ -41,7 +41,7 @@ public class HumanStrategy implements PlayerStrategy {
             GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
                     + " on " + selectedNeighbouringCountry.name);
             while (!context.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
-                context.allOut(selectedCountry, selectedNeighbouringCountry);
+                context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
                 attack(context, selectedCountry, selectedNeighbouringCountry, true);
             }
         } else {

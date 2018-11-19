@@ -123,7 +123,7 @@ public class Player extends Observable {
      * @param name name of player
      */
     public Player(int id, String name) {
-        this(id, name, new AggressiveStrategy());
+        this(id, name, new HumanStrategy());
     }
 
     /**
@@ -469,10 +469,10 @@ public class Player extends Observable {
     /**
      * Steps to be followed when allout mode is active
      * */
-    public void allOut(Country selectedCountry, Country selectedNeighbouringCountry){
+    public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut){
         selectedCountry.updateNumOfDiceAllowed(false);
         selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
-        rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, true);
+        rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);
         checkVictory(selectedCountry, selectedNeighbouringCountry);
     }
 

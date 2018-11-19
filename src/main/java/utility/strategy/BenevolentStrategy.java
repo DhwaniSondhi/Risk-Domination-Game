@@ -33,7 +33,7 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-
+        
     }
 
     /**

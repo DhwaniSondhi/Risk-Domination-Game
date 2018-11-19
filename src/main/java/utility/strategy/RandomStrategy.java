@@ -1,7 +1,10 @@
 package utility.strategy;
 
 import model.Country;
+import model.GameMap;
 import model.Player;
+
+import java.util.Random;
 
 public class RandomStrategy implements PlayerStrategy {
 
@@ -33,6 +36,20 @@ public class RandomStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
+        Random rand = new Random();
+        selectedCountry = context.countries.get(rand.nextInt(context.countries.size()));
+        int index = rand.nextInt(selectedCountry.getNeighbours().size());
+        selectedNeighbouringCountry = (Country) selectedCountry.getNeighbours().toArray()[index];
+        int limit = rand.nextInt(10);
+        for (int i = 0; i < limit; i++) {
+            GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry.name
+                    + " on " + selectedNeighbouringCountry.name);
+
+            context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
+            if(selectedCountry.getNumberofArmies() == 1 || selectedNeighbouringCountry.owner.equals(selectedCountry.owner)){
+                break;
+            }
+        }
 
     }
 

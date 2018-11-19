@@ -4,7 +4,7 @@ import model.Country;
 import model.GameMap;
 import model.Player;
 
-import java.util.HashSet;
+import java.util.Random;
 
 public class AggressiveStrategy implements PlayerStrategy {
 
@@ -37,12 +37,17 @@ public class AggressiveStrategy implements PlayerStrategy {
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         selectedCountry = context.getStrongestCountry();
-        selectedNeighbouringCountry = selectedCountry.getNeighbours().iterator().next();
+        Random rand = new Random();
+        int index = rand.nextInt(selectedCountry.getNeighbours().size());
+        selectedNeighbouringCountry = (Country) selectedCountry.getNeighbours().toArray()[index];
         GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
                 + " on " + selectedNeighbouringCountry.name);
-        while (!context.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
-            context.allOut(selectedCountry, selectedNeighbouringCountry);
-            attack(context, selectedCountry, selectedNeighbouringCountry, true);
+        while (selectedCountry.numOfArmies > 1) {
+            context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
+            if(selectedNeighbouringCountry.owner.equals(selectedCountry.owner)){
+                index = rand.nextInt(selectedCountry.getNeighbours().size());
+                selectedNeighbouringCountry = (Country) selectedCountry.getNeighbours().toArray()[index];
+            }
         }
     }
 
