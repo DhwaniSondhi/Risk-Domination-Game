@@ -1,7 +1,10 @@
 package utility.strategy;
 
 import model.Country;
+import model.GameMap;
 import model.Player;
+
+import java.util.Random;
 
 public class BenevolentStrategy implements PlayerStrategy {
 
@@ -41,11 +44,19 @@ public class BenevolentStrategy implements PlayerStrategy {
      *
      * @param context reference to player using this strategy
      * @param numberOfArmiesTransfer armies user select to transfer
-     * @param countrySelected        country which user select transfer from
-     * @param neighborSelected       country which user select transfer to
+     * @param strongestCountry        country which user select transfer from
+     * @param weakestCountry       country which user select transfer to
      */
     @Override
-    public void fortify(Player context, int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
-
+    public void fortify(Player context, int numberOfArmiesTransfer, Country strongestCountry, Country weakestCountry) {
+    strongestCountry=context.getStrongestCountry();
+    weakestCountry=context.getWeakestCountry();
+    Random r = new Random();
+    int armiesAtCountry=strongestCountry.numOfArmies-1;
+    numberOfArmiesTransfer=r.nextInt(armiesAtCountry) + 1;
+    GameMap.getInstance().setRecentMove(context.name + " fortified " + weakestCountry.name + " with " + numberOfArmiesTransfer
+                + " armies from " + strongestCountry.name);
+    strongestCountry.deductArmies(numberOfArmiesTransfer);
+    weakestCountry.addArmies(numberOfArmiesTransfer);
     }
 }

@@ -4,6 +4,9 @@ import model.Country;
 import model.GameMap;
 import model.Player;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 public class AggressiveStrategy implements PlayerStrategy {
@@ -56,11 +59,35 @@ public class AggressiveStrategy implements PlayerStrategy {
      *
      * @param context                reference to player using this strategy
      * @param numberOfArmiesTransfer armies user select to transfer
-     * @param countrySelected        country which user select transfer from
-     * @param neighborSelected       country which user select transfer to
+     * @param strongestCountry        country which user select transfer from
+     * @param secondStrongestCountry       country which user select transfer to
      */
     @Override
-    public void fortify(Player context, int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+    public void fortify(Player context, int numberOfArmiesTransfer, Country strongestCountry, Country secondStrongestCountry) {
+    strongestCountry=context.getStrongestCountry();
+    HashMap<Integer,Country> listOfCountriesConnected=strongestCountry.connectedCountries;
+
+
+    int largestArmy = 0;
+    Iterator it=listOfCountriesConnected.entrySet().iterator();
+    while(it.hasNext()){
+        Map.Entry<Integer,Country> entry= (Map.Entry) it.next();
+        Country country= entry.getValue();
+        if(largestArmy < country.getNumberofArmies()){
+            largestArmy = country.getNumberofArmies();
+            secondStrongestCountry = country;
+        }
+
+        it.remove();
+    }
+    numberOfArmiesTransfer=secondStrongestCountry.numOfArmies-1;
+    GameMap.getInstance().setRecentMove(context.name + " fortified " + secondStrongestCountry.name + " with " + numberOfArmiesTransfer
+                + " armies from " + strongestCountry.name);
+    strongestCountry.deductArmies(numberOfArmiesTransfer);
+    secondStrongestCountry.addArmies(numberOfArmiesTransfer);
+
+
+
 
     }
 }

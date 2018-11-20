@@ -164,6 +164,23 @@ public class Player extends Observable {
     }
 
     /**
+     * Finds the country having lowest army
+     *
+     * @return weakest country
+     */
+    public Country getWeakestCountry() {
+        Country weakestCountry = null;
+        int smallestArmy = Integer.MAX_VALUE;
+        for (Country country : countries) {
+            if (smallestArmy > country.getNumberofArmies()) {
+                smallestArmy = country.getNumberofArmies();
+                weakestCountry = country;
+            }
+        }
+        return weakestCountry;
+    }
+
+    /**
      * Initializes countries to current player
      *
      * @param country instance of Country
