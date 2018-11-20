@@ -41,11 +41,11 @@ public class BenevolentStrategy implements PlayerStrategy {
      *
      * @param context reference to player using this strategy
      * @param numberOfArmiesTransfer armies user select to transfer
-     * @param countrySelected        country which user select transfer from
-     * @param neighborSelected       country which user select transfer to
+     * @param strongestCountry        country which user select transfer from
+     * @param weakestCountry       country which user select transfer to
      */
     @Override
-    public void fortify(Player context, int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+    public void fortify(Player context, int numberOfArmiesTransfer, Country strongestCountry, Country weakestCountry) {
 
     }
 }

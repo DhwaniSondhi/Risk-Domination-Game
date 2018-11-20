@@ -1,6 +1,5 @@
 package model;
 
-import utility.strategy.AggressiveStrategy;
 import utility.strategy.HumanStrategy;
 import utility.strategy.PlayerStrategy;
 
@@ -130,18 +129,36 @@ public class Player extends Observable {
 
     /**
      * Checks the country who has the largest army
+     *
      * @return strongestCountry country which has the largest number of army
-     * */
-    public Country getStrongestCountry(){
+     */
+    public Country getStrongestCountry() {
         Country strongestCountry = null;
         int largestArmy = 0;
-        for(Country country : countries){
-            if(largestArmy < country.getNumberofArmies()){
+        for (Country country : countries) {
+            if (largestArmy < country.getNumberofArmies()) {
                 largestArmy = country.getNumberofArmies();
                 strongestCountry = country;
             }
         }
         return strongestCountry;
+    }
+
+    /**
+     * Finds the country having lowest army
+     *
+     * @return weakest country
+     */
+    public Country getWeakestCountry() {
+        Country weakestCountry = null;
+        int smallestArmy = Integer.MAX_VALUE;
+        for (Country country : countries) {
+            if (smallestArmy > country.getNumberofArmies()) {
+                smallestArmy = country.getNumberofArmies();
+                weakestCountry = country;
+            }
+        }
+        return weakestCountry;
     }
 
     /**
@@ -470,8 +487,8 @@ public class Player extends Observable {
 
     /**
      * Steps to be followed when allout mode is active
-     * */
-    public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut){
+     */
+    public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         selectedCountry.updateNumOfDiceAllowed(false);
         selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
         rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);
