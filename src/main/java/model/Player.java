@@ -100,6 +100,8 @@ public class Player extends Observable {
      * @param name     name of player
      * @param strategy strategy for the player
      */
+
+
     public Player(int id, String name, PlayerStrategy strategy) {
         this.id = id;
         this.name = name;
