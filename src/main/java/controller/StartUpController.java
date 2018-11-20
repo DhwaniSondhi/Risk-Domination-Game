@@ -3,16 +3,21 @@ package controller;
 
 import model.Country;
 import model.Player;
+import utility.strategy.PlayerStrategy;
 import view.StartUpFrame;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.HashSet;
 
 /**
  * This class contain functionality to start up game
  */
-public class StartUpController extends BaseController<StartUpFrame> implements ActionListener {
+public class StartUpController extends BaseController<StartUpFrame> implements ActionListener, ItemListener {
     /**
      * HashSet for number of submitted player
      */
@@ -39,10 +44,18 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
         if (e.getActionCommand().equalsIgnoreCase("submit")) {
             model.players.clear();
             completedPlayers.clear();
-            for (int i = 1; i <= Integer.valueOf((Integer) view.numOfPlayers.getSelectedItem()); i++) {
-                Player player = new Player(i, "Player" + i);
+            int index = 1;
+            for (Component component : view.playersPanel.getComponents()) {
+                Component[] c = ((JPanel) component).getComponents();
+                String name = ((JTextField) c[0]).getText();
+                PlayerStrategy.Strategy strategy = (PlayerStrategy.Strategy) ((JComboBox<PlayerStrategy.Strategy>) c[1]).getSelectedItem();
+                Player player = new Player(index, name, strategy);
                 model.players.put(player.id, player);
+                if(strategy != PlayerStrategy.Strategy.HUMAN)
+                    completedPlayers.add(player.id);
+                index++;
             }
+
             model.assignCountriesToPlayers();
             changeCurrentPlayer();
         } else if (e.getActionCommand().equalsIgnoreCase("assign")) {
@@ -58,6 +71,21 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 stateChangeListener.onStartUpCompleted();
                 view.dispose();
             }
+        }
+    }
+
+    /**
+     * Invoked when an item has been selected or deselected by the user.
+     * The code written for this method performs the operations
+     * that need to occur when an item is selected (or deselected).
+     *
+     * @param e
+     */
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            Integer count = (Integer) ((JComboBox<Integer>) e.getSource()).getSelectedItem();
+            view.updatePlayersPanel(count);
         }
     }
 

@@ -3,10 +3,45 @@ package utility.strategy;
 import model.Country;
 import model.Player;
 
+import java.util.List;
+
 /**
  * Strategy interface for player
  */
 public interface PlayerStrategy {
+
+    /**
+     * enum for the types of strategies
+     * */
+    enum Strategy {
+        HUMAN("Human"),
+        AGGRESSIVE("Aggressive"),
+        BENEVOLENT("Benevolent"),
+        RANDOM("Random"),
+        CHEATER("Cheater");
+
+        /**
+         * String representation for the enum value
+         * */
+        private String name;
+        Strategy(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        /**
+         * return array of all enum values
+         *
+         * @return array of all Strategy
+         * */
+        public Strategy[] arrayOfAll(){
+            return new Strategy[]{HUMAN, AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER};
+        }
+    }
 
     /**
      * To add the armies to the respective countries on click of Add button

@@ -1,8 +1,6 @@
 package model;
 
-import utility.strategy.AggressiveStrategy;
-import utility.strategy.HumanStrategy;
-import utility.strategy.PlayerStrategy;
+import utility.strategy.*;
 
 import java.util.*;
 
@@ -100,10 +98,10 @@ public class Player extends Observable {
      * @param name     name of player
      * @param strategy strategy for the player
      */
-    public Player(int id, String name, PlayerStrategy strategy) {
+    public Player(int id, String name, PlayerStrategy.Strategy strategy) {
         this.id = id;
         this.name = name;
-        this.strategy = strategy;
+        this.strategy = getStrategy(strategy);
         cards = new ArrayList<>();
         countries = new ArrayList<>();
         diceValuesPlayer = new ArrayList<>();
@@ -123,18 +121,41 @@ public class Player extends Observable {
      * @param name name of player
      */
     public Player(int id, String name) {
-        this(id, name, new HumanStrategy());
+        this(id, name, PlayerStrategy.Strategy.HUMAN);
+    }
+
+    /**
+     * get Strategy by enum value
+     *
+     * @param strategy strategy for player
+     * @returns player strategy
+     */
+    private PlayerStrategy getStrategy(PlayerStrategy.Strategy strategy) {
+        switch (strategy) {
+            case AGGRESSIVE:
+                return new AggressiveStrategy();
+            case CHEATER:
+                return new CheaterStrategy();
+            case BENEVOLENT:
+                return new BenevolentStrategy();
+            case RANDOM:
+                return new RandomStrategy();
+            case HUMAN:
+            default:
+                return new HumanStrategy();
+        }
     }
 
     /**
      * Checks the country who has the largest army
+     *
      * @return strongestCountry country which has the largest number of army
-     * */
-    public Country getStrongestCountry(){
+     */
+    public Country getStrongestCountry() {
         Country strongestCountry = null;
         int largestArmy = 0;
-        for(Country country : countries){
-            if(largestArmy < country.getNumberofArmies()){
+        for (Country country : countries) {
+            if (largestArmy < country.getNumberofArmies()) {
                 largestArmy = country.getNumberofArmies();
                 strongestCountry = country;
             }
@@ -468,8 +489,8 @@ public class Player extends Observable {
 
     /**
      * Steps to be followed when allout mode is active
-     * */
-    public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut){
+     */
+    public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         selectedCountry.updateNumOfDiceAllowed(false);
         selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
         rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);

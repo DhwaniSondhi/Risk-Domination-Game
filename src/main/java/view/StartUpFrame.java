@@ -4,6 +4,7 @@ import controller.StartUpController;
 import model.Country;
 import model.GameMap;
 import utility.GameStateChangeListener;
+import utility.strategy.PlayerStrategy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,10 @@ public class StartUpFrame extends JFrame implements Observer {
      * Drop-down to select number of armies
      */
     public JComboBox<Integer> numOfArmies;
+    /**
+     * Panel to show Players
+     */
+    public JPanel playersPanel;
     /**
      * Panel to hold countries
      */
@@ -62,7 +67,7 @@ public class StartUpFrame extends JFrame implements Observer {
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-        setSize(300, 300);
+        setSize(400, 400);
         setVisible(true);
 
         JPanel mainPanel = new JPanel();
@@ -76,7 +81,12 @@ public class StartUpFrame extends JFrame implements Observer {
         for (int i = 2; i <= Math.min(6, GameMap.getInstance().countries.size()); i++) {
             numOfPlayers.addItem(i);
         }
+        numOfPlayers.addItemListener(controller);
         mainPanel.add(numOfPlayers);
+
+        playersPanel = new JPanel();
+        playersPanel.setLayout(new GridLayout(3, 2, 10, 5));
+        mainPanel.add(playersPanel);
 
         submitButton = new JButton("Submit");
         submitButton.setName("submit");
@@ -103,6 +113,8 @@ public class StartUpFrame extends JFrame implements Observer {
         assignButton.addActionListener(controller);
         countriesPanel.add(assignButton, getConstraints(0, 5));
 
+        updatePlayersPanel(2);
+
         mainPanel.revalidate();
     }
 
@@ -121,6 +133,38 @@ public class StartUpFrame extends JFrame implements Observer {
         constraints.weighty = 0;
         constraints.weightx = 0;
         return constraints;
+    }
+
+    /**
+     * Shows player fields in the panel
+     *
+     * @param count number of players
+     */
+    public void updatePlayersPanel(int count) {
+        int currentSize = playersPanel.getComponents().length;
+        int diff = Math.abs(currentSize - count);
+        if (currentSize <= count) {
+            for (int i = 0; i < diff; i++) {
+                int x = playersPanel.getComponentCount() + 1;
+                JPanel panel = new JPanel();
+                panel.setLayout(new FlowLayout());
+
+                JTextField nameField = new JTextField();
+                nameField.setText("Player" + x);
+                panel.add(nameField);
+
+                JComboBox<PlayerStrategy.Strategy> type = new JComboBox<>(PlayerStrategy.Strategy.values());
+                panel.add(type);
+
+                playersPanel.add(panel);
+            }
+        } else {
+            for (int i = currentSize - 1; i > currentSize - (diff + 1); i--) {
+                playersPanel.remove(i);
+            }
+        }
+        playersPanel.revalidate();
+        playersPanel.repaint();
     }
 
     /**
