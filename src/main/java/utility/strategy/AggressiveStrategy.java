@@ -89,7 +89,7 @@ public class AggressiveStrategy implements PlayerStrategy {
                         secondStrongestCountry = country;
                     }
 
-                    
+
                 }
                 if(secondStrongestCountry.numOfArmies!=1){
                     numberOfArmiesTransfer = secondStrongestCountry.numOfArmies - 1;
