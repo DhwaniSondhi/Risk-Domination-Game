@@ -17,7 +17,17 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-
+        context.setUnSelectedCards();
+        context.setArmiesForReinforcement();
+        if (context.unselectedCards.size() > 4) {
+            context.exchangeCardsAutomatically();
+        }
+        armySelected = context.totalArmies;
+        country = context.getWeakestCountry();
+        country.addArmies(armySelected);
+        GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
+                country.name + " with " + armySelected + " armies.");
+        GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
     }
 
     /**
