@@ -27,6 +27,7 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
      */
     public ReinforcementController(ReinforcementPanel reinforcementPanel) {
         super(reinforcementPanel);
+        model.addObserver(view);
     }
 
     /**

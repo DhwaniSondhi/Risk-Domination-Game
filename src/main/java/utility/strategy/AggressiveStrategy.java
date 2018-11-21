@@ -19,14 +19,15 @@ public class AggressiveStrategy implements PlayerStrategy {
     public void reinforce(Player context, Country country, int armySelected) {
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
-        if(context.unselectedCards.size()>4){
+        if (context.unselectedCards.size() > 4) {
             context.exchangeCardsAutomatically();
         }
-        armySelected=context.totalArmies;
-        country=context.getStrongestCountry();
+        armySelected = context.totalArmies;
+        country = context.getStrongestCountry();
         country.addArmies(armySelected);
-
-		GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
+        GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
+                country.name + " with " + armySelected + " armies.");
+        GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
     }
 
     /**
@@ -46,8 +47,8 @@ public class AggressiveStrategy implements PlayerStrategy {
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         List<Country> countriesList = context.getStrongestCountries(null);
-        for(Country country : countriesList){
-            if(country.getNeighboursDiffOwner().size() != 0){
+        for (Country country : countriesList) {
+            if (country.getNeighboursDiffOwner().size() != 0) {
                 selectedCountry = country;
                 break;
             }
@@ -58,11 +59,12 @@ public class AggressiveStrategy implements PlayerStrategy {
         selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
         GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
                 + " on " + selectedNeighbouringCountry.name);
-        while (selectedCountry.numOfArmies > 1) {
+        while (selectedCountry.numOfArmies > 1 && !selectedCountry.getNeighboursDiffOwner().isEmpty()) {
             context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
             if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
-                index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
-                selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
+                int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
+                GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
+                context.gainCard();
             }
         }
 

@@ -205,6 +205,7 @@ public class AttackPanel extends JPanel implements Observer {
         selectMode.setSelectedIndex(0);
         resultOpponent.setText("");
         resultPlayer.setText("");
+        moveArmyPanel.hide();
     }
 
     /**

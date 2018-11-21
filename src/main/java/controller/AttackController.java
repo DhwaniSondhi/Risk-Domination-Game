@@ -70,8 +70,6 @@ public class AttackController extends BaseController<AttackPanel> implements Act
             selectedCountry.addObserver(view);
             selectedNeighbouringCountry.addObserver(view);
             int armies = (Integer) view.armyToMove.getSelectedItem();
-            model.setRecentMove(model.currentPlayer.name + " moved " + armies + " armies from " + selectedCountry.name
-                    + " to " + selectedNeighbouringCountry.name);
             model.updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
             view.showCountries(model.currentPlayer.getCountriesAllowedToAttack());
             selectedCountry.deleteObserver(view);

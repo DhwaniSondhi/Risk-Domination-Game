@@ -106,7 +106,7 @@ public class Player extends Observable {
         diceValuesOpponent = new ArrayList<>();
         updateArmiesForCards = 5;
         selectedCards = new ArrayList<>();
-        updateReinforcementPanel = true;
+        updateReinforcementPanel = false;
     }
 
     /**

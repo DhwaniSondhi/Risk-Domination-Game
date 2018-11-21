@@ -3,6 +3,7 @@ package view;
 
 import controller.ReinforcementController;
 import model.Country;
+import model.GameMap;
 import model.Player;
 import utility.GameStateChangeListener;
 
@@ -93,10 +94,11 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * To update the details when the cards and armies are updated
      *
-     * @param player the observable object.
+     * @param o the observable object.
      * @param obj    an argument passed to the <code>notifyObservers</code>
      */
-    public void update(Observable player, Object obj) {
+    public void update(Observable o, Object obj) {
+        Player player = GameMap.getInstance().currentPlayer;
         boolean selectedObserver = ((Player) player).updateReinforcementPanel;
         if (selectedObserver) {
             cardSets = ((Player) player).unselectedCards;

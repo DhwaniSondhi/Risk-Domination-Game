@@ -126,15 +126,17 @@ public class GameMap extends Observable {
      *
      * @param numberOfArmiesTransfer armies user select to transfer
      * @param countrySelected        country which user select transfer from
-     * @param neighborSelected       country which user select transfer to
+     * @param neighbourSelected       country which user select transfer to
      */
-    public void updateArmiesOfCountries(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+    public void updateArmiesOfCountries(int numberOfArmiesTransfer, Country countrySelected, Country neighbourSelected) {
+        setRecentMove(currentPlayer.name + " moved " + numberOfArmiesTransfer + " armies from " + countrySelected.name
+                + " to " + neighbourSelected.name);
         int idOfCountry = countrySelected.id;
         countrySelected.deductArmies(numberOfArmiesTransfer);
-        int idOfNeighbor = neighborSelected.id;
-        neighborSelected.addArmies(numberOfArmiesTransfer);
+        int idOfNeighbor = neighbourSelected.id;
+        neighbourSelected.addArmies(numberOfArmiesTransfer);
         countries.put(idOfCountry, countrySelected);
-        countries.put(idOfNeighbor, neighborSelected);
+        countries.put(idOfNeighbor, neighbourSelected);
     }
 
     /**

@@ -125,6 +125,7 @@ public class Country extends Observable {
      * @param numOfArmies no. of armies
      */
     public void setNumOfArmies(int numOfArmies) {
+        GameMap.getInstance().setRecentMove(name + " was assigned " + numOfArmies + " armies.");
         this.numOfArmies = numOfArmies;
         setChanged();
         notifyObservers();
