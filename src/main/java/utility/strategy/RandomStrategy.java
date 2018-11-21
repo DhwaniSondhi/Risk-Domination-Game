@@ -20,7 +20,22 @@ public class RandomStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-
+        Random random=new Random();
+        context.setUnSelectedCards();
+        context.setArmiesForReinforcement();
+        if (context.unselectedCards.size() > 4) {
+            context.exchangeCardsAutomatically();
+        }
+        armySelected = context.totalArmies;
+        while(armySelected>0){
+            country=context.countries.get(random.nextInt(context.countries.size()));
+            int armyAssigned=random.nextInt(armySelected);
+            country.addArmies(armyAssigned);
+            armySelected-=armyAssigned;
+            GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
+                    country.name + " with " + armyAssigned + " armies.");
+        }
+        GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
     }
 
     /**
