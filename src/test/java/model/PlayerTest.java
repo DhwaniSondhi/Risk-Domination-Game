@@ -394,4 +394,18 @@ public class PlayerTest {
         Assert.assertTrue(gameMap.currentPlayer.hasConquered);
         Assert.assertEquals(selectedNeighbour.owner, selectedCountry.owner);
     }
+
+    @Test
+    public void getStrongestCountry() {
+        Country strongestCountry = gameMap.currentPlayer.getStrongestCountry();
+        Assert.assertEquals(8,strongestCountry.id);
+    }
+
+    @Test
+    public void getStrongestCountries() {
+        List<Country> strongestCountries = gameMap.currentPlayer.getStrongestCountries(2);
+        Assert.assertEquals(8, strongestCountries.get(0).id);
+        Assert.assertEquals(1, strongestCountries.get(1).id);
+    }
+
 }

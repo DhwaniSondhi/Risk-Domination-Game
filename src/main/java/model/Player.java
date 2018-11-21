@@ -1,6 +1,5 @@
 package model;
 
-import utility.strategy.AggressiveStrategy;
 import utility.strategy.HumanStrategy;
 import utility.strategy.PlayerStrategy;
 
@@ -90,6 +89,8 @@ public class Player extends Observable {
     };
 
 
+
+
     /**
      * Constructor
      * <p>
@@ -128,18 +129,35 @@ public class Player extends Observable {
 
     /**
      * Checks the country who has the largest army
+     *
      * @return strongestCountry country which has the largest number of army
-     * */
-    public Country getStrongestCountry(){
+     */
+    public Country getStrongestCountry() {
         Country strongestCountry = null;
         int largestArmy = 0;
-        for(Country country : countries){
-            if(largestArmy < country.getNumberofArmies()){
+        for (Country country : countries) {
+            if (largestArmy < country.getNumberofArmies()) {
                 largestArmy = country.getNumberofArmies();
                 strongestCountry = country;
             }
         }
         return strongestCountry;
+    }
+
+    /**
+     * Sorts the countries according to the num of armies to get the strongest countries
+     *
+     * @param count number of countries you want
+     * @return countries returns the list of countries according to the count
+     */
+    public List<Country> getStrongestCountries(int count) {
+        countries.sort(new Comparator<Country>() {
+            @Override
+            public int compare(Country o1, Country o2) {
+                return (o2.numOfArmies - o1.numOfArmies);
+            }
+        });
+        return countries.subList(0, count);
     }
 
     /**
@@ -468,8 +486,8 @@ public class Player extends Observable {
 
     /**
      * Steps to be followed when allout mode is active
-     * */
-    public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut){
+     */
+    public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         selectedCountry.updateNumOfDiceAllowed(false);
         selectedNeighbouringCountry.updateNumOfDiceAllowed(true);
         rollDice(selectedCountry.numOfDiceAllowed, selectedNeighbouringCountry.numOfDiceAllowed, isAllOut);
