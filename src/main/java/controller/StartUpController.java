@@ -2,6 +2,7 @@ package controller;
 
 
 import model.Country;
+import model.GameMap;
 import model.Player;
 import utility.strategy.PlayerStrategy;
 import view.StartUpFrame;
@@ -77,8 +78,8 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 }
             }
             if (!changeCurrentPlayer()) {
-                stateChangeListener.onStartUpCompleted();
                 view.dispose();
+                model.changePhase(GameMap.Phase.REINFORCE);
             }
         } else if (e.getActionCommand().equalsIgnoreCase("assign")) {
             if (view.playerCountries.getSelectedItem() != null) {
@@ -90,8 +91,8 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 completedPlayers.add(model.currentPlayer.id);
 
             if (!changeCurrentPlayer()) {
-                stateChangeListener.onStartUpCompleted();
                 view.dispose();
+                model.changePhase(GameMap.Phase.REINFORCE);
             }
         }
     }

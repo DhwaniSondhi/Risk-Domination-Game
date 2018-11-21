@@ -3,8 +3,6 @@ package utility.strategy;
 import model.Country;
 import model.Player;
 
-import java.util.List;
-
 /**
  * Strategy interface for player
  */
@@ -12,7 +10,7 @@ public interface PlayerStrategy {
 
     /**
      * enum for the types of strategies
-     * */
+     */
     enum Strategy {
         HUMAN("Human"),
         AGGRESSIVE("Aggressive"),
@@ -22,8 +20,9 @@ public interface PlayerStrategy {
 
         /**
          * String representation for the enum value
-         * */
+         */
         private String name;
+
         Strategy(String name) {
             this.name = name;
         }
@@ -37,8 +36,8 @@ public interface PlayerStrategy {
          * return array of all enum values
          *
          * @return array of all Strategy
-         * */
-        public Strategy[] arrayOfAll(){
+         */
+        public Strategy[] arrayOfAll() {
             return new Strategy[]{HUMAN, AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER};
         }
     }

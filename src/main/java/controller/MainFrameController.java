@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * This is the Controller for the MainFrame. see {@link BaseController}
@@ -20,7 +22,8 @@ import java.io.File;
  */
 public class MainFrameController extends BaseController<MainFrame> implements
         ActionListener,
-        GameStateChangeListener {
+        GameStateChangeListener,
+        Observer {
 
     /**
      * Controller for MainFrame
@@ -30,6 +33,56 @@ public class MainFrameController extends BaseController<MainFrame> implements
     public MainFrameController(MainFrame view) {
         super(view);
         model.addObserver(view);
+        model.addObserver(this);
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (model.currentPhase != model.previousPhase && model.stateHasChanged) {
+            model.stateHasChanged = false;
+            switch (model.currentPhase) {
+                case REINFORCE:
+                    if (model.previousPhase == GameMap.Phase.STARTUP) {
+                        view.setUpGamePanels();
+                        model.resetCurrentPlayer();
+                    } else if (model.previousPhase == GameMap.Phase.FORTIFY) {
+                        model.changeToNextPlayer(true);
+                        view.fortifyPanel.setVisible(false);
+                        view.reinforcementPanel.setVisible(true);
+                        view.reinforcementPanel.update();
+                    }
+                    if (!model.currentPlayer.isHuman()) {
+                        model.currentPlayer.reinforce(null, 0);
+                    }
+                    break;
+                case ATTACK:
+                    view.reinforcementPanel.setVisible(false);
+                    view.attackPanel.setVisible(true);
+                    view.attackPanel.revalidate();
+                    view.attackPanel.update();
+                    if (!model.currentPlayer.isHuman()) {
+                        model.currentPlayer.attack(null, null, false);
+                    }
+                    break;
+                case FORTIFY:
+                    view.attackPanel.setVisible(false);
+                    view.fortifyPanel.setVisible(true);
+                    view.fortifyPanel.update();
+                    if (!model.currentPlayer.isHuman()) {
+                        model.currentPlayer.fortify(0, null, null);
+                    }
+                    break;
+            }
+        }
     }
 
     /**
@@ -45,9 +98,12 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onStartUpCompleted() {
-        model.changePhase(GameMap.Phase.REINFORCE);
+        /*model.changePhase(GameMap.Phase.REINFORCE);
         view.setUpGamePanels();
         model.resetCurrentPlayer();
+        if (!model.currentPlayer.isHuman()) {
+            model.currentPlayer.reinforce(null, 0);
+        }*/
     }
 
     /**
@@ -55,11 +111,14 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onReinforcementCompleted() {
-        model.changePhase(GameMap.Phase.ATTACK);
+        /*model.changePhase(GameMap.Phase.ATTACK);
         view.reinforcementPanel.setVisible(false);
         view.attackPanel.setVisible(true);
         view.attackPanel.revalidate();
         view.attackPanel.update();
+        if (!model.currentPlayer.isHuman()) {
+            model.currentPlayer.attack(null, null, false);
+        }*/
     }
 
     /**
@@ -67,10 +126,13 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onAttackCompleted() {
-        model.changePhase(GameMap.Phase.FORTIFY);
+       /* model.changePhase(GameMap.Phase.FORTIFY);
         view.attackPanel.setVisible(false);
         view.fortifyPanel.setVisible(true);
         view.fortifyPanel.update();
+        if (!model.currentPlayer.isHuman()) {
+            model.currentPlayer.fortify(0, null, null);
+        }*/
     }
 
     /**
@@ -78,11 +140,15 @@ public class MainFrameController extends BaseController<MainFrame> implements
      */
     @Override
     public void onFortificationCompleted() {
-        model.changePhase(GameMap.Phase.REINFORCE);
+        /*model.changePhase(GameMap.Phase.REINFORCE);
         model.changeToNextPlayer(true);
         view.fortifyPanel.setVisible(false);
         view.reinforcementPanel.setVisible(true);
         view.reinforcementPanel.update();
+
+        if (!model.currentPlayer.isHuman()) {
+            model.currentPlayer.reinforce(null, 0);
+        }*/
     }
 
     /**

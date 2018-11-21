@@ -148,6 +148,15 @@ public class Player extends Observable {
     }
 
     /**
+     * Checks if player is human or not
+     *
+     * @return true if Human else false
+     * */
+    public boolean isHuman() {
+        return strategy instanceof HumanStrategy;
+    }
+
+    /**
      * Checks the country who has the largest army
      *
      * @return strongestCountry country which has the largest number of army

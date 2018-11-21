@@ -55,6 +55,14 @@ public class GameMap extends Observable {
      */
     public Phase currentPhase = Phase.STARTUP;
     /**
+     * previous phase
+     */
+    public Phase previousPhase = Phase.STARTUP;
+    /**
+     * status if state has changed
+     * */
+    public boolean stateHasChanged = false;
+    /**
      * stores the recent move made in the game
      */
     public String recentMove;
@@ -335,6 +343,8 @@ public class GameMap extends Observable {
      * @param phase new phase
      */
     public void changePhase(Phase phase) {
+        stateHasChanged = true;
+        this.previousPhase = currentPhase;
         this.currentPhase = phase;
         setChanged();
         notifyObservers();

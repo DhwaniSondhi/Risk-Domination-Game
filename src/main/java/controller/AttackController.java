@@ -1,6 +1,7 @@
 package controller;
 
 import model.Country;
+import model.GameMap;
 import view.AttackPanel;
 
 import java.awt.*;
@@ -63,7 +64,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
         } else if (e.getActionCommand().equalsIgnoreCase("proceed")) {
             model.currentPlayer.gainCard();
             model.currentPlayer.deleteObserver(view);
-            stateChangeListener.onAttackCompleted();
+            model.changePhase(GameMap.Phase.FORTIFY);
 
         } else if (e.getActionCommand().equalsIgnoreCase("move")) {
             selectedCountry.addObserver(view);

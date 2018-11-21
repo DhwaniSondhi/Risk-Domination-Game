@@ -2,6 +2,7 @@ package controller;
 
 
 import model.Country;
+import model.GameMap;
 import view.CardExchangeFrame;
 import view.ReinforcementPanel;
 
@@ -59,13 +60,9 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
             model.currentPlayer.reinforce(selectedCountry, numOfArmies);
 
         } else if (buttonName.equalsIgnoreCase("proceed")) {
-
-            if (stateChangeListener != null) {
-                stateChangeListener.onReinforcementCompleted();
-                model.currentPlayer.totalArmies = 0;
-            }
-
+            model.currentPlayer.totalArmies = 0;
             model.currentPlayer.deleteObserver(view);
+            model.changePhase(GameMap.Phase.ATTACK);
             return;
         }
 

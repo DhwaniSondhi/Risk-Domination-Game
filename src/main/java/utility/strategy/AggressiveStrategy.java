@@ -25,6 +25,8 @@ public class AggressiveStrategy implements PlayerStrategy {
         armySelected=context.totalArmies;
         country=context.getStrongestCountry();
         country.addArmies(armySelected);
+
+		GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
     }
 
     /**
@@ -57,7 +59,7 @@ public class AggressiveStrategy implements PlayerStrategy {
             }
         }
 
-
+        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
     }
 
     /**
@@ -92,6 +94,6 @@ public class AggressiveStrategy implements PlayerStrategy {
         strongestCountry.deductArmies(numberOfArmiesTransfer);
         secondStrongestCountry.addArmies(numberOfArmiesTransfer);
 
-
+        GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
     }
 }

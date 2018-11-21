@@ -1,6 +1,7 @@
 package controller;
 
 import model.Country;
+import model.GameMap;
 import view.FortifyPanel;
 
 import javax.swing.*;
@@ -52,8 +53,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equalsIgnoreCase("proceed")) {
             model.currentPlayer.deleteObserver(view);
-            if (stateChangeListener != null)
-                stateChangeListener.onFortificationCompleted();
+            model.changePhase(GameMap.Phase.REINFORCE);
         } else if (e.getActionCommand().equalsIgnoreCase("Transfer")) {
             //view.getTheValueOfComboBox();
 
@@ -86,10 +86,7 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
                 selectedNeighbour = source.getSelectedValue();
                 selectedNeighbour.addObserver(view);
                 selectedNeighbour.updateTextFieldForNeighbour();
-
             }
-
-
         }
     }
 
