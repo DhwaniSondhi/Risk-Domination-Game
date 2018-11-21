@@ -19,11 +19,12 @@ public class CheaterStrategy implements PlayerStrategy {
 
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-        ArrayList<Country> listOfcountries=context.countries;
-        for(int i=0;i<listOfcountries.size();i++){
-            listOfcountries.get(i).addArmies(2*listOfcountries.get(i).numOfArmies);
+        ArrayList<Country> listOfcountries = context.countries;
+        for (int i = 0; i < listOfcountries.size(); i++) {
+            listOfcountries.get(i).addArmies(2 * listOfcountries.get(i).numOfArmies);
 
         }
+        GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
 
     }
 
@@ -44,17 +45,18 @@ public class CheaterStrategy implements PlayerStrategy {
 
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        ArrayList<Country> listOfcountries=context.countries;
-        for(int i=0;i<listOfcountries.size();i++){
-            HashSet<Country> setOfCountries=GameMap.getInstance().countryGraph.get(listOfcountries.get(i));
-            for(Country country : setOfCountries){
-                if(country.id!=context.id){
+        ArrayList<Country> listOfcountries = context.countries;
+        for (int i = 0; i < listOfcountries.size(); i++) {
+            HashSet<Country> setOfCountries = GameMap.getInstance().countryGraph.get(listOfcountries.get(i));
+            for (Country country : setOfCountries) {
+                if (country.id != context.id) {
                     country.changeOwner(context);
                     break;
                 }
             }
 
         }
+        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
 
     }
 
@@ -78,5 +80,6 @@ public class CheaterStrategy implements PlayerStrategy {
                 }
             }
         }
+        GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
     }
 }

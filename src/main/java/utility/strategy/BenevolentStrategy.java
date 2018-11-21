@@ -46,7 +46,7 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-
+        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
     }
 
     /**
@@ -61,7 +61,7 @@ public class BenevolentStrategy implements PlayerStrategy {
     public void fortify(Player context, int numberOfArmiesTransfer, Country strongestCountry, Country weakestCountry) {
         int numberOfCountriesPlayerHave = context.countries.size();
         int count = numberOfCountriesPlayerHave;
-        while (count >= 0) {
+        while (count > 0) {
 
 
             List<Country> weakestcountries = context.getStrongestCountries(count);
@@ -97,6 +97,7 @@ public class BenevolentStrategy implements PlayerStrategy {
             count--;
 
         }
+        GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
 
     }
 }

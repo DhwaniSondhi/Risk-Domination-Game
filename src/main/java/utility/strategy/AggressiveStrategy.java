@@ -48,18 +48,19 @@ public class AggressiveStrategy implements PlayerStrategy {
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         List<Country> countriesList = context.getStrongestCountries(null);
         for (Country country : countriesList) {
-            if (country.getNeighboursDiffOwner().size() != 0) {
+            if (country.numOfArmies > 1 && country.getNeighboursDiffOwner().size() != 0) {
                 selectedCountry = country;
                 break;
             }
         }
-
-        Random rand = new Random();
-        int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
-        selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
-        GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
-                + " on " + selectedNeighbouringCountry.name);
         while (selectedCountry.numOfArmies > 1 && !selectedCountry.getNeighboursDiffOwner().isEmpty()) {
+            Random rand = new Random();
+            int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
+            selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
+
+            GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
+                    + " on " + selectedNeighbouringCountry.name);
+
             context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
             if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
                 int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
