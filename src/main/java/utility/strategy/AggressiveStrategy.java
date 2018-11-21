@@ -72,27 +72,43 @@ public class AggressiveStrategy implements PlayerStrategy {
      */
     @Override
     public void fortify(Player context, int numberOfArmiesTransfer, Country strongestCountry, Country secondStrongestCountry) {
-        strongestCountry = context.getStrongestCountry();
-        HashMap<Integer, Country> listOfCountriesConnected = strongestCountry.connectedCountries;
+        int numberOfCountriesPlayerHave=context.countries.size();
+        int count=1;
+        while(count<=numberOfCountriesPlayerHave){
+            List<Country> listOfCountries = context.getStrongestCountries(count);
+            strongestCountry=listOfCountries.get(count-1);
+            HashMap<Integer, Country> listOfCountriesConnected = strongestCountry.connectedCountries;
+            if (listOfCountriesConnected.size() != 0) {
+                int largestArmy = 0;
+                Iterator it = listOfCountriesConnected.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<Integer, Country> entry = (Map.Entry) it.next();
+                    Country country = entry.getValue();
+                    if (largestArmy < country.getNumberofArmies()) {
+                        largestArmy = country.getNumberofArmies();
+                        secondStrongestCountry = country;
+                    }
 
+                    
+                }
+                if(secondStrongestCountry.numOfArmies!=1){
+                    numberOfArmiesTransfer = secondStrongestCountry.numOfArmies - 1;
+                    GameMap.getInstance().setRecentMove(context.name + " fortified " + secondStrongestCountry.name + " with " + numberOfArmiesTransfer
+                            + " armies from " + strongestCountry.name);
+                    strongestCountry.deductArmies(numberOfArmiesTransfer);
+                    secondStrongestCountry.addArmies(numberOfArmiesTransfer);
+                    break;
+                }
 
-        int largestArmy = 0;
-        Iterator it = listOfCountriesConnected.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Integer, Country> entry = (Map.Entry) it.next();
-            Country country = entry.getValue();
-            if (largestArmy < country.getNumberofArmies()) {
-                largestArmy = country.getNumberofArmies();
-                secondStrongestCountry = country;
             }
+            if(count==numberOfCountriesPlayerHave){
+                //part to skip
+            }
+            count++;
 
-            it.remove();
         }
-        numberOfArmiesTransfer = secondStrongestCountry.numOfArmies - 1;
-        GameMap.getInstance().setRecentMove(context.name + " fortified " + secondStrongestCountry.name + " with " + numberOfArmiesTransfer
-                + " armies from " + strongestCountry.name);
-        strongestCountry.deductArmies(numberOfArmiesTransfer);
-        secondStrongestCountry.addArmies(numberOfArmiesTransfer);
+
+
 
         GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
     }
