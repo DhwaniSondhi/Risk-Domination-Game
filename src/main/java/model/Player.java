@@ -566,6 +566,8 @@ public class Player extends Observable {
         notifyObservers();
     }
 
+
+
     /**
      * To exchange cards automatically
      */

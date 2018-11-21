@@ -53,19 +53,28 @@ public class AggressiveStrategy implements PlayerStrategy {
                 break;
             }
         }
-        while (selectedCountry.numOfArmies > 1 && !selectedCountry.getNeighboursDiffOwner().isEmpty()) {
-            Random rand = new Random();
-            int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
-            selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
 
-            GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
-                    + " on " + selectedNeighbouringCountry.name);
+        boolean countryChanged = true;
+        Random rand = new Random();
+        while(selectedCountry.numOfArmies > 1 && !selectedCountry.getNeighboursDiffOwner().isEmpty()) {
+            if(countryChanged) {
+                int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
+                selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
+
+
+                GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
+                        + " on " + selectedNeighbouringCountry.name);
+
+                countryChanged = false;
+            }
 
             context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
+
             if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
                 int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                 GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
                 context.gainCard();
+                countryChanged = true;
             }
         }
 
