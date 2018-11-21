@@ -4,10 +4,7 @@ import model.Country;
 import model.GameMap;
 import model.Player;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class AggressiveStrategy implements PlayerStrategy {
 
@@ -20,7 +17,14 @@ public class AggressiveStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-
+        context.setUnSelectedCards();
+        context.setArmiesForReinforcement();
+        if(context.unselectedCards.size()>4){
+            context.exchangeCardsAutomatically();
+        }
+        armySelected=context.totalArmies;
+        country=context.getStrongestCountry();
+        country.addArmies(armySelected);
     }
 
     /**

@@ -165,7 +165,6 @@ public class Player extends Observable {
     }
 
     /**
-<<<<<<< HEAD
      * Finds the country having lowest army
      *
      * @return weakest country
@@ -182,7 +181,7 @@ public class Player extends Observable {
         return weakestCountry;
     }
 
-     /* Sorts the countries according to the num of armies to get the strongest countries
+    /* Sorts the countries according to the num of armies to get the strongest countries
      *
      * @param count number of countries you want
      * @return countries returns the list of countries according to the count
@@ -364,9 +363,9 @@ public class Player extends Observable {
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
         for (Card cardSelected : selectedCards) {
-            for (Card cardPlayer : this.cards) {
-                if (cardPlayer.type == cardSelected.type && !removeCards.contains(cardPlayer)) {
-                    removeCards.add(cardPlayer);
+            for (Card cardRemove : new ArrayList<>(cards)) {
+                if (cardRemove.type == cardSelected.type && !removeCards.contains(cardRemove)) {
+                    cards.remove(cardRemove);
                     break;
                 }
             }
@@ -518,6 +517,7 @@ public class Player extends Observable {
      * @param armySelected number of armies
      */
     public void reinforce(Country country, int armySelected) {
+        // in case of non-human player---make a default country and army to 0
         strategy.reinforce(this, country, armySelected);
         updateView();
     }
@@ -555,5 +555,30 @@ public class Player extends Observable {
 
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * To exchange cards automatically
+     */
+    public void exchangeCardsAutomatically(){
+        ArrayList<String> cardListToBeSelected=new ArrayList<>();
+        boolean threeCards=false;
+        for(Map.Entry pairCards:unselectedCards.entrySet()) {
+            int cardNum = Integer.parseInt(pairCards.getValue().toString());
+            if (cardNum >= 3) {
+                for(int i=0;i<3;i++){
+                    addInSelectedCards(pairCards.getKey().toString());
+                }
+                threeCards=true;
+                break;
+            }
+            cardListToBeSelected.add(pairCards.getKey().toString());
+        }
+        if(!threeCards){
+            for(String cardToBeSelected:cardListToBeSelected){
+                addInSelectedCards(cardToBeSelected);
+            }
+        }
+        exchangeCardsForArmies(totalArmies);
     }
 }
