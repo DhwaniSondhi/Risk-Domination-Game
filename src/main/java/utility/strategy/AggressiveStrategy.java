@@ -45,7 +45,14 @@ public class AggressiveStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        selectedCountry = context.getStrongestCountry();
+        List<Country> countriesList = context.getStrongestCountries(null);
+        for(Country country : countriesList){
+            if(country.getNeighboursDiffOwner().size() != 0){
+                selectedCountry = country;
+                break;
+            }
+        }
+
         Random rand = new Random();
         int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
         selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
@@ -106,6 +113,7 @@ public class AggressiveStrategy implements PlayerStrategy {
             }
             count++;
 
+           
         }
 
 

@@ -86,9 +86,6 @@ public class Player extends Observable {
         }
     };
 
-
-
-
     /**
      * Constructor
      * <p>
@@ -190,18 +187,21 @@ public class Player extends Observable {
         return weakestCountry;
     }
 
-    /* Sorts the countries according to the num of armies to get the strongest countries
+    /** Sorts the countries according to the num of armies to get the strongest countries
      *
      * @param count number of countries you want
      * @return countries returns the list of countries according to the count
      */
-    public List<Country> getStrongestCountries(int count) {
+    public List<Country> getStrongestCountries(Integer count) {
         countries.sort(new Comparator<Country>() {
             @Override
             public int compare(Country o1, Country o2) {
                 return (o2.numOfArmies - o1.numOfArmies);
             }
         });
+        if(count == null){
+            return countries;
+        }
         return countries.subList(0, count);
 
     }
