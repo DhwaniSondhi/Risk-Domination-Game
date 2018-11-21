@@ -37,6 +37,17 @@ public class CheaterStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
+        ArrayList<Country> listOfcountries=context.countries;
+        for(int i=0;i<listOfcountries.size();i++){
+            HashSet<Country> setOfCountries=GameMap.getInstance().countryGraph.get(listOfcountries.get(i));
+            for(Country country : setOfCountries){
+                if(country.id!=context.id){
+                    country.changeOwner(context);
+                    break;
+                }
+            }
+
+        }
 
     }
 
