@@ -96,6 +96,21 @@ public class Country extends Observable {
     }
 
     /**
+     * Get the list of Neighbour countries with different owner
+     *
+     * @return list of countries
+     */
+    public HashSet<Country> getNeighboursDiffOwner() {
+        HashSet<Country> set = new HashSet<>();
+        for (Country neighbour : neighbours) {
+            if(!neighbour.owner.equals(owner)){
+                set.add(neighbour);
+            }
+        }
+        return set;
+    }
+
+    /**
      * Gives the number of armies at a country
      *
      * @return number of army at that country

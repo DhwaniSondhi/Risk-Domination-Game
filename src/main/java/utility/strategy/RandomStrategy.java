@@ -6,7 +6,6 @@ import model.Player;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Random;
 
 public class RandomStrategy implements PlayerStrategy {
@@ -39,21 +38,27 @@ public class RandomStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        Random rand = new Random();
-        selectedCountry = context.countries.get(rand.nextInt(context.countries.size()));
-        int index = rand.nextInt(selectedCountry.getNeighbours().size());
-        selectedNeighbouringCountry = (Country) selectedCountry.getNeighbours().toArray()[index];
-        int limit = rand.nextInt(10);
-        for (int i = 0; i < limit; i++) {
-            GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry.name
-                    + " on " + selectedNeighbouringCountry.name);
-
-            context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
-            if(selectedCountry.getNumberofArmies() == 1 || selectedNeighbouringCountry.owner.equals(selectedCountry.owner)){
-                break;
+        while (true) {
+            Random rand = new Random();
+            selectedCountry = context.countries.get(rand.nextInt(context.countries.size()));
+            if (selectedCountry.getNeighboursDiffOwner().size() == 0) {
+                continue;
             }
-        }
+            int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
 
+            selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
+            int limit = rand.nextInt(10);
+            for (int i = 0; i < limit; i++) {
+                GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry.name
+                        + " on " + selectedNeighbouringCountry.name);
+
+                context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
+                if (selectedCountry.getNumberofArmies() == 1 || selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
+                    break;
+                }
+            }
+            break;
+        }
     }
 
     /**
@@ -61,23 +66,24 @@ public class RandomStrategy implements PlayerStrategy {
      *
      * @param context                reference to player using this strategy
      * @param numberOfArmiesTransfer armies user select to transfer
-     * @param firstRandomCountry        country which user select transfer from
-     * @param secondRandomCountry       country which user select transfer to
+     * @param firstRandomCountry     country which user select transfer from
+     * @param secondRandomCountry    country which user select transfer to
      */
     @Override
-    public void fortify(Player context, int numberOfArmiesTransfer, Country firstRandomCountry, Country secondRandomCountry) {
-    ArrayList<Country> listOfcountries=context.countries;
-    int sizeOfList=listOfcountries.size();
-    Random r = new Random(Calendar.getInstance().getTimeInMillis());
-    firstRandomCountry=listOfcountries.get(r.nextInt(sizeOfList));
-    listOfcountries.remove(firstRandomCountry);
-    secondRandomCountry=listOfcountries.get(r.nextInt(sizeOfList-1));
-    int numberOfArmiesAtFirstCountry=firstRandomCountry.numOfArmies;
-    numberOfArmiesTransfer=r.nextInt(numberOfArmiesAtFirstCountry);
-    GameMap.getInstance().setRecentMove(context.name + " fortified " + firstRandomCountry.name + " with " + numberOfArmiesTransfer
+    public void fortify(Player context, int numberOfArmiesTransfer, Country firstRandomCountry, Country
+            secondRandomCountry) {
+        ArrayList<Country> listOfcountries = context.countries;
+        int sizeOfList = listOfcountries.size();
+        Random r = new Random(Calendar.getInstance().getTimeInMillis());
+        firstRandomCountry = listOfcountries.get(r.nextInt(sizeOfList));
+        listOfcountries.remove(firstRandomCountry);
+        secondRandomCountry = listOfcountries.get(r.nextInt(sizeOfList - 1));
+        int numberOfArmiesAtFirstCountry = firstRandomCountry.numOfArmies;
+        numberOfArmiesTransfer = r.nextInt(numberOfArmiesAtFirstCountry);
+        GameMap.getInstance().setRecentMove(context.name + " fortified " + firstRandomCountry.name + " with " + numberOfArmiesTransfer
                 + " armies from " + secondRandomCountry.name);
-    firstRandomCountry.deductArmies(numberOfArmiesTransfer);
-    secondRandomCountry.addArmies(numberOfArmiesTransfer);
+        firstRandomCountry.deductArmies(numberOfArmiesTransfer);
+        secondRandomCountry.addArmies(numberOfArmiesTransfer);
 
 
     }
