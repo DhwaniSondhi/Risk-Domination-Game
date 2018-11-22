@@ -566,6 +566,37 @@ public class Player extends Observable {
         notifyObservers();
     }
 
+    public Country strongestInConnectedCountries(HashMap<Integer, Country> listOfCountriesConnected){
+        Iterator it = listOfCountriesConnected.entrySet().iterator();
+        int largestArmy = 0;
+        Country strongestCountry = null;
+        while (it.hasNext()) {
+            Map.Entry<Integer, Country> entry = (Map.Entry) it.next();
+            Country country = entry.getValue();
+            if (largestArmy < country.getNumberofArmies()) {
+                largestArmy = country.getNumberofArmies();
+                strongestCountry = country;
+            }
+
+
+        }
+        return strongestCountry;
+    }
+
+    public void fortifySteps(Country countryToTransferFrom, Country countryToTransferTo){
+        GameMap.getInstance().setRecentMove("Country Data:" + countryToTransferFrom + "(" + countryToTransferFrom.numOfArmies + ")"
+        + " => " + countryToTransferTo + "(" + countryToTransferTo.numOfArmies + ")");
+        int numberOfArmiesTransfer = countryToTransferTo.numOfArmies - 1;
+
+        GameMap.getInstance().setRecentMove(name + " fortified " + countryToTransferTo.name + " with " + numberOfArmiesTransfer
+                + " armies from " + countryToTransferFrom.name);
+        countryToTransferFrom.deductArmies(numberOfArmiesTransfer);
+        countryToTransferTo.addArmies(numberOfArmiesTransfer);
+
+        GameMap.getInstance().setRecentMove("Country Data:" + countryToTransferFrom + "(" + countryToTransferFrom.numOfArmies + ")"
+                + " => " + countryToTransferTo + "(" + countryToTransferTo.numOfArmies + ")");
+    }
+
 
 
     /**

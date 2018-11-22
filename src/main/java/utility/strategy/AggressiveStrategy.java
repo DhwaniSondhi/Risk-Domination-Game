@@ -4,7 +4,9 @@ import model.Country;
 import model.GameMap;
 import model.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class AggressiveStrategy implements PlayerStrategy {
 
@@ -56,25 +58,27 @@ public class AggressiveStrategy implements PlayerStrategy {
 
         boolean countryChanged = true;
         Random rand = new Random();
-        while(selectedCountry.numOfArmies > 1 && !selectedCountry.getNeighboursDiffOwner().isEmpty()) {
-            if(countryChanged) {
-                int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
-                selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
+        if (selectedCountry != null) {
+            while (selectedCountry.numOfArmies > 1 && !selectedCountry.getNeighboursDiffOwner().isEmpty()) {
+                if (countryChanged) {
+                    int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
+                    selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
 
 
-                GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
-                        + " on " + selectedNeighbouringCountry.name);
+                    GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name + "(" + selectedCountry.numOfArmies
+                            + ") armies on " + selectedNeighbouringCountry.name +"("+ selectedNeighbouringCountry.numOfArmies + ") armies of " +selectedNeighbouringCountry.owner.name );
 
-                countryChanged = false;
-            }
+                    countryChanged = false;
+                }
 
-            context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
+                context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
 
-            if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
-                int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
-                GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
-                context.gainCard();
-                countryChanged = true;
+                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
+                    int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
+                    GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
+                    context.gainCard();
+                    countryChanged = true;
+                }
             }
         }
 
@@ -91,45 +95,26 @@ public class AggressiveStrategy implements PlayerStrategy {
      */
     @Override
     public void fortify(Player context, int numberOfArmiesTransfer, Country strongestCountry, Country secondStrongestCountry) {
-        int numberOfCountriesPlayerHave=context.countries.size();
-        int count=1;
-        while(count<=numberOfCountriesPlayerHave){
+        int numberOfCountriesPlayerHas = context.countries.size();
+        System.out.println(numberOfCountriesPlayerHas);
+        int count = 1;
+        while (count <= numberOfCountriesPlayerHas) {
             List<Country> listOfCountries = context.getStrongestCountries(count);
-            strongestCountry=listOfCountries.get(count-1);
+            System.out.println(listOfCountries);
+            strongestCountry = listOfCountries.get(count - 1);
+            System.out.println("Strongest "+strongestCountry);
+            strongestCountry.updateConnectedCountries();
             HashMap<Integer, Country> listOfCountriesConnected = strongestCountry.connectedCountries;
+            System.out.println(listOfCountriesConnected);
             if (listOfCountriesConnected.size() != 0) {
-                int largestArmy = 0;
-                Iterator it = listOfCountriesConnected.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry<Integer, Country> entry = (Map.Entry) it.next();
-                    Country country = entry.getValue();
-                    if (largestArmy < country.getNumberofArmies()) {
-                        largestArmy = country.getNumberofArmies();
-                        secondStrongestCountry = country;
-                    }
-
-
-                }
-                if(secondStrongestCountry.numOfArmies!=1){
-                    numberOfArmiesTransfer = secondStrongestCountry.numOfArmies - 1;
-                    GameMap.getInstance().setRecentMove(context.name + " fortified " + secondStrongestCountry.name + " with " + numberOfArmiesTransfer
-                            + " armies from " + strongestCountry.name);
-                    strongestCountry.deductArmies(numberOfArmiesTransfer);
-                    secondStrongestCountry.addArmies(numberOfArmiesTransfer);
+                secondStrongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
+                if (secondStrongestCountry.numOfArmies != 1) {
+                    context.fortifySteps(strongestCountry, secondStrongestCountry);
                     break;
                 }
-
-            }
-            if(count==numberOfCountriesPlayerHave){
-                //part to skip
             }
             count++;
-
-           
         }
-
-
-
         GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
     }
 }

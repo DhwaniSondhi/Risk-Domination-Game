@@ -4,7 +4,8 @@ import model.Country;
 import model.GameMap;
 import model.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 public class BenevolentStrategy implements PlayerStrategy {
 
@@ -62,42 +63,19 @@ public class BenevolentStrategy implements PlayerStrategy {
         int numberOfCountriesPlayerHave = context.countries.size();
         int count = numberOfCountriesPlayerHave;
         while (count > 0) {
-
-
             List<Country> weakestcountries = context.getStrongestCountries(count);
-            weakestCountry= weakestcountries.get(count-1);
+            weakestCountry = weakestcountries.get(count - 1);
+            strongestCountry.updateConnectedCountries();
             HashMap<Integer, Country> listOfCountriesConnected = weakestCountry.connectedCountries;
-            if(listOfCountriesConnected.size()!=0){
-                int largestArmy = 0;
-                Iterator it = listOfCountriesConnected.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry<Integer, Country> entry = (Map.Entry) it.next();
-                    Country country = entry.getValue();
-                    if (largestArmy < country.getNumberofArmies()) {
-                        largestArmy = country.getNumberofArmies();
-                        strongestCountry = country;
-                    }
-
-
-                }
-                if(strongestCountry.numOfArmies!=1){
-
-                    numberOfArmiesTransfer = strongestCountry.numOfArmies-1;
-                    GameMap.getInstance().setRecentMove(context.name + " fortified " + weakestCountry.name + " with " + numberOfArmiesTransfer
-                            + " armies from " + strongestCountry.name);
-                    strongestCountry.deductArmies(numberOfArmiesTransfer);
-                    weakestCountry.addArmies(numberOfArmiesTransfer);
+            if (listOfCountriesConnected.size() != 0) {
+                strongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
+                if (strongestCountry.numOfArmies != 1) {
+                    context.fortifySteps(strongestCountry, weakestCountry);
                     break;
                 }
-
-            }
-            if(count==1){
-                //part to skip
             }
             count--;
-
         }
         GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
-
     }
 }
