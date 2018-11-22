@@ -4,7 +4,6 @@ import controller.FortifyController;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -90,11 +89,9 @@ public class FortifyPanel extends JPanel implements Observer {
      * It set up the Panels for Number of countries a player have and countries to which the can transfer army
      * Also set up the panels for choosing number of armies to transfer
      *
-     * @param stateChangeListener observer for game state
      */
-    public FortifyPanel(GameStateChangeListener stateChangeListener) {
+    public FortifyPanel() {
         fortifyController = new FortifyController(this);
-        fortifyController.setStateChangeListener(stateChangeListener);
 
         gridBagLayoutMain = new GridBagLayout();
         bagConstraintsMain = new GridBagConstraints();

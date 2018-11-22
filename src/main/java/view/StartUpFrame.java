@@ -3,7 +3,6 @@ package view;
 import controller.StartUpController;
 import model.Country;
 import model.GameMap;
-import utility.GameStateChangeListener;
 import utility.strategy.PlayerStrategy;
 
 import javax.swing.*;
@@ -57,13 +56,11 @@ public class StartUpFrame extends JFrame implements Observer {
     /**
      * initializes the controller and sets up the layout for the view
      *
-     * @param stateChangeListener listener for state change
      */
-    public StartUpFrame(GameStateChangeListener stateChangeListener) {
+    public StartUpFrame() {
         super("Welcome to the Game");
 
         controller = new StartUpController(this);
-        controller.setStateChangeListener(stateChangeListener);
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);

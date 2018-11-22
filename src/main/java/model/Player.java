@@ -1,6 +1,7 @@
 package model;
 
 import utility.strategy.*;
+
 import java.util.*;
 
 /**
@@ -126,7 +127,7 @@ public class Player extends Observable {
      * get Strategy by enum value
      *
      * @param strategy strategy for player
-     * @returns player strategy
+     * @return player strategy
      */
     private PlayerStrategy getStrategy(PlayerStrategy.Strategy strategy) {
         switch (strategy) {
@@ -148,7 +149,7 @@ public class Player extends Observable {
      * Checks if player is human or not
      *
      * @return true if Human else false
-     * */
+     */
     public boolean isHuman() {
         return strategy instanceof HumanStrategy;
     }
@@ -187,7 +188,8 @@ public class Player extends Observable {
         return weakestCountry;
     }
 
-    /** Sorts the countries according to the num of armies to get the strongest countries
+    /**
+     * Sorts the countries according to the num of armies to get the strongest countries
      *
      * @param count number of countries you want
      * @return countries returns the list of countries according to the count
@@ -199,7 +201,7 @@ public class Player extends Observable {
                 return (o2.numOfArmies - o1.numOfArmies);
             }
         });
-        if(count == null){
+        if (count == null) {
             return countries;
         }
         return countries.subList(0, count);
@@ -533,6 +535,10 @@ public class Player extends Observable {
 
     /**
      * Steps to be followed when allout mode is active
+     *
+     * @param selectedCountry             attacking country
+     * @param selectedNeighbouringCountry defending country
+     * @param isAllOut                    true if allOut mode else false
      */
     public void performAttackSteps(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         selectedCountry.updateNumOfDiceAllowed(false);
@@ -566,7 +572,7 @@ public class Player extends Observable {
         notifyObservers();
     }
 
-    public Country strongestInConnectedCountries(HashMap<Integer, Country> listOfCountriesConnected){
+    public Country strongestInConnectedCountries(HashMap<Integer, Country> listOfCountriesConnected) {
         Iterator it = listOfCountriesConnected.entrySet().iterator();
         int largestArmy = 0;
         Country strongestCountry = null;
@@ -583,9 +589,9 @@ public class Player extends Observable {
         return strongestCountry;
     }
 
-    public void fortifySteps(Country countryToTransferFrom, Country countryToTransferTo){
+    public void fortifySteps(Country countryToTransferFrom, Country countryToTransferTo) {
         GameMap.getInstance().setRecentMove("Country Data:" + countryToTransferFrom + "(" + countryToTransferFrom.numOfArmies + ")"
-        + " => " + countryToTransferTo + "(" + countryToTransferTo.numOfArmies + ")");
+                + " => " + countryToTransferTo + "(" + countryToTransferTo.numOfArmies + ")");
         int numberOfArmiesTransfer = countryToTransferTo.numOfArmies - 1;
 
         GameMap.getInstance().setRecentMove(name + " fortified " + countryToTransferTo.name + " with " + numberOfArmiesTransfer
@@ -598,26 +604,25 @@ public class Player extends Observable {
     }
 
 
-
     /**
      * To exchange cards automatically
      */
-    public void exchangeCardsAutomatically(){
-        ArrayList<String> cardListToBeSelected=new ArrayList<>();
-        boolean threeCards=false;
-        for(Map.Entry pairCards:unselectedCards.entrySet()) {
+    public void exchangeCardsAutomatically() {
+        ArrayList<String> cardListToBeSelected = new ArrayList<>();
+        boolean threeCards = false;
+        for (Map.Entry pairCards : unselectedCards.entrySet()) {
             int cardNum = Integer.parseInt(pairCards.getValue().toString());
             if (cardNum >= 3) {
-                for(int i=0;i<3;i++){
+                for (int i = 0; i < 3; i++) {
                     addInSelectedCards(pairCards.getKey().toString());
                 }
-                threeCards=true;
+                threeCards = true;
                 break;
             }
             cardListToBeSelected.add(pairCards.getKey().toString());
         }
-        if(!threeCards){
-            for(String cardToBeSelected:cardListToBeSelected){
+        if (!threeCards) {
+            for (String cardToBeSelected : cardListToBeSelected) {
                 addInSelectedCards(cardToBeSelected);
             }
         }

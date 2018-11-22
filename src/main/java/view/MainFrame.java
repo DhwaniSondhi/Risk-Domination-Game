@@ -116,14 +116,14 @@ public class MainFrame extends JFrame implements Observer {
         countryPanel = new CountryPanel();
         mainPanel.add(countryPanel, getConstraints(0, 2));
 
-        reinforcementPanel = new ReinforcementPanel(controller);
+        reinforcementPanel = new ReinforcementPanel();
         mainPanel.add(reinforcementPanel, getConstraints(1, 1));
 
-        attackPanel = new AttackPanel(controller);
+        attackPanel = new AttackPanel();
         attackPanel.setVisible(false);
         mainPanel.add(attackPanel, getConstraints(1, 1));
 
-        fortifyPanel = new FortifyPanel(controller);
+        fortifyPanel = new FortifyPanel();
         fortifyPanel.setVisible(false);
         mainPanel.add(fortifyPanel, getConstraints(1, 1));
 

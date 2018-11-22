@@ -4,7 +4,6 @@ import controller.AttackController;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -93,11 +92,9 @@ public class AttackPanel extends JPanel implements Observer {
      * Sets up country panel and neighbouring country panel using {@link JPanel}
      * Updates the country list in the view using {@link AttackController} updateCountryList function
      *
-     * @param stateChangeListener observer for game state
      */
-    public AttackPanel(GameStateChangeListener stateChangeListener) {
+    public AttackPanel() {
         attackController = new AttackController(this);
-        attackController.setStateChangeListener(stateChangeListener);
 
         setBackground(Color.LIGHT_GRAY);
         setBorder(new LineBorder(Color.BLACK, 2));

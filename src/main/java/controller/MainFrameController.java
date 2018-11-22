@@ -2,7 +2,6 @@ package controller;
 
 import model.GameMap;
 import utility.FileHelper;
-import utility.GameStateChangeListener;
 import utility.MapHelper;
 import view.MainFrame;
 import view.MapCreatorFrame;
@@ -18,11 +17,9 @@ import java.util.Observer;
 /**
  * This is the Controller for the MainFrame. see {@link BaseController}
  * implements {@link ActionListener} for MenuItems
- * implements {@link GameStateChangeListener} to observe state change
  */
 public class MainFrameController extends BaseController<MainFrame> implements
         ActionListener,
-        GameStateChangeListener,
         Observer {
 
     /**
@@ -86,72 +83,6 @@ public class MainFrameController extends BaseController<MainFrame> implements
     }
 
     /**
-     * Invoked when an game map is loaded
-     */
-    @Override
-    public void onMapLoaded() {
-        new StartUpFrame(this);
-    }
-
-    /**
-     * Invoked when an startup is completed is loaded
-     */
-    @Override
-    public void onStartUpCompleted() {
-        /*model.changePhase(GameMap.Phase.REINFORCE);
-        view.setUpGamePanels();
-        model.resetCurrentPlayer();
-        if (!model.currentPlayer.isHuman()) {
-            model.currentPlayer.reinforce(null, 0);
-        }*/
-    }
-
-    /**
-     * Invoked when reinforcement is done
-     */
-    @Override
-    public void onReinforcementCompleted() {
-        /*model.changePhase(GameMap.Phase.ATTACK);
-        view.reinforcementPanel.setVisible(false);
-        view.attackPanel.setVisible(true);
-        view.attackPanel.revalidate();
-        view.attackPanel.update();
-        if (!model.currentPlayer.isHuman()) {
-            model.currentPlayer.attack(null, null, false);
-        }*/
-    }
-
-    /**
-     * Invoked when attack is done
-     */
-    @Override
-    public void onAttackCompleted() {
-       /* model.changePhase(GameMap.Phase.FORTIFY);
-        view.attackPanel.setVisible(false);
-        view.fortifyPanel.setVisible(true);
-        view.fortifyPanel.update();
-        if (!model.currentPlayer.isHuman()) {
-            model.currentPlayer.fortify(0, null, null);
-        }*/
-    }
-
-    /**
-     * Invoked when fortification is done
-     */
-    @Override
-    public void onFortificationCompleted() {
-        /*model.changePhase(GameMap.Phase.REINFORCE);
-        model.changeToNextPlayer(true);
-        view.fortifyPanel.setVisible(false);
-        view.reinforcementPanel.setVisible(true);
-        view.reinforcementPanel.update();
-
-        if (!model.currentPlayer.isHuman()) {
-            model.currentPlayer.reinforce(null, 0);
-        }*/
-    }
-
-    /**
      * This function is checking if the action is
      * Load countryGraph : loads the countryGraph using {@link JFileChooser}
      * Create countryGraph : creates the countryGraph and does validation
@@ -175,7 +106,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
 
                         FileHelper.loadToConfig(selectedFile);
                         if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {
-                            onMapLoaded();
+                            new StartUpFrame();
                         } else {
                             FileHelper.emptyConfig();
                             JOptionPane.showMessageDialog(null, "File Validation Failed", "Error Message", JOptionPane.ERROR_MESSAGE);

@@ -5,7 +5,6 @@ import controller.ReinforcementController;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import utility.GameStateChangeListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,11 +70,9 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To create the Panel for Reinforcement components
      * </p>
      *
-     * @param stateChangeListener observer for game state
      */
-    public ReinforcementPanel(GameStateChangeListener stateChangeListener) {
+    public ReinforcementPanel() {
         reinforcementController = new ReinforcementController(this);
-        reinforcementController.setStateChangeListener(stateChangeListener);
         reinforcementController.initialize();
 
         setLayout(new GridBagLayout());
