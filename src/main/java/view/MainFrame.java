@@ -168,6 +168,12 @@ public class MainFrame extends JFrame implements Observer {
         create.addActionListener(controller);
         JMenuItem edit = new JMenuItem("Edit GameMap");
         menuFile.add(edit);
+        JMenuItem saveGame = new JMenuItem("Save Game");
+        saveGame.addActionListener(controller);
+        menuFile.add(saveGame);
+        JMenuItem loadGame = new JMenuItem("Load Game");
+        loadGame.addActionListener(controller);
+        menuFile.add(loadGame);
         edit.addActionListener(controller);
         JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(controller);
@@ -192,7 +198,7 @@ public class MainFrame extends JFrame implements Observer {
         if (o instanceof GameMap) {
             if (recentMovesPanel != null) {
                 GameMap instance = GameMap.getInstance();
-                if(!currentPhase.getText().contains(instance.currentPhase.toString())) {
+                if (!currentPhase.getText().contains(instance.currentPhase.toString())) {
                     recentMovesPanel.removeAll();
                 }
                 currentPhase.setText("Current Phase : " + instance.currentPhase.toString());

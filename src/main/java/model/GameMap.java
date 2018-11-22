@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 import utility.FileHelper;
 
 import java.util.*;
@@ -11,7 +13,7 @@ public class GameMap extends Observable {
     /**
      * Instance of GameMap class
      */
-    private static GameMap INSTANCE = null;
+    private transient static GameMap INSTANCE = null;
     /**
      * Counter for continent
      */
@@ -23,27 +25,33 @@ public class GameMap extends Observable {
     /**
      * Variable for currently playing player
      */
+    @Expose
     public Player currentPlayer = null;
     /**
      * HashMap for countries
      */
+    @Expose
     public HashMap<Integer, Country> countries;
 
     /**
      * Stack of cards for the game
      */
+    @Expose
     public int cardStack;
     /**
      * HashMap for continents
      */
+    @Expose
     public HashMap<Integer, Continent> continents;
     /**
      * HashMap for players
      */
+    @Expose
     public HashMap<Integer, Player> players;
     /**
      * HashMap for relationship between country and adjacent countries
      */
+    @Expose
     public HashMap<Integer, HashSet<Country>> countryGraph;
 
     /**
@@ -53,14 +61,17 @@ public class GameMap extends Observable {
     /**
      * current phase
      */
+    @Expose
     public Phase currentPhase = Phase.STARTUP;
     /**
      * previous phase
      */
+    @Expose
     public Phase previousPhase = Phase.STARTUP;
     /**
      * status if state has changed
      * */
+    @Expose
     public boolean stateHasChanged = false;
     /**
      * stores the recent move made in the game
@@ -81,6 +92,10 @@ public class GameMap extends Observable {
         cardStack = 0;
 
         FileHelper.writeLog("=================== NEW GAME =====================");
+    }
+
+    public String getTemp() {
+        return new Gson().toJson(currentPlayer);
     }
 
     /**
@@ -496,8 +511,6 @@ public class GameMap extends Observable {
         currentPlayer = players.get(1);
         cardStack = 8;
     }
-
-
 
     public enum Phase {
         /**

@@ -96,16 +96,12 @@ public class AggressiveStrategy implements PlayerStrategy {
     @Override
     public void fortify(Player context, int numberOfArmiesTransfer, Country strongestCountry, Country secondStrongestCountry) {
         int numberOfCountriesPlayerHas = context.countries.size();
-        System.out.println(numberOfCountriesPlayerHas);
         int count = 1;
         while (count <= numberOfCountriesPlayerHas) {
             List<Country> listOfCountries = context.getStrongestCountries(count);
-            System.out.println(listOfCountries);
             strongestCountry = listOfCountries.get(count - 1);
-            System.out.println("Strongest "+strongestCountry);
             strongestCountry.updateConnectedCountries();
             HashMap<Integer, Country> listOfCountriesConnected = strongestCountry.connectedCountries;
-            System.out.println(listOfCountriesConnected);
             if (listOfCountriesConnected.size() != 0) {
                 secondStrongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
                 if (secondStrongestCountry.numOfArmies != 1) {

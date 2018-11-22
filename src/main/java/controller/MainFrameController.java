@@ -1,5 +1,8 @@
 package controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import model.GameMap;
 import utility.FileHelper;
 import utility.MapHelper;
@@ -89,10 +92,10 @@ public class MainFrameController extends BaseController<MainFrame> implements
      * Exit : exits the game
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
         boolean isLoadMap, isEditMap;
-        isLoadMap = e.getActionCommand().equalsIgnoreCase("Load GameMap");
-        isEditMap = e.getActionCommand().equalsIgnoreCase("Edit GameMap");
+        isLoadMap = event.getActionCommand().equalsIgnoreCase("Load GameMap");
+        isEditMap = event.getActionCommand().equalsIgnoreCase("Edit GameMap");
         if (isEditMap || isLoadMap) {
             File dir = new File("maps");
             dir.mkdir();
@@ -103,7 +106,6 @@ public class MainFrameController extends BaseController<MainFrame> implements
                 File selectedFile = file.getSelectedFile();
                 if (isLoadMap) {
                     try {
-
                         FileHelper.loadToConfig(selectedFile);
                         if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {
                             new StartUpFrame();
@@ -122,9 +124,32 @@ public class MainFrameController extends BaseController<MainFrame> implements
                     new MapCreatorFrame("Edit Map", selectedFile);
                 }
             }
-        } else if (e.getActionCommand().equalsIgnoreCase("Create GameMap")) {
+        } else if (event.getActionCommand().equalsIgnoreCase("Create GameMap")) {
             new MapCreatorFrame("Create Map");
-        } else if (e.getActionCommand().equalsIgnoreCase("exit")) {
+        } else if (event.getActionCommand().equalsIgnoreCase("Save Game")) {
+            try {
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String data = gson.toJson(GameMap.getInstance());
+                System.out.println("data: " + data);
+                FileHelper.saveGameToFile(data);
+            } catch (JsonParseException e) {
+                System.out.println("Error saving game: " + e.getLocalizedMessage());
+            }
+        } else if (event.getActionCommand().equalsIgnoreCase("Load Game")) {
+            File dir = new File("savedgames");
+            dir.mkdir();
+            JFileChooser file = new JFileChooser(dir);
+            int confirmValue = file.showOpenDialog(null);
+
+            if (confirmValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = file.getSelectedFile();
+                try {
+                    FileHelper.loadGame(selectedFile);
+                } catch (Exception e) {
+                    System.out.println("Error loading saved game: " + e.getLocalizedMessage());
+                }
+            }
+        } else if (event.getActionCommand().equalsIgnoreCase("exit")) {
             System.exit(0);
         }
     }

@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.*;
 
 /**
@@ -13,18 +15,22 @@ public class Country extends Observable {
     /**
      * Country id
      */
+    @Expose
     public int id;
     /**
      * Country name
      */
+    @Expose
     public String name;
     /**
      * Player that owns of country
      */
+    @Expose
     public Player owner;
     /**
      * Number of armies at country
      */
+    @Expose
     public int numOfArmies;
     /**
      * Number of Dice allowed for a country
@@ -103,7 +109,7 @@ public class Country extends Observable {
     public HashSet<Country> getNeighboursDiffOwner() {
         HashSet<Country> set = new HashSet<>();
         for (Country neighbour : neighbours) {
-            if(!neighbour.owner.equals(owner)){
+            if (!neighbour.owner.equals(owner)) {
                 set.add(neighbour);
             }
         }

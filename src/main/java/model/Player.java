@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import utility.strategy.*;
 
 import java.util.*;
@@ -13,18 +14,22 @@ public class Player extends Observable {
     /**
      * Strategy for the player
      */
+    @Expose
     PlayerStrategy strategy;
     /**
      * id for player
      */
+    @Expose
     public int id;
     /**
      * Name for player
      */
+    @Expose
     public String name;
     /**
      * Cards hold by player
      */
+    @Expose
     public ArrayList<Card> cards;
 
     /**
@@ -488,7 +493,6 @@ public class Player extends Observable {
         }
     }
 
-
     /**
      * move cards from previous owner to current player if previous owner has zero countries
      *
@@ -602,7 +606,6 @@ public class Player extends Observable {
         GameMap.getInstance().setRecentMove("Country Data:" + countryToTransferFrom + "(" + countryToTransferFrom.numOfArmies + ")"
                 + " => " + countryToTransferTo + "(" + countryToTransferTo.numOfArmies + ")");
     }
-
 
     /**
      * To exchange cards automatically

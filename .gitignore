@@ -5,6 +5,7 @@ doc/
 public/
 logs/
 /build/
+savedgames/
 
 # Ignore Gradle GUI config
 gradle-app.setting

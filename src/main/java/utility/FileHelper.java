@@ -1,12 +1,10 @@
 package utility;
 
+import com.google.gson.JsonParseException;
 import model.GameMap;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is the helper class which contains all the functionalities for File Handling
@@ -142,6 +140,42 @@ public class FileHelper {
      */
     public static void emptyConfig() {
         GameMap.getInstance().clearInformation();
+    }
+
+
+    /**
+     * Writes the data to a game file with current datetime as filename
+     *
+     * @param gameData serialized gamData
+     */
+    public static void saveGameToFile(String gameData) {
+        String filename = new Date().toString();
+        try {
+            File folder = new File("savedgames");
+            folder.mkdir();
+            File file = new File("savedgames/" + filename + ".game");
+            file.createNewFile();
+
+            FileWriter fileWriter = new FileWriter(file);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.write(gameData);
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads the game from the file
+     *
+     * @param file saved game file
+     */
+    public static void loadGame(File file) throws JsonParseException, IllegalArgumentException {
+        String[] fileName = file.getName().split("\\.");
+        if(fileName.length != 2 || !fileName[1].equalsIgnoreCase("game")) {
+            throw new IllegalArgumentException("Not a valid game file.");
+        }
 
 
     }
