@@ -61,12 +61,13 @@ public class MainFrameController extends BaseController<MainFrame> implements
                         view.reinforcementPanel.update();
                     }
                     if (!model.currentPlayer.isHuman()) {
-                        new Thread(new Runnable() {
+                        /*new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 model.currentPlayer.reinforce(null, 0);
                             }
-                        }).start();
+                        }).start();*/
+                        model.currentPlayer.reinforce(null, 0);
                     }
                     break;
                 case ATTACK:
@@ -75,12 +76,13 @@ public class MainFrameController extends BaseController<MainFrame> implements
                     view.attackPanel.revalidate();
                     view.attackPanel.update();
                     if (!model.currentPlayer.isHuman()) {
-                        new Thread(new Runnable() {
+                        /*new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 model.currentPlayer.attack(null, null, false);
                             }
-                        }).start();
+                        }).start();*/
+                        model.currentPlayer.attack(null, null, false);
                     }
                     break;
                 case FORTIFY:
@@ -88,12 +90,12 @@ public class MainFrameController extends BaseController<MainFrame> implements
                     view.fortifyPanel.setVisible(true);
                     view.fortifyPanel.update();
                     if (!model.currentPlayer.isHuman()) {
-                        new Thread(new Runnable() {
+                        /*new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 model.currentPlayer.attack(null, null, false);
                             }
-                        }).start();
+                        }).start();*/
                         model.currentPlayer.fortify(0, null, null);
                     }
                     break;
