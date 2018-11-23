@@ -21,7 +21,11 @@ public class CheaterStrategy implements PlayerStrategy {
     public void reinforce(Player context, Country country, int armySelected) {
         ArrayList<Country> listOfcountries = context.countries;
         for (int i = 0; i < listOfcountries.size(); i++) {
-            listOfcountries.get(i).addArmies(2 * listOfcountries.get(i).numOfArmies);
+
+            int armyAssigned = listOfcountries.get(i).numOfArmies;
+            country = listOfcountries.get(i);
+            country.addArmies(armyAssigned);
+            GameMap.getInstance().setRecentMove(country.owner.name + "reinforced" + country.name + "with" + armyAssigned + "armies.");
 
         }
         GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
@@ -46,15 +50,17 @@ public class CheaterStrategy implements PlayerStrategy {
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         ArrayList<Country> listOfcountries = context.countries;
+        HashSet<Country> neighbouringCountries = new HashSet<Country>();
         for (int i = 0; i < listOfcountries.size(); i++) {
-            HashSet<Country> setOfCountries = GameMap.getInstance().countryGraph.get(listOfcountries.get(i));
-            for (Country country : setOfCountries) {
-                if (country.id != context.id) {
-                    country.changeOwner(context);
-                    break;
-                }
-            }
+            selectedCountry = listOfcountries.get(i);
+            neighbouringCountries.addAll(listOfcountries.get(i).getNeighboursDiffOwner());
+        }
 
+        for (Country neighbour : neighbouringCountries) {
+            selectedNeighbouringCountry = neighbour;
+            GameMap.getInstance().setRecentMove(context.name + " attacked " + selectedNeighbouringCountry.name);
+            context.countryConquered(selectedCountry, selectedNeighbouringCountry);
+            break;
         }
         GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
 
@@ -72,12 +78,11 @@ public class CheaterStrategy implements PlayerStrategy {
     public void fortify(Player context, int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
         ArrayList<Country> listOfcountries = context.countries;
         for (int i = 0; i < listOfcountries.size(); i++) {
-            HashSet<Country> setOfCountries = GameMap.getInstance().countryGraph.get(listOfcountries.get(i));
-            for (Country country : setOfCountries) {
-                if (country.id != context.id) {
-                    listOfcountries.get(i).addArmies(2 * listOfcountries.get(i).numOfArmies);
-                    break;
-                }
+            countrySelected = listOfcountries.get(i);
+            HashSet<Country> neighbouringCountries = listOfcountries.get(i).getNeighboursDiffOwner();
+            if (!neighbouringCountries.isEmpty()) {
+                GameMap.getInstance().setRecentMove(context.name + " fortified " + countrySelected.name + " with " + listOfcountries.get(i).numOfArmies);
+                listOfcountries.get(i).addArmies(listOfcountries.get(i).numOfArmies);
             }
         }
         GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
