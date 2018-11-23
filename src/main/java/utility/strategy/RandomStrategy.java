@@ -27,9 +27,12 @@ public class RandomStrategy implements PlayerStrategy {
             context.exchangeCardsAutomatically();
         }
         armySelected = context.totalArmies;
-        while (armySelected > 0) {
+        while (true) {
             country = context.countries.get(random.nextInt(context.countries.size()));
-            int armyAssigned = random.nextInt(armySelected);
+            if(armySelected<=0){
+                break;
+            }
+            int armyAssigned = random.nextInt(armySelected-1)+1;
             country.addArmies(armyAssigned);
             armySelected -= armyAssigned;
             GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
