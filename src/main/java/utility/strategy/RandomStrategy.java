@@ -92,64 +92,22 @@ public class RandomStrategy implements PlayerStrategy {
     @Override
     public void fortify(Player context, int numberOfArmiesTransfer, Country firstRandomCountry, Country
             secondRandomCountry) {
-        Random r = new Random(Calendar.getInstance().getTimeInMillis());
-        ArrayList<Country> listOfcountries = context.countries;
-        ArrayList<Country> listForFirstOption = new ArrayList<Country>();
-        for (int i = 0; i < listOfcountries.size(); i++) {
-            if (listOfcountries.get(i).numOfArmies > 1) {
-                listForFirstOption.add(listOfcountries.get(i));
+        ArrayList<Country> counteriesOwenedByCurrentPlayer = context.countries;
+        Random r1 = new Random(Calendar.getInstance().getTimeInMillis());
+        Country getFirstCountry = counteriesOwenedByCurrentPlayer.get(r1.nextInt(counteriesOwenedByCurrentPlayer.size()));
+        if (getFirstCountry != null && getFirstCountry.numOfArmies != 1) {
+            counteriesOwenedByCurrentPlayer.remove(getFirstCountry);
+            Country getSecondArmyCountry = counteriesOwenedByCurrentPlayer.get(r1.nextInt(counteriesOwenedByCurrentPlayer.size()));
+            getFirstCountry.updateConnectedCountries();
+            HashMap<Integer, Country> listOfCountriesConnected = getFirstCountry.connectedCountries;
+            if (listOfCountriesConnected.get(getSecondArmyCountry.id) != null && firstRandomCountry.numOfArmies > 1) {
+                numberOfArmiesTransfer = r1.nextInt(firstRandomCountry.numOfArmies - 1);
+                GameMap.getInstance().setRecentMove(context.name + " fortified " + getFirstCountry.name + " with " + numberOfArmiesTransfer
+                        + " armies from " + getSecondArmyCountry.name);
+                getFirstCountry.deductArmies(numberOfArmiesTransfer);
+                getSecondArmyCountry.addArmies(numberOfArmiesTransfer);
             }
-        }
-        //to check there is any country from where we can fortify or not
-        if (listForFirstOption.size() != 0) {
-            //if there is only one country from where we can fortify
-            if (listForFirstOption.size() == 1) {
-                firstRandomCountry = listForFirstOption.get(0);
-            } else {
-                firstRandomCountry = listForFirstOption.get(r.nextInt(listForFirstOption.size()));
-            }
-            firstRandomCountry.updateConnectedCountries();
-            HashMap<Integer, Country> mapOfCountriesConnected = firstRandomCountry.connectedCountries;
-            //check there is any connected country to which we can fortify randomly
-            fortifyCheck(context, mapOfCountriesConnected, firstRandomCountry);
         }
         GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
     }
-
-    public void transferRandomArmies(Player context,Country firstRandomCountry, Country secondRandomCountry){
-        Random r = new Random(Calendar.getInstance().getTimeInMillis());
-        int numberOfArmiesTransfer = firstRandomCountry.numOfArmies - 1;
-        if (firstRandomCountry.numOfArmies == 2) {
-
-            GameMap.getInstance().setRecentMove(context.name + " fortified " + firstRandomCountry.name + " with " + numberOfArmiesTransfer
-                    + " armies from " + secondRandomCountry.name);
-            firstRandomCountry.deductArmies(numberOfArmiesTransfer);
-            secondRandomCountry.addArmies(numberOfArmiesTransfer);
-
-        } else {
-            numberOfArmiesTransfer = r.nextInt(firstRandomCountry.numOfArmies - 1);
-            GameMap.getInstance().setRecentMove(context.name + " fortified " + firstRandomCountry.name + " with " + numberOfArmiesTransfer
-                    + " armies from " + secondRandomCountry.name);
-            firstRandomCountry.deductArmies(numberOfArmiesTransfer);
-            secondRandomCountry.addArmies(numberOfArmiesTransfer);
-        }
-    }
-
-    public void fortifyCheck(Player context,HashMap<Integer, Country> mapOfCountriesConnected, Country firstRandomCountry){
-        Random r = new Random(Calendar.getInstance().getTimeInMillis());
-        Country secondRandomCountry = null;
-        if (mapOfCountriesConnected.size() != 0) {
-            ArrayList<Country> listOfConnectedCountries = new ArrayList<Country>(mapOfCountriesConnected.values());
-            //if there is only one country no need for randomness
-            if (mapOfCountriesConnected.size() == 1) {
-                secondRandomCountry = listOfConnectedCountries.get(0);
-            } else {
-                secondRandomCountry = listOfConnectedCountries.get(r.nextInt(listOfConnectedCountries.size() - 1));
-            }
-            //suppose selected country only have two armies so no need for randomness
-            transferRandomArmies(context,firstRandomCountry,secondRandomCountry);
-        }
-        GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
-    }
-
 }
