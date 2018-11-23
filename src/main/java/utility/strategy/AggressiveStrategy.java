@@ -66,14 +66,14 @@ public class AggressiveStrategy implements PlayerStrategy {
 
 
                     GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name + "(" + selectedCountry.numOfArmies
-                            + ") armies on " + selectedNeighbouringCountry.name +"("+ selectedNeighbouringCountry.numOfArmies + ") armies of " +selectedNeighbouringCountry.owner.name );
+                            + ") armies on " + selectedNeighbouringCountry.name + "(" + selectedNeighbouringCountry.numOfArmies + ") armies of " + selectedNeighbouringCountry.owner.name);
 
                     countryChanged = false;
                 }
 
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
 
-                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
+                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.numOfArmies > 1) {
                     int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                     GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
                     context.gainCard();
@@ -104,7 +104,8 @@ public class AggressiveStrategy implements PlayerStrategy {
             HashMap<Integer, Country> listOfCountriesConnected = strongestCountry.connectedCountries;
             if (listOfCountriesConnected.size() != 0) {
                 secondStrongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
-                if (secondStrongestCountry.numOfArmies != 1) {
+
+                if (strongestCountry.numOfArmies != 1) {
                     context.fortifySteps(strongestCountry, secondStrongestCountry);
                     break;
                 }

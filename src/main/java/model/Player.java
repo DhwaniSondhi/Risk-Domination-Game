@@ -596,7 +596,7 @@ public class Player extends Observable {
     public void fortifySteps(Country countryToTransferFrom, Country countryToTransferTo) {
         GameMap.getInstance().setRecentMove("Country Data:" + countryToTransferFrom + "(" + countryToTransferFrom.numOfArmies + ")"
                 + " => " + countryToTransferTo + "(" + countryToTransferTo.numOfArmies + ")");
-        int numberOfArmiesTransfer = countryToTransferTo.numOfArmies - 1;
+        int numberOfArmiesTransfer = countryToTransferFrom.numOfArmies - 1;
 
         GameMap.getInstance().setRecentMove(name + " fortified " + countryToTransferTo.name + " with " + numberOfArmiesTransfer
                 + " armies from " + countryToTransferFrom.name);

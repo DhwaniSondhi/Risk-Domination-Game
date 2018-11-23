@@ -78,6 +78,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 }
             }
             if (!changeCurrentPlayer()) {
+                model.deleteObserver(view);
                 view.dispose();
                 model.changePhase(GameMap.Phase.REINFORCE);
             }
@@ -91,6 +92,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 completedPlayers.add(model.currentPlayer.id);
 
             if (!changeCurrentPlayer()) {
+                model.deleteObserver(view);
                 view.dispose();
                 model.changePhase(GameMap.Phase.REINFORCE);
             }

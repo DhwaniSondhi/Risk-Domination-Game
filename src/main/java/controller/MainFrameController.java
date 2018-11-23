@@ -61,7 +61,12 @@ public class MainFrameController extends BaseController<MainFrame> implements
                         view.reinforcementPanel.update();
                     }
                     if (!model.currentPlayer.isHuman()) {
-                        model.currentPlayer.reinforce(null, 0);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                model.currentPlayer.reinforce(null, 0);
+                            }
+                        }).start();
                     }
                     break;
                 case ATTACK:
@@ -70,7 +75,12 @@ public class MainFrameController extends BaseController<MainFrame> implements
                     view.attackPanel.revalidate();
                     view.attackPanel.update();
                     if (!model.currentPlayer.isHuman()) {
-                        model.currentPlayer.attack(null, null, false);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                model.currentPlayer.attack(null, null, false);
+                            }
+                        }).start();
                     }
                     break;
                 case FORTIFY:
@@ -78,10 +88,24 @@ public class MainFrameController extends BaseController<MainFrame> implements
                     view.fortifyPanel.setVisible(true);
                     view.fortifyPanel.update();
                     if (!model.currentPlayer.isHuman()) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                model.currentPlayer.attack(null, null, false);
+                            }
+                        }).start();
                         model.currentPlayer.fortify(0, null, null);
                     }
                     break;
             }
+        }
+    }
+
+    private void sleepFor(Long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
