@@ -65,15 +65,21 @@ public class BenevolentStrategy implements PlayerStrategy {
         while (count > 0) {
             List<Country> weakestcountries = context.getStrongestCountries(count);
             weakestCountry = weakestcountries.get(count - 1);
-            strongestCountry.updateConnectedCountries();
-            HashMap<Integer, Country> listOfCountriesConnected = weakestCountry.connectedCountries;
-            if (listOfCountriesConnected.size() != 0) {
-                strongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
-                if (strongestCountry.numOfArmies != 1) {
-                    context.fortifySteps(strongestCountry, weakestCountry);
-                    break;
+            if(weakestCountry!=null){
+                weakestCountry.updateConnectedCountries();
+                HashMap<Integer, Country> listOfCountriesConnected = weakestCountry.connectedCountries;
+                if (listOfCountriesConnected.size() != 0) {
+                    strongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
+                    if(strongestCountry!=null){
+                        if (strongestCountry.numOfArmies != 1) {
+                            context.fortifySteps(strongestCountry, weakestCountry);
+                            break;
+                        }
+                    }
+
                 }
             }
+
             count--;
         }
         GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
