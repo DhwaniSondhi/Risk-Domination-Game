@@ -88,22 +88,22 @@ public class RandomStrategy implements PlayerStrategy {
      *
      * @param context                reference to player using this strategy
      * @param numberOfArmiesTransfer armies user select to transfer
-     * @param firstRandomCountry     country which user select transfer from
+     * @param getFirstCountry     country which user select transfer from
      * @param secondRandomCountry    country which user select transfer to
      */
     @Override
-    public void fortify(Player context, int numberOfArmiesTransfer, Country firstRandomCountry, Country
+    public void fortify(Player context, int numberOfArmiesTransfer, Country getFirstCountry, Country
             secondRandomCountry) {
         ArrayList<Country> counteriesOwenedByCurrentPlayer = context.countries;
         Random r1 = new Random(Calendar.getInstance().getTimeInMillis());
-        Country getFirstCountry = counteriesOwenedByCurrentPlayer.get(r1.nextInt(counteriesOwenedByCurrentPlayer.size()));
+        getFirstCountry = counteriesOwenedByCurrentPlayer.get(r1.nextInt(counteriesOwenedByCurrentPlayer.size()));
         if (getFirstCountry != null && getFirstCountry.numOfArmies != 1) {
             counteriesOwenedByCurrentPlayer.remove(getFirstCountry);
             Country getSecondArmyCountry = counteriesOwenedByCurrentPlayer.get(r1.nextInt(counteriesOwenedByCurrentPlayer.size()));
             getFirstCountry.updateConnectedCountries();
             HashMap<Integer, Country> listOfCountriesConnected = getFirstCountry.connectedCountries;
-            if (listOfCountriesConnected.get(getSecondArmyCountry.id) != null && firstRandomCountry.numOfArmies > 1) {
-                numberOfArmiesTransfer = r1.nextInt(firstRandomCountry.numOfArmies - 1);
+            if (listOfCountriesConnected.get(getSecondArmyCountry.id) != null && getFirstCountry.numOfArmies > 1) {
+                numberOfArmiesTransfer = r1.nextInt(getFirstCountry.numOfArmies - 1);
                 GameMap.getInstance().setRecentMove(context.name + " fortified " + getFirstCountry.name + " with " + numberOfArmiesTransfer
                         + " armies from " + getSecondArmyCountry.name);
                 getFirstCountry.deductArmies(numberOfArmiesTransfer);

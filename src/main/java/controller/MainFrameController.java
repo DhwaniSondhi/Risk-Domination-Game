@@ -9,6 +9,7 @@ import utility.MapHelper;
 import view.MainFrame;
 import view.MapCreatorFrame;
 import view.StartUpFrame;
+import view.TournamentModeFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -172,6 +173,10 @@ public class MainFrameController extends BaseController<MainFrame> implements
             }
         } else if (event.getActionCommand().equalsIgnoreCase("exit")) {
             System.exit(0);
+        }else if(event.getActionCommand().equalsIgnoreCase("Tournament Mode")){
+            new TournamentModeFrame();
+
+
         }
     }
 }

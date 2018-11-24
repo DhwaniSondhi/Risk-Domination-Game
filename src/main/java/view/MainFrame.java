@@ -160,6 +160,9 @@ public class MainFrame extends JFrame implements Observer {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuFile = new JMenu("File");
 
+        JMenuItem tournament=new JMenuItem("Tournament Mode");
+        tournament.addActionListener(controller);
+        menuFile.add(tournament);
         JMenuItem load = new JMenuItem("Load GameMap");
         load.addActionListener(controller);
         menuFile.add(load);
