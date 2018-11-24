@@ -22,6 +22,7 @@ public class TournamentModeFrame extends JFrame {
     JPanel jPanelForMaps;
     JPanel jPanelForNumberOfGamesOnMap;
     JPanel mainPanel;
+    JPanel jPanelProceedButton;
 
 
     /**
@@ -120,7 +121,7 @@ public class TournamentModeFrame extends JFrame {
         jPanelForStrategyOfPlayer.revalidate();
         jPanelForStrategyOfPlayer.repaint();
         jPanelForPlayer.setVisible(false);
-        JPanel jPanelProceedButton=new JPanel();
+        jPanelProceedButton=new JPanel();
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 3;
@@ -131,9 +132,72 @@ public class TournamentModeFrame extends JFrame {
 
 
     }
+    public void proceedToMaps()
+    {
+        jPanelForStrategyOfPlayer.setVisible(false);
+        jPanelProceedButton.setVisible(false);
+        jPanelForMaps=new JPanel();
+        jPanelForMaps.add(new JLabel("Number Of Maps:"));
+        JComboBox<Integer> jComboBoxNumberOfMaps=new JComboBox<>();
+        for(int i=1;i<=5;i++){
+           jComboBoxNumberOfMaps.addItem(i);
+        }
+        jComboBoxNumberOfMaps.setName("ComboboxForMaps");
+        jComboBoxNumberOfMaps.addItemListener(tournamentModeController);
+        jPanelForMaps.add(jComboBoxNumberOfMaps);
+        JButton jButtonForNumberOfMaps=new JButton("Submit Number");
+        jPanelForMaps.add(jButtonForNumberOfMaps);
+        jButtonForNumberOfMaps.addActionListener(tournamentModeController);
+        bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
+        bagConstraintsMain.gridx = 0;
+        bagConstraintsMain.gridy = 1;
+        mainPanel.add(jPanelForMaps,bagConstraintsMain);
+        jPanelForMaps.revalidate();
+        mainPanel.revalidate();
+        mainPanel.repaint();
+        revalidate();
+
+    }
+    public void updateMapsPanel(int count) {
+
+        jPanelForNumberOfGamesOnMap=new JPanel();
+        int currentSize = jPanelForNumberOfGamesOnMap.getComponents().length;
+        int diff = Math.abs(currentSize - count);
+        if (currentSize <= count) {
+            for (int i = 0; i < diff; i++) {
+                int x = jPanelForNumberOfGamesOnMap.getComponentCount() + 1;
+                JPanel panel = new JPanel();
+                panel.setLayout(new FlowLayout());
+
+                JTextField nameField = new JTextField();
+                nameField.setText("Maps" + x);
+                panel.add(nameField);
+                JComboBox<Integer> type=new JComboBox<>();
+                for(int maps=1;maps<=5;maps++){
+                    type.addItem(i);
+                }
+                
+                panel.add(type);
+
+                jPanelForStrategyOfPlayer.add(panel);
+            }
+        } else {
+            for (int i = currentSize - 1; i > currentSize - (diff + 1); i--) {
+                jPanelForNumberOfGamesOnMap.remove(i);
+            }
+        }
 
 
-    
+        bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
+        bagConstraintsMain.gridx = 0;
+        bagConstraintsMain.gridy = 2;
+        mainPanel.add(jPanelForNumberOfGamesOnMap,bagConstraintsMain);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+
+
+
+    }
 
 
 }

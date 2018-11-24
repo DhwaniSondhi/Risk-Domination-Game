@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.control.ComboBox;
 import view.TournamentModeFrame;
 
 import javax.swing.*;
@@ -31,9 +32,8 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-        System.out.println("d");
+        System.out.println(e.getSource().getClass().getName());
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            System.out.println("fs");
             JComboBox jComboBox = (JComboBox) e.getSource();
             numberOfPlayer = (int) jComboBox.getSelectedItem();
         }
@@ -49,7 +49,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
         if (e.getActionCommand().equalsIgnoreCase("Submit")){
-            System.out.println("dsfs");
+
             if(numberOfPlayer==0){
                 view.updatePlayersPanel(2);
             }
@@ -59,7 +59,15 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
 
         }
         else if(e.getActionCommand().equalsIgnoreCase("Proceed")){
-
+            view.proceedToMaps();
+        }
+        else if(e.getActionCommand().equalsIgnoreCase("Submit Number")){
+            if(numberOfPlayer==0){
+                view.updatePlayersPanel(1);
+            }
+            else{
+                view.updatePlayersPanel(numberOfPlayer);
+            }
         }
 
     }
