@@ -1,6 +1,6 @@
 package controller;
 
-import javafx.scene.control.ComboBox;
+
 import view.TournamentModeFrame;
 
 import javax.swing.*;
@@ -36,6 +36,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
         if (e.getStateChange() == ItemEvent.SELECTED) {
             JComboBox jComboBox = (JComboBox) e.getSource();
             numberOfPlayer = (int) jComboBox.getSelectedItem();
+            System.out.println(numberOfPlayer);
         }
 
     }
@@ -62,11 +63,12 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
             view.proceedToMaps();
         }
         else if(e.getActionCommand().equalsIgnoreCase("Submit Number")){
+            System.out.println("sffsfsf");
             if(numberOfPlayer==0){
-                view.updatePlayersPanel(1);
+                view.updateMapsPanel(1);
             }
             else{
-                view.updatePlayersPanel(numberOfPlayer);
+                view.updateMapsPanel(numberOfPlayer);
             }
         }
 

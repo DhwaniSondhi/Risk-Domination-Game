@@ -1,13 +1,12 @@
 package view;
 
 import controller.TournamentModeController;
-import javafx.scene.control.ComboBox;
 import utility.strategy.PlayerStrategy;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.List;
+
 
 /**
  * Gui class for tournament view
@@ -23,6 +22,9 @@ public class TournamentModeFrame extends JFrame {
     JPanel jPanelForNumberOfGamesOnMap;
     JPanel mainPanel;
     JPanel jPanelProceedButton;
+    JButton jButtonStartTournament;
+    JPanel jPanelForStartTournamentButton;
+    JLabel jLabelTournament;
 
 
     /**
@@ -44,12 +46,12 @@ public class TournamentModeFrame extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        JLabel jLabelFortify = new JLabel("Tournament");
-        jLabelFortify.setFont(new Font("Tournament", Font.BOLD, 20));
+        jLabelTournament = new JLabel("Tournament");
+        jLabelTournament.setFont(new Font("Tournament", Font.BOLD, 20));
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 0;
-        mainPanel.add(jLabelFortify, bagConstraintsMain);
+        mainPanel.add(jLabelTournament, bagConstraintsMain);
         playerPanels();
 
 
@@ -159,6 +161,19 @@ public class TournamentModeFrame extends JFrame {
 
     }
     public void updateMapsPanel(int count) {
+        jPanelForMaps.setVisible(false);
+        jLabelTournament.setVisible(false);
+
+        JPanel jPanelForLabelSelectionOfGameOnMap=new JPanel();
+        bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
+        bagConstraintsMain.gridx = 0;
+        bagConstraintsMain.gridy = 0;
+        mainPanel.add(jPanelForLabelSelectionOfGameOnMap,bagConstraintsMain);
+        jPanelForLabelSelectionOfGameOnMap.add(new JLabel("Select Number of games on each map"));
+
+        System.out.println("fsdfsdfsdfsd");
+        JList<Integer> jlistForNumberOfMaps=new JList<Integer>();
+
 
         jPanelForNumberOfGamesOnMap=new JPanel();
         int currentSize = jPanelForNumberOfGamesOnMap.getComponents().length;
@@ -174,12 +189,12 @@ public class TournamentModeFrame extends JFrame {
                 panel.add(nameField);
                 JComboBox<Integer> type=new JComboBox<>();
                 for(int maps=1;maps<=5;maps++){
-                    type.addItem(i);
+                    type.addItem(maps);
                 }
-                
+
                 panel.add(type);
 
-                jPanelForStrategyOfPlayer.add(panel);
+                jPanelForNumberOfGamesOnMap.add(panel);
             }
         } else {
             for (int i = currentSize - 1; i > currentSize - (diff + 1); i--) {
@@ -192,8 +207,21 @@ public class TournamentModeFrame extends JFrame {
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 2;
         mainPanel.add(jPanelForNumberOfGamesOnMap,bagConstraintsMain);
+        jPanelForStartTournamentButton=new JPanel();
+
+        bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
+        bagConstraintsMain.gridx = 0;
+        bagConstraintsMain.gridy = 3;
+        mainPanel.add(jPanelForStartTournamentButton,bagConstraintsMain);
+        jButtonStartTournament=new JButton("Start Tournament");
+        jPanelForStartTournamentButton.add(jButtonStartTournament);
+        jButtonStartTournament.addActionListener(tournamentModeController);
+        jPanelForStartTournamentButton.revalidate();
+
         mainPanel.revalidate();
         mainPanel.repaint();
+        revalidate();
+
 
 
 
