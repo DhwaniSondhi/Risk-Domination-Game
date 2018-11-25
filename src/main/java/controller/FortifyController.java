@@ -55,10 +55,9 @@ public class FortifyController extends BaseController<FortifyPanel> implements A
             model.currentPlayer.deleteObserver(view);
             model.changePhase(GameMap.Phase.REINFORCE);
         } else if (e.getActionCommand().equalsIgnoreCase("Transfer")) {
-            //view.getTheValueOfComboBox();
-
             model.currentPlayer.fortify(armiesToTransfer, selectedCountry, selectedNeighbour);
-
+            model.canSave = false;
+            model.changePhase(GameMap.Phase.REINFORCE);
         }
 
     }

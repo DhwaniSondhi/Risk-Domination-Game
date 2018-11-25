@@ -43,6 +43,7 @@ public class PlayerDominationView extends JPanel implements Observer {
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         add(container);
+        update(null, null);
     }
 
     /**

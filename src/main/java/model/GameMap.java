@@ -1,9 +1,11 @@
 package model;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import utility.FileHelper;
+import utility.strategy.PlayerStrategy;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -70,13 +72,17 @@ public class GameMap extends Observable {
     public Phase previousPhase = Phase.STARTUP;
     /**
      * status if state has changed
-     * */
+     */
     @Expose
     public boolean stateHasChanged = false;
     /**
      * stores the recent move made in the game
      */
     public String recentMove;
+    /**
+     * flag to check if game can be saved
+     * */
+    public boolean canSave = true;
 
     /**
      * Initialize countries, continents, players, countryGraph
@@ -92,10 +98,6 @@ public class GameMap extends Observable {
         cardStack = 0;
 
         FileHelper.writeLog("=================== NEW GAME =====================");
-    }
-
-    public String getTemp() {
-        return new Gson().toJson(currentPlayer);
     }
 
     /**
@@ -141,7 +143,7 @@ public class GameMap extends Observable {
      *
      * @param numberOfArmiesTransfer armies user select to transfer
      * @param countrySelected        country which user select transfer from
-     * @param neighbourSelected       country which user select transfer to
+     * @param neighbourSelected      country which user select transfer to
      */
     public void updateArmiesOfCountries(int numberOfArmiesTransfer, Country countrySelected, Country neighbourSelected) {
         setRecentMove(currentPlayer.name + " moved " + numberOfArmiesTransfer + " armies from " + countrySelected.name
@@ -402,6 +404,95 @@ public class GameMap extends Observable {
         } else {
             gameEnded = false;
         }
+    }
+
+    /**
+     * restores serialized game data
+     *
+     * @param gameData serialized representation of game data
+     */
+    public void restoreFromData(String gameData) throws JsonParseException {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(PlayerStrategy.Strategy.class, new JsonDeserializer<PlayerStrategy.Strategy>() {
+                    @Override
+                    public PlayerStrategy.Strategy deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                        String strategy = json.toString().replace("\"", "");
+                        if (strategy.equals("Aggressive")) return PlayerStrategy.Strategy.AGGRESSIVE;
+                        else if (strategy.equals("Benevolent")) return PlayerStrategy.Strategy.BENEVOLENT;
+                        else if (strategy.equals("Random")) return PlayerStrategy.Strategy.RANDOM;
+                        else if (strategy.equals("Cheater")) return PlayerStrategy.Strategy.CHEATER;
+                        else return PlayerStrategy.Strategy.HUMAN;
+                    }
+                })
+                .registerTypeAdapter(Card.TYPE.class, new JsonDeserializer<Card.TYPE>() {
+                    @Override
+                    public Card.TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                        String type = json.toString().replace("\"", "");
+                        if (type.equals("CAVALRY")) return Card.TYPE.CAVALRY;
+                        else if (type.equals("ARTILLERY")) return Card.TYPE.ARTILLERY;
+                        else return Card.TYPE.INFANTRY;
+                    }
+                })
+                .registerTypeAdapter(Phase.class, new JsonDeserializer<Phase>() {
+                    @Override
+                    public Phase deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                        String phase = json.toString().replace("\"", "");
+                        if (phase.equals("STARTUP")) return Phase.STARTUP;
+                        else if (phase.equals("ATTACK")) return Phase.ATTACK;
+                        else if (phase.equals("FORTIFY")) {
+                            return Phase.FORTIFY;
+                        } else return Phase.REINFORCE;
+                    }
+                })
+                .create();
+        GameMap data = gson.fromJson(gameData, GameMap.class);
+        copyFromModel(data);
+    }
+
+    /**
+     * copies from another GameMap model
+     *
+     * @param data model to copy from
+     */
+    public void copyFromModel(GameMap data) {
+        clearInformation();
+        for (Player p : data.players.values()) {
+            Player player = new Player(p.id, p.name, p.strategy);
+            player.cards = p.cards;
+            players.put(p.id, player);
+        }
+        for (Country c : data.countries.values()) {
+            int ownerId = c.owner.id;
+            Country country = new Country(c.id, c.name);
+            country.numOfArmies = c.numOfArmies;
+            country.owner = players.get(ownerId);
+            players.get(ownerId).countries.add(country);
+            countries.put(country.id, country);
+        }
+        for (Continent c : data.continents.values()) {
+            ArrayList<Country> list = c.countries;
+            Continent continent = new Continent(c.id, c.name, c.controlValue);
+            continent.countries = new ArrayList<>();
+            for (Country country : list) {
+                continent.countries.add(countries.get(country.id));
+            }
+            continents.put(continent.id, continent);
+        }
+        for (Map.Entry<Integer, HashSet<Country>> entry : data.countryGraph.entrySet()) {
+            Set<Country> set = entry.getValue();
+            HashSet<Country> newSet = new HashSet<>();
+            countries.get(entry.getKey()).neighbours = new HashSet<>();
+            for (Country country : set) {
+                countries.get(entry.getKey()).neighbours.add(countries.get(country.id));
+                newSet.add(countries.get(country.id));
+            }
+            countryGraph.put(entry.getKey(), newSet);
+        }
+        currentPlayer = players.get(data.currentPlayer.id);
+        currentPhase = data.currentPhase;
+        previousPhase = data.previousPhase;
+        setChanged();
+        notifyChanges();
     }
 
     /**

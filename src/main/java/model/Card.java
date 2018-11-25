@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Random;
 
 /**
@@ -9,6 +11,7 @@ public class Card {
     /**
      * type of card
      */
+    @Expose
     public TYPE type;
 
     /**
@@ -32,8 +35,19 @@ public class Card {
      * enum for card type
      */
     public enum TYPE {
-        INFANTRY,
-        CAVALRY,
-        ARTILLERY
+        INFANTRY("INFANTRY"),
+        CAVALRY("CAVALRY"),
+        ARTILLERY("ARTILLERY");
+
+        String name;
+
+        TYPE(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

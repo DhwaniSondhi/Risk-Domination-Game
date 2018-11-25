@@ -17,7 +17,11 @@ public class CountryController extends BaseController<CountryPanel> {
     public CountryController(CountryPanel view) {
         super(view);
         for (Country country : model.countries.values()) {
-            country.addObserver(view);
+            if(view == null || country == null) {
+                System.out.println("null view");
+            } else {
+                country.addObserver(view);
+            }
         }
     }
 

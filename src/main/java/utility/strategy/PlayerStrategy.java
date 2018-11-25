@@ -31,15 +31,6 @@ public interface PlayerStrategy {
         public String toString() {
             return name;
         }
-
-        /**
-         * return array of all enum values
-         *
-         * @return array of all Strategy
-         */
-        public Strategy[] arrayOfAll() {
-            return new Strategy[]{HUMAN, AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER};
-        }
     }
 
     /**

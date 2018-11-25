@@ -1,5 +1,6 @@
 package utility;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import model.GameMap;
 
@@ -173,11 +174,15 @@ public class FileHelper {
      */
     public static void loadGame(File file) throws JsonParseException, IllegalArgumentException {
         String[] fileName = file.getName().split("\\.");
-        if(fileName.length != 2 || !fileName[1].equalsIgnoreCase("game")) {
+        if (fileName.length != 2 || !fileName[1].equalsIgnoreCase("game")) {
             throw new IllegalArgumentException("Not a valid game file.");
         }
-
-
+        try {
+            String gameData = new Scanner(file).useDelimiter("\\A").next();
+            GameMap.getInstance().restoreFromData(gameData);
+        } catch (FileNotFoundException e) {
+            throw new IllegalStateException("File cannot be null.");
+        }
     }
 
     /**

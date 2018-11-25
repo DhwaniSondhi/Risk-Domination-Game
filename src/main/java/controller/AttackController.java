@@ -52,6 +52,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
     public void actionPerformed(ActionEvent e) {
 
         if (e.getActionCommand().equalsIgnoreCase("attack")) {
+            model.canSave = false;
             selectedCountry.addObserver(view);
             selectedNeighbouringCountry.addObserver(view);
             boolean isAllOut = view.selectMode.getSelectedIndex() == 1;
@@ -67,6 +68,7 @@ public class AttackController extends BaseController<AttackPanel> implements Act
             model.changePhase(GameMap.Phase.FORTIFY);
 
         } else if (e.getActionCommand().equalsIgnoreCase("move")) {
+            model.canSave = false;
             selectedCountry.addObserver(view);
             selectedNeighbouringCountry.addObserver(view);
             int armies = (Integer) view.armyToMove.getSelectedItem();

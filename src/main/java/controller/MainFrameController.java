@@ -49,6 +49,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
     public void update(Observable o, Object arg) {
         if (model.currentPhase != model.previousPhase && model.stateHasChanged) {
             model.stateHasChanged = false;
+            model.canSave = true;
             switch (model.currentPhase) {
                 case REINFORCE:
                     if (model.previousPhase == GameMap.Phase.STARTUP) {
@@ -142,13 +143,16 @@ public class MainFrameController extends BaseController<MainFrame> implements
         } else if (event.getActionCommand().equalsIgnoreCase("Create GameMap")) {
             new MapCreatorFrame("Create Map");
         } else if (event.getActionCommand().equalsIgnoreCase("Save Game")) {
-            try {
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                String data = gson.toJson(GameMap.getInstance());
-                System.out.println("data: " + data);
-                FileHelper.saveGameToFile(data);
-            } catch (JsonParseException e) {
-                System.out.println("Error saving game: " + e.getLocalizedMessage());
+            if(model.canSave) {
+                try {
+                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                    String data = gson.toJson(GameMap.getInstance());
+                    FileHelper.saveGameToFile(data);
+                } catch (JsonParseException e) {
+                    System.out.println("Error saving game: " + e.getLocalizedMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Please complete the current phase to save the game.", "Cannot save the game at this point", JOptionPane.ERROR_MESSAGE);
             }
         } else if (event.getActionCommand().equalsIgnoreCase("Load Game")) {
             File dir = new File("savedgames");
@@ -160,7 +164,9 @@ public class MainFrameController extends BaseController<MainFrame> implements
                 File selectedFile = file.getSelectedFile();
                 try {
                     FileHelper.loadGame(selectedFile);
+                    view.setUpGamePanels();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.out.println("Error loading saved game: " + e.getLocalizedMessage());
                 }
             }

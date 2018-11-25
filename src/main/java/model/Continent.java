@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -10,18 +12,22 @@ public class Continent extends Observable {
     /**
      * Continent id
      */
+    @Expose
     public int id;
     /**
      * Continent name
      */
+    @Expose
     public String name;
     /**
      * Countries in the continent
      */
+    @Expose
     public ArrayList<Country> countries;
     /**
      * Value of continent
      */
+    @Expose
     public int controlValue;
 
     /**

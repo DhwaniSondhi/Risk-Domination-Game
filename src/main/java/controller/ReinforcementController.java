@@ -51,15 +51,15 @@ public class ReinforcementController extends BaseController<ReinforcementPanel> 
     public void actionPerformed(ActionEvent e) {
         String buttonName = ((JButton) e.getSource()).getName();
         if (buttonName.equalsIgnoreCase("exchangeCards")) {
-
             model.currentPlayer.updateReinforcementPanel = false;
             CardExchangeFrame cardExchangeFrame = new CardExchangeFrame();
             model.setRecentMove(model.currentPlayer.name + " started card exchange.");
+            model.canSave = false;
         } else if (buttonName.equalsIgnoreCase("changeArmies")) {
             int numOfArmies = view.getValueOfArmyComboBox();
             Country selectedCountry = view.getValueOfCountryIndexComboBox();
             model.currentPlayer.reinforce(selectedCountry, numOfArmies);
-
+            model.canSave = false;
         } else if (buttonName.equalsIgnoreCase("proceed")) {
             model.currentPlayer.totalArmies = 0;
             model.currentPlayer.deleteObserver(view);

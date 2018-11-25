@@ -12,11 +12,6 @@ import java.util.*;
 public class Player extends Observable {
 
     /**
-     * Strategy for the player
-     */
-    @Expose
-    PlayerStrategy strategy;
-    /**
      * id for player
      */
     @Expose
@@ -31,6 +26,15 @@ public class Player extends Observable {
      */
     @Expose
     public ArrayList<Card> cards;
+    /**
+     * strategy enum for serialization
+     */
+    @Expose
+    public PlayerStrategy.Strategy strategy;
+    /**
+     * Strategy for the player
+     */
+    public PlayerStrategy playerStrategy;
 
     /**
      * HashMap for countries
@@ -100,12 +104,13 @@ public class Player extends Observable {
      *
      * @param id       id of player
      * @param name     name of player
-     * @param strategy strategy for the player
+     * @param strategy playerStrategy for the player
      */
     public Player(int id, String name, PlayerStrategy.Strategy strategy) {
         this.id = id;
         this.name = name;
-        this.strategy = getStrategy(strategy);
+        this.strategy = strategy;
+        assignStrategy(strategy);
         cards = new ArrayList<>();
         countries = new ArrayList<>();
         diceValuesPlayer = new ArrayList<>();
@@ -129,24 +134,28 @@ public class Player extends Observable {
     }
 
     /**
-     * get Strategy by enum value
+     * assigns Strategy by enum value
      *
-     * @param strategy strategy for player
-     * @return player strategy
+     * @param strategy playerStrategy for player
      */
-    private PlayerStrategy getStrategy(PlayerStrategy.Strategy strategy) {
+    public void assignStrategy(PlayerStrategy.Strategy strategy) {
         switch (strategy) {
             case AGGRESSIVE:
-                return new AggressiveStrategy();
+                playerStrategy = new AggressiveStrategy();
+                break;
             case CHEATER:
-                return new CheaterStrategy();
+                playerStrategy = new CheaterStrategy();
+                break;
             case BENEVOLENT:
-                return new BenevolentStrategy();
+                playerStrategy = new BenevolentStrategy();
+                break;
             case RANDOM:
-                return new RandomStrategy();
+                playerStrategy = new RandomStrategy();
+                break;
             case HUMAN:
             default:
-                return new HumanStrategy();
+                playerStrategy = new HumanStrategy();
+                break;
         }
     }
 
@@ -156,7 +165,7 @@ public class Player extends Observable {
      * @return true if Human else false
      */
     public boolean isHuman() {
-        return strategy instanceof HumanStrategy;
+        return strategy == PlayerStrategy.Strategy.HUMAN;
     }
 
     /**
@@ -533,7 +542,7 @@ public class Player extends Observable {
      */
     public void reinforce(Country country, int armySelected) {
         // in case of non-human player---make a default country and army to 0
-        strategy.reinforce(this, country, armySelected);
+        playerStrategy.reinforce(this, country, armySelected);
         updateView();
     }
 
@@ -559,7 +568,7 @@ public class Player extends Observable {
      * @param isAllOut                    flag to check the mode of the game
      */
     public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        strategy.attack(this, selectedCountry, selectedNeighbouringCountry, isAllOut);
+        playerStrategy.attack(this, selectedCountry, selectedNeighbouringCountry, isAllOut);
     }
 
     /**
@@ -570,7 +579,7 @@ public class Player extends Observable {
      * @param neighborSelected       country which user select transfer to
      */
     public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
-        strategy.fortify(this, numberOfArmiesTransfer, countrySelected, neighborSelected);
+        playerStrategy.fortify(this, numberOfArmiesTransfer, countrySelected, neighborSelected);
 
         setChanged();
         notifyObservers();
