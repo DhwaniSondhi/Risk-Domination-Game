@@ -222,10 +222,6 @@ public class ReinforcementPanel extends JPanel implements Observer {
         for (Country country : countriesOfPlayer) {
             countryList.addItem(country);
         }
-        if(countryList.getItemCount() > 0) {
-            countryList.setName("countryList");
-            countryList.setSelectedIndex(0);
-        }
 
         armiesChange.add(countryList, getGridContraints(0, 0));
         Integer[] addArmy = new Integer[armiesLeft];
