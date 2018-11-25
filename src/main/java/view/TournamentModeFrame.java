@@ -13,36 +13,70 @@ import java.awt.*;
  * It controls the view
  */
 public class TournamentModeFrame extends JFrame {
+    /**
+     * Reference to TournamentControllerClass
+     */
     TournamentModeController tournamentModeController;
+    /**
+     * Variable for gridbaglayout
+     */
     GridBagLayout gridBagLayoutMain;
+    /**
+     * Variable for GridBagConstraints
+     */
     GridBagConstraints bagConstraintsMain;
+    /**
+     * Panel for number of player
+     */
     JPanel jPanelForPlayer;
+    /**
+     * Panel for enter strategy for player
+     */
     JPanel jPanelForStrategyOfPlayer;
+    /**
+     * Panel for number of maps
+     */
     JPanel jPanelForMaps;
+    /**
+     * Panel for number of games in each map
+     */
     JPanel jPanelForNumberOfGamesOnMap;
+    /**
+     * Main panel for adding all other panel
+     */
     JPanel mainPanel;
+    /**
+     * Panel to add proceed button
+     */
     JPanel jPanelProceedButton;
+    /**
+     * Panel to add start tournament button
+     */
     JButton jButtonStartTournament;
+    /**
+     * Panel to add start tournament button
+     */
     JPanel jPanelForStartTournamentButton;
+    /**
+     * Label for tournament text
+     */
     JLabel jLabelTournament;
 
 
     /**
      * This is constructor for tournament view
-     *This setup panel for view
+     * This setup panel for view
      */
-    public TournamentModeFrame(){
-        tournamentModeController=new TournamentModeController(this);
-        mainPanel=new JPanel();
+    public TournamentModeFrame() {
+        tournamentModeController = new TournamentModeController(this);
+        mainPanel = new JPanel();
         gridBagLayoutMain = new GridBagLayout();
         bagConstraintsMain = new GridBagConstraints();
         mainPanel.setLayout(gridBagLayoutMain);
         mainPanel.setBackground(Color.LIGHT_GRAY);
         mainPanel.setBorder(new LineBorder(Color.BLACK, 2));
-        //mainPanel.setSize(800,600);
-        //mainPanel.setVisible(true);
         add(mainPanel);
-        setSize(800,600);
+        setSize(800, 600);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,20 +89,23 @@ public class TournamentModeFrame extends JFrame {
         playerPanels();
 
 
-
     }
-    public void playerPanels(){
-        jPanelForPlayer=new JPanel();
-        JButton jButtonForNumberOfPlayers=new JButton();
+
+    /**
+     * Function to add number of player
+     */
+    public void playerPanels() {
+        jPanelForPlayer = new JPanel();
+        JButton jButtonForNumberOfPlayers = new JButton();
         jButtonForNumberOfPlayers.setText("Submit");
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 1;
-        mainPanel.add(jPanelForPlayer,bagConstraintsMain);
+        mainPanel.add(jPanelForPlayer, bagConstraintsMain);
 
         jPanelForPlayer.add(new JLabel("Number Of Players:"));
-        JComboBox<Integer> comboBoxNumberOfPlayer=new JComboBox<>();
-        for(int i=2;i<=4;i++){
+        JComboBox<Integer> comboBoxNumberOfPlayer = new JComboBox<>();
+        for (int i = 2; i <= 4; i++) {
             comboBoxNumberOfPlayer.addItem(i);
         }
         jPanelForPlayer.add(comboBoxNumberOfPlayer);
@@ -89,7 +126,7 @@ public class TournamentModeFrame extends JFrame {
      * @param count number of players
      */
     public void updatePlayersPanel(int count) {
-        jPanelForStrategyOfPlayer=new JPanel();
+        jPanelForStrategyOfPlayer = new JPanel();
         int currentSize = jPanelForStrategyOfPlayer.getComponents().length;
         int diff = Math.abs(currentSize - count);
         if (currentSize <= count) {
@@ -117,65 +154,73 @@ public class TournamentModeFrame extends JFrame {
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 2;
-        mainPanel.add(jPanelForStrategyOfPlayer,bagConstraintsMain);
+        mainPanel.add(jPanelForStrategyOfPlayer, bagConstraintsMain);
         mainPanel.revalidate();
         mainPanel.repaint();
         jPanelForStrategyOfPlayer.revalidate();
         jPanelForStrategyOfPlayer.repaint();
         jPanelForPlayer.setVisible(false);
-        jPanelProceedButton=new JPanel();
+        jPanelProceedButton = new JPanel();
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 3;
-        mainPanel.add(jPanelProceedButton,bagConstraintsMain);
-        JButton jButtonProceed=new JButton("Proceed");
+        mainPanel.add(jPanelProceedButton, bagConstraintsMain);
+        JButton jButtonProceed = new JButton("Proceed");
         jPanelProceedButton.add(jButtonProceed);
         jButtonProceed.addActionListener(tournamentModeController);
 
 
     }
-    public void proceedToMaps()
-    {
+
+    /**
+     * Function for number of maps
+     */
+    public void proceedToMaps() {
         jPanelForStrategyOfPlayer.setVisible(false);
         jPanelProceedButton.setVisible(false);
-        jPanelForMaps=new JPanel();
+        jPanelForMaps = new JPanel();
         jPanelForMaps.add(new JLabel("Number Of Maps:"));
-        JComboBox<Integer> jComboBoxNumberOfMaps=new JComboBox<>();
-        for(int i=1;i<=5;i++){
-           jComboBoxNumberOfMaps.addItem(i);
+        JComboBox<Integer> jComboBoxNumberOfMaps = new JComboBox<>();
+        for (int i = 1; i <= 5; i++) {
+            jComboBoxNumberOfMaps.addItem(i);
         }
         jComboBoxNumberOfMaps.setName("ComboboxForMaps");
         jComboBoxNumberOfMaps.addItemListener(tournamentModeController);
         jPanelForMaps.add(jComboBoxNumberOfMaps);
-        JButton jButtonForNumberOfMaps=new JButton("Submit Number");
+        JButton jButtonForNumberOfMaps = new JButton("Submit Number");
         jPanelForMaps.add(jButtonForNumberOfMaps);
         jButtonForNumberOfMaps.addActionListener(tournamentModeController);
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 1;
-        mainPanel.add(jPanelForMaps,bagConstraintsMain);
+        mainPanel.add(jPanelForMaps, bagConstraintsMain);
         jPanelForMaps.revalidate();
         mainPanel.revalidate();
         mainPanel.repaint();
         revalidate();
 
     }
+
+    /**
+     * Function to add number of games to each map
+     *
+     * @param count number of maps
+     */
     public void updateMapsPanel(int count) {
         jPanelForMaps.setVisible(false);
         jLabelTournament.setVisible(false);
 
-        JPanel jPanelForLabelSelectionOfGameOnMap=new JPanel();
+        JPanel jPanelForLabelSelectionOfGameOnMap = new JPanel();
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 0;
-        mainPanel.add(jPanelForLabelSelectionOfGameOnMap,bagConstraintsMain);
+        mainPanel.add(jPanelForLabelSelectionOfGameOnMap, bagConstraintsMain);
         jPanelForLabelSelectionOfGameOnMap.add(new JLabel("Select Number of games on each map"));
 
-        System.out.println("fsdfsdfsdfsd");
-        JList<Integer> jlistForNumberOfMaps=new JList<Integer>();
 
 
-        jPanelForNumberOfGamesOnMap=new JPanel();
+
+        jPanelForNumberOfGamesOnMap = new JPanel();
         int currentSize = jPanelForNumberOfGamesOnMap.getComponents().length;
         int diff = Math.abs(currentSize - count);
         if (currentSize <= count) {
@@ -187,11 +232,12 @@ public class TournamentModeFrame extends JFrame {
                 JTextField nameField = new JTextField();
                 nameField.setText("Maps" + x);
                 panel.add(nameField);
-                JComboBox<Integer> type=new JComboBox<>();
-                for(int maps=1;maps<=5;maps++){
+                JComboBox<Integer> type = new JComboBox<>();
+                for (int maps = 1; maps <= 5; maps++) {
                     type.addItem(maps);
                 }
-
+                JComboBox<Integer> type1 = new JComboBox<>();
+                panel.add(type1);
                 panel.add(type);
 
                 jPanelForNumberOfGamesOnMap.add(panel);
@@ -206,14 +252,14 @@ public class TournamentModeFrame extends JFrame {
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 2;
-        mainPanel.add(jPanelForNumberOfGamesOnMap,bagConstraintsMain);
-        jPanelForStartTournamentButton=new JPanel();
+        mainPanel.add(jPanelForNumberOfGamesOnMap, bagConstraintsMain);
+        jPanelForStartTournamentButton = new JPanel();
 
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 3;
-        mainPanel.add(jPanelForStartTournamentButton,bagConstraintsMain);
-        jButtonStartTournament=new JButton("Start Tournament");
+        mainPanel.add(jPanelForStartTournamentButton, bagConstraintsMain);
+        jButtonStartTournament = new JButton("Start Tournament");
         jPanelForStartTournamentButton.add(jButtonStartTournament);
         jButtonStartTournament.addActionListener(tournamentModeController);
         jPanelForStartTournamentButton.revalidate();
@@ -221,8 +267,6 @@ public class TournamentModeFrame extends JFrame {
         mainPanel.revalidate();
         mainPanel.repaint();
         revalidate();
-
-
 
 
     }

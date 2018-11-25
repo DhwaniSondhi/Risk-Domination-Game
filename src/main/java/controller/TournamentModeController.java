@@ -13,7 +13,10 @@ import java.awt.event.ItemListener;
  * Controller class for tournament mode
  */
 public class TournamentModeController extends BaseController<TournamentModeFrame>implements ItemListener, ActionListener {
-    int numberOfPlayer;
+    /**
+     * Variable to store the integer value of combobox
+     */
+    int variableForComboBox;
     /**
      * This is the constructor for the Controller
      *
@@ -32,11 +35,11 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-        System.out.println(e.getSource().getClass().getName());
+
         if (e.getStateChange() == ItemEvent.SELECTED) {
             JComboBox jComboBox = (JComboBox) e.getSource();
-            numberOfPlayer = (int) jComboBox.getSelectedItem();
-            System.out.println(numberOfPlayer);
+            variableForComboBox = (int) jComboBox.getSelectedItem();
+
         }
 
     }
@@ -44,18 +47,18 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
     /**
      * Invoked when an action occurs.
      *
-     * @param e
+     * @param e invoked event
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getActionCommand());
+
         if (e.getActionCommand().equalsIgnoreCase("Submit")){
 
-            if(numberOfPlayer==0){
+            if(variableForComboBox ==0){
                 view.updatePlayersPanel(2);
             }
             else{
-                view.updatePlayersPanel(numberOfPlayer);
+                view.updatePlayersPanel(variableForComboBox);
             }
 
         }
@@ -63,12 +66,12 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
             view.proceedToMaps();
         }
         else if(e.getActionCommand().equalsIgnoreCase("Submit Number")){
-            System.out.println("sffsfsf");
-            if(numberOfPlayer==0){
+
+            if(variableForComboBox ==0){
                 view.updateMapsPanel(1);
             }
             else{
-                view.updateMapsPanel(numberOfPlayer);
+                view.updateMapsPanel(variableForComboBox);
             }
         }
 
