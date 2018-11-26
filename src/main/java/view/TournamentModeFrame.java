@@ -32,7 +32,7 @@ public class TournamentModeFrame extends JFrame {
     /**
      * Panel for enter strategy for player
      */
-    JPanel jPanelForStrategyOfPlayer;
+    public JPanel jPanelForStrategyOfPlayer;
     /**
      * Panel for number of maps
      */

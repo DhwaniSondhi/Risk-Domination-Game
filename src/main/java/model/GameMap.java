@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import utility.FileHelper;
 import utility.strategy.PlayerStrategy;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -83,6 +84,14 @@ public class GameMap extends Observable {
      * flag to check if game can be saved
      * */
     public boolean canSave = true;
+    public static boolean tournamentMode;
+
+    public static int gameNumbersForTournament;
+
+    public static HashMap<Integer, File> maps;
+    public static HashMap<Integer, Integer> gameNumbers;
+    public static int gameNumberBeingPlayed;
+    public static int mapBeingPlayed;
 
     /**
      * Initialize countries, continents, players, countryGraph
@@ -100,6 +109,42 @@ public class GameMap extends Observable {
         FileHelper.writeLog("=================== NEW GAME =====================");
     }
 
+    public void tournamentMode( boolean startingTournament){
+
+        if(startingTournament){
+            gameNumberBeingPlayed=1;
+            mapBeingPlayed=0;
+        }else if(gameNumberBeingPlayed<gameNumbers.get(mapBeingPlayed)){
+            gameNumberBeingPlayed++;
+        }
+        //players=playersInfo;
+        gameNumbersForTournament=gameNumbers.get(mapBeingPlayed);
+        try {
+            FileHelper.loadToConfig(maps.get(mapBeingPlayed));
+        } catch (IllegalStateException exception) {
+            System.out.println("File validation failed : " + exception.getMessage());
+        }
+        //players=playersInfo;
+        //currentPlayer=players.get(players.keySet().toArray()[0]);
+        assignCountriesToPlayers();
+        for(Player player:players.values()){
+            Random rand=new Random();
+            int totalArmy=getInitialArmy();
+            int loop=0;
+            for(Country country:player.countries){
+                int countriesLeft=player.countries.size()-loop;
+                int assignedArmy=rand.nextInt(totalArmy-countriesLeft);
+                if(loop==player.countries.size()-1){
+                    country.addArmies(totalArmy);
+                }else{
+                    country.addArmies(assignedArmy);
+                }
+                totalArmy-=assignedArmy;
+                loop++;
+            }
+        }
+        changePhase(Phase.REINFORCE);
+    }
     /**
      * @return returns the singleton instance of the class
      */
@@ -238,7 +283,9 @@ public class GameMap extends Observable {
         continents.clear();
         countries.clear();
         countryGraph.clear();
-        players.clear();
+        if(!tournamentMode){
+            players.clear();
+        }
         countryCounter = 0;
         continentCounter = 0;
         currentPlayer = null;
@@ -396,6 +443,9 @@ public class GameMap extends Observable {
      */
     public void checkGameEnd() {
         if (currentPlayer.countries.size() == countries.size()) {
+            if(tournamentMode){
+                tournamentMode(false);
+            }
             setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
             gameEnded = true;
