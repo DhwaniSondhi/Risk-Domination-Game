@@ -63,7 +63,7 @@ public class AggressiveStrategy implements PlayerStrategy {
                 if (countryChanged) {
                     int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
                     selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
-
+                    GameMap.getInstance().setRecentMove(context.name +" tried to fortify From :" + selectedCountry +" To : " + selectedNeighbouringCountry);
 
                     GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name + "(" + selectedCountry.numOfArmies
                             + ") armies on " + selectedNeighbouringCountry.name + "(" + selectedNeighbouringCountry.numOfArmies + ") armies of " + selectedNeighbouringCountry.owner.name);

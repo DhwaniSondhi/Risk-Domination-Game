@@ -89,7 +89,7 @@ public class Country extends Observable {
      */
     @Override
     public String toString() {
-        return id + ". " + name;
+        return name + " (" + numOfArmies + ")";
     }
 
     /**

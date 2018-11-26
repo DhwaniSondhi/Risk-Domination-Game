@@ -27,18 +27,18 @@ public class RandomStrategy implements PlayerStrategy {
             context.exchangeCardsAutomatically();
         }
         armySelected = context.totalArmies;
-        while (armySelected>0) {
+        while (armySelected > 0) {
             country = context.countries.get(random.nextInt(context.countries.size()));
             int armyAssigned;
-            if(armySelected==1){
-                armyAssigned=1;
-            }else{
-                armyAssigned=random.nextInt(armySelected-1)+1;
+            if (armySelected == 1) {
+                armyAssigned = 1;
+            } else {
+                armyAssigned = random.nextInt(armySelected - 1) + 1;
             }
             country.addArmies(armyAssigned);
             armySelected -= armyAssigned;
             GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
-                    country.name + " with " + armyAssigned + " armies.");
+                    country + " with " + armyAssigned + " armies.");
         }
         GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
     }
@@ -70,11 +70,18 @@ public class RandomStrategy implements PlayerStrategy {
             selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
             int limit = rand.nextInt(10);
             for (int i = 0; i < limit; i++) {
-                GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry.name
-                        + " on " + selectedNeighbouringCountry.name);
+                GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry
+                        + " on " + selectedNeighbouringCountry);
 
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
-                if (selectedCountry.getNumberofArmies() == 1 || selectedNeighbouringCountry.owner.equals(selectedCountry.owner)) {
+                if(selectedCountry.getNumberofArmies() == 1){
+                    break;
+                }else if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >=1) {
+                    GameMap.getInstance().setRecentMove(""+selectedCountry);
+                    int armies = 1 + rand.nextInt(selectedCountry.numOfArmies -1);
+                    GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
+                    GameMap.getInstance().setRecentMove(""+selectedCountry);
+                    context.gainCard();
                     break;
                 }
             }
@@ -88,24 +95,26 @@ public class RandomStrategy implements PlayerStrategy {
      *
      * @param context                reference to player using this strategy
      * @param numberOfArmiesTransfer armies user select to transfer
-     * @param getFirstCountry     country which user select transfer from
+     * @param getFirstCountry        country which user select transfer from
      * @param secondRandomCountry    country which user select transfer to
      */
     @Override
     public void fortify(Player context, int numberOfArmiesTransfer, Country getFirstCountry, Country
             secondRandomCountry) {
-        ArrayList<Country> counteriesOwenedByCurrentPlayer = context.countries;
+        ArrayList<Country> countriesOwnedByCurrentPlayer = new ArrayList<>(context.countries);
         Random r1 = new Random(Calendar.getInstance().getTimeInMillis());
-        getFirstCountry = counteriesOwenedByCurrentPlayer.get(r1.nextInt(counteriesOwenedByCurrentPlayer.size()));
-        if (getFirstCountry != null && getFirstCountry.numOfArmies != 1) {
-            counteriesOwenedByCurrentPlayer.remove(getFirstCountry);
-            Country getSecondArmyCountry = counteriesOwenedByCurrentPlayer.get(r1.nextInt(counteriesOwenedByCurrentPlayer.size()));
+        getFirstCountry = countriesOwnedByCurrentPlayer.get(r1.nextInt(countriesOwnedByCurrentPlayer.size()));
+        countriesOwnedByCurrentPlayer.remove(getFirstCountry);
+        if (getFirstCountry != null && getFirstCountry.numOfArmies > 1 && !countriesOwnedByCurrentPlayer.isEmpty()) {
+            int index = r1.nextInt(countriesOwnedByCurrentPlayer.size());
+            Country getSecondArmyCountry = countriesOwnedByCurrentPlayer.get(index);
+            GameMap.getInstance().setRecentMove(context.name +" tried to fortify From :" + getFirstCountry +" To : " + getSecondArmyCountry);
             getFirstCountry.updateConnectedCountries();
             HashMap<Integer, Country> listOfCountriesConnected = getFirstCountry.connectedCountries;
-            if (listOfCountriesConnected.get(getSecondArmyCountry.id) != null && getFirstCountry.numOfArmies > 1) {
+            if (listOfCountriesConnected.get(getSecondArmyCountry.id) != null) {
                 numberOfArmiesTransfer = r1.nextInt(getFirstCountry.numOfArmies - 1);
-                GameMap.getInstance().setRecentMove(context.name + " fortified " + getFirstCountry.name + " with " + numberOfArmiesTransfer
-                        + " armies from " + getSecondArmyCountry.name);
+                GameMap.getInstance().setRecentMove(context.name + " fortified " + getFirstCountry + " with " + numberOfArmiesTransfer
+                        + " armies from " + getSecondArmyCountry);
                 getFirstCountry.deductArmies(numberOfArmiesTransfer);
                 getSecondArmyCountry.addArmies(numberOfArmiesTransfer);
             }
