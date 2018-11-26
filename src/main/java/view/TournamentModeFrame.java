@@ -78,7 +78,6 @@ public class TournamentModeFrame extends JFrame {
         add(mainPanel);
         setSize(800, 600);
         setVisible(true);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         jLabelTournament = new JLabel("Tournament");
         jLabelTournament.setFont(new Font("Tournament", Font.BOLD, 20));
@@ -229,15 +228,15 @@ public class TournamentModeFrame extends JFrame {
                 JPanel panel = new JPanel();
                 panel.setLayout(new FlowLayout());
 
-                JTextField nameField = new JTextField();
+                JButton nameField = new JButton();
                 nameField.setText("Maps" + x);
+                nameField.addActionListener(tournamentModeController);
                 panel.add(nameField);
                 JComboBox<Integer> type = new JComboBox<>();
                 for (int maps = 1; maps <= 5; maps++) {
                     type.addItem(maps);
                 }
-                JComboBox<Integer> type1 = new JComboBox<>();
-                panel.add(type1);
+
                 panel.add(type);
 
                 jPanelForNumberOfGamesOnMap.add(panel);

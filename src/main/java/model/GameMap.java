@@ -102,6 +102,8 @@ public class GameMap extends Observable {
         continents = new HashMap<>();
         players = new HashMap<>();
         countryGraph = new HashMap<>();
+        maps = new HashMap<>();
+        gameNumbers = new HashMap<>();
         continentCounter = 0;
         countryCounter = 0;
         cardStack = 0;
@@ -110,22 +112,24 @@ public class GameMap extends Observable {
     }
 
     public void tournamentMode( boolean startingTournament){
-
+        System.out.println("players size: " + players.size());
         if(startingTournament){
             gameNumberBeingPlayed=1;
-            mapBeingPlayed=0;
+            mapBeingPlayed=1;
         }else if(gameNumberBeingPlayed<gameNumbers.get(mapBeingPlayed)){
             gameNumberBeingPlayed++;
         }
         //players=playersInfo;
         gameNumbersForTournament=gameNumbers.get(mapBeingPlayed);
         try {
+            if(maps.get(mapBeingPlayed) == null) System.out.println(maps.size() + " Error");
             FileHelper.loadToConfig(maps.get(mapBeingPlayed));
         } catch (IllegalStateException exception) {
             System.out.println("File validation failed : " + exception.getMessage());
         }
         //players=playersInfo;
-        //currentPlayer=players.get(players.keySet().toArray()[0]);
+        System.out.println(tournamentMode + " " + players.size());
+        currentPlayer=players.get(players.keySet().toArray()[0]);
         assignCountriesToPlayers();
         for(Player player:players.values()){
             Random rand=new Random();

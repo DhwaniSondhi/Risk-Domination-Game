@@ -7,6 +7,8 @@ import utility.FileHelper;
 import utility.MapHelper;
 import utility.strategy.PlayerStrategy;
 import view.StartUpFrame;
+import utility.FileHelper;
+import utility.MapHelper;
 import view.TournamentModeFrame;
 
 import javax.swing.*;
@@ -22,11 +24,12 @@ import java.util.Random;
 /**
  * Controller class for tournament mode
  */
-public class TournamentModeController extends BaseController<TournamentModeFrame>implements ItemListener, ActionListener {
+public class TournamentModeController extends BaseController<TournamentModeFrame> implements ItemListener, ActionListener {
     /**
      * Variable to store the integer value of combobox
      */
     int variableForComboBox;
+
     /**
      * This is the constructor for the Controller
      *
@@ -34,6 +37,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
      */
     public TournamentModeController(TournamentModeFrame view) {
         super(view);
+        model.tournamentMode = true;
     }
 
     /**
@@ -41,7 +45,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
      * The code written for this method performs the operations
      * that need to occur when an item is selected (or deselected).
      *
-     * @param e
+     * @param e event invoked on item changed in combobox
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
@@ -62,12 +66,11 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getActionCommand().equalsIgnoreCase("Submit")){
+        if (e.getActionCommand().equalsIgnoreCase("Submit")) {
 
-            if(variableForComboBox ==0){
+            if (variableForComboBox == 0) {
                 view.updatePlayersPanel(2);
-            }
-            else{
+            } else {
                 view.updatePlayersPanel(variableForComboBox);
             }
 
@@ -86,29 +89,56 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 }
             }
             view.proceedToMaps();
-        }
-        else if(e.getActionCommand().equalsIgnoreCase("Submit Number")){
+        } else if (e.getActionCommand().equalsIgnoreCase("Submit Number")) {
 
-            if(variableForComboBox ==0){
+            if (variableForComboBox == 0) {
                 view.updateMapsPanel(1);
-            }
-            else{
+            } else {
                 view.updateMapsPanel(variableForComboBox);
             }
         }else if(e.getActionCommand().equalsIgnoreCase("Start Tournament")){
-            File file1=new File("E:\\git projects\\risk\\maps\\test.map");
-            model.maps=new HashMap<>();
-            model.gameNumbers=new HashMap<>();
-            model.maps.put(0,new File("maps\\test.map"));
-            model.maps.put(1,new File("maps\\bla.map"));
-            model.gameNumbers.put(0,2);
             model.gameNumbers.put(1,2);
+            model.gameNumbers.put(2,2);
 
             model.tournamentMode=true;
             model.tournamentMode(true);
-
+            view.dispose();
 
         }
+        else if(e.getActionCommand().equalsIgnoreCase("Maps1")||e.getActionCommand().equalsIgnoreCase("Maps2")||e.getActionCommand().equalsIgnoreCase("Maps3")||e.getActionCommand().equalsIgnoreCase("Maps4")||e.getActionCommand().equalsIgnoreCase("Maps5")){
+            int index = Integer.valueOf(e.getActionCommand().split("")[4]);
+            File file = loadMaps();
+            if(file != null) {
+                System.out.println(index);
+                model.maps.put(index, file);
+            } else {
+                System.out.println("File null");
+            }
+        }
+
+    }
+
+    public File loadMaps() {
+
+
+        File dir = new File("maps");
+        dir.mkdir();
+        JFileChooser file = new JFileChooser(dir);
+        int confirmValue = file.showOpenDialog(null);
+
+        if (confirmValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = file.getSelectedFile();
+
+            try {
+                FileHelper.loadToConfig(selectedFile);
+                if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {
+                    return selectedFile;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return  null;
     }
 
 
