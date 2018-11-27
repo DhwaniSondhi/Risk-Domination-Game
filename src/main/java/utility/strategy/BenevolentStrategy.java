@@ -3,6 +3,7 @@ package utility.strategy;
 import model.Country;
 import model.GameMap;
 import model.Player;
+import utility.FileHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,11 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
+        if(context.id==((Player)GameMap.getInstance().playersForCountingLoop.values().toArray()[0]).id){
+            System.out.println("loopForGameBeingPlayed: "+GameMap.getInstance().loopForGameBeingPlayed);
+            FileHelper.writeLog("------------------------------------------------------------loopForGameBeingPlayed: "+GameMap.getInstance().loopForGameBeingPlayed);
+            GameMap.getInstance().loopForGameBeingPlayed++;
+        }
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
         if (context.unselectedCards.size() > 4) {

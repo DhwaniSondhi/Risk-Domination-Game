@@ -57,7 +57,8 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                     completedPlayers.add(player.id);
                 index++;
             }
-            model.loopForGameBeingPlayed=0;
+
+            model.loopForGameBeingPlayed=1;
             model.playersForCountingLoop=model.players;
 
             model.assignCountriesToPlayers();

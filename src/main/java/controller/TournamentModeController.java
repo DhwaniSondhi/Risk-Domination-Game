@@ -82,7 +82,8 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                     playerId++;
                 }
             }
-            model.loopForGameBeingPlayed=0;
+
+            model.loopForGameBeingPlayed=1;
             model.playersForCountingLoop=model.players;
             view.proceedToMaps();
         } else if (e.getActionCommand().equalsIgnoreCase("Submit Number")) {
@@ -102,15 +103,16 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 index++;
             }
 
-            System.out.println(model.gameNumbers);
+            //System.out.println(model.gameNumbers);
             model.tournamentMode = true;
+            model.tournamentModeWinners=new HashMap<>();
             model.startTournamentMode(true);
             view.dispose();
         } else if (e.getActionCommand().equalsIgnoreCase("Maps1") || e.getActionCommand().equalsIgnoreCase("Maps2") || e.getActionCommand().equalsIgnoreCase("Maps3") || e.getActionCommand().equalsIgnoreCase("Maps4") || e.getActionCommand().equalsIgnoreCase("Maps5")) {
             int index = Integer.valueOf(e.getActionCommand().split("")[4]);
             File file = loadMaps();
             if (file != null) {
-                System.out.println(index);
+                //System.out.println(index);
                 model.maps.put(index, file);
             } else {
                 System.out.println("File null");

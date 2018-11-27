@@ -3,6 +3,7 @@ package utility.strategy;
 import model.Country;
 import model.GameMap;
 import model.Player;
+import utility.FileHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,14 +20,18 @@ public class CheaterStrategy implements PlayerStrategy {
 
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-
+        if(context.id==((Player)GameMap.getInstance().playersForCountingLoop.values().toArray()[0]).id){
+            System.out.println("loopForGameBeingPlayed: "+GameMap.getInstance().loopForGameBeingPlayed);
+            FileHelper.writeLog("-------------------------------------------------------------loopForGameBeingPlayed: "+GameMap.getInstance().loopForGameBeingPlayed);
+            GameMap.getInstance().loopForGameBeingPlayed++;
+        }
         ArrayList<Country> listOfcountries = context.countries;
         for (int i = 0; i < listOfcountries.size(); i++) {
 
             int armyAssigned = listOfcountries.get(i).numOfArmies;
             country = listOfcountries.get(i);
             country.addArmies(armyAssigned);
-            GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " + country + " with " + armyAssigned + "armies.");
+            GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " + country.name + " with " + armyAssigned + " armies. ");
 
         }
         GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
@@ -59,8 +64,9 @@ public class CheaterStrategy implements PlayerStrategy {
 
         for (Country neighbour : neighbouringCountries) {
             selectedNeighbouringCountry = neighbour;
-            GameMap.getInstance().setRecentMove(context.name + " attacked " + selectedNeighbouringCountry);
+            GameMap.getInstance().setRecentMove(context.name + " attacked " + selectedNeighbouringCountry.name);
             context.countryConquered(selectedCountry, selectedNeighbouringCountry);
+            break;
         }
         if (!GameMap.getInstance().newGame) {
             GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
