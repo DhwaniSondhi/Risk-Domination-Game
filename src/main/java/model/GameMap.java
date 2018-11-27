@@ -82,15 +82,36 @@ public class GameMap extends Observable {
     public String recentMove;
     /**
      * flag to check if game can be saved
-     * */
+     */
     public boolean canSave = true;
+    /**
+     * flag to check if the game is tournament
+     */
     public static boolean tournamentMode;
 
+    /**
+     * number of games for the tournament
+     * */
     public static int gameNumbersForTournament;
 
+    /**
+     * hashmap to store the maps
+     * */
     public static HashMap<Integer, File> maps;
+
+    /**
+     * hashmap to store the game number
+     * */
     public static HashMap<Integer, Integer> gameNumbers;
+
+    /**
+     * stores the game number that is being played
+     * */
     public static int gameNumberBeingPlayed;
+
+    /**
+     * stores the map id being played
+     * */
     public static int mapBeingPlayed;
 
     /**
@@ -111,44 +132,48 @@ public class GameMap extends Observable {
         FileHelper.writeLog("=================== NEW GAME =====================");
     }
 
-    public void tournamentMode( boolean startingTournament){
+    /**
+     * steps for tournament mode
+     * */
+    public void tournamentMode(boolean startingTournament) {
         System.out.println("players size: " + players.size());
-        if(startingTournament){
-            gameNumberBeingPlayed=1;
-            mapBeingPlayed=1;
-        }else if(gameNumberBeingPlayed<gameNumbers.get(mapBeingPlayed)){
+        if (startingTournament) {
+            gameNumberBeingPlayed = 1;
+            mapBeingPlayed = 1;
+        } else if (gameNumberBeingPlayed < gameNumbers.get(mapBeingPlayed)) {
             gameNumberBeingPlayed++;
         }
         //players=playersInfo;
-        gameNumbersForTournament=gameNumbers.get(mapBeingPlayed);
+        gameNumbersForTournament = gameNumbers.get(mapBeingPlayed);
         try {
-            if(maps.get(mapBeingPlayed) == null) System.out.println(maps.size() + " Error");
+            if (maps.get(mapBeingPlayed) == null) System.out.println(maps.size() + " Error");
             FileHelper.loadToConfig(maps.get(mapBeingPlayed));
         } catch (IllegalStateException exception) {
             System.out.println("File validation failed : " + exception.getMessage());
         }
         //players=playersInfo;
         System.out.println(tournamentMode + " " + players.size());
-        currentPlayer=players.get(players.keySet().toArray()[0]);
+        currentPlayer = players.get(players.keySet().toArray()[0]);
         assignCountriesToPlayers();
-        for(Player player:players.values()){
-            Random rand=new Random();
-            int totalArmy=getInitialArmy();
-            int loop=0;
-            for(Country country:player.countries){
-                int countriesLeft=player.countries.size()-loop;
-                int assignedArmy=rand.nextInt(totalArmy-countriesLeft);
-                if(loop==player.countries.size()-1){
+        for (Player player : players.values()) {
+            Random rand = new Random();
+            int totalArmy = getInitialArmy();
+            int loop = 0;
+            for (Country country : player.countries) {
+                int countriesLeft = player.countries.size() - loop;
+                int assignedArmy = rand.nextInt(totalArmy - countriesLeft);
+                if (loop == player.countries.size() - 1) {
                     country.addArmies(totalArmy);
-                }else{
+                } else {
                     country.addArmies(assignedArmy);
                 }
-                totalArmy-=assignedArmy;
+                totalArmy -= assignedArmy;
                 loop++;
             }
         }
         changePhase(Phase.REINFORCE);
     }
+
     /**
      * @return returns the singleton instance of the class
      */
@@ -287,7 +312,7 @@ public class GameMap extends Observable {
         continents.clear();
         countries.clear();
         countryGraph.clear();
-        if(!tournamentMode){
+        if (!tournamentMode) {
             players.clear();
         }
         countryCounter = 0;
@@ -447,7 +472,7 @@ public class GameMap extends Observable {
      */
     public void checkGameEnd() {
         if (currentPlayer.countries.size() == countries.size()) {
-            if(tournamentMode){
+            if (tournamentMode) {
                 tournamentMode(false);
             }
             setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
@@ -657,6 +682,10 @@ public class GameMap extends Observable {
         cardStack = 8;
     }
 
+
+    /**
+     * enum for the phases of tournament
+     *  */
     public enum Phase {
         /**
          * Enum values

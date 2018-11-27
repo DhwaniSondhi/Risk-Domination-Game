@@ -110,7 +110,7 @@ public class PlayerTest {
      * Check the function calculating the total armies on start of every reinforcement phase
      */
     @Test
-    public void getTotalArmies() {
+    public void getTotalArmiesReinforce() {
         int totalArmies;
         // to check armies for player having countries less than 9
         //---will be given 3 armies
@@ -408,4 +408,63 @@ public class PlayerTest {
         Assert.assertEquals(1, strongestCountries.get(1).id);
     }
 
+    @Test
+    public void getWeakestCountry() {
+        Country weakestCountry = gameMap.currentPlayer.getWeakestCountry();
+        Assert.assertEquals(5,weakestCountry.id);
+    }
+
+    @Test
+    public void addRandomCard() {
+        gameMap.currentPlayer.addRandomCard();;
+        Assert.assertEquals(7,gameMap.getInstance().cardStack);
+    }
+
+    @Test
+    public void setUnSelectedCards() {
+    }
+
+    @Test
+    public void setArmiesForReinforcement() {
+    }
+
+    @Test
+    public void addInSelectedCards() {
+    }
+
+    @Test
+    public void resetSelectedCards() {
+    }
+
+    @Test
+    public void emptySelectedCards() {
+    }
+
+    @Test
+    public void exchangeCardsForArmies() {
+    }
+
+    @Test
+    public void updateView() {
+    }
+
+    @Test
+    public void getCountries() {
+    }
+
+    @Test
+    public void performAttackSteps() {
+    }
+
+    @Test
+    public void strongestInConnectedCountries() {
+    }
+
+    @Test
+    public void fortifySteps() {
+    }
+
+    @Test
+    public void exchangeCardsAutomatically() {
+    }
 }

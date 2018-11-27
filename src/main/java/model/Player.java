@@ -585,6 +585,12 @@ public class Player extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Gets the strongest country among the list of countries provided
+     *
+     * @param listOfCountriesConnected hashmap of countries
+     * @return the strongest country among the countries provided
+     * */
     public Country strongestInConnectedCountries(HashMap<Integer, Country> listOfCountriesConnected) {
         Iterator it = listOfCountriesConnected.entrySet().iterator();
         int largestArmy = 0;
@@ -602,6 +608,12 @@ public class Player extends Observable {
         return strongestCountry;
     }
 
+    /**
+     * performs the fortify steps of transfering army from one country to another
+     * @param countryToTransferFrom country from which we want to transfer
+     * @param countryToTransferTo country to which we want to transfer to
+     *
+     * */
     public void fortifySteps(Country countryToTransferFrom, Country countryToTransferTo) {
         GameMap.getInstance().setRecentMove(name +" tried to fortify From :" + countryToTransferFrom +" To : " + countryToTransferTo);
 

@@ -118,9 +118,10 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
 
     }
 
+    /**
+     * load map from directory
+     * */
     public File loadMaps() {
-
-
         File dir = new File("maps");
         dir.mkdir();
         JFileChooser file = new JFileChooser(dir);

@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Test class for Country Class
@@ -120,6 +122,12 @@ public class CountryTest {
     public void deductArmies() {
         gameMap.countries.get(1).deductArmies(4);
         Assert.assertEquals(6, gameMap.countries.get(1).numOfArmies);
+    }
+
+    @Test
+    public void getNeighboursDiffOwner() {
+        HashSet<Country> countries = gameMap.countries.get(1).getNeighboursDiffOwner();
+        Assert.assertEquals(2, countries.size());
     }
 
 }

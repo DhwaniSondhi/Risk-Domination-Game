@@ -57,7 +57,6 @@ public class MapHelper {
 
     }
 
-
     /**
      * checks if map is valid
      * Case : All the countries are connected
@@ -87,7 +86,6 @@ public class MapHelper {
         }
         return result;
     }
-
 
     /**
      * Create a nodeHashMap from collection of countries
