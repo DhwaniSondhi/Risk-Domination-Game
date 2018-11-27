@@ -154,7 +154,17 @@ public class GameMapTest {
 
     @Test
     public void checkGameEnd() {
-
+        gameMap.setDummyData();
+        for (Country country : gameMap.countries.values()) {
+            country.changeOwner(gameMap.currentPlayer);
+        }
+        gameMap.checkGameEnd();
+        Assert.assertTrue(gameMap.gameEnded);
     }
 
+    @Test
+    public void changePhase() {
+        gameMap.changePhase(GameMap.Phase.FORTIFY);
+        Assert.assertEquals(GameMap.Phase.FORTIFY, gameMap.currentPhase);
+    }
 }
