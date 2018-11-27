@@ -19,13 +19,14 @@ public class CheaterStrategy implements PlayerStrategy {
 
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
+
         ArrayList<Country> listOfcountries = context.countries;
         for (int i = 0; i < listOfcountries.size(); i++) {
 
             int armyAssigned = listOfcountries.get(i).numOfArmies;
             country = listOfcountries.get(i);
             country.addArmies(armyAssigned);
-            GameMap.getInstance().setRecentMove(country.owner.name + "reinforced" + country.name + "with" + armyAssigned + "armies.");
+            GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " + country + " with " + armyAssigned + "armies.");
 
         }
         GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
@@ -58,9 +59,8 @@ public class CheaterStrategy implements PlayerStrategy {
 
         for (Country neighbour : neighbouringCountries) {
             selectedNeighbouringCountry = neighbour;
-            GameMap.getInstance().setRecentMove(context.name + " attacked " + selectedNeighbouringCountry.name);
+            GameMap.getInstance().setRecentMove(context.name + " attacked " + selectedNeighbouringCountry);
             context.countryConquered(selectedCountry, selectedNeighbouringCountry);
-            break;
         }
         if (!GameMap.getInstance().newGame) {
             GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
