@@ -20,6 +20,10 @@ public class RandomStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
+        /*if(GameMap.tournamentMode){
+            GameMap.newGame=false;
+        }*/
+
         Random random = new Random();
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
@@ -87,7 +91,13 @@ public class RandomStrategy implements PlayerStrategy {
             }
             break;
         }
-        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
+        if(!GameMap.newGame){
+            GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
+        }else{
+            GameMap.newGame=false;
+            GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
+
+        }
     }
 
     /**

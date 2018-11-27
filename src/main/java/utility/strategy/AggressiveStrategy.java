@@ -19,6 +19,9 @@ public class AggressiveStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
+        /*if(GameMap.tournamentMode){
+            GameMap.newGame=false;
+        }*/
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
         if (context.unselectedCards.size() > 4) {
@@ -73,7 +76,7 @@ public class AggressiveStrategy implements PlayerStrategy {
 
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
 
-                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.numOfArmies > 1) {
+                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.numOfArmies > 1 && !GameMap.newGame) {
                     int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                     GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
                     context.gainCard();
@@ -81,8 +84,14 @@ public class AggressiveStrategy implements PlayerStrategy {
                 }
             }
         }
+        if(!GameMap.newGame){
+            GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
+        }else{
+            GameMap.newGame=false;
+            GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
 
-        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
+        }
+
     }
 
     /**

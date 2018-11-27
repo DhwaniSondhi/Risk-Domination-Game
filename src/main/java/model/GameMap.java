@@ -13,6 +13,9 @@ import java.util.*;
  * Singleton class containing access to all the game components
  */
 public class GameMap extends Observable {
+
+    public static boolean check;
+    public static boolean newGame;
     /**
      * Instance of GameMap class
      */
@@ -60,7 +63,7 @@ public class GameMap extends Observable {
     /**
      * flag to check if game ended
      */
-    public boolean gameEnded;
+    public boolean gameEnded=false;
     /**
      * current phase
      */
@@ -128,6 +131,7 @@ public class GameMap extends Observable {
         continentCounter = 0;
         countryCounter = 0;
         cardStack = 0;
+        check=true;
 
         FileHelper.writeLog("=================== NEW GAME =====================");
     }
@@ -142,38 +146,59 @@ public class GameMap extends Observable {
             mapBeingPlayed = 1;
         } else if (gameNumberBeingPlayed < gameNumbers.get(mapBeingPlayed)) {
             gameNumberBeingPlayed++;
+        }else if(gameNumberBeingPlayed>=gameNumbers.get(mapBeingPlayed) && mapBeingPlayed<maps.size()){
+            for(Player player:players.values()){
+                players.replace(player.id,new Player(player.id,player.name,player.strategy));
+            }
+            mapBeingPlayed++;
+            gameNumberBeingPlayed=1;
+        }else{
+            gameEnded = true;
         }
         //players=playersInfo;
-        gameNumbersForTournament = gameNumbers.get(mapBeingPlayed);
-        try {
-            if (maps.get(mapBeingPlayed) == null) System.out.println(maps.size() + " Error");
-            FileHelper.loadToConfig(maps.get(mapBeingPlayed));
-        } catch (IllegalStateException exception) {
-            System.out.println("File validation failed : " + exception.getMessage());
-        }
-        //players=playersInfo;
-        System.out.println(tournamentMode + " " + players.size());
-        currentPlayer = players.get(players.keySet().toArray()[0]);
-        assignCountriesToPlayers();
-        for (Player player : players.values()) {
-            Random rand = new Random();
-            int totalArmy = getInitialArmy();
-            int loop = 0;
-            for (Country country : player.countries) {
-                int countriesLeft = player.countries.size() - loop;
-                int assignedArmy = rand.nextInt(totalArmy - countriesLeft);
-                if (loop == player.countries.size() - 1) {
-                    country.addArmies(totalArmy);
-                } else {
-                    country.addArmies(assignedArmy);
+       // gameNumbersForTournament=gameNumbers.get(mapBeingPlayed);
+        if(!gameEnded){
+            try {
+                FileHelper.loadToConfig(maps.get(mapBeingPlayed));
+            } catch (IllegalStateException exception) {
+                System.out.println("File validation failed : " + exception.getMessage());
+            }
+            //players=playersInfo;
+            System.out.println(tournamentMode + " " + players.size());
+            currentPlayer=players.get(players.keySet().toArray()[0]);
+            check=false;
+            assignCountriesToPlayers();
+            check=true;
+            for(Player player:players.values()){
+                System.out.println(player.name+" "+player.strategy.toString());
+                Random rand=new Random();
+                int totalArmy=getInitialArmy();
+                int loop=0;
+                for(Country country:player.countries){
+                    int countriesLeft=player.countries.size()-loop;
+                    int assignedArmy;
+                    if(totalArmy-countriesLeft==1){
+                        assignedArmy=1;
+                    }else{
+                        assignedArmy=rand.nextInt(totalArmy-countriesLeft-1)+1;
+                    }
+                    if(loop==player.countries.size()-1){
+                        country.addArmies(totalArmy);
+                        System.out.println(country.name+" is given army "+totalArmy);
+                    }else{
+                        country.addArmies(assignedArmy);
+                        totalArmy-=assignedArmy;
+                        System.out.println(country.name+" is given army "+assignedArmy);
+                    }
+
+                    loop++;
                 }
-                totalArmy -= assignedArmy;
                 loop++;
             }
+            changePhase(Phase.REINFORCE);
         }
-        changePhase(Phase.REINFORCE);
-    }
 
+    }
     /**
      * @return returns the singleton instance of the class
      */
@@ -312,7 +337,7 @@ public class GameMap extends Observable {
         continents.clear();
         countries.clear();
         countryGraph.clear();
-        if (!tournamentMode) {
+        if(!tournamentMode){
             players.clear();
         }
         countryCounter = 0;
@@ -472,18 +497,28 @@ public class GameMap extends Observable {
      */
     public void checkGameEnd() {
         if (currentPlayer.countries.size() == countries.size()) {
-            if (tournamentMode) {
-                tournamentMode(false);
-            }
             setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
-            gameEnded = true;
-            setChanged();
-            notifyChanges();
+            System.out.println("Game Over: " + currentPlayer.name + " wins the game.");
+            FileHelper.writeLog("========================= New Game 2 ========================== \n\n\n\n\n");
+            if(tournamentMode){
+                newGame=true;
+                previousPhase = Phase.STARTUP;
+                currentPhase = Phase.STARTUP;
+                tournamentMode(false);
+                if(gameEnded){
+                    setChanged();
+                    notifyChanges();
+                }
+            }else{
+                gameEnded=true;
+                setChanged();
+                notifyChanges();
+            }
         } else {
             gameEnded = false;
         }
-    }
+    
 
     /**
      * restores serialized game data
@@ -684,7 +719,7 @@ public class GameMap extends Observable {
 
 
     /**
-     * enum for the phases of tournament
+     * enum for the phases of game
      *  */
     public enum Phase {
         /**

@@ -229,7 +229,10 @@ public class Player extends Observable {
      */
     public void initializeCountryToPlayer(Country country) {
         this.countries.add(country);
-        updateView();
+        if(GameMap.check){
+            updateView();
+        }
+
     }
 
     /**
@@ -473,8 +476,11 @@ public class Player extends Observable {
         winCards(selectedNeighbouringCountry.owner);
         selectedNeighbouringCountry.changeOwner(this);
         GameMap.getInstance().checkGameEnd();
-        setChanged();
-        notifyObservers();
+        if(!GameMap.newGame){
+            setChanged();
+            notifyObservers();
+        }
+
     }
 
     /**

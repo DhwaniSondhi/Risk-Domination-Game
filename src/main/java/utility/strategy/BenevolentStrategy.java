@@ -18,6 +18,9 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
+        /*if(GameMap.tournamentMode){
+            GameMap.newGame=false;
+        }*/
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
         if (context.unselectedCards.size() > 4) {
@@ -47,7 +50,13 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
+        if(!GameMap.newGame){
+            GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
+        }else{
+            GameMap.newGame=false;
+            GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
+
+        }
     }
 
     /**
@@ -82,6 +91,7 @@ public class BenevolentStrategy implements PlayerStrategy {
 
             count--;
         }
+
         GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
     }
 }
