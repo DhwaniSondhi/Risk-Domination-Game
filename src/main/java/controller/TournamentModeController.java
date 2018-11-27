@@ -21,9 +21,13 @@ import java.util.HashMap;
  */
 public class TournamentModeController extends BaseController<TournamentModeFrame> implements ItemListener, ActionListener {
     /**
+     * Variable to store the integer value of players
+     */
+    int playerCount;
+    /**
      * Variable to store the integer value of combobox
      */
-    int variableForComboBox;
+    int mapCount;
 
     /**
      * This is the constructor for the Controller
@@ -47,8 +51,11 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
 
         if (e.getStateChange() == ItemEvent.SELECTED) {
             JComboBox jComboBox = (JComboBox) e.getSource();
-            variableForComboBox = (int) jComboBox.getSelectedItem();
-
+            System.out.println(jComboBox.getName());
+            if (jComboBox.getName().equalsIgnoreCase("playerCount"))
+                playerCount = (int) jComboBox.getSelectedItem();
+            else
+                mapCount = (int) jComboBox.getSelectedItem();
         }
 
     }
@@ -63,10 +70,10 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
 
         if (e.getActionCommand().equalsIgnoreCase("Submit")) {
 
-            if (variableForComboBox == 0) {
+            if (playerCount == 0) {
                 view.updatePlayersPanel(2);
             } else {
-                view.updatePlayersPanel(variableForComboBox);
+                view.updatePlayersPanel(playerCount);
             }
 
         } else if (e.getActionCommand().equalsIgnoreCase("Proceed")) {
@@ -88,10 +95,10 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
             view.proceedToMaps();
         } else if (e.getActionCommand().equalsIgnoreCase("Submit Number")) {
 
-            if (variableForComboBox == 0) {
+            if (mapCount == 0) {
                 view.updateMapsPanel(1);
             } else {
-                view.updateMapsPanel(variableForComboBox);
+                view.updateMapsPanel(mapCount);
             }
         } else if (e.getActionCommand().equalsIgnoreCase("Start Tournament")) {
             Component[] components = view.jPanelForNumberOfGamesOnMap.getComponents();
@@ -103,7 +110,6 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 index++;
             }
 
-            //System.out.println(model.gameNumbers);
             model.tournamentMode = true;
             model.tournamentModeWinners=new HashMap<>();
             model.startTournamentMode(true);
@@ -112,7 +118,6 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
             int index = Integer.valueOf(e.getActionCommand().split("")[4]);
             File file = loadMaps();
             if (file != null) {
-                //System.out.println(index);
                 model.maps.put(index, file);
             } else {
                 System.out.println("File null");

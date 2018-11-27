@@ -469,7 +469,7 @@ public class Player extends Observable {
      * @param selectedNeighbouringCountry country of the opponent
      */
     public void countryConquered(Country selectedCountry, Country selectedNeighbouringCountry) {
-        GameMap.getInstance().setRecentMove(name + " conquered " + selectedNeighbouringCountry.name);
+        GameMap.getInstance().setRecentMove(name + " conquered " + selectedNeighbouringCountry);
         hasConquered = true;
         latestDiceRolled = diceValuesPlayer.size();
         numArmiesAllowedToMove = selectedCountry.numOfArmies - 1;
@@ -625,8 +625,8 @@ public class Player extends Observable {
 
         int numberOfArmiesTransfer = countryToTransferFrom.numOfArmies - 1;
 
-        GameMap.getInstance().setRecentMove(name + " fortified " + countryToTransferTo.name + " with " + numberOfArmiesTransfer
-                + " armies from " + countryToTransferFrom.name);
+        GameMap.getInstance().setRecentMove(name + " fortified " + countryToTransferTo + " with " + numberOfArmiesTransfer
+                + " armies from " + countryToTransferFrom);
         countryToTransferFrom.deductArmies(numberOfArmiesTransfer);
         countryToTransferTo.addArmies(numberOfArmiesTransfer);
 

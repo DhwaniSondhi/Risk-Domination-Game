@@ -33,7 +33,7 @@ public class BenevolentStrategy implements PlayerStrategy {
         country = context.getWeakestCountry();
         country.addArmies(armySelected);
         GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
-                country.name + " with " + armySelected + " armies.");
+                country + " with " + armySelected + " armies.");
         GameMap.getInstance().changePhase(GameMap.Phase.ATTACK);
     }
 

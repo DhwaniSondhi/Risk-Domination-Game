@@ -120,11 +120,11 @@ public class TournamentModeFrame extends JFrame {
 
         jPanelForPlayer.add(new JLabel("Number Of Players:"));
         JComboBox<Integer> comboBoxNumberOfPlayer = new JComboBox<>();
+        comboBoxNumberOfPlayer.setName("playerCount");
         for (int i = 2; i <= 4; i++) {
             comboBoxNumberOfPlayer.addItem(i);
         }
         jPanelForPlayer.add(comboBoxNumberOfPlayer);
-        comboBoxNumberOfPlayer.setName("NumberOfPlayer");
 
         comboBoxNumberOfPlayer.addItemListener(tournamentModeController);
         jButtonForNumberOfPlayers.addActionListener(tournamentModeController);
@@ -196,6 +196,7 @@ public class TournamentModeFrame extends JFrame {
         jPanelForMaps = new JPanel();
         jPanelForMaps.add(new JLabel("Number Of Maps:"));
         JComboBox<Integer> jComboBoxNumberOfMaps = new JComboBox<>();
+        jComboBoxNumberOfMaps.setName("mapCount");
         for (int i = 1; i <= 5; i++) {
             jComboBoxNumberOfMaps.addItem(i);
         }

@@ -16,7 +16,7 @@ public class HumanStrategy implements PlayerStrategy {
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
         GameMap.getInstance().setRecentMove(country.owner.name + " reinforced " +
-                country.name + " with " + armySelected + " armies.");
+                country + " with " + armySelected + " armies.");
         country.addArmies(armySelected);
         context.totalArmies -= armySelected;
     }
@@ -38,15 +38,15 @@ public class HumanStrategy implements PlayerStrategy {
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         if (isAllOut) {
-            GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry.name
-                    + " on " + selectedNeighbouringCountry.name);
+            GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry
+                    + " on " + selectedNeighbouringCountry);
             while (!context.countries.contains(selectedNeighbouringCountry) && selectedCountry.numOfArmies > 1) {
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
                 attack(context, selectedCountry, selectedNeighbouringCountry, true);
             }
         } else {
-            GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry.name
-                    + " on " + selectedNeighbouringCountry.name);
+            GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry
+                    + " on " + selectedNeighbouringCountry);
             context.checkVictory(selectedCountry, selectedNeighbouringCountry);
         }
     }
@@ -63,8 +63,8 @@ public class HumanStrategy implements PlayerStrategy {
     public void fortify(Player context, int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
         GameMap.getInstance().setRecentMove(context.name +" tried to fortify From :" + countrySelected +" To : " + neighborSelected);
 
-        GameMap.getInstance().setRecentMove(context.name + " fortified " + neighborSelected.name + " with " + numberOfArmiesTransfer
-                + " armies from " + countrySelected.name);
+        GameMap.getInstance().setRecentMove(context.name + " fortified " + neighborSelected + " with " + numberOfArmiesTransfer
+                + " armies from " + countrySelected);
         countrySelected.deductArmies(numberOfArmiesTransfer);
         neighborSelected.addArmies(numberOfArmiesTransfer);
     }
