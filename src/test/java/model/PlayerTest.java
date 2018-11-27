@@ -400,7 +400,19 @@ public class PlayerTest {
         Country strongestCountry = gameMap.currentPlayer.getStrongestCountry();
         Assert.assertEquals(8,strongestCountry.id);
     }
+    @Test
+    public void fortifySteps() {
+        Country country1=new Country(1,"China");
+        Country country2=new Country(2,"India");
+        country1.numOfArmies=6;
+        country2.numOfArmies=8;
+        GameMap.getInstance().currentPlayer.fortifySteps(country1,country2);
+        Assert.assertEquals(country1.numOfArmies,1);
+        Assert.assertEquals(country2.numOfArmies,13);
 
+
+
+    }
     @Test
     public void getStrongestCountries() {
         List<Country> strongestCountries = gameMap.currentPlayer.getStrongestCountries(2);
