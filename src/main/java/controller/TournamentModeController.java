@@ -82,6 +82,8 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                     playerId++;
                 }
             }
+            model.loopForGameBeingPlayed=0;
+            model.playersForCountingLoop=model.players;
             view.proceedToMaps();
         } else if (e.getActionCommand().equalsIgnoreCase("Submit Number")) {
 
