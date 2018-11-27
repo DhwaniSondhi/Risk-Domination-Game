@@ -38,6 +38,14 @@ public class MainFrame extends JFrame implements Observer {
      */
     public JLabel currentPlayer;
     /**
+     * Label that display game mode
+     */
+    public JLabel gameMode;
+    /**
+     * Label that display current game
+     */
+    public JLabel currentGame;
+    /**
      * Label that display current phase
      */
     public JLabel currentPhase;
@@ -89,12 +97,16 @@ public class MainFrame extends JFrame implements Observer {
      * @return phase view panel
      */
     private JPanel initPhaseViewPanel() {
+        gameMode = new JLabel("Game Mode: ");
+        currentGame = new JLabel("Current Game: ");
         currentPlayer = new JLabel("Current Player: ");
         currentPhase = new JLabel("Current Phase: ");
         recentMovesPanel = new JPanel();
         recentMovesPanel.setLayout(new BoxLayout(recentMovesPanel, BoxLayout.Y_AXIS));
         JPanel phaseViewPanel = new JPanel();
         phaseViewPanel.setLayout(new BoxLayout(phaseViewPanel, BoxLayout.Y_AXIS));
+        phaseViewPanel.add(gameMode);
+        phaseViewPanel.add(currentGame);
         phaseViewPanel.add(currentPhase);
         phaseViewPanel.add(currentPlayer);
         phaseViewPanel.add(new JLabel("Recent Moves: "));
@@ -160,7 +172,7 @@ public class MainFrame extends JFrame implements Observer {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuFile = new JMenu("File");
 
-        JMenuItem tournament=new JMenuItem("Tournament Mode");
+        JMenuItem tournament = new JMenuItem("Tournament Mode");
         tournament.addActionListener(controller);
         menuFile.add(tournament);
         JMenuItem load = new JMenuItem("Load GameMap");
@@ -204,6 +216,8 @@ public class MainFrame extends JFrame implements Observer {
                 if (!currentPhase.getText().contains(instance.currentPhase.toString())) {
                     recentMovesPanel.removeAll();
                 }
+                gameMode.setText("Game Mode: " + (instance.tournamentMode ? "Tournament" : "Normal"));
+                currentGame.setText("Current Game: " + (!instance.tournamentMode ? "Game: 1" : "Map:" + instance.mapBeingPlayed + " | Game: " + instance.gameNumberBeingPlayed));
                 currentPhase.setText("Current Phase : " + instance.currentPhase.toString());
                 currentPlayer.setText("Current Player: " + instance.currentPlayer.name);
 

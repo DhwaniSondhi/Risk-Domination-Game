@@ -6,6 +6,7 @@ import utility.strategy.PlayerStrategy;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.Arrays;
 
 
 /**
@@ -152,8 +153,8 @@ public class TournamentModeFrame extends JFrame {
                 JTextField nameField = new JTextField();
                 nameField.setText("Player" + x);
                 panel.add(nameField);
-
-                JComboBox<PlayerStrategy.Strategy> type = new JComboBox<>(PlayerStrategy.Strategy.values());
+                PlayerStrategy.Strategy[] strategies = PlayerStrategy.Strategy.values();
+                JComboBox<PlayerStrategy.Strategy> type = new JComboBox<>(Arrays.copyOfRange(strategies, 1, strategies.length));
                 panel.add(type);
 
                 jPanelForStrategyOfPlayer.add(panel);
