@@ -55,7 +55,6 @@ public class StartUpFrame extends JFrame implements Observer {
 
     /**
      * initializes the controller and sets up the layout for the view
-     *
      */
     public StartUpFrame() {
         super("Welcome to the Game");

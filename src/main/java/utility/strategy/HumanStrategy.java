@@ -61,7 +61,7 @@ public class HumanStrategy implements PlayerStrategy {
      */
     @Override
     public void fortify(Player context, int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
-        GameMap.getInstance().setRecentMove(context.name +" tried to fortify From :" + countrySelected +" To : " + neighborSelected);
+        GameMap.getInstance().setRecentMove(context.name + " tried to fortify From :" + countrySelected + " To : " + neighborSelected);
 
         GameMap.getInstance().setRecentMove(context.name + " fortified " + neighborSelected + " with " + numberOfArmiesTransfer
                 + " armies from " + countrySelected);

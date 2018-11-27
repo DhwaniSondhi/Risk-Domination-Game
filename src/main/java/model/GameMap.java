@@ -86,6 +86,10 @@ public class GameMap extends Observable {
      */
     public boolean canSave = true;
     /**
+     * max number of rounds per game
+     */
+    public int maxRounds = 20;
+    /**
      * flag to check if the game is tournament
      */
     public boolean tournamentMode;
@@ -118,7 +122,7 @@ public class GameMap extends Observable {
     public HashMap<Integer, HashMap<Integer, Player>> tournamentModeWinners;
     public boolean check;
     public boolean newGame;
-    public int loopForGameBeingPlayed;
+    public int loopForGameBeingPlayed = 1;
     public HashMap<Integer, Player> playersForCountingLoop;
 
     /**
@@ -139,6 +143,16 @@ public class GameMap extends Observable {
         check = true;
         loopForGameBeingPlayed=1;
         FileHelper.writeLog("=================== NEW GAME =====================");
+    }
+
+    /**
+     * @return returns the singleton instance of the class
+     */
+    public static GameMap getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new GameMap();
+
+        return INSTANCE;
     }
 
     /**
@@ -163,13 +177,27 @@ public class GameMap extends Observable {
             }
             playersForCountingLoop=players;
             mapBeingPlayed++;
-            gameNumberBeingPlayed=1;
-        }else{
-            for(Map.Entry pair:tournamentModeWinners.entrySet() ){
-                HashMap<Integer,Player> winnerDetails=(HashMap<Integer,Player>)pair.getValue();
-                gameNumberBeingPlayed=1;
-                for(Map.Entry innerPair:winnerDetails.entrySet()){
-                    System.out.println("map Played: "+pair.getKey().toString()+" game being played: "+innerPair.getKey()+" player wins: "+((Player)innerPair.getValue()).name);
+            gameNumberBeingPlayed = 1;
+        } else {
+            FileHelper.writeLog("Tournament Results:");
+            String mapsUsed = "|";
+            for (File file : maps.values()) {
+                mapsUsed += file == null ? " --- " : file.getName();
+                mapsUsed += "|";
+            }
+            FileHelper.writeLog("Maps used: " + mapsUsed);
+            FileHelper.writeLog("Players: " + players.values());
+            FileHelper.writeLog("Draw Limit: " + maxRounds);
+            for (Map.Entry pair : tournamentModeWinners.entrySet()) {
+                FileHelper.writeLog("=========================");
+                FileHelper.writeLog("Map " + pair.getKey() + ":");
+                HashMap<Integer, Player> winnerDetails = (HashMap<Integer, Player>) pair.getValue();
+                gameNumberBeingPlayed = 1;
+                for (Map.Entry innerPair : winnerDetails.entrySet()) {
+                    Player winner = (Player) innerPair.getValue();
+                    String winnerText = winner == null ? "DRAW" : winner.name + "(" + winner.strategy + ")";
+                    FileHelper.writeLog("Game " + innerPair.getKey() + ": " + winnerText);
+                    System.out.println("map: " + pair.getKey().toString() + " | game: " + innerPair.getKey() + " winner: " + winnerText);
                 }
             }
             gameEnded = true;
@@ -186,7 +214,6 @@ public class GameMap extends Observable {
             assignCountriesToPlayers();
             check = true;
             for (Player player : players.values()) {
-                System.out.println(player.name + " " + player.strategy.toString());
                 Random rand = new Random();
                 int totalArmy = getInitialArmy();
                 int loop = 0;
@@ -200,11 +227,9 @@ public class GameMap extends Observable {
                     }
                     if (loop == player.countries.size() - 1) {
                         country.addArmies(totalArmy);
-                        System.out.println(country.name + " is given army " + totalArmy);
                     } else {
                         country.addArmies(assignedArmy);
                         totalArmy -= assignedArmy;
-                        System.out.println(country.name + " is given army " + assignedArmy);
                     }
 
                     loop++;
@@ -214,16 +239,6 @@ public class GameMap extends Observable {
             changePhase(Phase.REINFORCE);
         }
 
-    }
-
-    /**
-     * @return returns the singleton instance of the class
-     */
-    public static GameMap getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new GameMap();
-
-        return INSTANCE;
     }
 
     /**

@@ -9,31 +9,6 @@ import model.Player;
 public interface PlayerStrategy {
 
     /**
-     * enum for the types of strategies
-     */
-    enum Strategy {
-        HUMAN("Human"),
-        AGGRESSIVE("Aggressive"),
-        BENEVOLENT("Benevolent"),
-        RANDOM("Random"),
-        CHEATER("Cheater");
-
-        /**
-         * String representation for the enum value
-         */
-        private String name;
-
-        Strategy(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
-    /**
      * To add the armies to the respective countries on click of Add button
      *
      * @param context      reference to player using this strategy
@@ -67,4 +42,29 @@ public interface PlayerStrategy {
      * @param neighborSelected       country which user select transfer to
      */
     void fortify(Player context, int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected);
+
+    /**
+     * enum for the types of strategies
+     */
+    enum Strategy {
+        HUMAN("Human"),
+        AGGRESSIVE("Aggressive"),
+        BENEVOLENT("Benevolent"),
+        RANDOM("Random"),
+        CHEATER("Cheater");
+
+        /**
+         * String representation for the enum value
+         */
+        private String name;
+
+        Strategy(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
 }

@@ -91,7 +91,6 @@ public class AttackPanel extends JPanel implements Observer {
      * <p>
      * Sets up country panel and neighbouring country panel using {@link JPanel}
      * Updates the country list in the view using {@link AttackController} updateCountryList function
-     *
      */
     public AttackPanel() {
         attackController = new AttackController(this);
@@ -342,7 +341,7 @@ public class AttackPanel extends JPanel implements Observer {
 
         } else if (o instanceof GameMap) {
             GameMap map = ((GameMap) o);
-            if (map.gameEnded) {
+            if (map.gameEnded && !map.tournamentMode) {
                 showAlert();
             }
         }

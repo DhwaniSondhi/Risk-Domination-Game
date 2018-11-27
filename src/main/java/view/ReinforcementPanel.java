@@ -69,7 +69,6 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * <p>
      * To create the Panel for Reinforcement components
      * </p>
-     *
      */
     public ReinforcementPanel() {
         reinforcementController = new ReinforcementController(this);
@@ -91,8 +90,8 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * To update the details when the cards and armies are updated
      *
-     * @param o the observable object.
-     * @param obj    an argument passed to the <code>notifyObservers</code>
+     * @param o   the observable object.
+     * @param obj an argument passed to the <code>notifyObservers</code>
      */
     public void update(Observable o, Object obj) {
         Player player = GameMap.getInstance().currentPlayer;

@@ -144,7 +144,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
         } else if (event.getActionCommand().equalsIgnoreCase("Create GameMap")) {
             new MapCreatorFrame("Create Map");
         } else if (event.getActionCommand().equalsIgnoreCase("Save Game")) {
-            if(model.canSave) {
+            if (model.canSave) {
                 try {
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     String data = gson.toJson(GameMap.getInstance());
@@ -173,7 +173,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
             }
         } else if (event.getActionCommand().equalsIgnoreCase("exit")) {
             System.exit(0);
-        }else if(event.getActionCommand().equalsIgnoreCase("Tournament Mode")){
+        } else if (event.getActionCommand().equalsIgnoreCase("Tournament Mode")) {
             new TournamentModeFrame();
 
 

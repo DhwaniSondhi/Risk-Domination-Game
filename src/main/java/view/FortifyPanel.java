@@ -88,7 +88,6 @@ public class FortifyPanel extends JPanel implements Observer {
      * Constructor
      * It set up the Panels for Number of countries a player have and countries to which the can transfer army
      * Also set up the panels for choosing number of armies to transfer
-     *
      */
     public FortifyPanel() {
         fortifyController = new FortifyController(this);

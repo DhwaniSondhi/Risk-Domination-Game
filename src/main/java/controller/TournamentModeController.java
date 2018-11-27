@@ -48,10 +48,8 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
-
         if (e.getStateChange() == ItemEvent.SELECTED) {
             JComboBox jComboBox = (JComboBox) e.getSource();
-            System.out.println(jComboBox.getName());
             if (jComboBox.getName().equalsIgnoreCase("playerCount"))
                 playerCount = (int) jComboBox.getSelectedItem();
             else
@@ -103,27 +101,32 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
         } else if (e.getActionCommand().equalsIgnoreCase("Start Tournament")) {
             Component[] components = view.jPanelForNumberOfGamesOnMap.getComponents();
             int index = 1;
+            boolean mapNotLoaded = false;
             for (Component component : components) {
                 JComboBox<Integer> field = (JComboBox<Integer>) ((JPanel) component).getComponents()[1];
                 int count = (int) field.getSelectedItem();
                 model.gameNumbers.put(index, count);
+                if (model.maps.get(index) == null) {
+                    mapNotLoaded = true;
+                    break;
+                }
                 index++;
             }
-
-            model.tournamentMode = true;
-            model.tournamentModeWinners=new HashMap<>();
-            model.startTournamentMode(true);
-            view.dispose();
+            if(!mapNotLoaded) {
+                model.tournamentMode = true;
+                model.startTournamentMode(true);
+                view.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Map" + index + " not loaded.", "Error Message", JOptionPane.ERROR_MESSAGE);
+            }
         } else if (e.getActionCommand().equalsIgnoreCase("Maps1") || e.getActionCommand().equalsIgnoreCase("Maps2") || e.getActionCommand().equalsIgnoreCase("Maps3") || e.getActionCommand().equalsIgnoreCase("Maps4") || e.getActionCommand().equalsIgnoreCase("Maps5")) {
             int index = Integer.valueOf(e.getActionCommand().split("")[4]);
             File file = loadMaps();
             if (file != null) {
                 model.maps.put(index, file);
-            } else {
-                System.out.println("File null");
             }
-        }else if (e.getActionCommand().equalsIgnoreCase("Close")) {
-            model.tournamentMode=false;
+        } else if (e.getActionCommand().equalsIgnoreCase("Close")) {
+            model.tournamentMode = false;
             view.dispose();
         }
 

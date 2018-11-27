@@ -46,6 +46,10 @@ public class MainFrame extends JFrame implements Observer {
      */
     public JLabel currentGame;
     /**
+     * Label that display current round
+     */
+    public JLabel currentRound;
+    /**
      * Label that display current phase
      */
     public JLabel currentPhase;
@@ -99,6 +103,7 @@ public class MainFrame extends JFrame implements Observer {
     private JPanel initPhaseViewPanel() {
         gameMode = new JLabel("Game Mode: ");
         currentGame = new JLabel("Current Game: ");
+        currentRound = new JLabel("Current Round: ");
         currentPlayer = new JLabel("Current Player: ");
         currentPhase = new JLabel("Current Phase: ");
         recentMovesPanel = new JPanel();
@@ -107,6 +112,7 @@ public class MainFrame extends JFrame implements Observer {
         phaseViewPanel.setLayout(new BoxLayout(phaseViewPanel, BoxLayout.Y_AXIS));
         phaseViewPanel.add(gameMode);
         phaseViewPanel.add(currentGame);
+        phaseViewPanel.add(currentRound);
         phaseViewPanel.add(currentPhase);
         phaseViewPanel.add(currentPlayer);
         phaseViewPanel.add(new JLabel("Recent Moves: "));
@@ -217,14 +223,15 @@ public class MainFrame extends JFrame implements Observer {
                     recentMovesPanel.removeAll();
                 }
                 gameMode.setText("Game Mode: " + (instance.tournamentMode ? "Tournament" : "Normal"));
-                currentGame.setText("Current Game: " + (!instance.tournamentMode ? "Game: 1" : "Map:" + instance.mapBeingPlayed + " | Game: " + instance.gameNumberBeingPlayed));
+                currentGame.setText("Current Game: " + (!instance.tournamentMode ? "Map 1 : Game: 1" : "Map:" + instance.mapBeingPlayed + " | Game: " + instance.gameNumberBeingPlayed));
+                currentRound.setText("Current Round : " + instance.loopForGameBeingPlayed);
                 currentPhase.setText("Current Phase : " + instance.currentPhase.toString());
                 currentPlayer.setText("Current Player: " + instance.currentPlayer.name);
 
                 if (instance.recentMove != null)
                     recentMovesPanel.add(new JLabel(instance.recentMove));
-                JScrollBar scroll = messagesPanel.getVerticalScrollBar();
-                scroll.setValue(scroll.getMaximum());
+                /*JScrollBar scroll = messagesPanel.getVerticalScrollBar();
+                scroll.setValue(scroll.getMaximum());*/
                 recentMovesPanel.revalidate();
                 recentMovesPanel.repaint();
             }

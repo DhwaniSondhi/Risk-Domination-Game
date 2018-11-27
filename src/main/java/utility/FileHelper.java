@@ -1,6 +1,5 @@
 package utility;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import model.GameMap;
 

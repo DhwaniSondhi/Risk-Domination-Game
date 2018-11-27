@@ -15,6 +15,14 @@ import java.util.Arrays;
  */
 public class TournamentModeFrame extends JFrame {
     /**
+     * Panel for enter strategy for player
+     */
+    public JPanel jPanelForStrategyOfPlayer;
+    /**
+     * Panel for number of games in each map
+     */
+    public JPanel jPanelForNumberOfGamesOnMap;
+    /**
      * Reference to TournamentControllerClass
      */
     TournamentModeController tournamentModeController;
@@ -31,17 +39,9 @@ public class TournamentModeFrame extends JFrame {
      */
     JPanel jPanelForPlayer;
     /**
-     * Panel for enter strategy for player
-     */
-    public JPanel jPanelForStrategyOfPlayer;
-    /**
      * Panel for number of maps
      */
     JPanel jPanelForMaps;
-    /**
-     * Panel for number of games in each map
-     */
-    public JPanel jPanelForNumberOfGamesOnMap;
     /**
      * Main panel for adding all other panel
      */
@@ -62,6 +62,10 @@ public class TournamentModeFrame extends JFrame {
      * Label for tournament text
      */
     JLabel jLabelTournament;
+    /**
+     * combobox for draw limit
+     */
+    public JComboBox<Integer> limit;
 
 
     /**
@@ -94,15 +98,15 @@ public class TournamentModeFrame extends JFrame {
     /**
      * To add close button
      */
-    public void closeButton(){
-        JPanel closeTournament=new JPanel();
+    public void closeButton() {
+        JPanel closeTournament = new JPanel();
         closeTournament.setLayout(new GridLayout());
-        JButton close=new JButton("Close");
+        JButton close = new JButton("Close");
         close.addActionListener(tournamentModeController);
         closeTournament.add(close);
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
-        bagConstraintsMain.gridy = 4;
+        bagConstraintsMain.gridy = 6;
         mainPanel.add(closeTournament, bagConstraintsMain);
     }
 
@@ -234,8 +238,6 @@ public class TournamentModeFrame extends JFrame {
         jPanelForLabelSelectionOfGameOnMap.add(new JLabel("Select Number of games on each map"));
 
 
-
-
         jPanelForNumberOfGamesOnMap = new JPanel();
         int currentSize = jPanelForNumberOfGamesOnMap.getComponents().length;
         int diff = Math.abs(currentSize - count);
@@ -274,6 +276,15 @@ public class TournamentModeFrame extends JFrame {
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 3;
+        mainPanel.add(new JLabel("Maximum number of rounds per game: "), bagConstraintsMain);
+        bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
+        bagConstraintsMain.gridx = 0;
+        bagConstraintsMain.gridy = 4;
+        limit = new JComboBox<>(new Integer[]{10, 15, 20, 30, 40, 50});
+        mainPanel.add(limit, bagConstraintsMain);
+        bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
+        bagConstraintsMain.gridx = 0;
+        bagConstraintsMain.gridy = 5;
         mainPanel.add(jPanelForStartTournamentButton, bagConstraintsMain);
         jButtonStartTournament = new JButton("Start Tournament");
         jPanelForStartTournamentButton.add(jButtonStartTournament);

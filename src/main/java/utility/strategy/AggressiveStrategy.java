@@ -71,8 +71,8 @@ public class AggressiveStrategy implements PlayerStrategy {
                     selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
                     GameMap.getInstance().setRecentMove(context.name + " tried to fortify From :" + selectedCountry + " To : " + selectedNeighbouringCountry);
 
-                    GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry + "(" + selectedCountry.numOfArmies
-                            + ") armies on " + selectedNeighbouringCountry + "(" + selectedNeighbouringCountry.numOfArmies + ") armies of " + selectedNeighbouringCountry.owner.name);
+                    GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry + " " + selectedCountry.numOfArmies
+                            + " armies on " + selectedNeighbouringCountry + " " + selectedNeighbouringCountry.numOfArmies + " armies of " + selectedNeighbouringCountry.owner.name);
 
                     countryChanged = false;
                 }
