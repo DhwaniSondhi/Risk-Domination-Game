@@ -88,8 +88,8 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 }
             }
 
-            model.loopForGameBeingPlayed=1;
-            model.playersForCountingLoop=model.players;
+            model.loopForGameBeingPlayed = 1;
+            model.playersForCountingLoop = model.players;
             view.proceedToMaps();
         } else if (e.getActionCommand().equalsIgnoreCase("Submit Number")) {
 
@@ -112,7 +112,8 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 }
                 index++;
             }
-            if(!mapNotLoaded) {
+            if (!mapNotLoaded) {
+                model.maxRounds = (int) view.limit.getSelectedItem();
                 model.tournamentMode = true;
                 model.startTournamentMode(true);
                 view.dispose();

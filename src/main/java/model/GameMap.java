@@ -141,7 +141,7 @@ public class GameMap extends Observable {
         countryCounter = 0;
         cardStack = 0;
         check = true;
-        loopForGameBeingPlayed=1;
+        loopForGameBeingPlayed = 1;
         FileHelper.writeLog("=================== NEW GAME =====================");
     }
 
@@ -160,22 +160,22 @@ public class GameMap extends Observable {
      */
     public void startTournamentMode(boolean startingTournament) {
         if (startingTournament) {
-            loopForGameBeingPlayed=1;
+            loopForGameBeingPlayed = 1;
             gameNumberBeingPlayed = 1;
             mapBeingPlayed = 1;
         } else if (gameNumberBeingPlayed < gameNumbers.get(mapBeingPlayed)) {
-            loopForGameBeingPlayed=1;
+            loopForGameBeingPlayed = 1;
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
-            playersForCountingLoop=players;
+            playersForCountingLoop = players;
             gameNumberBeingPlayed++;
         } else if (gameNumberBeingPlayed >= gameNumbers.get(mapBeingPlayed) && mapBeingPlayed < maps.size()) {
-            loopForGameBeingPlayed=1;
+            loopForGameBeingPlayed = 1;
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
-            playersForCountingLoop=players;
+            playersForCountingLoop = players;
             mapBeingPlayed++;
             gameNumberBeingPlayed = 1;
         } else {
@@ -495,17 +495,17 @@ public class GameMap extends Observable {
      * @param phase new phase
      */
     public void changePhase(Phase phase) {
-        if(phase==Phase.REINFORCE){
-            for(Player player:playersForCountingLoop.values()){
-                int playerId=player.id;
-                if(players.get(playerId).countries==null && !(players.get(playerId).countries.size()>0)){
+        if (phase == Phase.REINFORCE) {
+            for (Player player : playersForCountingLoop.values()) {
+                int playerId = player.id;
+                if (players.get(playerId).countries == null && !(players.get(playerId).countries.size() > 0)) {
                     GameMap.getInstance().playersForCountingLoop.remove(playerId);
                 }
             }
         }
-        if(loopForGameBeingPlayed>30){
+        if (loopForGameBeingPlayed > maxRounds) {
             checkGameEnd();
-        }else{
+        } else {
             stateHasChanged = true;
             this.previousPhase = currentPhase;
             this.currentPhase = phase;
@@ -541,13 +541,10 @@ public class GameMap extends Observable {
      * A check to see if the current player has conquered all the countries
      */
     public void checkGameEnd() {
-        if (currentPlayer.countries.size() == countries.size()) {
-            setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
+        if (loopForGameBeingPlayed > maxRounds) {
+            setRecentMove("Game Over: It is a draw.");
+            System.out.println("Game Over: It is a draw.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
-            HashMap<Integer, Player> winnerDetails=new HashMap<>();
-            winnerDetails.put(gameNumberBeingPlayed,currentPlayer);
-            tournamentModeWinners.put(mapBeingPlayed,winnerDetails);
-            System.out.println("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= New Game ========================== \n\n\n\n\n");
             if (tournamentMode) {
                 newGame = true;
@@ -563,15 +560,17 @@ public class GameMap extends Observable {
                 setChanged();
                 notifyChanges();
             }
-        }else if (currentPlayer.countries.size() == countries.size()) {
+        } else if (currentPlayer.countries.size() == countries.size()) {
             setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
             System.out.println("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= New Game ========================== \n\n\n\n\n");
             if (tournamentMode) {
-                HashMap<Integer, Player> winnerDetails=new HashMap<>();
-                winnerDetails.put(gameNumberBeingPlayed,currentPlayer);
-                tournamentModeWinners.put(mapBeingPlayed,winnerDetails);
+                HashMap<Integer, Player> winnerDetails = tournamentModeWinners.get(mapBeingPlayed);
+                if (winnerDetails == null) winnerDetails = new HashMap<>();
+
+                winnerDetails.put(gameNumberBeingPlayed, currentPlayer);
+                tournamentModeWinners.put(mapBeingPlayed, winnerDetails);
                 newGame = true;
                 previousPhase = Phase.STARTUP;
                 currentPhase = Phase.STARTUP;
