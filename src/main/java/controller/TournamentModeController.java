@@ -113,6 +113,10 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
             } else {
                 System.out.println("File null");
             }
+        }else if (e.getActionCommand().equalsIgnoreCase("Close")) {
+
+            model.tournamentMode=false;
+            view.dispose();
         }
 
     }

@@ -15,6 +15,12 @@ import java.util.*;
 public class GameMap extends Observable {
 
     /**
+     * Map number
+     * Game number
+     * Winner
+     */
+    public HashMap<Integer, HashMap<Integer, Player>> tournamentModeWinners;
+    /**
      * Instance of GameMap class
      */
     private transient static GameMap INSTANCE = null;
@@ -146,8 +152,16 @@ public class GameMap extends Observable {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
             mapBeingPlayed++;
-            gameNumberBeingPlayed = 1;
-        } else {
+            gameNumberBeingPlayed=1;
+        }else{
+            System.out.println(tournamentModeWinners.size());
+            for(Map.Entry pair:tournamentModeWinners.entrySet() ){
+                HashMap<Integer,Player> winnerDetails=(HashMap<Integer,Player>)pair.getValue();
+                gameNumberBeingPlayed=1;
+                for(Map.Entry innerPair:winnerDetails.entrySet()){
+                    System.out.println("map Played: "+pair.getKey().toString()+" game being played: "+innerPair.getKey()+" player wins: "+((Player)innerPair.getValue()).name);
+                }
+            }
             gameEnded = true;
         }
 
@@ -494,6 +508,9 @@ public class GameMap extends Observable {
         if (currentPlayer.countries.size() == countries.size()) {
             setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
+            HashMap<Integer, Player> winnerDetails=new HashMap<>();
+            winnerDetails.put(gameNumberBeingPlayed,currentPlayer);
+            tournamentModeWinners.put(mapBeingPlayed,winnerDetails);
             System.out.println("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= New Game 2 ========================== \n\n\n\n\n");
             if (tournamentMode) {
