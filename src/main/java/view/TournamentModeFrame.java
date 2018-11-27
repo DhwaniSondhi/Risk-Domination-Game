@@ -97,6 +97,7 @@ public class TournamentModeFrame extends JFrame {
         JPanel closeTournament=new JPanel();
         closeTournament.setLayout(new GridLayout());
         JButton close=new JButton("Close");
+        close.addActionListener(tournamentModeController);
         closeTournament.add(close);
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
