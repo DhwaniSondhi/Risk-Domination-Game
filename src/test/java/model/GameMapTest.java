@@ -167,4 +167,13 @@ public class GameMapTest {
         gameMap.changePhase(GameMap.Phase.FORTIFY);
         Assert.assertEquals(GameMap.Phase.FORTIFY, gameMap.currentPhase);
     }
+
+    @Test
+    public void updateArmiesOfCountries() {
+        gameMap.setDummyData();
+        int numberArmiesToTransfer = 2;
+        gameMap.updateArmiesOfCountries(numberArmiesToTransfer, gameMap.countries.get(1), gameMap.countries.get(2));
+        Assert.assertEquals(gameMap.countries.get(1).numOfArmies, 8);
+        Assert.assertEquals(gameMap.countries.get(2).numOfArmies, 22);
+    }
 }
