@@ -40,7 +40,7 @@ public class TournamentModeFrame extends JFrame {
     /**
      * Panel for number of games in each map
      */
-    JPanel jPanelForNumberOfGamesOnMap;
+    public JPanel jPanelForNumberOfGamesOnMap;
     /**
      * Main panel for adding all other panel
      */

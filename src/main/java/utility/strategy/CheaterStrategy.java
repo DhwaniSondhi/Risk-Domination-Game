@@ -19,9 +19,6 @@ public class CheaterStrategy implements PlayerStrategy {
 
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-        /*if(GameMap.tournamentMode){
-            GameMap.newGame=false;
-        }*/
         ArrayList<Country> listOfcountries = context.countries;
         for (int i = 0; i < listOfcountries.size(); i++) {
 
@@ -65,10 +62,10 @@ public class CheaterStrategy implements PlayerStrategy {
             context.countryConquered(selectedCountry, selectedNeighbouringCountry);
             break;
         }
-        if(!GameMap.newGame){
+        if (!GameMap.getInstance().newGame) {
             GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
-        }else{
-            GameMap.newGame=false;
+        } else {
+            GameMap.getInstance().newGame = false;
             GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
 
         }

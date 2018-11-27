@@ -20,10 +20,6 @@ public class RandomStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-        /*if(GameMap.tournamentMode){
-            GameMap.newGame=false;
-        }*/
-
         Random random = new Random();
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
@@ -78,23 +74,23 @@ public class RandomStrategy implements PlayerStrategy {
                         + " on " + selectedNeighbouringCountry);
 
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
-                if(selectedCountry.getNumberofArmies() == 1){
+                if (selectedCountry.getNumberofArmies() == 1) {
                     break;
-                }else if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >=1) {
-                    GameMap.getInstance().setRecentMove(""+selectedCountry);
-                    int armies = 1 + rand.nextInt(selectedCountry.numOfArmies -1);
+                } else if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >= 1) {
+                    GameMap.getInstance().setRecentMove("" + selectedCountry);
+                    int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                     GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
-                    GameMap.getInstance().setRecentMove(""+selectedCountry);
+                    GameMap.getInstance().setRecentMove("" + selectedCountry);
                     context.gainCard();
                     break;
                 }
             }
             break;
         }
-        if(!GameMap.newGame){
+        if (!GameMap.getInstance().newGame) {
             GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
-        }else{
-            GameMap.newGame=false;
+        } else {
+            GameMap.getInstance().newGame = false;
             GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
 
         }
@@ -118,7 +114,7 @@ public class RandomStrategy implements PlayerStrategy {
         if (getFirstCountry != null && getFirstCountry.numOfArmies > 1 && !countriesOwnedByCurrentPlayer.isEmpty()) {
             int index = r1.nextInt(countriesOwnedByCurrentPlayer.size());
             Country getSecondArmyCountry = countriesOwnedByCurrentPlayer.get(index);
-            GameMap.getInstance().setRecentMove(context.name +" tried to fortify From :" + getFirstCountry +" To : " + getSecondArmyCountry);
+            GameMap.getInstance().setRecentMove(context.name + " tried to fortify From :" + getFirstCountry + " To : " + getSecondArmyCountry);
             getFirstCountry.updateConnectedCountries();
             HashMap<Integer, Country> listOfCountriesConnected = getFirstCountry.connectedCountries;
             if (listOfCountriesConnected.get(getSecondArmyCountry.id) != null) {

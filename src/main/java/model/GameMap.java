@@ -14,8 +14,6 @@ import java.util.*;
  */
 public class GameMap extends Observable {
 
-    public static boolean check;
-    public static boolean newGame;
     /**
      * Instance of GameMap class
      */
@@ -63,7 +61,7 @@ public class GameMap extends Observable {
     /**
      * flag to check if game ended
      */
-    public boolean gameEnded=false;
+    public boolean gameEnded = false;
     /**
      * current phase
      */
@@ -93,29 +91,27 @@ public class GameMap extends Observable {
     public static boolean tournamentMode;
 
     /**
-     * number of games for the tournament
-     * */
-    public static int gameNumbersForTournament;
-
-    /**
      * hashmap to store the maps
-     * */
+     */
     public static HashMap<Integer, File> maps;
 
     /**
      * hashmap to store the game number
-     * */
+     */
     public static HashMap<Integer, Integer> gameNumbers;
 
     /**
      * stores the game number that is being played
-     * */
+     */
     public static int gameNumberBeingPlayed;
 
     /**
      * stores the map id being played
-     * */
+     */
     public static int mapBeingPlayed;
+
+    public boolean check;
+    public boolean newGame;
 
     /**
      * Initialize countries, continents, players, countryGraph
@@ -131,64 +127,62 @@ public class GameMap extends Observable {
         continentCounter = 0;
         countryCounter = 0;
         cardStack = 0;
-        check=true;
+        check = true;
 
         FileHelper.writeLog("=================== NEW GAME =====================");
     }
 
     /**
      * steps for tournament mode
-     * */
-    public void tournamentMode(boolean startingTournament) {
-        System.out.println("players size: " + players.size());
+     */
+    public void startTournamentMode(boolean startingTournament) {
         if (startingTournament) {
             gameNumberBeingPlayed = 1;
             mapBeingPlayed = 1;
         } else if (gameNumberBeingPlayed < gameNumbers.get(mapBeingPlayed)) {
             gameNumberBeingPlayed++;
-        }else if(gameNumberBeingPlayed>=gameNumbers.get(mapBeingPlayed) && mapBeingPlayed<maps.size()){
-            for(Player player:players.values()){
-                players.replace(player.id,new Player(player.id,player.name,player.strategy));
+        } else if (gameNumberBeingPlayed >= gameNumbers.get(mapBeingPlayed) && mapBeingPlayed < maps.size()) {
+            for (Player player : players.values()) {
+                players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
             mapBeingPlayed++;
-            gameNumberBeingPlayed=1;
-        }else{
+            gameNumberBeingPlayed = 1;
+        } else {
             gameEnded = true;
         }
-        //players=playersInfo;
-       // gameNumbersForTournament=gameNumbers.get(mapBeingPlayed);
-        if(!gameEnded){
+
+        if (!gameEnded) {
             try {
                 FileHelper.loadToConfig(maps.get(mapBeingPlayed));
             } catch (IllegalStateException exception) {
                 System.out.println("File validation failed : " + exception.getMessage());
             }
-            //players=playersInfo;
+
             System.out.println(tournamentMode + " " + players.size());
-            currentPlayer=players.get(players.keySet().toArray()[0]);
-            check=false;
+            currentPlayer = players.get(players.keySet().toArray()[0]);
+            check = false;
             assignCountriesToPlayers();
-            check=true;
-            for(Player player:players.values()){
-                System.out.println(player.name+" "+player.strategy.toString());
-                Random rand=new Random();
-                int totalArmy=getInitialArmy();
-                int loop=0;
-                for(Country country:player.countries){
-                    int countriesLeft=player.countries.size()-loop;
+            check = true;
+            for (Player player : players.values()) {
+                System.out.println(player.name + " " + player.strategy.toString());
+                Random rand = new Random();
+                int totalArmy = getInitialArmy();
+                int loop = 0;
+                for (Country country : player.countries) {
+                    int countriesLeft = player.countries.size() - loop;
                     int assignedArmy;
-                    if(totalArmy-countriesLeft==1){
-                        assignedArmy=1;
-                    }else{
-                        assignedArmy=rand.nextInt(totalArmy-countriesLeft-1)+1;
+                    if (totalArmy - countriesLeft == 1) {
+                        assignedArmy = 1;
+                    } else {
+                        assignedArmy = rand.nextInt(totalArmy - countriesLeft - 1) + 1;
                     }
-                    if(loop==player.countries.size()-1){
+                    if (loop == player.countries.size() - 1) {
                         country.addArmies(totalArmy);
-                        System.out.println(country.name+" is given army "+totalArmy);
-                    }else{
+                        System.out.println(country.name + " is given army " + totalArmy);
+                    } else {
                         country.addArmies(assignedArmy);
-                        totalArmy-=assignedArmy;
-                        System.out.println(country.name+" is given army "+assignedArmy);
+                        totalArmy -= assignedArmy;
+                        System.out.println(country.name + " is given army " + assignedArmy);
                     }
 
                     loop++;
@@ -199,6 +193,7 @@ public class GameMap extends Observable {
         }
 
     }
+
     /**
      * @return returns the singleton instance of the class
      */
@@ -337,7 +332,7 @@ public class GameMap extends Observable {
         continents.clear();
         countries.clear();
         countryGraph.clear();
-        if(!tournamentMode){
+        if (!tournamentMode) {
             players.clear();
         }
         countryCounter = 0;
@@ -501,24 +496,25 @@ public class GameMap extends Observable {
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
             System.out.println("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= New Game 2 ========================== \n\n\n\n\n");
-            if(tournamentMode){
-                newGame=true;
+            if (tournamentMode) {
+                newGame = true;
                 previousPhase = Phase.STARTUP;
                 currentPhase = Phase.STARTUP;
-                tournamentMode(false);
-                if(gameEnded){
+                startTournamentMode(false);
+                if (gameEnded) {
                     setChanged();
                     notifyChanges();
                 }
-            }else{
-                gameEnded=true;
+            } else {
+                gameEnded = true;
                 setChanged();
                 notifyChanges();
             }
         } else {
             gameEnded = false;
         }
-    
+    }
+
 
     /**
      * restores serialized game data
@@ -720,7 +716,7 @@ public class GameMap extends Observable {
 
     /**
      * enum for the phases of game
-     *  */
+     */
     public enum Phase {
         /**
          * Enum values

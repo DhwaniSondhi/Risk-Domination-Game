@@ -229,7 +229,7 @@ public class Player extends Observable {
      */
     public void initializeCountryToPlayer(Country country) {
         this.countries.add(country);
-        if(GameMap.check){
+        if (GameMap.getInstance().check) {
             updateView();
         }
 
@@ -476,7 +476,7 @@ public class Player extends Observable {
         winCards(selectedNeighbouringCountry.owner);
         selectedNeighbouringCountry.changeOwner(this);
         GameMap.getInstance().checkGameEnd();
-        if(!GameMap.newGame){
+        if (!GameMap.getInstance().newGame) {
             setChanged();
             notifyObservers();
         }
@@ -596,7 +596,7 @@ public class Player extends Observable {
      *
      * @param listOfCountriesConnected hashmap of countries
      * @return the strongest country among the countries provided
-     * */
+     */
     public Country strongestInConnectedCountries(HashMap<Integer, Country> listOfCountriesConnected) {
         Iterator it = listOfCountriesConnected.entrySet().iterator();
         int largestArmy = 0;
@@ -616,12 +616,12 @@ public class Player extends Observable {
 
     /**
      * performs the fortify steps of transfering army from one country to another
-     * @param countryToTransferFrom country from which we want to transfer
-     * @param countryToTransferTo country to which we want to transfer to
      *
-     * */
+     * @param countryToTransferFrom country from which we want to transfer
+     * @param countryToTransferTo   country to which we want to transfer to
+     */
     public void fortifySteps(Country countryToTransferFrom, Country countryToTransferTo) {
-        GameMap.getInstance().setRecentMove(name +" tried to fortify From :" + countryToTransferFrom +" To : " + countryToTransferTo);
+        GameMap.getInstance().setRecentMove(name + " tried to fortify From :" + countryToTransferFrom + " To : " + countryToTransferTo);
 
         int numberOfArmiesTransfer = countryToTransferFrom.numOfArmies - 1;
 

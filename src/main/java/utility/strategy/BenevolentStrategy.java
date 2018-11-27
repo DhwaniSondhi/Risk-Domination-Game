@@ -18,9 +18,6 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-        /*if(GameMap.tournamentMode){
-            GameMap.newGame=false;
-        }*/
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
         if (context.unselectedCards.size() > 4) {
@@ -50,10 +47,10 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        if(!GameMap.newGame){
+        if (!GameMap.getInstance().newGame) {
             GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
-        }else{
-            GameMap.newGame=false;
+        } else {
+            GameMap.getInstance().newGame = false;
             GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
 
         }
@@ -74,12 +71,12 @@ public class BenevolentStrategy implements PlayerStrategy {
         while (count > 0) {
             List<Country> weakestcountries = context.getStrongestCountries(count);
             weakestCountry = weakestcountries.get(count - 1);
-            if(weakestCountry!=null){
+            if (weakestCountry != null) {
                 weakestCountry.updateConnectedCountries();
                 HashMap<Integer, Country> listOfCountriesConnected = weakestCountry.connectedCountries;
                 if (listOfCountriesConnected.size() != 0) {
                     strongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
-                    if(strongestCountry!=null){
+                    if (strongestCountry != null) {
                         if (strongestCountry.numOfArmies != 1) {
                             context.fortifySteps(strongestCountry, weakestCountry);
                             break;

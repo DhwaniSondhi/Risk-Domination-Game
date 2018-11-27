@@ -1,14 +1,10 @@
 package controller;
 
 
-import model.Country;
 import model.Player;
 import utility.FileHelper;
 import utility.MapHelper;
 import utility.strategy.PlayerStrategy;
-import view.StartUpFrame;
-import utility.FileHelper;
-import utility.MapHelper;
 import view.TournamentModeFrame;
 
 import javax.swing.*;
@@ -19,7 +15,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Controller class for tournament mode
@@ -74,17 +69,16 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 view.updatePlayersPanel(variableForComboBox);
             }
 
-        }
-        else if(e.getActionCommand().equalsIgnoreCase("Proceed")){
-            int playerId=1;
-            model.players=new HashMap<>();
-            for(Component componentPanelForPlayers:view.jPanelForStrategyOfPlayer.getComponents()){
-                if(componentPanelForPlayers instanceof JPanel){
-                    Component[] components=((JPanel) componentPanelForPlayers).getComponents();
-                    String name=((JTextField)components[0]).getText();
-                    PlayerStrategy.Strategy strategy=(PlayerStrategy.Strategy)((JComboBox) components[1]).getSelectedItem();
-                    Player player=new Player(playerId,name,strategy);
-                    model.players.put(playerId,player);
+        } else if (e.getActionCommand().equalsIgnoreCase("Proceed")) {
+            int playerId = 1;
+            model.players = new HashMap<>();
+            for (Component componentPanelForPlayers : view.jPanelForStrategyOfPlayer.getComponents()) {
+                if (componentPanelForPlayers instanceof JPanel) {
+                    Component[] components = ((JPanel) componentPanelForPlayers).getComponents();
+                    String name = ((JTextField) components[0]).getText();
+                    PlayerStrategy.Strategy strategy = (PlayerStrategy.Strategy) ((JComboBox) components[1]).getSelectedItem();
+                    Player player = new Player(playerId, name, strategy);
+                    model.players.put(playerId, player);
                     playerId++;
                 }
             }
@@ -96,19 +90,24 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
             } else {
                 view.updateMapsPanel(variableForComboBox);
             }
-        }else if(e.getActionCommand().equalsIgnoreCase("Start Tournament")){
-            model.gameNumbers.put(1,2);
-            model.gameNumbers.put(2,2);
+        } else if (e.getActionCommand().equalsIgnoreCase("Start Tournament")) {
+            Component[] components = view.jPanelForNumberOfGamesOnMap.getComponents();
+            int index = 1;
+            for (Component component : components) {
+                JComboBox<Integer> field = (JComboBox<Integer>) ((JPanel) component).getComponents()[1];
+                int count = (int) field.getSelectedItem();
+                model.gameNumbers.put(index, count);
+                index++;
+            }
 
-            model.tournamentMode=true;
-            model.tournamentMode(true);
+            System.out.println(model.gameNumbers);
+            model.tournamentMode = true;
+            model.startTournamentMode(true);
             view.dispose();
-
-        }
-        else if(e.getActionCommand().equalsIgnoreCase("Maps1")||e.getActionCommand().equalsIgnoreCase("Maps2")||e.getActionCommand().equalsIgnoreCase("Maps3")||e.getActionCommand().equalsIgnoreCase("Maps4")||e.getActionCommand().equalsIgnoreCase("Maps5")){
+        } else if (e.getActionCommand().equalsIgnoreCase("Maps1") || e.getActionCommand().equalsIgnoreCase("Maps2") || e.getActionCommand().equalsIgnoreCase("Maps3") || e.getActionCommand().equalsIgnoreCase("Maps4") || e.getActionCommand().equalsIgnoreCase("Maps5")) {
             int index = Integer.valueOf(e.getActionCommand().split("")[4]);
             File file = loadMaps();
-            if(file != null) {
+            if (file != null) {
                 System.out.println(index);
                 model.maps.put(index, file);
             } else {
@@ -120,7 +119,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
 
     /**
      * load map from directory
-     * */
+     */
     public File loadMaps() {
         File dir = new File("maps");
         dir.mkdir();
@@ -139,7 +138,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 e.printStackTrace();
             }
         }
-        return  null;
+        return null;
     }
 
 
