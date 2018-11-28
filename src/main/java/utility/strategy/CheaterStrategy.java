@@ -3,7 +3,6 @@ package utility.strategy;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import utility.FileHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;

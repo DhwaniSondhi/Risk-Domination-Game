@@ -77,9 +77,9 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
         } else if (e.getActionCommand().equalsIgnoreCase("Proceed")) {
             int playerId = 1;
             model.players = new HashMap<>();
-            for (Component componentPanelForPlayers : view.jPanelForStrategyOfPlayer.getComponents()) {
-                if (componentPanelForPlayers instanceof JPanel) {
-                    Component[] components = ((JPanel) componentPanelForPlayers).getComponents();
+            for (Component componentPanel : view.jPanelPlayerStrategy.getComponents()) {
+                if (componentPanel instanceof JPanel) {
+                    Component[] components = ((JPanel) componentPanel).getComponents();
                     String name = ((JTextField) components[0]).getText();
                     PlayerStrategy.Strategy strategy = (PlayerStrategy.Strategy) ((JComboBox) components[1]).getSelectedItem();
                     Player player = new Player(playerId, name, strategy);
@@ -99,7 +99,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
                 view.updateMapsPanel(mapCount);
             }
         } else if (e.getActionCommand().equalsIgnoreCase("Start Tournament")) {
-            Component[] components = view.jPanelForNumberOfGamesOnMap.getComponents();
+            Component[] components = view.jPanelGamesPerMap.getComponents();
             int index = 1;
             boolean mapNotLoaded = false;
             for (Component component : components) {
@@ -122,7 +122,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
             }
         } else if (e.getActionCommand().equalsIgnoreCase("Maps1") || e.getActionCommand().equalsIgnoreCase("Maps2") || e.getActionCommand().equalsIgnoreCase("Maps3") || e.getActionCommand().equalsIgnoreCase("Maps4") || e.getActionCommand().equalsIgnoreCase("Maps5")) {
             int index = Integer.valueOf(e.getActionCommand().split("")[4]);
-            File file = loadMaps();
+            File file = loadMap();
             if (file != null) {
                 model.maps.put(index, file);
             }
@@ -136,7 +136,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
     /**
      * load map from directory
      */
-    public File loadMaps() {
+    public File loadMap() {
         File dir = new File("maps");
         dir.mkdir();
         JFileChooser file = new JFileChooser(dir);
@@ -144,6 +144,7 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
 
         if (confirmValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = file.getSelectedFile();
+
             try {
                 FileHelper.loadToConfig(selectedFile);
                 if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {

@@ -13,7 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -58,8 +59,8 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 index++;
             }
 
-            model.loopForGameBeingPlayed=1;
-            model.playersForCountingLoop=model.players;
+            model.loopForGameBeingPlayed = 1;
+            model.playersForCountingLoop = model.players;
 
             model.assignCountriesToPlayers();
             List<Player> completedList = new ArrayList<>(completedPlayers);

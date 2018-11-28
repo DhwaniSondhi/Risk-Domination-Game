@@ -17,11 +17,15 @@ public class TournamentModeFrame extends JFrame {
     /**
      * Panel for enter strategy for player
      */
-    public JPanel jPanelForStrategyOfPlayer;
+    public JPanel jPanelPlayerStrategy;
     /**
      * Panel for number of games in each map
      */
-    public JPanel jPanelForNumberOfGamesOnMap;
+    public JPanel jPanelGamesPerMap;
+    /**
+     * combobox for draw limit
+     */
+    public JComboBox<Integer> limit;
     /**
      * Reference to TournamentControllerClass
      */
@@ -51,21 +55,9 @@ public class TournamentModeFrame extends JFrame {
      */
     JPanel jPanelProceedButton;
     /**
-     * Panel to add start tournament button
-     */
-    JButton jButtonStartTournament;
-    /**
-     * Panel to add start tournament button
-     */
-    JPanel jPanelForStartTournamentButton;
-    /**
      * Label for tournament text
      */
     JLabel jLabelTournament;
-    /**
-     * combobox for draw limit
-     */
-    public JComboBox<Integer> limit;
 
 
     /**
@@ -145,12 +137,12 @@ public class TournamentModeFrame extends JFrame {
      * @param count number of players
      */
     public void updatePlayersPanel(int count) {
-        jPanelForStrategyOfPlayer = new JPanel();
-        int currentSize = jPanelForStrategyOfPlayer.getComponents().length;
+        jPanelPlayerStrategy = new JPanel();
+        int currentSize = jPanelPlayerStrategy.getComponents().length;
         int diff = Math.abs(currentSize - count);
         if (currentSize <= count) {
             for (int i = 0; i < diff; i++) {
-                int x = jPanelForStrategyOfPlayer.getComponentCount() + 1;
+                int x = jPanelPlayerStrategy.getComponentCount() + 1;
                 JPanel panel = new JPanel();
                 panel.setLayout(new FlowLayout());
 
@@ -161,11 +153,11 @@ public class TournamentModeFrame extends JFrame {
                 JComboBox<PlayerStrategy.Strategy> type = new JComboBox<>(Arrays.copyOfRange(strategies, 1, strategies.length));
                 panel.add(type);
 
-                jPanelForStrategyOfPlayer.add(panel);
+                jPanelPlayerStrategy.add(panel);
             }
         } else {
             for (int i = currentSize - 1; i > currentSize - (diff + 1); i--) {
-                jPanelForStrategyOfPlayer.remove(i);
+                jPanelPlayerStrategy.remove(i);
             }
         }
 
@@ -173,11 +165,11 @@ public class TournamentModeFrame extends JFrame {
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 2;
-        mainPanel.add(jPanelForStrategyOfPlayer, bagConstraintsMain);
+        mainPanel.add(jPanelPlayerStrategy, bagConstraintsMain);
         mainPanel.revalidate();
         mainPanel.repaint();
-        jPanelForStrategyOfPlayer.revalidate();
-        jPanelForStrategyOfPlayer.repaint();
+        jPanelPlayerStrategy.revalidate();
+        jPanelPlayerStrategy.repaint();
         jPanelForPlayer.setVisible(false);
         jPanelProceedButton = new JPanel();
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
@@ -195,7 +187,7 @@ public class TournamentModeFrame extends JFrame {
      * Function for number of maps
      */
     public void proceedToMaps() {
-        jPanelForStrategyOfPlayer.setVisible(false);
+        jPanelPlayerStrategy.setVisible(false);
         jPanelProceedButton.setVisible(false);
         jPanelForMaps = new JPanel();
         jPanelForMaps.add(new JLabel("Number Of Maps:"));
@@ -238,12 +230,12 @@ public class TournamentModeFrame extends JFrame {
         jPanelForLabelSelectionOfGameOnMap.add(new JLabel("Select Number of games on each map"));
 
 
-        jPanelForNumberOfGamesOnMap = new JPanel();
-        int currentSize = jPanelForNumberOfGamesOnMap.getComponents().length;
+        jPanelGamesPerMap = new JPanel();
+        int currentSize = jPanelGamesPerMap.getComponents().length;
         int diff = Math.abs(currentSize - count);
         if (currentSize <= count) {
             for (int i = 0; i < diff; i++) {
-                int x = jPanelForNumberOfGamesOnMap.getComponentCount() + 1;
+                int x = jPanelGamesPerMap.getComponentCount() + 1;
                 JPanel panel = new JPanel();
                 panel.setLayout(new FlowLayout());
 
@@ -258,11 +250,11 @@ public class TournamentModeFrame extends JFrame {
 
                 panel.add(type);
 
-                jPanelForNumberOfGamesOnMap.add(panel);
+                jPanelGamesPerMap.add(panel);
             }
         } else {
             for (int i = currentSize - 1; i > currentSize - (diff + 1); i--) {
-                jPanelForNumberOfGamesOnMap.remove(i);
+                jPanelGamesPerMap.remove(i);
             }
         }
 
@@ -270,8 +262,8 @@ public class TournamentModeFrame extends JFrame {
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 2;
-        mainPanel.add(jPanelForNumberOfGamesOnMap, bagConstraintsMain);
-        jPanelForStartTournamentButton = new JPanel();
+        mainPanel.add(jPanelGamesPerMap, bagConstraintsMain);
+        JPanel jPanelStart = new JPanel();
 
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
@@ -285,11 +277,11 @@ public class TournamentModeFrame extends JFrame {
         bagConstraintsMain.fill = GridBagConstraints.VERTICAL;
         bagConstraintsMain.gridx = 0;
         bagConstraintsMain.gridy = 5;
-        mainPanel.add(jPanelForStartTournamentButton, bagConstraintsMain);
-        jButtonStartTournament = new JButton("Start Tournament");
-        jPanelForStartTournamentButton.add(jButtonStartTournament);
-        jButtonStartTournament.addActionListener(tournamentModeController);
-        jPanelForStartTournamentButton.revalidate();
+        mainPanel.add(jPanelStart, bagConstraintsMain);
+        JButton jButtonStart = new JButton("Start Tournament");
+        jPanelStart.add(jButtonStart);
+        jButtonStart.addActionListener(tournamentModeController);
+        jPanelStart.revalidate();
 
         mainPanel.revalidate();
         mainPanel.repaint();

@@ -217,9 +217,12 @@ public class GameMap extends Observable {
     private void outputTournamentResults() {
         FileHelper.writeLog("Tournament Results:", true);
         String mapsUsed = "|";
+        int index = 1;
         for (File file : maps.values()) {
             mapsUsed += file == null ? " --- " : file.getName();
+            mapsUsed += " [" + gameNumbers.get(index) + "] ";
             mapsUsed += "|";
+            index++;
         }
         FileHelper.writeLog("Maps used: " + mapsUsed, true);
         FileHelper.writeLog("Players: " + players.values(), true);

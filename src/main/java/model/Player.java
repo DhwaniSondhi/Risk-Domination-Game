@@ -121,16 +121,6 @@ public class Player extends Observable {
     }
 
     /**
-     * return Name and strategy
-     *
-     * @return a string representation
-     */
-    @Override
-    public String toString() {
-        return name + "(" + strategy + ")";
-    }
-
-    /**
      * Constructor
      * <p>
      * Sets up the various attributes of the player
@@ -141,6 +131,16 @@ public class Player extends Observable {
      */
     public Player(int id, String name) {
         this(id, name, PlayerStrategy.Strategy.HUMAN);
+    }
+
+    /**
+     * return Name and strategy
+     *
+     * @return a string representation
+     */
+    @Override
+    public String toString() {
+        return name + "(" + strategy + ")";
     }
 
     /**

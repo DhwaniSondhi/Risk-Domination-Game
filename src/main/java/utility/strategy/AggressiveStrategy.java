@@ -3,7 +3,6 @@ package utility.strategy;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import utility.FileHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -74,8 +73,8 @@ public class AggressiveStrategy implements PlayerStrategy {
 
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
 
-                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.numOfArmies > 1 ) {
-                    if(GameMap.getInstance().newGame){
+                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.numOfArmies > 1) {
+                    if (GameMap.getInstance().newGame) {
                         break;
                     }
                     int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);

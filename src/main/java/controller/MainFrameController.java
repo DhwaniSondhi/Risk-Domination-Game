@@ -51,53 +51,55 @@ public class MainFrameController extends BaseController<MainFrame> implements
         if (model.currentPhase != model.previousPhase && model.stateHasChanged) {
             model.stateHasChanged = false;
             model.canSave = true;
-            switch (model.currentPhase) {
-                case REINFORCE:
-                    if (model.previousPhase == GameMap.Phase.STARTUP) {
-                        view.setUpGamePanels();
-                        model.resetCurrentPlayer();
-                    } else if (model.previousPhase == GameMap.Phase.FORTIFY) {
-                        model.changeToNextPlayer(true);
-                        view.fortifyPanel.setVisible(false);
-                        view.reinforcementPanel.setVisible(true);
-                        view.reinforcementPanel.update();
-                    }
-                    if (!model.currentPlayer.isHuman()) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                model.currentPlayer.reinforce(null, 0);
-                            }
-                        }).start();
-                    }
-                    break;
-                case ATTACK:
-                    view.reinforcementPanel.setVisible(false);
-                    view.attackPanel.setVisible(true);
-                    view.attackPanel.revalidate();
-                    view.attackPanel.update();
-                    if (!model.currentPlayer.isHuman()) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                model.currentPlayer.attack(null, null, false);
-                            }
-                        }).start();
-                    }
-                    break;
-                case FORTIFY:
-                    view.attackPanel.setVisible(false);
-                    view.fortifyPanel.setVisible(true);
-                    view.fortifyPanel.update();
-                    if (!model.currentPlayer.isHuman()) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                model.currentPlayer.fortify(0, null, null);
-                            }
-                        }).start();
-                    }
-                    break;
+            if (!model.gameEnded) {
+                switch (model.currentPhase) {
+                    case REINFORCE:
+                        if (model.previousPhase == GameMap.Phase.STARTUP) {
+                            view.setUpGamePanels();
+                            model.resetCurrentPlayer();
+                        } else if (model.previousPhase == GameMap.Phase.FORTIFY) {
+                            model.changeToNextPlayer(true);
+                            view.fortifyPanel.setVisible(false);
+                            view.reinforcementPanel.setVisible(true);
+                            view.reinforcementPanel.update();
+                        }
+                        if (!model.currentPlayer.isHuman()) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    model.currentPlayer.reinforce(null, 0);
+                                }
+                            }).start();
+                        }
+                        break;
+                    case ATTACK:
+                        view.reinforcementPanel.setVisible(false);
+                        view.attackPanel.setVisible(true);
+                        view.attackPanel.revalidate();
+                        view.attackPanel.update();
+                        if (!model.currentPlayer.isHuman()) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    model.currentPlayer.attack(null, null, false);
+                                }
+                            }).start();
+                        }
+                        break;
+                    case FORTIFY:
+                        view.attackPanel.setVisible(false);
+                        view.fortifyPanel.setVisible(true);
+                        view.fortifyPanel.update();
+                        if (!model.currentPlayer.isHuman()) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    model.currentPlayer.fortify(0, null, null);
+                                }
+                            }).start();
+                        }
+                        break;
+                }
             }
         }
     }

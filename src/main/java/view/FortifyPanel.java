@@ -53,7 +53,7 @@ public class FortifyPanel extends JPanel implements Observer {
     /**
      * Variable to get armies of selected connected country
      */
-    Country updateSelectedConnectedCountryArmy;
+    Country updateConnectedCountryArmy;
     /**
      * Panel for adding components for country list of current player
      */
@@ -424,7 +424,7 @@ public class FortifyPanel extends JPanel implements Observer {
                 }
                 setNeighborTextFieldTrue();
                 updateNeighboringCountriesArmyTextField(country.numOfArmies);
-                updateSelectedConnectedCountryArmy = country;
+                updateConnectedCountryArmy = country;
 
             }
 
@@ -438,9 +438,9 @@ public class FortifyPanel extends JPanel implements Observer {
             setComboBoxAndNeighborTextFieldFalse();
             disableCountriesArmyLabelAndTextField();
         } else if (o instanceof Player) {
-            if (updateSelectedCountryArmy != null && updateSelectedConnectedCountryArmy != null) {
+            if (updateSelectedCountryArmy != null && updateConnectedCountryArmy != null) {
                 jTextFieldNoOfArmiesCountries.setText(String.valueOf(updateSelectedCountryArmy.numOfArmies));
-                jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateSelectedConnectedCountryArmy.numOfArmies));
+                jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateConnectedCountryArmy.numOfArmies));
             }
 
         }
