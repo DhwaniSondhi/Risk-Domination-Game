@@ -7,6 +7,9 @@ import model.Player;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * This implement Cheater Strategy
+ */
 public class CheaterStrategy implements PlayerStrategy {
 
     /**

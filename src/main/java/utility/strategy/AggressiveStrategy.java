@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This implements the aggressive strategy
+ */
 public class AggressiveStrategy implements PlayerStrategy {
 
     /**

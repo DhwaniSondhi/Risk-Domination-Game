@@ -8,22 +8,25 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This test the GameMap Class
+ */
 public class GameMapTest {
     /**
      * Reference for GameMap Class
      */
     GameMap gameMap;
 
+    /**
+     * This setup the environment for test cases
+     */
     @Before
     public void setUp() {
         gameMap = GameMap.getInstance();
         gameMap.clearInformation();
     }
 
-    @After
-    public void tearDown() {
 
-    }
 
     /**
      * checks if the size of the continent is correct
@@ -151,7 +154,9 @@ public class GameMapTest {
         Assert.assertEquals(Integer.valueOf(2), data.get(2));
     }
 
-
+    /**
+     * This check the ending of game
+     */
     @Test
     public void checkGameEnd() {
         gameMap.setDummyData();
@@ -162,12 +167,18 @@ public class GameMapTest {
         Assert.assertTrue(gameMap.gameEnded);
     }
 
+    /**
+     * This check change of phase
+     */
     @Test
     public void changePhase() {
         gameMap.changePhase(GameMap.Phase.FORTIFY);
         Assert.assertEquals(GameMap.Phase.FORTIFY, gameMap.currentPhase);
     }
 
+    /**
+     * This check is the armies get updated or not through updateArmiesOfCountries function or not
+     */
     @Test
     public void updateArmiesOfCountries() {
         gameMap.setDummyData();

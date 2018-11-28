@@ -27,6 +27,9 @@ public class PlayerDominationView extends JPanel implements Observer {
      */
     PlayerDominationController controller;
 
+    /**
+     * Constructor of the class PlayerDominationView
+     */
     public PlayerDominationView() {
 
         controller = new PlayerDominationController(this);
