@@ -59,8 +59,8 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 index++;
             }
 
-            model.loopForGameBeingPlayed = 1;
-            model.playersForCountingLoop = model.players;
+            model.loopForGameBeingPlayed = 0;
+            model.setPlayersForCountingLoop(model.players);
 
             model.assignCountriesToPlayers();
             List<Player> completedList = new ArrayList<>(completedPlayers);

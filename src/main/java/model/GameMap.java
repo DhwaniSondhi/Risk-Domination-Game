@@ -124,8 +124,8 @@ public class GameMap extends Observable {
     public HashMap<Integer, HashMap<Integer, Player>> tournamentModeWinners;
     public boolean check;
     public boolean newGame;
-    public int loopForGameBeingPlayed = 1;
-    public HashMap<Integer, Player> playersForCountingLoop;
+    public int loopForGameBeingPlayed = 0;
+    public HashMap<Integer, Integer> playersForCountingLoop;
 
     /**
      * Initialize countries, continents, players, countryGraph
@@ -143,7 +143,7 @@ public class GameMap extends Observable {
         countryCounter = 0;
         cardStack = 0;
         check = true;
-        loopForGameBeingPlayed = 1;
+        loopForGameBeingPlayed = 0;
         FileHelper.writeLog("=================== NEW GAME =====================");
     }
 
@@ -155,6 +155,13 @@ public class GameMap extends Observable {
             INSTANCE = new GameMap();
 
         return INSTANCE;
+    }
+
+    public void setPlayersForCountingLoop(HashMap<Integer,Player> players){
+        playersForCountingLoop=new HashMap<>();
+        for(Integer playerId:players.keySet()){
+            playersForCountingLoop.put(playerId,0);
+        }
     }
 
     /**
@@ -172,14 +179,14 @@ public class GameMap extends Observable {
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
-            playersForCountingLoop = players;
+            setPlayersForCountingLoop(players);
             gameNumberBeingPlayed++;
         } else if (gameNumberBeingPlayed >= gameNumbers.get(mapBeingPlayed) && mapBeingPlayed < maps.size()) {
             loopForGameBeingPlayed = 0;
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
-            playersForCountingLoop = players;
+            setPlayersForCountingLoop(players);
             mapBeingPlayed++;
             gameNumberBeingPlayed = 1;
         } else {
@@ -207,7 +214,7 @@ public class GameMap extends Observable {
             check = true;
 
             distributeInitialArmiesRandomly(players.values());
-            changePhase(Phase.REINFORCE);
+           /* if(startingTournament)*/  changePhase(Phase.REINFORCE);
         }
     }
 
@@ -543,14 +550,22 @@ public class GameMap extends Observable {
         }
 
         if (phase == Phase.REINFORCE) {
-            for (Player player : playersForCountingLoop.values()) {
-                int playerId = player.id;
-                if (players.get(playerId).countries == null && !(players.get(playerId).countries.size() > 0)) {
+            for (Integer playerId : new HashMap<Integer,Integer>(playersForCountingLoop).keySet()) {
+                if (players.get(playerId).countries == null || !(players.get(playerId).countries.size() > 0)) {
                     playersForCountingLoop.remove(playerId);
                 }
             }
-            if (currentPlayer.id == ((Player) playersForCountingLoop.values().toArray()[0]).id) {
-                loopForGameBeingPlayed++;
+            if(currentPlayer.id==Integer.parseInt(String.valueOf(playersForCountingLoop.keySet().toArray()[0]))){
+                if(playersForCountingLoop.get(currentPlayer.id)<loopForGameBeingPlayed){
+                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
+                }else{
+                    loopForGameBeingPlayed++;
+                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
+                }
+            }else{
+                if(playersForCountingLoop.get(currentPlayer.id)!=null){
+                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
+                }
             }
         }
     }
