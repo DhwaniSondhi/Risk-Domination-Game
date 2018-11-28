@@ -348,8 +348,10 @@ public class AttackPanel extends JPanel implements Observer {
 
     }
 
+    /**
+     * shows game end alert to user
+     * */
     private void showAlert() {
-
         int action = JOptionPane.showOptionDialog(null, GameMap.getInstance().currentPlayer.name + " won!!!", "Game Ended", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, null, null, null);
 

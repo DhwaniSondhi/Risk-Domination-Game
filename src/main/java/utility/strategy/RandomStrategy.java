@@ -3,7 +3,6 @@ package utility.strategy;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import utility.FileHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,11 +20,6 @@ public class RandomStrategy implements PlayerStrategy {
      */
     @Override
     public void reinforce(Player context, Country country, int armySelected) {
-        if(context.id==((Player)GameMap.getInstance().playersForCountingLoop.values().toArray()[0]).id){
-            System.out.println("loopForGameBeingPlayed: "+GameMap.getInstance().loopForGameBeingPlayed);
-            FileHelper.writeLog("---------------------------------------------------loopForGameBeingPlayed: "+GameMap.getInstance().loopForGameBeingPlayed);
-            GameMap.getInstance().loopForGameBeingPlayed++;
-        }
         Random random = new Random();
         context.setUnSelectedCards();
         context.setArmiesForReinforcement();
@@ -82,14 +76,12 @@ public class RandomStrategy implements PlayerStrategy {
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
                 if (selectedCountry.getNumberofArmies() == 1) {
                     break;
-                } else if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >= 1 ) {
-                    if(GameMap.getInstance().newGame){
+                } else if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >= 1) {
+                    if (GameMap.getInstance().newGame) {
                         break;
                     }
-                    GameMap.getInstance().setRecentMove("" + selectedCountry);
                     int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                     GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
-                    GameMap.getInstance().setRecentMove("" + selectedCountry);
                     context.gainCard();
                     break;
                 }

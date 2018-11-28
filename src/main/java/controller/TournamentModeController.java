@@ -144,11 +144,12 @@ public class TournamentModeController extends BaseController<TournamentModeFrame
 
         if (confirmValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = file.getSelectedFile();
-
             try {
                 FileHelper.loadToConfig(selectedFile);
                 if (MapHelper.validateContinentGraph() && MapHelper.validateMap()) {
                     return selectedFile;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select a valid map", "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

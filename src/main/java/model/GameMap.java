@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import utility.FileHelper;
 import utility.strategy.PlayerStrategy;
 
+import javax.swing.*;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -107,12 +108,13 @@ public class GameMap extends Observable {
     /**
      * stores the game number that is being played
      */
-    public static int gameNumberBeingPlayed;
+    public int gameNumberBeingPlayed;
 
     /**
      * stores the map id being played
      */
-    public static int mapBeingPlayed;
+    public int mapBeingPlayed;
+
     /**
      * stores te tournament result
      * Map number
@@ -157,21 +159,23 @@ public class GameMap extends Observable {
 
     /**
      * steps for tournament mode
+     *
+     * @param startingTournament true if starting the first game of tournament
      */
     public void startTournamentMode(boolean startingTournament) {
         if (startingTournament) {
-            loopForGameBeingPlayed = 1;
+            loopForGameBeingPlayed = 0;
             gameNumberBeingPlayed = 1;
             mapBeingPlayed = 1;
         } else if (gameNumberBeingPlayed < gameNumbers.get(mapBeingPlayed)) {
-            loopForGameBeingPlayed = 1;
+            loopForGameBeingPlayed = 0;
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
             playersForCountingLoop = players;
             gameNumberBeingPlayed++;
         } else if (gameNumberBeingPlayed >= gameNumbers.get(mapBeingPlayed) && mapBeingPlayed < maps.size()) {
-            loopForGameBeingPlayed = 1;
+            loopForGameBeingPlayed = 0;
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
@@ -179,66 +183,83 @@ public class GameMap extends Observable {
             mapBeingPlayed++;
             gameNumberBeingPlayed = 1;
         } else {
-            FileHelper.writeLog("Tournament Results:");
-            String mapsUsed = "|";
-            for (File file : maps.values()) {
-                mapsUsed += file == null ? " --- " : file.getName();
-                mapsUsed += "|";
-            }
-            FileHelper.writeLog("Maps used: " + mapsUsed);
-            FileHelper.writeLog("Players: " + players.values());
-            FileHelper.writeLog("Draw Limit: " + maxRounds);
-            for (Map.Entry pair : tournamentModeWinners.entrySet()) {
-                FileHelper.writeLog("=========================");
-                FileHelper.writeLog("Map " + pair.getKey() + ":");
-                HashMap<Integer, Player> winnerDetails = (HashMap<Integer, Player>) pair.getValue();
-                gameNumberBeingPlayed = 1;
-                for (Map.Entry innerPair : winnerDetails.entrySet()) {
-                    Player winner = (Player) innerPair.getValue();
-                    String winnerText = winner == null ? "DRAW" : winner.name + "(" + winner.strategy + ")";
-                    FileHelper.writeLog("Game " + innerPair.getKey() + ": " + winnerText);
-                    System.out.println("map: " + pair.getKey().toString() + " | game: " + innerPair.getKey() + " winner: " + winnerText);
-                }
-            }
             gameEnded = true;
+            outputTournamentResults();
+            int action = JOptionPane.showOptionDialog(null, "", "Tournament Ended", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+            if (action == JOptionPane.OK_OPTION) {
+                System.exit(0);
+            }
         }
 
+        // if tournament has not ended, load new map and move to reinforcement phase
         if (!gameEnded) {
             try {
                 FileHelper.loadToConfig(maps.get(mapBeingPlayed));
             } catch (IllegalStateException exception) {
                 System.out.println("File validation failed : " + exception.getMessage());
+                return;
             }
 
             check = false;
             assignCountriesToPlayers();
             check = true;
-            for (Player player : players.values()) {
-                Random rand = new Random();
-                int totalArmy = getInitialArmy();
-                int loop = 0;
-                for (Country country : player.countries) {
-                    int countriesLeft = player.countries.size() - loop;
-                    int assignedArmy;
-                    if (totalArmy - countriesLeft == 1) {
-                        assignedArmy = 1;
-                    } else {
-                        assignedArmy = rand.nextInt(totalArmy - countriesLeft - 1) + 1;
-                    }
-                    if (loop == player.countries.size() - 1) {
-                        country.addArmies(totalArmy);
-                    } else {
-                        country.addArmies(assignedArmy);
-                        totalArmy -= assignedArmy;
-                    }
 
-                    loop++;
-                }
-                loop++;
-            }
+            distributeInitialArmiesRandomly(players.values());
             changePhase(Phase.REINFORCE);
         }
+    }
 
+    /**
+     * Writes the tournament result to the game log
+     */
+    private void outputTournamentResults() {
+        FileHelper.writeLog("Tournament Results:", true);
+        String mapsUsed = "|";
+        for (File file : maps.values()) {
+            mapsUsed += file == null ? " --- " : file.getName();
+            mapsUsed += "|";
+        }
+        FileHelper.writeLog("Maps used: " + mapsUsed, true);
+        FileHelper.writeLog("Players: " + players.values(), true);
+        FileHelper.writeLog("Draw Limit: " + maxRounds, true);
+        for (Map.Entry<Integer, HashMap<Integer, Player>> pair : tournamentModeWinners.entrySet()) {
+            FileHelper.writeLog("=========================", true);
+            FileHelper.writeLog("Map " + pair.getKey() + ":", true);
+            HashMap<Integer, Player> winnerDetails = pair.getValue();
+            gameNumberBeingPlayed = 1;
+            for (Map.Entry<Integer, Player> innerPair : winnerDetails.entrySet()) {
+                Player winner = innerPair.getValue();
+                String winnerText = winner == null ? "DRAW" : winner.name + "(" + winner.strategy + ")";
+                FileHelper.writeLog("Game " + innerPair.getKey() + ": " + winnerText, true);
+            }
+        }
+    }
+
+    /**
+     * distributes the initial available armies to the player countries
+     *
+     * @param players list of players
+     */
+    public void distributeInitialArmiesRandomly(Collection<Player> players) {
+        for (Player player : players) {
+            int availableArmy = getInitialArmy();
+            int remainingCountries = player.countries.size();
+            int index = 0;
+            for (Country country : player.countries) {
+                int maxCount = availableArmy - remainingCountries + 1;
+                if (index == player.countries.size() - 1) {
+                    country.setNumOfArmies(maxCount);
+                } else {
+                    int random = new Random().nextInt(maxCount) + 1;
+                    country.setNumOfArmies(random);
+                    availableArmy -= random;
+                    remainingCountries--;
+                }
+                index++;
+            }
+        }
     }
 
     /**
@@ -495,16 +516,21 @@ public class GameMap extends Observable {
      * @param phase new phase
      */
     public void changePhase(Phase phase) {
-        if (phase == Phase.REINFORCE) {
-            for (Player player : playersForCountingLoop.values()) {
-                int playerId = player.id;
-                if (players.get(playerId).countries == null && !(players.get(playerId).countries.size() > 0)) {
-                    GameMap.getInstance().playersForCountingLoop.remove(playerId);
+        if (loopForGameBeingPlayed > maxRounds) {
+            setRecentMove("Game Over: It is a draw.");
+            System.out.println("Game Over: It is a draw.");
+            FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
+
+            if (tournamentMode) startNextGame(true);
+            else {
+                gameEnded = true;
+                int action = JOptionPane.showOptionDialog(null, "Game was a draw", "Game Ended", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+                if (action == JOptionPane.OK_OPTION) {
+                    System.exit(0);
                 }
             }
-        }
-        if (loopForGameBeingPlayed > maxRounds) {
-            checkGameEnd();
         } else {
             stateHasChanged = true;
             this.previousPhase = currentPhase;
@@ -513,6 +539,17 @@ public class GameMap extends Observable {
             notifyObservers();
         }
 
+        if (phase == Phase.REINFORCE) {
+            for (Player player : playersForCountingLoop.values()) {
+                int playerId = player.id;
+                if (players.get(playerId).countries == null && !(players.get(playerId).countries.size() > 0)) {
+                    playersForCountingLoop.remove(playerId);
+                }
+            }
+            if (currentPlayer.id == ((Player) playersForCountingLoop.values().toArray()[0]).id) {
+                loopForGameBeingPlayed++;
+            }
+        }
     }
 
     /**
@@ -541,54 +578,38 @@ public class GameMap extends Observable {
      * A check to see if the current player has conquered all the countries
      */
     public void checkGameEnd() {
-        if (loopForGameBeingPlayed > maxRounds) {
-            setRecentMove("Game Over: It is a draw.");
-            System.out.println("Game Over: It is a draw.");
-            FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
-            FileHelper.writeLog("========================= New Game ========================== \n\n\n\n\n");
-            if (tournamentMode) {
-                newGame = true;
-                previousPhase = Phase.STARTUP;
-                currentPhase = Phase.STARTUP;
-                startTournamentMode(false);
-                if (gameEnded) {
-                    setChanged();
-                    notifyChanges();
-                }
-            } else {
-                gameEnded = true;
-                setChanged();
-                notifyChanges();
-            }
-        } else if (currentPlayer.countries.size() == countries.size()) {
+        if (currentPlayer.countries.size() == countries.size()) {
             setRecentMove("Game Over: " + currentPlayer.name + " wins the game.");
             FileHelper.writeLog("========================= Game Over ========================== \n\n\n\n\n");
             System.out.println("Game Over: " + currentPlayer.name + " wins the game.");
-            FileHelper.writeLog("========================= New Game ========================== \n\n\n\n\n");
-            if (tournamentMode) {
-                HashMap<Integer, Player> winnerDetails = tournamentModeWinners.get(mapBeingPlayed);
-                if (winnerDetails == null) winnerDetails = new HashMap<>();
 
-                winnerDetails.put(gameNumberBeingPlayed, currentPlayer);
-                tournamentModeWinners.put(mapBeingPlayed, winnerDetails);
-                newGame = true;
-                previousPhase = Phase.STARTUP;
-                currentPhase = Phase.STARTUP;
-                startTournamentMode(false);
-                if (gameEnded) {
-                    setChanged();
-                    notifyChanges();
-                }
-            } else {
-                gameEnded = true;
-                setChanged();
-                notifyChanges();
-            }
+            if (tournamentMode) startNextGame(false);
+            else gameEnded = true;
         } else {
             gameEnded = false;
         }
+
+        if (gameEnded) {
+            setChanged();
+            notifyChanges();
+        }
     }
 
+    /**
+     *
+     * */
+    private void startNextGame(boolean isDraw) {
+        HashMap<Integer, Player> winnerDetails = tournamentModeWinners.get(mapBeingPlayed);
+        if (winnerDetails == null) winnerDetails = new HashMap<>();
+        winnerDetails.put(gameNumberBeingPlayed, isDraw ? null : currentPlayer);
+        tournamentModeWinners.put(mapBeingPlayed, winnerDetails);
+
+        newGame = true;
+        previousPhase = Phase.STARTUP;
+        currentPhase = Phase.STARTUP;
+        FileHelper.writeLog("========================= New Game ========================== \n\n\n\n\n");
+        startTournamentMode(false);
+    }
 
     /**
      * restores serialized game data

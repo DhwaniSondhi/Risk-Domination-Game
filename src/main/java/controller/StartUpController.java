@@ -13,8 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 /**
  * This class contain functionality to start up game
@@ -23,7 +23,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
     /**
      * HashSet for number of submitted player
      */
-    HashSet<Integer> completedPlayers;
+    HashSet<Player> completedPlayers;
 
     /**
      * This is controller constructor for Startup
@@ -54,7 +54,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 Player player = new Player(index, name, strategy);
                 model.players.put(player.id, player);
                 if (strategy != PlayerStrategy.Strategy.HUMAN)
-                    completedPlayers.add(player.id);
+                    completedPlayers.add(player);
                 index++;
             }
 
@@ -62,24 +62,9 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
             model.playersForCountingLoop=model.players;
 
             model.assignCountriesToPlayers();
-            for (Integer playerId : completedPlayers) {
-                int availableArmy = model.getInitialArmy();
-                Player player = model.players.get(playerId);
-                int remainingCountries = player.countries.size();
-                index = 0;
-                for (Country country : model.players.get(playerId).countries) {
-                    int maxCount = availableArmy - remainingCountries + 1;
-                    if (index == player.countries.size() - 1) {
-                        country.setNumOfArmies(maxCount);
-                    } else {
-                        int random = new Random().nextInt(maxCount) + 1;
-                        country.setNumOfArmies(random);
-                        availableArmy -= random;
-                        remainingCountries--;
-                    }
-                    index++;
-                }
-            }
+            List<Player> completedList = new ArrayList<>(completedPlayers);
+            model.distributeInitialArmiesRandomly(completedList);
+
             if (!changeCurrentPlayer()) {
                 model.deleteObserver(view);
                 view.dispose();
@@ -92,7 +77,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
                 country.setNumOfArmies(armies);
             }
             if (view.playerCountries.getItemCount() == 1)
-                completedPlayers.add(model.currentPlayer.id);
+                completedPlayers.add(model.currentPlayer);
 
             if (!changeCurrentPlayer()) {
                 model.deleteObserver(view);
@@ -127,7 +112,7 @@ public class StartUpController extends BaseController<StartUpFrame> implements A
             return false;
 
         model.changeToNextPlayer(false);
-        if (!completedPlayers.contains(model.currentPlayer.id)) {
+        if (!completedPlayers.contains(model.currentPlayer)) {
             return true;
         } else {
             return changeCurrentPlayer();

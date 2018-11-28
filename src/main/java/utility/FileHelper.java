@@ -206,4 +206,15 @@ public class FileHelper {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Function to write logs during game play and also to the system log
+     *
+     * @param message string to print
+     * @param sysLog  true will write a system output log
+     */
+    public static void writeLog(String message, boolean sysLog) {
+        writeLog(message);
+        if (sysLog) System.out.println(message);
+    }
 }
