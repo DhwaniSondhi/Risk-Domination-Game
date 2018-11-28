@@ -167,7 +167,7 @@ public class PlayerTest {
      * Check the function updating the total armies when the set of three cards are exchanged
      */
     @Test
-    public void getUpdatedArmiesOnCardsExchange() {
+    public void exchangeCardsForArmies() {
         int totalArmies;
 
         //to check armies for player having countries equal to 13 but not complete continent
@@ -452,4 +452,16 @@ public class PlayerTest {
         gameMap.currentPlayer.addRandomCard();
         Assert.assertEquals(7, gameMap.getInstance().cardStack);
     }
+
+    /**
+     * gets the strongest country among the connected countries
+     */
+    @Test
+    public void strongestInConnectedCountries() {
+        gameMap.setDummyData();
+        gameMap.countries.get(3).updateConnectedCountries();
+        Country strongestCountry = gameMap.currentPlayer.strongestInConnectedCountries(gameMap.countries.get(3).connectedCountries);
+        Assert.assertEquals(4, strongestCountry.id);
+    }
+
 }
