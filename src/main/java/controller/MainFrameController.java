@@ -151,6 +151,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     String data = gson.toJson(GameMap.getInstance());
                     FileHelper.saveGameToFile(data);
+                    JOptionPane.showMessageDialog(null, "Game Saved", "", JOptionPane.ERROR_MESSAGE);
                 } catch (JsonParseException e) {
                     System.out.println("Error saving game: " + e.getLocalizedMessage());
                 }

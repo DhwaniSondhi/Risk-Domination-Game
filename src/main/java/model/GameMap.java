@@ -186,6 +186,42 @@ public class GameMap extends Observable {
      * @param startingTournament true if starting the first game of tournament
      */
     public void startTournamentMode(boolean startingTournament) {
+        gameEnded = updateTournamentGameMapValues(startingTournament);
+
+        if (gameEnded) {
+            outputTournamentResults();
+            int action = JOptionPane.showOptionDialog(null, "Tournament Ended","", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+            if (action == JOptionPane.OK_OPTION) {
+                System.exit(0);
+            }
+        }
+        // if tournament has not ended, load new map and move to reinforcement phase
+        if (!gameEnded) {
+            try {
+                FileHelper.loadToConfig(maps.get(mapBeingPlayed));
+            } catch (IllegalStateException exception) {
+                System.out.println("File validation failed : " + exception.getMessage());
+                return;
+            }
+
+            check = false;
+            assignCountriesToPlayers();
+            check = true;
+
+            distributeInitialArmiesRandomly(players.values());
+            changePhase(Phase.REINFORCE);
+        }
+    }
+
+    /**
+     * Updates the game number and map numberfor the tournament cycle
+     *
+     * @param startingTournament true if starting the first game of tournament
+     */
+    public boolean updateTournamentGameMapValues(boolean startingTournament) {
+        boolean gameOver = false;
         if (startingTournament) {
             loopForGameBeingPlayed = 0;
             gameNumberBeingPlayed = 1;
@@ -206,32 +242,9 @@ public class GameMap extends Observable {
             gameNumberBeingPlayed = 1;
             setPlayersForCountingLoop(players);
         } else {
-            gameEnded = true;
-            outputTournamentResults();
-            int action = JOptionPane.showOptionDialog(null, "", "Tournament Ended", JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, null, null, null);
-
-            if (action == JOptionPane.OK_OPTION) {
-                System.exit(0);
-            }
+            gameOver = true;
         }
-
-        // if tournament has not ended, load new map and move to reinforcement phase
-        if (!gameEnded) {
-            try {
-                FileHelper.loadToConfig(maps.get(mapBeingPlayed));
-            } catch (IllegalStateException exception) {
-                System.out.println("File validation failed : " + exception.getMessage());
-                return;
-            }
-
-            check = false;
-            assignCountriesToPlayers();
-            check = true;
-
-            distributeInitialArmiesRandomly(players.values());
-            changePhase(Phase.REINFORCE);
-        }
+        return gameOver;
     }
 
     /**
@@ -566,7 +579,7 @@ public class GameMap extends Observable {
         }
 
         if (phase == Phase.REINFORCE) {
-            for (Integer playerId : new HashMap<Integer,Integer>(playersForCountingLoop).keySet()) {
+            for (Integer playerId : new HashMap<Integer, Integer>(playersForCountingLoop).keySet()) {
                 if (players.get(playerId).countries == null || !(players.get(playerId).countries.size() > 0)) {
                     playersForCountingLoop.remove(playerId);
                 }
@@ -576,7 +589,7 @@ public class GameMap extends Observable {
                     playersForCountingLoop.replace(currentPlayer.id, loopForGameBeingPlayed);
                 } else {
                     loopForGameBeingPlayed++;
-                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
+                    playersForCountingLoop.replace(currentPlayer.id, loopForGameBeingPlayed);
                 }
             } else {
                 if (playersForCountingLoop.get(currentPlayer.id) != null) {

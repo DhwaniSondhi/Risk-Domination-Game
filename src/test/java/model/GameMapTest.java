@@ -3,7 +3,6 @@ package model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import utility.strategy.PlayerStrategy;
 
 import java.io.File;
 import java.util.Arrays;
@@ -156,7 +155,7 @@ public class GameMapTest {
     /**
      * This check the ending of game
      */
-    /*@Test
+    @Test
     public void checkGameEnd() {
         gameMap.setDummyData();
         for (Country country : gameMap.countries.values()) {
@@ -164,7 +163,7 @@ public class GameMapTest {
         }
         gameMap.checkGameEnd();
         Assert.assertTrue(gameMap.gameEnded);
-    }*/
+    }
 
     /**
      * This check change of phase
@@ -213,55 +212,50 @@ public class GameMapTest {
     }
 
     /**
-     * tests the tournament mode
+     * test tournament cycle updates
      */
-    /*@Test
-    public void startTournamentMode(){
-        Player player;
-        gameMap.tournamentMode=true;
-        player = new Player(1, "player" + 1, PlayerStrategy.Strategy.AGGRESSIVE);
-        gameMap.players.put(1, player);
-        player = new Player(2, "player" + 2, PlayerStrategy.Strategy.BENEVOLENT);
-        gameMap.players.put(2, player);
-        player = new Player(3, "player" + 3, PlayerStrategy.Strategy.RANDOM);
-        gameMap.players.put(3, player);
-        gameMap.currentPlayer=(Player) gameMap.players.values().toArray()[0];
-        gameMap.gameNumbers.put(1,2);
-        gameMap.gameNumbers.put(2,3);
-        gameMap.maps.put(1,new File("maps\\3D Cliff.map"));
-        gameMap.maps.put(2,new File("maps\\bla.map"));
+    @Test
+    public void updateTournamentGameMapValues() {
+        gameMap.gameNumbers.put(1, 2);
+        gameMap.gameNumbers.put(2, 3);
+        gameMap.maps.put(1, new File("maps/build2.map"));
+        gameMap.maps.put(2, new File("maps/bla.map"));
+        boolean isEnd;
 
         //For the first map's first game
-        gameMap.setPlayersForCountingLoop(gameMap.players);
-        gameMap.startTournamentMode(true);
-        Assert.assertEquals(1,gameMap.gameNumberBeingPlayed);
-        Assert.assertEquals(1,gameMap.mapBeingPlayed);
+        isEnd = gameMap.updateTournamentGameMapValues(true);
+        Assert.assertFalse(isEnd);
+        Assert.assertEquals(1, gameMap.gameNumberBeingPlayed);
+        Assert.assertEquals(1, gameMap.mapBeingPlayed);
 
         //For the first map's second game
-        gameMap.startTournamentMode(false);
-        Assert.assertEquals(2,gameMap.gameNumberBeingPlayed);
-        Assert.assertEquals(1,gameMap.mapBeingPlayed);
+        isEnd = gameMap.updateTournamentGameMapValues(false);
+        Assert.assertFalse(isEnd);
+        Assert.assertEquals(2, gameMap.gameNumberBeingPlayed);
+        Assert.assertEquals(1, gameMap.mapBeingPlayed);
 
         //For the second map's first game
-        gameMap.startTournamentMode(false);
-        Assert.assertEquals(1,gameMap.gameNumberBeingPlayed);
-        Assert.assertEquals(2,gameMap.mapBeingPlayed);
+        isEnd = gameMap.updateTournamentGameMapValues(false);
+        Assert.assertFalse(isEnd);
+        Assert.assertEquals(1, gameMap.gameNumberBeingPlayed);
+        Assert.assertEquals(2, gameMap.mapBeingPlayed);
 
         //For the second map's second game
-        gameMap.startTournamentMode(false);
-        Assert.assertEquals(2,gameMap.gameNumberBeingPlayed);
-        Assert.assertEquals(2,gameMap.mapBeingPlayed);
+        isEnd = gameMap.updateTournamentGameMapValues(false);
+        Assert.assertFalse(isEnd);
+        Assert.assertEquals(2, gameMap.gameNumberBeingPlayed);
+        Assert.assertEquals(2, gameMap.mapBeingPlayed);
 
         //For the second map's third game
-        gameMap.startTournamentMode(false);
-        Assert.assertEquals(3,gameMap.gameNumberBeingPlayed);
-        Assert.assertEquals(2,gameMap.mapBeingPlayed);
+        isEnd = gameMap.updateTournamentGameMapValues(false);
+        Assert.assertFalse(isEnd);
+        Assert.assertEquals(3, gameMap.gameNumberBeingPlayed);
+        Assert.assertEquals(2, gameMap.mapBeingPlayed);
 
         //Tournament Ended---click on cross to run this case
-        gameMap.startTournamentMode(false);
-        Assert.assertTrue(gameMap.gameEnded);
-
-    }*/
-
-
+        isEnd = gameMap.updateTournamentGameMapValues(false);
+        Assert.assertEquals(3, gameMap.gameNumberBeingPlayed);
+        Assert.assertEquals(2, gameMap.mapBeingPlayed);
+        Assert.assertTrue(isEnd);
+    }
 }

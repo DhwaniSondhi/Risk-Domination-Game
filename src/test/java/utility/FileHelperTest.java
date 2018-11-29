@@ -121,7 +121,7 @@ public class FileHelperTest {
     /**
      * Check if the all the elements of the map has been cleared or not
      */
-    /*@Test
+    @Test
     public void emptyConfig() {
         FileHelper.emptyConfig();
         GameMap map = GameMap.getInstance();
@@ -130,7 +130,7 @@ public class FileHelperTest {
         Assert.assertTrue(map.countryGraph.isEmpty());
         Assert.assertTrue(map.players.isEmpty());
         Assert.assertNull(map.currentPlayer);
-    }*/
+    }
 
     /**
      * check if the game is written to file or not
