@@ -116,14 +116,26 @@ public class GameMap extends Observable {
     public int mapBeingPlayed;
 
     /**
-     * stores te tournament result
+     * stores the tournament result
      * Map number
      * Game number
      * Winner
      */
     public HashMap<Integer, HashMap<Integer, Player>> tournamentModeWinners;
+
+    /**
+     * to avoid update of the countries on the view uptil all countries are assigned an owner in tournament mode
+     */
     public boolean check;
+
+    /**
+     * variable for keeping the count of the loop for the game being played
+     */
     public int loopForGameBeingPlayed = 0;
+
+    /**
+     * stores the players playing in the loop
+     */
     public HashMap<Integer, Integer> playersForCountingLoop;
 
     /**
@@ -183,16 +195,16 @@ public class GameMap extends Observable {
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
-            setPlayersForCountingLoop(players);
             gameNumberBeingPlayed++;
+            setPlayersForCountingLoop(players);
         } else if (gameNumberBeingPlayed >= gameNumbers.get(mapBeingPlayed) && mapBeingPlayed < maps.size()) {
             loopForGameBeingPlayed = 0;
             for (Player player : players.values()) {
                 players.replace(player.id, new Player(player.id, player.name, player.strategy));
             }
-            setPlayersForCountingLoop(players);
             mapBeingPlayed++;
             gameNumberBeingPlayed = 1;
+            setPlayersForCountingLoop(players);
         } else {
             gameEnded = true;
             outputTournamentResults();
