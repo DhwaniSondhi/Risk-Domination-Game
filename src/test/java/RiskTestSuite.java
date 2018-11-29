@@ -21,7 +21,7 @@ import utility.MapHelperTest;
         CountryTest.class,
         PlayerTest.class,
         ContinentTest.class,
-        MapCreatorControllerTest.class,
+        MapCreatorControllerTest.class//,
         /*FileHelperTest.class,
         MapHelperTest.class,
         GameMapTest.class*/
