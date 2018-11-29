@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,21 +7,22 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This test the GameMap Class
+ */
 public class GameMapTest {
     /**
      * Reference for GameMap Class
      */
     GameMap gameMap;
 
+    /**
+     * This setup the environment for test cases
+     */
     @Before
     public void setUp() {
         gameMap = GameMap.getInstance();
         gameMap.clearInformation();
-    }
-
-    @After
-    public void tearDown() {
-
     }
 
     /**
@@ -151,7 +151,9 @@ public class GameMapTest {
         Assert.assertEquals(Integer.valueOf(2), data.get(2));
     }
 
-
+    /**
+     * This check the ending of game
+     */
     @Test
     public void checkGameEnd() {
         gameMap.setDummyData();
@@ -162,12 +164,18 @@ public class GameMapTest {
         Assert.assertTrue(gameMap.gameEnded);
     }
 
+    /**
+     * This check change of phase
+     */
     @Test
     public void changePhase() {
         gameMap.changePhase(GameMap.Phase.FORTIFY);
         Assert.assertEquals(GameMap.Phase.FORTIFY, gameMap.currentPhase);
     }
 
+    /**
+     * This check is the armies get updated or not through updateArmiesOfCountries function or not
+     */
     @Test
     public void updateArmiesOfCountries() {
         gameMap.setDummyData();
@@ -176,4 +184,30 @@ public class GameMapTest {
         Assert.assertEquals(gameMap.countries.get(1).numOfArmies, 8);
         Assert.assertEquals(gameMap.countries.get(2).numOfArmies, 22);
     }
+
+    /**
+     * Checks the initial value of armies set for each player according to risk game rules
+     */
+    @Test
+    public void distributeInitialArmiesRandomly() {
+        gameMap.setDummyData();
+        gameMap.distributeInitialArmiesRandomly(gameMap.players.values());
+        for (int playerId : gameMap.players.keySet()) {
+            int totalArmies = 0;
+            for (int i = 0; i < gameMap.players.get(playerId).countries.size(); i++) {
+                totalArmies += gameMap.players.get(playerId).countries.get(i).numOfArmies;
+            }
+            Assert.assertEquals(35, totalArmies);
+        }
+    }
+
+    /**
+     * provides initial number of army based on number of players
+     */
+    @Test
+    public void getInitialArmy() {
+        gameMap.setDummyData();
+        Assert.assertEquals(35, gameMap.getInitialArmy());
+    }
+
 }

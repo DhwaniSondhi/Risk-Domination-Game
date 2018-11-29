@@ -9,6 +9,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * This class implements Random Strategy
+ */
 public class RandomStrategy implements PlayerStrategy {
 
     /**

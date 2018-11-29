@@ -4,6 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * This test the Continent class
+ */
 public class ContinentTest {
 
     /**
@@ -23,6 +26,9 @@ public class ContinentTest {
      */
     Player player2;
 
+    /**
+     * It sets up the environment for test cases
+     */
     @Before
     public void setUp() {
         player1 = new Player(1, "P1");

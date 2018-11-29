@@ -11,6 +11,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * This test the player class
+ */
 public class PlayerTest {
 
     /**
@@ -164,7 +167,7 @@ public class PlayerTest {
      * Check the function updating the total armies when the set of three cards are exchanged
      */
     @Test
-    public void getUpdatedArmiesOnCardsExchange() {
+    public void exchangeCardsForArmies() {
         int totalArmies;
 
         //to check armies for player having countries equal to 13 but not complete continent
@@ -384,7 +387,9 @@ public class PlayerTest {
         assertEquals(3, gameMap.currentPlayer.cards.size());
     }
 
-
+    /**
+     * Checks that the country is conquered or not
+     */
     @Test
     public void countryConquered() {
         List<Country> countriesAllowedToAttack = gameMap.currentPlayer.getCountriesAllowedToAttack();
@@ -395,12 +400,18 @@ public class PlayerTest {
         Assert.assertEquals(selectedNeighbour.owner, selectedCountry.owner);
     }
 
+    /**
+     * CHecks that we are getting strongest country or not
+     */
     @Test
     public void getStrongestCountry() {
         Country strongestCountry = gameMap.currentPlayer.getStrongestCountry();
         Assert.assertEquals(8, strongestCountry.id);
     }
 
+    /**
+     * Checks there is proper fortification or not
+     */
     @Test
     public void fortifySteps() {
         Country country1 = new Country(1, "China");
@@ -414,6 +425,9 @@ public class PlayerTest {
 
     }
 
+    /**
+     * Checks that we are getting strongest countries list in descending order
+     */
     @Test
     public void getStrongestCountries() {
         List<Country> strongestCountries = gameMap.currentPlayer.getStrongestCountries(2);
@@ -421,16 +435,33 @@ public class PlayerTest {
         Assert.assertEquals(1, strongestCountries.get(1).id);
     }
 
+    /**
+     * Checks that we are getting weakest country or not
+     */
     @Test
     public void getWeakestCountry() {
         Country weakestCountry = gameMap.currentPlayer.getWeakestCountry();
         Assert.assertEquals(5, weakestCountry.id);
     }
 
+    /**
+     * checking addition of random card
+     */
     @Test
     public void addRandomCard() {
         gameMap.currentPlayer.addRandomCard();
-        ;
         Assert.assertEquals(7, gameMap.getInstance().cardStack);
     }
+
+    /**
+     * gets the strongest country among the connected countries
+     */
+    @Test
+    public void strongestInConnectedCountries() {
+        gameMap.setDummyData();
+        gameMap.countries.get(3).updateConnectedCountries();
+        Country strongestCountry = gameMap.currentPlayer.strongestInConnectedCountries(gameMap.countries.get(3).connectedCountries);
+        Assert.assertEquals(4, strongestCountry.id);
+    }
+
 }

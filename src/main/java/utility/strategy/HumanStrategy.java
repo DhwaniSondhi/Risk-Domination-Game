@@ -4,6 +4,9 @@ import model.Country;
 import model.GameMap;
 import model.Player;
 
+/**
+ * This implement human strategy
+ */
 public class HumanStrategy implements PlayerStrategy {
 
     /**

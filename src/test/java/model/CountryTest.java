@@ -123,6 +123,9 @@ public class CountryTest {
         Assert.assertEquals(6, gameMap.countries.get(1).numOfArmies);
     }
 
+    /**
+     * Test the function to get neighboring countries with different owner id
+     */
     @Test
     public void getNeighboursDiffOwner() {
         HashSet<Country> countries = gameMap.countries.get(1).getNeighboursDiffOwner();

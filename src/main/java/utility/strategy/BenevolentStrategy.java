@@ -7,6 +7,9 @@ import model.Player;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This implement the Benevolent Strategy
+ */
 public class BenevolentStrategy implements PlayerStrategy {
 
     /**

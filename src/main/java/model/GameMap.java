@@ -156,6 +156,11 @@ public class GameMap extends Observable {
         return INSTANCE;
     }
 
+    /**
+     * sets an id for player for tournament
+     *
+     * @param players hashmap of players
+     */
     public void setPlayersForCountingLoop(HashMap<Integer, Player> players) {
         playersForCountingLoop = new HashMap<>();
         for (Integer playerId : players.keySet()) {
@@ -478,9 +483,9 @@ public class GameMap extends Observable {
     /**
      * Change the current player to next player in round robin fashion
      *
-     * @param checkIfLost skips player with 0 countries if set to true
+     * @param checkPlayerLost skips player with 0 countries if set to true
      */
-    public void changeToNextPlayer(boolean checkIfLost) {
+    public void changeToNextPlayer(boolean checkPlayerLost) {
         if (currentPlayer == null)
             currentPlayer = players.get(1);
         else {
@@ -489,7 +494,7 @@ public class GameMap extends Observable {
                 next = 1;
 
             currentPlayer = players.get(next);
-            if (checkIfLost && currentPlayer.countries.size() == 0) changeToNextPlayer(checkIfLost);
+            if (checkPlayerLost && currentPlayer.countries.size() == 0) changeToNextPlayer(checkPlayerLost);
         }
         setChanged();
         notifyObservers();
@@ -549,7 +554,7 @@ public class GameMap extends Observable {
         }
 
         if (phase == Phase.REINFORCE) {
-            for (Integer playerId : new HashMap<Integer, Integer>(playersForCountingLoop).keySet()) {
+            for (Integer playerId : new HashMap<Integer,Integer>(playersForCountingLoop).keySet()) {
                 if (players.get(playerId).countries == null || !(players.get(playerId).countries.size() > 0)) {
                     playersForCountingLoop.remove(playerId);
                 }
@@ -559,7 +564,7 @@ public class GameMap extends Observable {
                     playersForCountingLoop.replace(currentPlayer.id, loopForGameBeingPlayed);
                 } else {
                     loopForGameBeingPlayed++;
-                    playersForCountingLoop.replace(currentPlayer.id, loopForGameBeingPlayed);
+                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
                 }
             } else {
                 if (playersForCountingLoop.get(currentPlayer.id) != null) {
