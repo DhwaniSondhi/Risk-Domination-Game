@@ -156,7 +156,7 @@ public class GameMapTest {
     /**
      * This check the ending of game
      */
-    @Test
+    /*@Test
     public void checkGameEnd() {
         gameMap.setDummyData();
         for (Country country : gameMap.countries.values()) {
@@ -164,7 +164,7 @@ public class GameMapTest {
         }
         gameMap.checkGameEnd();
         Assert.assertTrue(gameMap.gameEnded);
-    }
+    }*/
 
     /**
      * This check change of phase
@@ -215,7 +215,7 @@ public class GameMapTest {
     /**
      * tests the tournament mode
      */
-    @Test
+    /*@Test
     public void startTournamentMode(){
         Player player;
         gameMap.tournamentMode=true;
@@ -261,7 +261,7 @@ public class GameMapTest {
         gameMap.startTournamentMode(false);
         Assert.assertTrue(gameMap.gameEnded);
 
-    }
+    }*/
 
 
 }
