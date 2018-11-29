@@ -1,5 +1,7 @@
 package utility;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.GameMap;
 import org.junit.After;
 import org.junit.Assert;
@@ -15,6 +17,7 @@ import java.util.List;
  * Test class to test the functionality of {@link FileHelper} class
  */
 public class FileHelperTest {
+
     /**
      * Variable to test Valid File
      */
@@ -127,5 +130,32 @@ public class FileHelperTest {
         Assert.assertTrue(map.countryGraph.isEmpty());
         Assert.assertTrue(map.players.isEmpty());
         Assert.assertNull(map.currentPlayer);
+    }
+
+    /**
+     * check if the game is written to file or not
+     * */
+    @Test
+    public void saveGameToFile() throws Exception {
+        GameMap instance = GameMap.getInstance();
+        instance.setDummyData();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String data = gson.toJson(instance);
+        FileHelper.saveGameToFile(data, "savetest");
+        File file = new File("savedgames/savetest.game");
+        Assert.assertNotNull(file);
+
+        FileHelper.loadGame(file);
+        Assert.assertEquals(instance.players.size(), 3);
+        Assert.assertEquals(instance.countries.size(), 8);
+        Assert.assertEquals(instance.continents.size(), 2);
+        Assert.assertEquals(instance.players.get(1).countries.size(), 3);
+        Assert.assertEquals(instance.players.get(2).countries.size(), 2);
+        Assert.assertEquals(instance.countries.get(7).neighbours.size(), 4);
+        Assert.assertEquals(instance.countryGraph.size(), 8);
+        Assert.assertEquals(instance.countries.get(7).owner, instance.players.get(3));
+        Assert.assertEquals(instance.countries.get(5).owner, instance.players.get(1));
+        Assert.assertEquals(instance.countries.get(3).owner, instance.players.get(3));
+        Assert.assertEquals(instance.countries.get(6).owner, instance.players.get(2));
     }
 }

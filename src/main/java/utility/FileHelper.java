@@ -150,6 +150,16 @@ public class FileHelper {
      */
     public static void saveGameToFile(String gameData) {
         String filename = new Date().toString();
+        saveGameToFile(gameData, filename);
+    }
+
+    /**
+     * Writes the data to a game file with current datetime as filename
+     *
+     * @param gameData serialized gamData
+     * @param filename filename for te save game
+     */
+    public static void saveGameToFile(String gameData, String filename) {
         try {
             File folder = new File("savedgames");
             folder.mkdir();
