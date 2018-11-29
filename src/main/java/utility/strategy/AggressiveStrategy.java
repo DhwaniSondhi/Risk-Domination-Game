@@ -63,7 +63,6 @@ public class AggressiveStrategy implements PlayerStrategy {
                 if (countryChanged) {
                     int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
                     selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
-                    GameMap.getInstance().setRecentMove(context.name + " tried to fortify From :" + selectedCountry + " To : " + selectedNeighbouringCountry);
 
                     GameMap.getInstance().setRecentMove(context.name + " started AllOut attack with " + selectedCountry + " " + selectedCountry.numOfArmies
                             + " armies on " + selectedNeighbouringCountry + " " + selectedNeighbouringCountry.numOfArmies + " armies of " + selectedNeighbouringCountry.owner.name);
@@ -74,9 +73,6 @@ public class AggressiveStrategy implements PlayerStrategy {
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, true);
 
                 if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.numOfArmies > 1) {
-                    if (GameMap.getInstance().newGame) {
-                        break;
-                    }
                     int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                     GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
                     context.gainCard();
@@ -84,14 +80,7 @@ public class AggressiveStrategy implements PlayerStrategy {
                 }
             }
         }
-        if (!GameMap.getInstance().newGame) {
-            GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
-        } else {
-            GameMap.getInstance().newGame = false;
-            GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
-
-        }
-
+        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
     }
 
     /**

@@ -60,7 +60,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
                         } else if (model.previousPhase == GameMap.Phase.FORTIFY) {
                             model.changeToNextPlayer(true);
                             view.fortifyPanel.setVisible(false);
-                            view.reinforcementPanel.setVisible(true);
+                            view.reinforcementPanel.setVisible(!model.tournamentMode);
                             view.reinforcementPanel.update();
                         }
                         if (!model.currentPlayer.isHuman()) {
@@ -74,7 +74,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
                         break;
                     case ATTACK:
                         view.reinforcementPanel.setVisible(false);
-                        view.attackPanel.setVisible(true);
+                        view.attackPanel.setVisible(!model.tournamentMode);
                         view.attackPanel.revalidate();
                         view.attackPanel.update();
                         if (!model.currentPlayer.isHuman()) {
@@ -88,7 +88,7 @@ public class MainFrameController extends BaseController<MainFrame> implements
                         break;
                     case FORTIFY:
                         view.attackPanel.setVisible(false);
-                        view.fortifyPanel.setVisible(true);
+                        view.fortifyPanel.setVisible(!model.tournamentMode);
                         view.fortifyPanel.update();
                         if (!model.currentPlayer.isHuman()) {
                             new Thread(new Runnable() {

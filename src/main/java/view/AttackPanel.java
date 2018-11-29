@@ -302,47 +302,49 @@ public class AttackPanel extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof Country) {
-            Country country = ((Country) o);
-            if (country.id == attackController.selectedCountry.id) {
-                switch (country.state) {
-                    case ARMY:
-                        country.updateNumOfDiceAllowed(false);
+        if (!GameMap.getInstance().tournamentMode) {
+            if (o instanceof Country) {
+                Country country = ((Country) o);
+                if (country.id == attackController.selectedCountry.id) {
+                    switch (country.state) {
+                        case ARMY:
+                            country.updateNumOfDiceAllowed(false);
 
-                        if (country.numOfArmies == 1) {
-                            showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
-                            updateNeighbouringCountries(attackController.selectedCountry.neighbours);
-                        }
-                        break;
-                    case DICE:
-                        boolean isAllOut = selectMode.getSelectedItem().equals("All out") ? true : false;
-                        updatePlayerDiceDropdown(country.numOfDiceAllowed, isAllOut);
-                        break;
+                            if (country.numOfArmies == 1) {
+                                showCountries(attackController.model.currentPlayer.getCountriesAllowedToAttack());
+                                updateNeighbouringCountries(attackController.selectedCountry.neighbours);
+                            }
+                            break;
+                        case DICE:
+                            boolean isAllOut = selectMode.getSelectedItem().equals("All out") ? true : false;
+                            updatePlayerDiceDropdown(country.numOfDiceAllowed, isAllOut);
+                            break;
+                    }
+                } else {
+                    switch (country.state) {
+                        case OWNER:
+                            moveArmyPanel.show();
+                            attackButton.hide();
+                            break;
+                        case ARMY:
+                            country.updateNumOfDiceAllowed(true);
+                        default:
+                            boolean isAllOut = selectMode.getSelectedItem().equals("All out") ? true : false;
+                            updateOpponentDiceDropdown(country.numOfDiceAllowed, isAllOut);
+                            break;
+                    }
                 }
-            } else {
-                switch (country.state) {
-                    case OWNER:
-                        moveArmyPanel.show();
-                        attackButton.hide();
-                        break;
-                    case ARMY:
-                        country.updateNumOfDiceAllowed(true);
-                    default:
-                        boolean isAllOut = selectMode.getSelectedItem().equals("All out") ? true : false;
-                        updateOpponentDiceDropdown(country.numOfDiceAllowed, isAllOut);
-                        break;
-                }
-            }
-        } else if (o instanceof Player) {
-            Player player = ((Player) o);
-            updateResultPlayer(player.diceValuesPlayer.toString());
-            updateResultOpponent(player.diceValuesOpponent.toString());
-            updateMoveArmyPanel(player.latestDiceRolled, player.numArmiesAllowedToMove);
+            } else if (o instanceof Player) {
+                Player player = ((Player) o);
+                updateResultPlayer(player.diceValuesPlayer.toString());
+                updateResultOpponent(player.diceValuesOpponent.toString());
+                updateMoveArmyPanel(player.latestDiceRolled, player.numArmiesAllowedToMove);
 
-        } else if (o instanceof GameMap) {
-            GameMap map = ((GameMap) o);
-            if (map.gameEnded && !map.tournamentMode) {
-                showAlert();
+            } else if (o instanceof GameMap) {
+                GameMap map = ((GameMap) o);
+                if (map.gameEnded && !map.tournamentMode) {
+                    showAlert();
+                }
             }
         }
 

@@ -123,7 +123,6 @@ public class GameMap extends Observable {
      */
     public HashMap<Integer, HashMap<Integer, Player>> tournamentModeWinners;
     public boolean check;
-    public boolean newGame;
     public int loopForGameBeingPlayed = 0;
     public HashMap<Integer, Integer> playersForCountingLoop;
 
@@ -157,10 +156,10 @@ public class GameMap extends Observable {
         return INSTANCE;
     }
 
-    public void setPlayersForCountingLoop(HashMap<Integer,Player> players){
-        playersForCountingLoop=new HashMap<>();
-        for(Integer playerId:players.keySet()){
-            playersForCountingLoop.put(playerId,0);
+    public void setPlayersForCountingLoop(HashMap<Integer, Player> players) {
+        playersForCountingLoop = new HashMap<>();
+        for (Integer playerId : players.keySet()) {
+            playersForCountingLoop.put(playerId, 0);
         }
     }
 
@@ -214,7 +213,7 @@ public class GameMap extends Observable {
             check = true;
 
             distributeInitialArmiesRandomly(players.values());
-           /* if(startingTournament)*/  changePhase(Phase.REINFORCE);
+            changePhase(Phase.REINFORCE);
         }
     }
 
@@ -550,21 +549,21 @@ public class GameMap extends Observable {
         }
 
         if (phase == Phase.REINFORCE) {
-            for (Integer playerId : new HashMap<Integer,Integer>(playersForCountingLoop).keySet()) {
+            for (Integer playerId : new HashMap<Integer, Integer>(playersForCountingLoop).keySet()) {
                 if (players.get(playerId).countries == null || !(players.get(playerId).countries.size() > 0)) {
                     playersForCountingLoop.remove(playerId);
                 }
             }
-            if(currentPlayer.id==Integer.parseInt(String.valueOf(playersForCountingLoop.keySet().toArray()[0]))){
-                if(playersForCountingLoop.get(currentPlayer.id)<loopForGameBeingPlayed){
-                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
-                }else{
+            if (currentPlayer.id == Integer.parseInt(String.valueOf(playersForCountingLoop.keySet().toArray()[0]))) {
+                if (playersForCountingLoop.get(currentPlayer.id) < loopForGameBeingPlayed) {
+                    playersForCountingLoop.replace(currentPlayer.id, loopForGameBeingPlayed);
+                } else {
                     loopForGameBeingPlayed++;
-                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
+                    playersForCountingLoop.replace(currentPlayer.id, loopForGameBeingPlayed);
                 }
-            }else{
-                if(playersForCountingLoop.get(currentPlayer.id)!=null){
-                    playersForCountingLoop.replace(currentPlayer.id,loopForGameBeingPlayed);
+            } else {
+                if (playersForCountingLoop.get(currentPlayer.id) != null) {
+                    playersForCountingLoop.replace(currentPlayer.id, loopForGameBeingPlayed);
                 }
             }
         }
@@ -614,15 +613,14 @@ public class GameMap extends Observable {
     }
 
     /**
-     *
-     * */
+     * starts next game of the tournament
+     */
     private void startNextGame(boolean isDraw) {
         HashMap<Integer, Player> winnerDetails = tournamentModeWinners.get(mapBeingPlayed);
         if (winnerDetails == null) winnerDetails = new HashMap<>();
         winnerDetails.put(gameNumberBeingPlayed, isDraw ? null : currentPlayer);
         tournamentModeWinners.put(mapBeingPlayed, winnerDetails);
 
-        newGame = true;
         previousPhase = Phase.STARTUP;
         currentPhase = Phase.STARTUP;
         FileHelper.writeLog("========================= New Game ========================== \n\n\n\n\n");

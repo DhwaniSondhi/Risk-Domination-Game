@@ -392,57 +392,58 @@ public class FortifyPanel extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
+        if (!GameMap.getInstance().tournamentMode) {
+            if (o instanceof Country) {
+                Country country = (Country) o;
 
-        if (o instanceof Country) {
-            Country country = (Country) o;
+                if (country.flagForObserver == 1) {
+                    enableCountriesArmyLabelAndTextField();
+                    updateCountriesArmyTextField(country.numOfArmies);
+                    updateSelectedCountryArmy = country;
+                    // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
+                    //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
+                    updateNeighboringCountries(country.connectedCountries);
+                    if (country.connectedCountries.isEmpty()) {
+                        disableButton();
+                        setVisibleFalseNeighbourPanel();
+                        setComboBoxAndNeighborTextFieldFalse();
+                    } else {
+                        setVisibleTrueNeighbourPanel();
+                        disableButton();
+                        setComboBoxAndNeighborTextFieldFalse();
+                        updateJComboboxArmies(country.numOfArmies);
 
-            if (country.flagForObserver == 1) {
-                enableCountriesArmyLabelAndTextField();
-                updateCountriesArmyTextField(country.numOfArmies);
-                updateSelectedCountryArmy = country;
-                // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
-                //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
-                updateNeighboringCountries(country.connectedCountries);
-                if (country.connectedCountries.isEmpty()) {
-                    disableButton();
-                    setVisibleFalseNeighbourPanel();
-                    setComboBoxAndNeighborTextFieldFalse();
-                } else {
-                    setVisibleTrueNeighbourPanel();
-                    disableButton();
-                    setComboBoxAndNeighborTextFieldFalse();
-                    updateJComboboxArmies(country.numOfArmies);
+                    }
+                } else if (country.flagForObserver == 2) {
+                    if (updateSelectedCountryArmy.numOfArmies <= 1) {
+                        jComboBoxNoOfArmies.setEnabled(false);
+                        disableButton();
+                    } else {
+                        jComboBoxNoOfArmies.setEnabled(true);
+                        enableButton();
+                    }
+                    setNeighborTextFieldTrue();
+                    updateNeighboringCountriesArmyTextField(country.numOfArmies);
+                    updateConnectedCountryArmy = country;
 
                 }
-            } else if (country.flagForObserver == 2) {
-                if (updateSelectedCountryArmy.numOfArmies <= 1) {
-                    jComboBoxNoOfArmies.setEnabled(false);
-                    disableButton();
-                } else {
-                    jComboBoxNoOfArmies.setEnabled(true);
-                    enableButton();
+
+
+            } else if (o instanceof GameMap) {
+                GameMap gameMap = GameMap.getInstance();
+                showCountriesFortify(gameMap.currentPlayer.getCountries());
+                transferFortify();
+                disableButton();
+                setVisibleFalseNeighbourPanel();
+                setComboBoxAndNeighborTextFieldFalse();
+                disableCountriesArmyLabelAndTextField();
+            } else if (o instanceof Player) {
+                if (updateSelectedCountryArmy != null && updateConnectedCountryArmy != null) {
+                    jTextFieldNoOfArmiesCountries.setText(String.valueOf(updateSelectedCountryArmy.numOfArmies));
+                    jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateConnectedCountryArmy.numOfArmies));
                 }
-                setNeighborTextFieldTrue();
-                updateNeighboringCountriesArmyTextField(country.numOfArmies);
-                updateConnectedCountryArmy = country;
 
             }
-
-
-        } else if (o instanceof GameMap) {
-            GameMap gameMap = GameMap.getInstance();
-            showCountriesFortify(gameMap.currentPlayer.getCountries());
-            transferFortify();
-            disableButton();
-            setVisibleFalseNeighbourPanel();
-            setComboBoxAndNeighborTextFieldFalse();
-            disableCountriesArmyLabelAndTextField();
-        } else if (o instanceof Player) {
-            if (updateSelectedCountryArmy != null && updateConnectedCountryArmy != null) {
-                jTextFieldNoOfArmiesCountries.setText(String.valueOf(updateSelectedCountryArmy.numOfArmies));
-                jTextFieldNoOfArmiesNeighbour.setText(String.valueOf(updateConnectedCountryArmy.numOfArmies));
-            }
-
         }
     }
 }

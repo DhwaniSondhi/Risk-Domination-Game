@@ -47,13 +47,7 @@ public class BenevolentStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        if (!GameMap.getInstance().newGame) {
-            GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
-        } else {
-            GameMap.getInstance().newGame = false;
-            GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
-
-        }
+        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
     }
 
     /**

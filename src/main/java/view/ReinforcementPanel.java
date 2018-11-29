@@ -51,17 +51,17 @@ public class ReinforcementPanel extends JPanel implements Observer {
     /**
      * Cards sets of the player available for exchange
      */
-    HashMap<String, Integer> cardSets;
+    HashMap<String, Integer> cardSets = new HashMap<>();
 
     /**
      * Total armies available for reinforcement
      */
-    int totalArmies;
+    int totalArmies = 0;
 
     /**
      * Countries player has during reinforcement
      */
-    ArrayList<Country> countries;
+    ArrayList<Country> countries = new ArrayList<>();
 
 
     /**
@@ -94,15 +94,17 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * @param obj an argument passed to the <code>notifyObservers</code>
      */
     public void update(Observable o, Object obj) {
-        Player player = GameMap.getInstance().currentPlayer;
-        boolean selectedObserver = ((Player) player).updateReinforcementPanel;
-        if (selectedObserver) {
-            cardSets = ((Player) player).unselectedCards;
-            totalArmies = ((Player) player).totalArmies;
-            countries = ((Player) player).countries;
+        if (!GameMap.getInstance().tournamentMode) {
+            Player player = GameMap.getInstance().currentPlayer;
+            boolean selectedObserver = ((Player) player).updateReinforcementPanel;
+            if (selectedObserver) {
+                cardSets = ((Player) player).unselectedCards;
+                totalArmies = ((Player) player).totalArmies;
+                countries = ((Player) player).countries;
+            }
+            addCardSection();
+            addArmySection();
         }
-        addCardSection();
-        addArmySection();
     }
 
     /**
@@ -201,6 +203,7 @@ public class ReinforcementPanel extends JPanel implements Observer {
      * To add Army Section Panel for armies display and distribution among countries
      */
     public void addArmySection() {
+
         if (armySection != null) {
             armySection.removeAll();
         } else {

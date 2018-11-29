@@ -486,11 +486,8 @@ public class Player extends Observable {
         winCards(selectedNeighbouringCountry.owner);
         selectedNeighbouringCountry.changeOwner(this);
         GameMap.getInstance().checkGameEnd();
-        if (!GameMap.getInstance().newGame) {
-            setChanged();
-            notifyObservers();
-        }
-
+        setChanged();
+        notifyObservers();
     }
 
     /**

@@ -77,9 +77,6 @@ public class RandomStrategy implements PlayerStrategy {
                 if (selectedCountry.getNumberofArmies() == 1) {
                     break;
                 } else if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >= 1) {
-                    if (GameMap.getInstance().newGame) {
-                        break;
-                    }
                     int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                     GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
                     context.gainCard();
@@ -87,13 +84,6 @@ public class RandomStrategy implements PlayerStrategy {
                 }
             }
             break;
-        }
-        if (!GameMap.getInstance().newGame) {
-            GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
-        } else {
-            GameMap.getInstance().newGame = false;
-            GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
-
         }
     }
 

@@ -61,14 +61,7 @@ public class CheaterStrategy implements PlayerStrategy {
             GameMap.getInstance().setRecentMove(context.name + " attacked " + selectedNeighbouringCountry);
             context.countryConquered(selectedCountry, selectedNeighbouringCountry);
         }
-        if (!GameMap.getInstance().newGame) {
-            GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
-        } else {
-            GameMap.getInstance().newGame = false;
-            GameMap.getInstance().changePhase(GameMap.Phase.REINFORCE);
-
-        }
-
+        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
     }
 
     /**
