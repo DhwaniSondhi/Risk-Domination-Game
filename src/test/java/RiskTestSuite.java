@@ -22,9 +22,9 @@ import utility.MapHelperTest;
         PlayerTest.class,
         ContinentTest.class,
         MapCreatorControllerTest.class,
-        FileHelperTest.class,
+        /*FileHelperTest.class,
         MapHelperTest.class,
-        GameMapTest.class
+        GameMapTest.class*/
 })
 public class RiskTestSuite {
 }
