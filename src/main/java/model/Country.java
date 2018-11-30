@@ -33,6 +33,10 @@ public class Country extends Observable {
     @Expose
     public int numOfArmies;
     /**
+     * number of dice roll selected by a human owner
+     */
+    public int humanDiceSelection = 2;
+    /**
      * Number of Dice allowed for a country
      */
     public int numOfDiceAllowed = 0;
@@ -51,7 +55,7 @@ public class Country extends Observable {
     /**
      * Variable for number of armies at selected connected country
      */
-    int numberOfArmiesAtConnnectedCountry;
+    int numberOfArmiesAtConnectedCountry;
 
     /**
      * Constructor to set current name and id of country
@@ -170,7 +174,7 @@ public class Country extends Observable {
      * This function update the TextField for number of armies at selected connected country
      */
     public void updateTextFieldForNeighbour() {
-        numberOfArmiesAtConnnectedCountry = this.numOfArmies;
+        numberOfArmiesAtConnectedCountry = this.numOfArmies;
         flagForObserver = 2;
         setChanged();
         notifyObservers();
@@ -190,6 +194,8 @@ public class Country extends Observable {
             } else if (numArmies == 1) {
                 numOfDiceAllowed = 1;
             }
+            if (owner.isHuman())
+                numOfDiceAllowed = Math.min(numOfDiceAllowed, humanDiceSelection);
         } else {
             if (numArmies > 3) {
                 numOfDiceAllowed = 3;

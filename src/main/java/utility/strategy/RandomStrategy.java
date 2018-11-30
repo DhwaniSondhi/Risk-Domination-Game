@@ -4,6 +4,7 @@ import model.Country;
 import model.GameMap;
 import model.Player;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -73,10 +74,23 @@ public class RandomStrategy implements PlayerStrategy {
             int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
 
             selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
+
             int limit = 1 + rand.nextInt(10);
             for (int i = 0; i < limit; i++) {
                 GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry
                         + " on " + selectedNeighbouringCountry);
+
+                if (selectedNeighbouringCountry.owner.isHuman()) {
+                    String[] options;
+                    if (selectedNeighbouringCountry.numOfArmies > 2)
+                        options = new String[]{"1", "2"};
+                    else
+                        options = new String[]{"1"};
+
+                    int diceSelection = 1 + JOptionPane.showOptionDialog(null, "Select the number of dice to roll.", "",
+                            JOptionPane.YES_NO_OPTION, 1, null, options, 1);
+                    selectedNeighbouringCountry.humanDiceSelection = diceSelection;
+                }
 
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
                 if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >= 1) {
