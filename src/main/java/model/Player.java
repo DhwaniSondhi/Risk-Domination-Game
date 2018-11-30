@@ -553,7 +553,7 @@ public class Player extends Observable {
      * @param country      country to reinforce
      * @param armySelected number of armies
      */
-    public void reinforce(Country country, int armySelected) {
+    public synchronized void reinforce(Country country, int armySelected) {
         // in case of non-human player---make a default country and army to 0
         playerStrategy.reinforce(this, country, armySelected);
         updateView();
@@ -580,7 +580,7 @@ public class Player extends Observable {
      * @param selectedNeighbouringCountry country of the opponent
      * @param isAllOut                    flag to check the mode of the game
      */
-    public void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
+    public synchronized void attack(Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
         playerStrategy.attack(this, selectedCountry, selectedNeighbouringCountry, isAllOut);
     }
 
@@ -591,7 +591,7 @@ public class Player extends Observable {
      * @param countrySelected        country which user select transfer from
      * @param neighborSelected       country which user select transfer to
      */
-    public void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
+    public synchronized void fortify(int numberOfArmiesTransfer, Country countrySelected, Country neighborSelected) {
         playerStrategy.fortify(this, numberOfArmiesTransfer, countrySelected, neighborSelected);
 
         setChanged();

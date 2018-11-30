@@ -106,7 +106,7 @@ public class AggressiveStrategy implements PlayerStrategy {
             if (listOfCountriesConnected.size() != 0) {
                 secondStrongestCountry = context.strongestInConnectedCountries(listOfCountriesConnected);
 
-                if (strongestCountry.numOfArmies != 1) {
+                if (strongestCountry.numOfArmies != 1 && secondStrongestCountry != null) {
                     context.fortifySteps(strongestCountry, secondStrongestCountry);
                     break;
                 }

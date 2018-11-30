@@ -62,24 +62,24 @@ public class RandomStrategy implements PlayerStrategy {
      */
     @Override
     public void attack(Player context, Country selectedCountry, Country selectedNeighbouringCountry, boolean isAllOut) {
-        while (true) {
+        int count = 0;
+        while (count < 5) {
+            count++;
             Random rand = new Random();
             selectedCountry = context.countries.get(rand.nextInt(context.countries.size()));
-            if (selectedCountry.getNeighboursDiffOwner().size() == 0) {
+            if (selectedCountry.getNumberofArmies() == 1 || selectedCountry.getNeighboursDiffOwner().size() == 0) {
                 continue;
             }
             int index = rand.nextInt(selectedCountry.getNeighboursDiffOwner().size());
 
             selectedNeighbouringCountry = (Country) selectedCountry.getNeighboursDiffOwner().toArray()[index];
-            int limit = rand.nextInt(10);
+            int limit = 1 + rand.nextInt(10);
             for (int i = 0; i < limit; i++) {
                 GameMap.getInstance().setRecentMove(context.name + " started Normal attack with " + selectedCountry
                         + " on " + selectedNeighbouringCountry);
 
                 context.performAttackSteps(selectedCountry, selectedNeighbouringCountry, false);
-                if (selectedCountry.getNumberofArmies() == 1) {
-                    break;
-                } else if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >= 1) {
+                if (selectedNeighbouringCountry.owner.equals(selectedCountry.owner) && selectedCountry.getNumberofArmies() >= 1) {
                     int armies = 1 + rand.nextInt(selectedCountry.numOfArmies - 1);
                     GameMap.getInstance().updateArmiesOfCountries(armies, selectedCountry, selectedNeighbouringCountry);
                     context.gainCard();
@@ -88,6 +88,7 @@ public class RandomStrategy implements PlayerStrategy {
             }
             break;
         }
+        GameMap.getInstance().changePhase(GameMap.Phase.FORTIFY);
     }
 
     /**
