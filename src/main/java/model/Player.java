@@ -1,6 +1,7 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import utility.FileHelper;
 import utility.strategy.*;
 
 import java.util.*;
@@ -397,6 +398,7 @@ public class Player extends Observable {
      */
     public int exchangeCardsForArmies(int totalArmiesLocal) {
         GameMap.getInstance().setRecentMove(name + " exchanged cards for " + updateArmiesForCards + " armies.");
+        FileHelper.writeLog(name + " exchanged cards for " + updateArmiesForCards + " armies.");
         totalArmies = totalArmiesLocal + this.updateArmiesForCards;
         this.updateArmiesForCards += 5;
         ArrayList<Card> removeCards = new ArrayList<>();
