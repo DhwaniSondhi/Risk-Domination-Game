@@ -67,11 +67,15 @@ public class CountryTest {
     @Test
     public void updateNumOfDiceAllowedPlayer() {
         gameMap.countries.get(1).updateNumOfDiceAllowed(false);
+        //gameMap.countries.get(1) has 10 armies
         Assert.assertEquals(3, gameMap.countries.get(1).numOfDiceAllowed);
         gameMap.countries.get(5).updateNumOfDiceAllowed(false);
+        //gameMap.countries.get(5) has 3 armies
         Assert.assertEquals(2, gameMap.countries.get(5).numOfDiceAllowed);
         gameMap.countries.get(6).updateNumOfDiceAllowed(false);
+        //gameMap.countries.get(6) has 2 armies
         Assert.assertEquals(1, gameMap.countries.get(6).numOfDiceAllowed);
+        //gameMap.countries.get(7) has 1 armies
         gameMap.countries.get(7).updateNumOfDiceAllowed(false);
         Assert.assertEquals(0, gameMap.countries.get(7).numOfDiceAllowed);
 
@@ -83,7 +87,9 @@ public class CountryTest {
     @Test
     public void updateNumOfDiceAllowedOpponent() {
         gameMap.countries.get(1).updateNumOfDiceAllowed(true);
+        //gameMap.countries.get(1) has 10 armies
         Assert.assertEquals(2, gameMap.countries.get(1).numOfDiceAllowed);
+        //gameMap.countries.get(5) has 3 armies
         gameMap.countries.get(5).updateNumOfDiceAllowed(true);
         Assert.assertEquals(2, gameMap.countries.get(5).numOfDiceAllowed);
         gameMap.countries.get(6).updateNumOfDiceAllowed(true);

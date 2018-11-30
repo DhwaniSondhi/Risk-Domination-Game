@@ -205,7 +205,11 @@ public class PlayerTest {
      */
     @Test
     public void getCountriesAllowedToAttack() {
-        assertEquals(3, gameMap.currentPlayer.getCountriesAllowedToAttack().size());
+        Assert.assertEquals(3, gameMap.currentPlayer.getCountriesAllowedToAttack().size());
+        //check to see if the number of armies is greater than 1
+        for(Country country : gameMap.currentPlayer.getCountriesAllowedToAttack()){
+            Assert.assertTrue(country.numOfArmies > 1);
+        }
     }
 
     /**
