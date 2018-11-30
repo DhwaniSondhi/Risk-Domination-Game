@@ -132,7 +132,7 @@ public class FortifyPanel extends JPanel implements Observer {
         add(jPanelTransferArmy, bagConstraintsMain);
 
         showNeighbouringCountriesFortify();
-        //fortifyController.updateCountryListFortify();
+
     }
 
     /**
@@ -400,8 +400,6 @@ public class FortifyPanel extends JPanel implements Observer {
                     enableCountriesArmyLabelAndTextField();
                     updateCountriesArmyTextField(country.numOfArmies);
                     updateSelectedCountryArmy = country;
-                    // HashMap<Integer, Country> neighbor = selectedCountry.getConnectedCountries();
-                    //showNeighbouringCountriesFortify(model.currentPlayer.getCountries());
                     updateNeighboringCountries(country.connectedCountries);
                     if (country.connectedCountries.isEmpty()) {
                         disableButton();

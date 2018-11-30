@@ -2,8 +2,8 @@ package model;
 
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
-import utility.FileHelper;
 import model.strategy.PlayerStrategy;
+import utility.FileHelper;
 
 import javax.swing.*;
 import java.io.File;
@@ -190,7 +190,7 @@ public class GameMap extends Observable {
 
         if (gameEnded) {
             outputTournamentResults();
-            int action = JOptionPane.showOptionDialog(null, "Tournament Ended","", JOptionPane.DEFAULT_OPTION,
+            int action = JOptionPane.showOptionDialog(null, "Tournament Ended", "", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, null, null);
 
             if (action == JOptionPane.OK_OPTION) {

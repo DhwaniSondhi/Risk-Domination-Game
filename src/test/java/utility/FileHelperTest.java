@@ -134,7 +134,7 @@ public class FileHelperTest {
 
     /**
      * check if the game is written to file or not
-     * */
+     */
     @Test
     public void saveGameToFile() throws Exception {
         GameMap instance = GameMap.getInstance();

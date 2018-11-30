@@ -230,8 +230,7 @@ public class MainFrame extends JFrame implements Observer {
 
                 if (instance.recentMove != null)
                     recentMovesPanel.add(new JLabel(instance.recentMove));
-                /*JScrollBar scroll = messagesPanel.getVerticalScrollBar();
-                scroll.setValue(scroll.getMaximum());*/
+
                 recentMovesPanel.revalidate();
                 recentMovesPanel.repaint();
             }

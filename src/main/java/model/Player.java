@@ -1,8 +1,8 @@
 package model;
 
 import com.google.gson.annotations.Expose;
-import utility.FileHelper;
 import model.strategy.*;
+import utility.FileHelper;
 
 import java.util.*;
 

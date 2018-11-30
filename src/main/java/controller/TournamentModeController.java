@@ -2,9 +2,9 @@ package controller;
 
 
 import model.Player;
+import model.strategy.PlayerStrategy;
 import utility.FileHelper;
 import utility.MapHelper;
-import model.strategy.PlayerStrategy;
 import view.TournamentModeFrame;
 
 import javax.swing.*;
