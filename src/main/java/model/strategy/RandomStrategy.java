@@ -1,4 +1,4 @@
-package utility.strategy;
+package model.strategy;
 
 import model.Country;
 import model.GameMap;

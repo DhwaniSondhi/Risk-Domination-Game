@@ -1,7 +1,7 @@
 package view;
 
 import controller.TournamentModeController;
-import utility.strategy.PlayerStrategy;
+import model.strategy.PlayerStrategy;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

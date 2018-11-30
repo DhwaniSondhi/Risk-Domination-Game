@@ -20,9 +20,16 @@
 ## Singleton Design Pattern
 * GameMap follows Singleton Pattern
 
+## Strategy Design Pattern
+* Player follows  strategy design pattern
+* Implements `PlayerStrategy` for 5 strategies:
+    * HumanStrategy:
+    * AggressiveStrategy:
+    * CheaterStrategy:
+    * RandomStrategy:
+    * BenevolentStrategy:
+
 ## Utility/Helper Classes
-* GameStateChangeListener
-    - observes change in game phase
 * FileHelper
     - Provides functionality related to file handling (loading and saving map)
 * MapHelper

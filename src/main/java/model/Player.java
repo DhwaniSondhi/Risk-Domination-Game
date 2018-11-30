@@ -2,7 +2,7 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import utility.FileHelper;
-import utility.strategy.*;
+import model.strategy.*;
 
 import java.util.*;
 

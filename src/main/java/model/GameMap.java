@@ -3,7 +3,7 @@ package model;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import utility.FileHelper;
-import utility.strategy.PlayerStrategy;
+import model.strategy.PlayerStrategy;
 
 import javax.swing.*;
 import java.io.File;

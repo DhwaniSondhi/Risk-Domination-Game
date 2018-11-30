@@ -3,7 +3,7 @@ package view;
 import controller.StartUpController;
 import model.Country;
 import model.GameMap;
-import utility.strategy.PlayerStrategy;
+import model.strategy.PlayerStrategy;
 
 import javax.swing.*;
 import java.awt.*;

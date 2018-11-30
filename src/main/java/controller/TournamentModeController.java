@@ -4,7 +4,7 @@ package controller;
 import model.Player;
 import utility.FileHelper;
 import utility.MapHelper;
-import utility.strategy.PlayerStrategy;
+import model.strategy.PlayerStrategy;
 import view.TournamentModeFrame;
 
 import javax.swing.*;

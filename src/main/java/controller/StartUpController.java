@@ -4,7 +4,7 @@ package controller;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import utility.strategy.PlayerStrategy;
+import model.strategy.PlayerStrategy;
 import view.StartUpFrame;
 
 import javax.swing.*;
