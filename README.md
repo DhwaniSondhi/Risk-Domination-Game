@@ -1,5 +1,5 @@
 # Risk Domination Game
-This game is based on Java, Swing and JUnit(automated testing).
+This game is built on Java and Swing using both pull and push models. We have used JUnit for automated testing.
 
 ## Description & Working
 This game can be played by two or more players(both human and computerized players). The computerized players can have following behaviors using Strategy Pattern:
