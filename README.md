@@ -1,5 +1,18 @@
-# README
+# Risk Domination Game
+This game is based on Java, Swing and JUnit(automated testing).
 
+## Description & Working
+This game can be played by two or more players(both human and computerized players). The computerized players can have following behaviors using Strategy Pattern:
+1.  **Aggressive computer player**: It focuses to attack other countries by reinforces its strongest countries, attacks until it can and fortifies for maximizing armies in one country.  
+2.  **Benevolent computer player**: It focuses to protect its weak countries by avoiding attacking, reinforcing and fortifying weak countries.
+3.  **Random computer player**: It plays randomly by reinforcing, attacking and fortifying countries randomly.
+4.  **Cheater computer player**: It reinforces and fortifies by doubling the armies in all countries and conquering all the neighbors.
+
+Maps can be loaded, edited or created. 
+
+The game can be played in two modes:
+1.  **Single Game Mode**: The game starts by selecting loading a map, selecting number and behaviors of players. The game ends when one of the player wins. 
+2.  **Tournament Mode**: The game starts by choosing 1 to 5 maps, 2 to 4 computer players(with same or different behaviors). A report will be shown at the end of winners for each map.
 
 ## Coding Conventions
 1. Indentation
