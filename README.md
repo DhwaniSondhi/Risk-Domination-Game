@@ -3,41 +3,41 @@ This game is implemented in Java and Swing, using MVC (model-view-controller) ar
 
 ## Description & Working
 This game can be played by two or more players (both human and computerized players). The computerized players can have the following behaviors:
-1.  **Aggressive computer player**: It focuses to attack other countries by reinforcing its strongest countries, attacks until it can and fortifies for maximizing armies in one country.  
+1.  **Aggressive computer player**: It focuses to attack other countries by reinforcing its strongest countries, attacks until it can, and fortifies for maximizing armies in one country.  
 2.  **Benevolent computer player**: It focuses to protect its weak countries by avoiding attacks, reinforcing and fortifying weak countries.
-3.  **Random computer player**: It plays randomly by reinforcing, attacking and fortifying countries randomly.
+3.  **Random computer player**: It plays randomly by reinforcing, attacking, and fortifying countries randomly.
 4.  **Cheater computer player**: It reinforces and fortifies by doubling the armies in all countries and conquering all the neighbors.
 
-These behaviors are implemented using Strategy Pattern. Maps can be loaded, edited or created. 
+These behaviors are implemented using the Strategy Pattern. Maps can be loaded, edited, or created. 
 
 The game can be played in two modes:
-1.  **Single Game Mode**: The game starts by selecting loading a map, selecting number and behaviors of players. The game
-proceeds until one of the players has conquered the whole map.
-2.  **Tournament Mode**: The game starts by choosing 1 to 5 maps, 2 to 4 computer players (with same or different behaviors). A report will be shown at the end of winners for each map.
+1.  **Single Game Mode**: The game starts by selecting loading a map, selecting the number and behaviors of players. The game
+proceeds until one of the players have conquered the whole map.
+2.  **Tournament Mode**: The game starts by choosing 1 to 5 maps, 2 to 4 computer players (with the same or different behaviors). A report will be shown at the end of winners for each map.
 
 ## Coding Conventions
 1. Indentation
-    1. Should be properly indented with 4 Spaces / 1 tab
-    2. The opening curly brace should be in the same line as function or class name.
+    1. Should be properly indented with 4 Spaces/1 tab
+    2. The opening curly brace should be in the same line as the function or class name.
 2. Naming 
     1. Should follow camelCase
-    2. Variable names and method names should start with small letter
+    2. Variable names and method names should start with a small letter
     3. Constants should be AllCaps
-    4. class names should start with capital letter
+    4. class names should start with a capital letter
 3. Declarations
     1. All variables need to be declared on top of the class before any function definitions
     2. function declarations should come after variable definitions
-    3. group together private and public variables / functions
+    3. group together private and public variables/functions
 4. Comments
     1. Add comments before all the code blocks (class, function, variables) 
     2. No unwanted commented code should be present 
     3. Javadoc comments should include all the parameter and return type if there is any.
 5. Folder Structure
     1. Only 4 folders
-    2. Model : Core Component Classes and Business logic only.
-    3. View : GUI classes only
-    4. Controller : Controller Classes containing the flow of the application and user interactions.
-    5. Utility : Helper files for handling maps
+    2. Model: Core Component Classes and Business logic only.
+    3. View: GUI classes only
+    4. Controller: Controller Classes containing the flow of the application and user interactions.
+    5. Utility: Helper files for handling maps
     
     
 ## Git Conventions
@@ -46,8 +46,8 @@ proceeds until one of the players has conquered the whole map.
 2. Commits
     1. Commit Description should be clear and concise in a sentence
 3. Merge Request
-    1. All merge requests should be made for develop branch
-    2. should pass the build and test phases in CI
+    1. All merge requests should be made to develop branch
+    2. Should pass the build and test phases in CI
 4. Merge Request needs to be approved by someone other than the creator
 5. One Branch per feature
    
